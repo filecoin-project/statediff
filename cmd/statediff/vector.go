@@ -3,12 +3,14 @@ package main
 import (
 	"bytes"
 	"compress/gzip"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"os"
 
 	bs "github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/ipld/go-car"
+	"github.com/ipfs/go-cid"
 	"github.com/urfave/cli/v2"
 
 	"github.com/filecoin-project/statediff"
@@ -32,6 +34,27 @@ var vectorCmd = &cli.Command{
 	},
 }
 
+type TestVector struct {
+	CAR string `json:"car"`
+
+	Pre           *Preconditions  `json:"preconditions"`
+	Post          *Postconditions `json:"postconditions"`
+}
+
+type StateTree struct {
+	RootCID cid.Cid `json:"root_cid"`
+}
+
+type Preconditions struct {
+	StateTree *StateTree     `json:"state_tree"`
+}
+
+// Postconditions contain a representation of VM state at th end of the test
+type Postconditions struct {
+	StateTree *StateTree `json:"state_tree"`
+}
+
+
 func runVectorCmd(c *cli.Context) error {
 	file, err := os.Open(vectorFlags.file)
 	if err != nil {
@@ -43,7 +66,11 @@ func runVectorCmd(c *cli.Context) error {
 		return err
 	}
 
-	buf := bytes.NewBuffer(tv.CAR)
+	b, err := base64.StdEncoding.DecodeString(tv.CAR)
+	if err != nil {
+		return err
+	}
+	buf := bytes.NewBuffer(b)
 	gr, err := gzip.NewReader(buf)
 	if err != nil {
 		return err
