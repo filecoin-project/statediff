@@ -274,7 +274,10 @@ func Diff(ctx context.Context, store blockstore.Blockstore, a, b cid.Cid, opts .
 		cidMap[`\.Head$`] = reflect.TypeOf("")
 	}
 	cmpOpts = append(cmpOpts, cidTransformer(ctx, store, cborStore, cidMap)...)
-	return cmp.Diff(a, b, cmpOpts...)
+	coreDiff := cmp.Diff(a, b, cmpOpts...)
+
+	header := fmt.Sprintf("--- %s\n+++ %s\n@@ -1,1 +1,1 @@\n", a, b)
+	return header + coreDiff
 }
 
 func cidTransformer(ctx context.Context, store blockstore.Blockstore, cborStore cbor.IpldStore, atlas map[string]reflect.Type) []cmp.Option {

@@ -83,7 +83,7 @@ func runVectorCmd(c *cli.Context) error {
 		return err
 	}
 
-	fmt.Printf("Diff: %v\n", statediff.Diff(
+	fmt.Printf("%v\n", statediff.Diff(
 		c.Context,
 		store,
 		tv.Pre.StateTree.RootCID,
