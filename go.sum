@@ -95,6 +95,7 @@ github.com/btcsuite/goleveldb v0.0.0-20160330041536-7834afc9e8cd/go.mod h1:F+uVa
 github.com/btcsuite/snappy-go v0.0.0-20151229074030-0bdef8d06723/go.mod h1:8woku9dyThutzjeg+3xrA5iCpBRH8XEEg3lh6TiUghc=
 github.com/btcsuite/websocket v0.0.0-20150119174127-31079b680792/go.mod h1:ghJtEyQwv5/p4Mg4C0fgbePVuGr935/5ddU9Z3TmDRY=
 github.com/btcsuite/winsvc v1.0.0/go.mod h1:jsenWakMcC0zFBFurPLEAyrnc/teJEM1O46fmI40EZs=
+github.com/buger/goterm v0.0.0-20200322175922-2f3e71b85129/go.mod h1:u9UyCz2eTrSGy6fbupqJ54eY5c4IC8gREQ1053dK12U=
 github.com/buger/jsonparser v0.0.0-20181115193947-bf1c66bbce23/go.mod h1:bbYlZJ7hK1yFx9hf58LP0zeX7UjIGs20ufpu3evjr+s=
 github.com/casbin/casbin/v2 v2.1.2/go.mod h1:YcPU1XXisHhLzuxH9coDNf2FbKpjGlbCg3n9yuLkIJQ=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
@@ -217,6 +218,7 @@ github.com/filecoin-project/go-fil-markets v0.5.1 h1:Y69glslNCuXnygfesCmyilTVhEE
 github.com/filecoin-project/go-fil-markets v0.5.1/go.mod h1:GKGigsFNMvKmx/+Mcn7093TdZTiCDLc7YGxQ7d6fq2s=
 github.com/filecoin-project/go-fil-markets v0.5.3-0.20200731191349-05110623f114 h1:c+WNx8V0cn7Jyq2SNCelwCKHWHORUBi2+z4X9BWfuLg=
 github.com/filecoin-project/go-fil-markets v0.5.3-0.20200731191349-05110623f114/go.mod h1:apWlYip7Uht5LECL0izk/rOtjStjVE0Z4gG3q/vwgOM=
+github.com/filecoin-project/go-fil-markets v0.5.6-0.20200814234959-80b1788108ac/go.mod h1:umicPCaN99ysHTiYOmwhuLxTFbOwcsI+mdw/t96vvM4=
 github.com/filecoin-project/go-fil-markets v0.5.6 h1:WmBbV0qBU4NvLJ64xROpzrKUbkZxZqszZiEiCGmCEIY=
 github.com/filecoin-project/go-fil-markets v0.5.6/go.mod h1:SJApXAKr5jyGpbzDEOhvemui0pih7hhT8r2MXJxCP1E=
 github.com/filecoin-project/go-jsonrpc v0.1.1-0.20200602181149-522144ab4e24 h1:Jc7vkplmZYVuaEcSXGHDwefvZIdoyyaoGDLqSr8Svms=
@@ -246,6 +248,8 @@ github.com/filecoin-project/lotus v0.4.3-0.20200801235920-43491cb7edfd/go.mod h1
 github.com/filecoin-project/lotus v0.4.3-0.20200819133134-a21234cd54d5/go.mod h1:YYUqCqyv4odVgKSFQAnIdAl0v1cIfbEYnF9E118dMGQ=
 github.com/filecoin-project/lotus v0.4.3-0.20200819134055-b13681df3205 h1:f/gDY2XSlI8s3E5rl3Y1pjZ4VkPtfTt8SkgocBm1sIc=
 github.com/filecoin-project/lotus v0.4.3-0.20200819134055-b13681df3205/go.mod h1:rooripL/X8ixwUngDPzphAv/RKZXWBprbyxxDW0EJi0=
+github.com/filecoin-project/lotus v0.4.3-0.20200820203717-d1718369a182 h1:PbLfyCUi0Qv+GCaFmNWKkJq7nFirAaaKsbwsl9mdlvc=
+github.com/filecoin-project/lotus v0.4.3-0.20200820203717-d1718369a182/go.mod h1:biFZPQ/YyQGfkHUmHMiaNf2hnD6zm1+OAXPQYQ61Zkg=
 github.com/filecoin-project/lotus/extern/sector-storage v0.0.0-20200814115354-002e972f7535 h1:ro7sr0YSEIEwc3fWKgmRtfhs2TLOAFyVYtEDew8G2LE=
 github.com/filecoin-project/lotus/extern/sector-storage v0.0.0-20200814115354-002e972f7535/go.mod h1:Z5rBce4dxbddSHyjkNFod4wcBa7/qRYCVlJwAaBBlco=
 github.com/filecoin-project/specs-actors v0.0.0-20200210130641-2d1fbd8672cf/go.mod h1:xtDZUB6pe4Pksa/bAJbJ693OilaC5Wbot9jMhLm3cZA=
@@ -806,6 +810,8 @@ github.com/libp2p/go-libp2p-pubsub v0.3.4-0.20200731161531-2b5243c72f0d h1:1kfMc
 github.com/libp2p/go-libp2p-pubsub v0.3.4-0.20200731161531-2b5243c72f0d/go.mod h1:DTMSVmZZfXodB/pvdTGrY2eHPZ9W2ev7hzTH83OKHrI=
 github.com/libp2p/go-libp2p-pubsub v0.3.4 h1:8PollxXtUvzy0DMn5XFMg/JihjaKboWyk3ML6yRW1Lk=
 github.com/libp2p/go-libp2p-pubsub v0.3.4/go.mod h1:DTMSVmZZfXodB/pvdTGrY2eHPZ9W2ev7hzTH83OKHrI=
+github.com/libp2p/go-libp2p-pubsub v0.3.5-0.20200820194335-bfc96c2cd081 h1:OYGkXBqwyy8YExNj1ZNKm8ICeBJu1E40k/qr8rHqmH8=
+github.com/libp2p/go-libp2p-pubsub v0.3.5-0.20200820194335-bfc96c2cd081/go.mod h1:DTMSVmZZfXodB/pvdTGrY2eHPZ9W2ev7hzTH83OKHrI=
 github.com/libp2p/go-libp2p-quic-transport v0.1.1/go.mod h1:wqG/jzhF3Pu2NrhJEvE+IE0NTHNXslOPn9JQzyCAxzU=
 github.com/libp2p/go-libp2p-quic-transport v0.5.0/go.mod h1:IEcuC5MLxvZ5KuHKjRu+dr3LjCT1Be3rcD/4d8JrX8M=
 github.com/libp2p/go-libp2p-quic-transport v0.7.1/go.mod h1:TD31to4E5exogR/GWHClXCfkktigjAl5rXSt7HoxNvY=
@@ -1269,6 +1275,8 @@ github.com/whyrusleeping/cbor-gen v0.0.0-20200723185710-6a3894a6352b/go.mod h1:f
 github.com/whyrusleeping/cbor-gen v0.0.0-20200810223238-211df3b9e24c/go.mod h1:fgkXqYy7bV2cFeIEOkVTZS/WjXARfBqSH6Q2qHL33hQ=
 github.com/whyrusleeping/cbor-gen v0.0.0-20200812213548-958ddffe352c h1:otRnI08JoahNBxUFqX3372Ab9GnTj8L5J9iP5ImyxGU=
 github.com/whyrusleeping/cbor-gen v0.0.0-20200812213548-958ddffe352c/go.mod h1:fgkXqYy7bV2cFeIEOkVTZS/WjXARfBqSH6Q2qHL33hQ=
+github.com/whyrusleeping/cbor-gen v0.0.0-20200814224545-656e08ce49ee h1:U7zWWvvAjT76EiuWPSOiZlQDnaQYPxPoxugTtTAcJK0=
+github.com/whyrusleeping/cbor-gen v0.0.0-20200814224545-656e08ce49ee/go.mod h1:fgkXqYy7bV2cFeIEOkVTZS/WjXARfBqSH6Q2qHL33hQ=
 github.com/whyrusleeping/chunker v0.0.0-20181014151217-fe64bd25879f/go.mod h1:p9UJB6dDgdPgMJZs7UjUOdulKyRr9fqkS+6JKAInPy8=
 github.com/whyrusleeping/go-ctrlnet v0.0.0-20180313164037-f564fbbdaa95/go.mod h1:SJqKCCPXRfBFCwXjfNT/skfsceF7+MBFLI2OrvuRA7g=
 github.com/whyrusleeping/go-keyspace v0.0.0-20160322163242-5b898ac5add1/go.mod h1:8UvriyWtv5Q5EOgjHaSseUEdkQfvwFv1I/In/O2M9gc=
