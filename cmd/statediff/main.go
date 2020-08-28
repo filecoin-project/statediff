@@ -1,3 +1,5 @@
+//go:generate go run github.com/go-bindata/go-bindata/go-bindata -fs -prefix "static/" static/
+
 package main
 
 import (
@@ -22,6 +24,7 @@ func main() {
 		Commands: []*cli.Command{
 			vectorCmd,
 			chainCmd,
+			exploreCmd,
 		},
 	}
 

@@ -8,6 +8,7 @@ require (
 	github.com/filecoin-project/lotus v0.4.3-0.20200820203717-d1718369a182
 	github.com/filecoin-project/specs-actors v0.9.3
 	github.com/filecoin-project/test-vectors v0.0.0-20200819133914-e20cc29cc926 // indirect
+	github.com/go-bindata/go-bindata v3.1.2+incompatible // indirect
 	github.com/ipfs/go-block-format v0.0.2
 	github.com/ipfs/go-cid v0.0.7
 	github.com/ipfs/go-datastore v0.4.4
@@ -23,4 +24,5 @@ require (
 )
 
 replace github.com/filecoin-project/filecoin-ffi => ./extern/filecoin-ffi
+
 replace github.com/filecoin-project/sector-storage => ./extern/sector-storage

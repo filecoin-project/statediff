@@ -14,6 +14,7 @@ This tool provides functionality for exploration and comparing changes to fileco
 
 ```bash
 go get github.com/filecoin-project/statediff/cmd/statediff
+go generate ./...
 ```
 
 ## Usage
@@ -28,6 +29,11 @@ See what state chaned on the local lotus chain across a block or message:
 
 ```
 statediff chain --expand-actors all bafy...
+```
+
+Explore the state tree of a connected lotus node
+```
+statediff explore
 ```
 
 ## API
