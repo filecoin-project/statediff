@@ -1,0 +1,19 @@
+{
+  "name": "statediff",
+  "version": "1.0.0",
+  "description": "Rendering of filecoin state trees",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/filecoin-project/statediff.git"
+  },
+  "author": "Will Scott <willscott@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/filecoin-project/statediff/issues"
+  },
+  "homepage": "https://github.com/filecoin-project/statediff#readme"
+}

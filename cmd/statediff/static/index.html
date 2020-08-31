@@ -1,3 +1,33 @@
-<html>
-    Hello World
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>State Explorer</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+  <script src="/app.js"></script>
+
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" id='current'>Current</button>
+        </span>
+        <input type="text" class="form-control" placeholder="State CID..." id='stateroot'>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <code id="root">
+        Hewllo World
+    </code>
+  </div>
+</body>
 </html>

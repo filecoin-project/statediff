@@ -3,6 +3,7 @@ module github.com/filecoin-project/statediff
 go 1.14
 
 require (
+	github.com/evanw/esbuild v0.6.28
 	github.com/filecoin-project/go-address v0.0.3
 	github.com/filecoin-project/go-bitfield v0.2.0
 	github.com/filecoin-project/lotus v0.4.3-0.20200820203717-d1718369a182
