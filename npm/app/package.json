@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/filecoin-project/statediff/issues"
   },
-  "homepage": "https://github.com/filecoin-project/statediff#readme"
+  "homepage": "https://github.com/filecoin-project/statediff#readme",
+  "dependencies": {
+    "pretty-print-json": "^0.2.2",
+    "tableify": "^1.1.0"
+  }
 }

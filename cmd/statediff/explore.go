@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net"
@@ -19,6 +20,12 @@ var assetsFlag = cli.StringFlag{
 	Value: ".",
 }
 
+var bindFlag = cli.StringFlag{
+	Name: "bind",
+	Usage: "Bind to a specific local host:port. Specified as [address]:port",
+	Value: ":0",
+}
+
 var exploreCmd = &cli.Command{
 	Name:        "explore",
 	Description: "Examine a state tree in a browser",
@@ -26,6 +33,7 @@ var exploreCmd = &cli.Command{
 	Flags: []cli.Flag{
 		&apiFlag,
 		&assetsFlag,
+		&bindFlag,
 	},
 }
 
@@ -45,14 +53,34 @@ func runExploreCmd(c *cli.Context) error {
 			return
 		}
 
+		as, ok := r.URL.Query()["as"]
+		if !ok || len(as[0]) < 1 {
+			w.Header().Set("Content-Type", "text/plain")
+			w.Write([]byte(fmt.Sprintf("error: no type")))
+			return
+		}
+
 		parsed, err := cid.Parse(keys[0])
 		if err != nil {
 			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte(fmt.Sprintf("error: %w", err)))
 			return
 		}
+
+		transformed, err := statediff.Transform(r.Context(), parsed, store, as[0])
+		if err != nil {
+			w.Header().Set("Content-Type", "text/plain")
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
+			return
+		}
+		transformedBytes, err := json.Marshal(transformed)
+		if err != nil {
+			w.Header().Set("Content-Type", "text/plain")
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
+			return
+		}
 		w.Header().Set("Content-Type", "application/json")
-		_, _ = store.Get(parsed)
+		io.WriteString(w, string(transformedBytes))
 	}
 
 	headResolver := func(w http.ResponseWriter, r *http.Request) {
@@ -81,7 +109,7 @@ func runExploreCmd(c *cli.Context) error {
 		mux.Handle("/", http.FileServer(AssetFile()))
 	}
 
-	lis, err := net.Listen("tcp", ":0")
+	lis, err := net.Listen("tcp", c.String(bindFlag.Name))
 	if err != nil {
 		return err
 	}
