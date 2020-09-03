@@ -4,7 +4,8 @@ import (
 	"io"
 	"os"
 
-	abi "github.com/filecoin-project/specs-actors/actors/abi"
+	abi "github.com/filecoin-project/go-state-types/abi"
+	aabi "github.com/filecoin-project/specs-actors/actors/abi"
 	"github.com/ipfs/go-cid"
 )
 
@@ -65,15 +66,15 @@ func NewSortedPrivateSectorInfo(...PrivateSectorInfo) SortedPrivateSectorInfo {
 	return SortedPrivateSectorInfo{}
 }
 
-func VerifySeal(abi.SealVerifyInfo) (bool, error) {
+func VerifySeal(aabi.SealVerifyInfo) (bool, error) {
 	return true, nil
 }
 
-func VerifyWinningPoSt(abi.WinningPoStVerifyInfo) (bool, error) {
+func VerifyWinningPoSt(aabi.WinningPoStVerifyInfo) (bool, error) {
 	return true, nil
 }
 
-func VerifyWindowPoSt(abi.WindowPoStVerifyInfo) (bool, error) {
+func VerifyWindowPoSt(aabi.WindowPoStVerifyInfo) (bool, error) {
 	return true, nil
 }
 
