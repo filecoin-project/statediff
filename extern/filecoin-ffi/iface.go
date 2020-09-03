@@ -45,11 +45,11 @@ func ClearCache(uint64, string) error {
 	return nil
 }
 
-func GenerateWinningPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]abi.PoStProof, error) {
+func GenerateWinningPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]aabi.PoStProof, error) {
 	return nil, nil
 }
 
-func GenerateWindowPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]abi.PoStProof, error) {
+func GenerateWindowPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]aabi.PoStProof, error) {
 	return nil, nil
 }
 
@@ -59,7 +59,7 @@ type PrivateSectorInfo struct {
 	CacheDirPath string
 	PoStProofType abi.RegisteredPoStProof
 	SealedSectorPath string
-	SectorInfo abi.SectorInfo
+	SectorInfo aabi.SectorInfo
 }
 
 func NewSortedPrivateSectorInfo(...PrivateSectorInfo) SortedPrivateSectorInfo {
