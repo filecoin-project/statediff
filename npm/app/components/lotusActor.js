@@ -27,6 +27,10 @@ class lotusActor {
         if (type != undefined) {
             state.Type = type;
         }
+        let hint = this.element.getAttribute('data-id');
+        if (hint != undefined && hint != null) {
+            state.Address = hint;
+        }
 
         this.Render(state);
     }
@@ -34,23 +38,6 @@ class lotusActor {
 
     Render(data) {
         this.element.innerHTML = '<pre>' + jsonPrinter.Stringify(data, data.Type || "") + '</pre>';
-        /*
-        let hint = this.element.getAttribute('data-id');
-        if (hint) {
-            hint = ' @' + hint;
-        } else {
-            hint = '';
-        }
-        if (type == undefined) {
-            renderer.FillTextSlot(this.element, 'type', data.Code["/"] + hint);
-        } else {
-            renderer.FillTextSlot(this.element, 'type', type + hint);
-        }
-        renderer.FillHTMLSlot(this.element, 'head', `<json-cid data-path="${type}">${data.Head["/"]}</json-cid>`);
-
-        renderer.FillTextSlot(this.element, 'nonce', data.Nonce);
-        renderer.FillTextSlot(this.element, 'balance', data.Balance);
-        */
     }
 
     Close() {
