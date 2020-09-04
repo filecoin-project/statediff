@@ -46,7 +46,18 @@ function Register(cls) {
     let templEl = document.createElement('template');
     templEl.innerHTML = template;
 
-    customElements.define('filecoin-' + cls.name.toLowerCase(),
+    let name = cls.Name || cls.name.toLowerCase();
+    if (name.indexOf('-') == -1) {
+        name = 'filecoin-' + name;
+    }
+
+    if (cls.prototype instanceof HTMLElement) {
+        cls.Template = templEl;
+        customElements.define(name, cls);
+        return;
+    }
+
+    customElements.define(name,
         class extends HTMLElement {
             constructor() {
                 super();
