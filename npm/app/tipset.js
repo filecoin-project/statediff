@@ -39,7 +39,7 @@ class tipset {
         renderer.FillSlot(this.element, 'stateroot', expander, data.ParentStateRoot["/"], stateroot);
 
         // todo: other parents?
-        renderer.FillSlot(this.element, 'parents', expander, data.Parents[0]["/"], "tipset")
+        renderer.FillSlot(this.element, 'parents', expander, data.Parents[0]["/"], tipset);
     }
 
     Close() {
@@ -51,8 +51,8 @@ tipset.Template = `
 <div style='display:inline-block;'>
 Mined by <slot name='miner'></slot> at height <slot name='height'></slot> at <slot name='date'></slot><br />
 Base fee: <slot name='basefee'></slot><br />
-State Root: <slot name='stateroot' /><br />
-Parents: <slot name='parents' />
+State Root: <slot name='stateroot'></slot><br />
+Parents: <slot name='parents'></slot>
 </div>
 `;
 

@@ -2,6 +2,7 @@
 
 const renderer = require('../renderer');
 const jsonPrinter = require('./jsonPrinter');
+const cids = require('cids/src/index');
 
 class jsonCid extends HTMLElement {
     constructor() {
@@ -11,13 +12,19 @@ class jsonCid extends HTMLElement {
 
         this.path = this.getAttribute("data-path");
         this.cid = this.innerHTML;
+        let c = new cids(this.cid);
 
         this.open = false;
  
         this.button = this.shadowRoot.children[0].children[0];
         this.deferred = this.shadowRoot.children[0].children[2];
-        this.toggle = this.toggle.bind(this);
-        this.button.addEventListener('click', this.toggle, false);
+        if (c.codec == "raw") {
+            this.button.style.display = 'none';
+            this.innerHTML = 'raw:' + new TextDecoder("utf-8").decode(c.bytes);
+        } else {
+            this.toggle = this.toggle.bind(this);
+            this.button.addEventListener('click', this.toggle, false);    
+        }
     }
 
     Render() {
