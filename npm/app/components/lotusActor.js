@@ -15,6 +15,8 @@ const codeMap = {
     "bafkqaetgnfwc6mjpon2g64tbm5sxa33xmvza": "storagePowerActor",
     "bafkqae3gnfwc6mjpon2g64tbm5sw2ylsnnsxi": "storageMarketActor",
     "bafkqaftgnfwc6mjpozsxe2lgnfswi4tfm5uxg5dspe": "verifiedRegistryActor",
+    "bafkqadlgnfwc6mjpmfrwg33vnz2a": "accountActor",
+    "bafkqadtgnfwc6mjpnv2wy5djonuwo": undefined,
     "bafkqafdgnfwc6mjpobqxs3lfnz2gg2dbnzxgk3a": undefined,
 }
 class lotusActor {
@@ -26,11 +28,15 @@ class lotusActor {
 
     Render(data) {
         let type = codeMap[data.Code["/"]];
-        if (type == undefined) {
-            renderer.FillTextSlot(this.element, 'type', data.Code["/"]);
-            renderer.FillSlot(this.element, 'head', expander, data.Head["/"], genericBlock);
+        let hint = this.element.getAttribute('data-id');
+        if (hint) {
+            hint = ' @' + hint;
         }
-        renderer.FillTextSlot(this.element, 'type', type);
+        if (type == undefined) {
+            renderer.FillTextSlot(this.element, 'type', data.Code["/"] + hint);
+        } else {
+            renderer.FillTextSlot(this.element, 'type', type + hint);
+        }
         renderer.FillHTMLSlot(this.element, 'head', `<json-cid data-path="${type}">${data.Head["/"]}</json-cid>`);
 
         renderer.FillTextSlot(this.element, 'nonce', data.Nonce);
@@ -44,7 +50,7 @@ class lotusActor {
 
 lotusActor.Template = `
 <div style='display:inline-block;'>
-<slot name='type'></slot> Nonce <slot name='nonce' class='json-number'></slot> Balance <slot name='balance'></slot><br />
+<slot name='type'></slot> {<span style='color:brown'>Nonce</span>: <slot name='nonce'></slot>, <span style='color:brown;'>Balance</span>: <slot name='balance'></slot>}<br />
 <slot name='head'></slot>
 </div>
 `;

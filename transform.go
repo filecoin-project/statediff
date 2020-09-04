@@ -18,6 +18,7 @@ import (
 	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 	accountActor "github.com/filecoin-project/specs-actors/actors/builtin/account"
 	cronActor "github.com/filecoin-project/specs-actors/actors/builtin/cron"
+	paychActor "github.com/filecoin-project/specs-actors/actors/builtin/paych"
 	initActor "github.com/filecoin-project/specs-actors/actors/builtin/init"
 	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
 	storageMinerActor "github.com/filecoin-project/specs-actors/actors/builtin/miner"
@@ -49,6 +50,7 @@ const (
 	VerifiedRegistryActorState LotusType = "verifiedRegistryActor"
 	VerifiedRegistryActorVerifiers LotusType = "verifiedRegistryActor.Verifiers"
 	VerifiedRegistryActorVerifiedClients LotusType = "verifiedRegistryActor.VerifiedClients"
+	PaymentChannelActorState LotusType = "paymentChannelActor"
 )
 
 // Transform will unmarshal cbor data based on a provided type hint.
@@ -123,6 +125,10 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		return dest, err
 	case VerifiedRegistryActorState:
 		dest := verifiedRegistryActor.State{}
+		err := cbor.DecodeInto(data, &dest)
+		return dest, err
+	case PaymentChannelActorState:
+		dest := paychActor.State{}
 		err := cbor.DecodeInto(data, &dest)
 		return dest, err
 	default:

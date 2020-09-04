@@ -38,9 +38,8 @@ class tipset {
         renderer.FillTextSlot(this.element, 'basefee', data.ParentBaseFee);
         renderer.FillSlot(this.element, 'stateroot', expander, data.ParentStateRoot["/"], stateroot);
 
-        /*
-       tmpl += expand(data.Parents[i]["/"], "tipset");
-        */
+        // todo: other parents?
+        renderer.FillSlot(this.element, 'parents', expander, data.Parents[0]["/"], "tipset")
     }
 
     Close() {

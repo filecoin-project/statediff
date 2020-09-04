@@ -24,7 +24,7 @@ class jsonPrinter {
     indent(str) {
         return str.split('\n').map((l) => {return '  ' + l}).join('\n');
     }
-    stringify(obj, path) {
+    stringify(obj, path, full) {
         if (typeof obj == "string") {
             obj = obj.replace(/&/g,   '&amp;')
             .replace(/\\"/g, '&bsol;&quot;')
@@ -51,6 +51,10 @@ class jsonPrinter {
                         str += ",\n";
                     }
                     str += this.indent(this.stringify(obj[i], path + "[" + i + "]"));
+                    if (i > 100 && !full) {
+                        str += this.indent(` ... and ${obj.length - i} more`);
+                        break;
+                    }
                 }
                 str += "\n]";
             } else if (Object.keys(obj).length == 1 && typeof obj["/"] == "string") {
@@ -66,6 +70,10 @@ class jsonPrinter {
                     }
                     str += this.indent(`"<span class=json-key>${keys[i]}</span>" : ` +
                         this.stringify(obj[keys[i]], path + "." + keys[i]))
+                    if (i > 100 && !full) {
+                        str += this.indent(` ... and ${keys.length - i} more`);
+                        break;
+                    }    
                 }
                 str += "\n}";
             }
