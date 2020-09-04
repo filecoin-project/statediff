@@ -21,6 +21,7 @@ import (
 	paychActor "github.com/filecoin-project/specs-actors/actors/builtin/paych"
 	initActor "github.com/filecoin-project/specs-actors/actors/builtin/init"
 	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
+	multisigActor "github.com/filecoin-project/specs-actors/actors/builtin/multisig"
 	storageMinerActor "github.com/filecoin-project/specs-actors/actors/builtin/miner"
 	storagePowerActor "github.com/filecoin-project/specs-actors/actors/builtin/power"
 	rewardActor "github.com/filecoin-project/specs-actors/actors/builtin/reward"
@@ -42,6 +43,8 @@ const (
 	MarketActorEscrowTable LotusType = "storageMarketActor.EscrowTable"
 	MarketActorLockedTable LotusType = "storageMarketActor.LockedTable"
 	MarketActorDealOpsByEpoch LotusType = "storageMarketActor.DealOpsByEpoch"
+	MultisigActorState LotusType = "multisigActor"
+	MultisigActorPending LotusType = "multisigActor.PendingTxns"
 	StorageMinerActorState LotusType = "storageMinerActor"
 	StoragePowerActorState LotusType = "storagePowerActor"
 	StoragePowerActorCronEventQueue LotusType = "storagePowerCronEventQueue"
@@ -75,6 +78,8 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		fallthrough
 	case MarketActorLockedTable:
 		return transformMarketBalanceTable(ctx, c, store)
+	case MultisigActorPending:
+		return transformMultisigPending(ctx, c, store)
 	// TODO: MarketActorDealOpsByEpoch (multimap)
 	case VerifiedRegistryActorVerifiers:
 		fallthrough
@@ -109,6 +114,10 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		return dest, err
 	case MarketActorState:
 		dest := marketActor.State{}
+		err := cbor.DecodeInto(data, &dest)
+		return dest, err
+	case MultisigActorState:
+		dest := multisigActor.State{}
 		err := cbor.DecodeInto(data, &dest)
 		return dest, err
 	case StorageMinerActorState:
@@ -327,6 +336,26 @@ func transformMarketBalanceTable(ctx context.Context, c cid.Cid, store blockstor
 	if err := table.ForEach(&value, func(k string) error {
 		a, _ := addr.NewFromBytes([]byte(k))
 		m[a.String()] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformMultisigPending(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	table, err := adt.AsMap(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+
+	m := make(map[int64]multisigActor.Transaction)
+	var value multisigActor.Transaction
+	var key cbg.CborInt
+	if err := table.ForEach(&value, func(k string) error {
+		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
+		m[int64(key)] = value
 		return nil
 	}); err != nil {
 		return nil, err

@@ -16,18 +16,25 @@ const codeMap = {
     "bafkqae3gnfwc6mjpon2g64tbm5sw2ylsnnsxi": "storageMarketActor",
     "bafkqaftgnfwc6mjpozsxe2lgnfswi4tfm5uxg5dspe": "verifiedRegistryActor",
     "bafkqadlgnfwc6mjpmfrwg33vnz2a": "accountActor",
-    "bafkqadtgnfwc6mjpnv2wy5djonuwo": undefined,
-    "bafkqafdgnfwc6mjpobqxs3lfnz2gg2dbnzxgk3a": undefined,
+    "bafkqadtgnfwc6mjpnv2wy5djonuwo": "multisigActor",
+    "bafkqafdgnfwc6mjpobqxs3lfnz2gg2dbnzxgk3a": "paymentChannelActor",
+    "bafkqaetgnfwc6mjpon2g64tbm5sw22lomvza": "storageMinerActor",
 }
 class lotusActor {
     constructor(element, state) {
         this.element = element;
+        let type = codeMap[state.Code["/"]];
+        if (type != undefined) {
+            state.Type = type;
+        }
+
         this.Render(state);
     }
 
 
     Render(data) {
-        let type = codeMap[data.Code["/"]];
+        this.element.innerHTML = '<pre>' + jsonPrinter.Stringify(data, data.Type || "") + '</pre>';
+        /*
         let hint = this.element.getAttribute('data-id');
         if (hint) {
             hint = ' @' + hint;
@@ -43,6 +50,7 @@ class lotusActor {
 
         renderer.FillTextSlot(this.element, 'nonce', data.Nonce);
         renderer.FillTextSlot(this.element, 'balance', data.Balance);
+        */
     }
 
     Close() {
@@ -50,11 +58,8 @@ class lotusActor {
     }
 }
 
-lotusActor.Template = `
-<div style='display:inline-block;'>
-<slot name='type'></slot> {<span style='color:brown'>Nonce</span>: <slot name='nonce'></slot>, <span style='color:brown;'>Balance</span>: <slot name='balance'></slot>}<br />
-<slot name='head'></slot>
-</div>
-`;
+lotusActor.Template = `<slot></slot>`;
+
+lotusActor.Codes = codeMap;
 
 module.exports = lotusActor;

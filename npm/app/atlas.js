@@ -8,6 +8,7 @@ const atlas = {
 
 // Returns type hints for interpretation of CIDs / hamts
 function Get(path) {
+    path = path.replace(".Head", "");
     if (path.endsWith('Actor')) {
         return path;
     }

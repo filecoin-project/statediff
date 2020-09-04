@@ -9,8 +9,10 @@ class jsonPrinter {
         this.element = element;
         this.at = at;
 
-        let as = atlas.Get(at);
-        store(cid, as).then((r) => this.Render(r));
+        if (cid != undefined) {
+            let as = atlas.Get(at);
+            store(cid, as).then((r) => this.Render(r));
+        }
     }
 
     Render(data) {
@@ -92,5 +94,8 @@ jsonPrinter.Template = `
 <slot name='data'/></slot>
 </div>
 `;
+
+let proto = (new jsonPrinter());
+jsonPrinter.Stringify = proto.stringify.bind(proto);
 
 module.exports = jsonPrinter;

@@ -18,10 +18,13 @@ const ActorAddrs = {
 class stateroot {
     constructor(element, cid) {
         this.element = element;
+        this.pn = 0;
 
         element.innerHTML = "Loading: " + cid;
         let search = this.element.shadowRoot.children[0].querySelector('input');
-        search.addEventListener('keyup', this.onSearch.bind(this))
+        search.addEventListener('keyup', this.onSearch.bind(this));
+        let next = this.element.shadowRoot.children[0].querySelector('.next');
+        next.addEventListener('click', this.onClickNextButton.bind(this));
         store(cid, "stateRoot").then((r) => this.onStateroot(r));
     }
 
@@ -41,6 +44,11 @@ class stateroot {
         }
     }
 
+    onClickNextButton() {
+        this.pn++;
+        this.Render()
+    }
+
     Render() {
         let data = this.data;
         renderer.FillTextSlot(this.element, 'count', Object.keys(data).length);
@@ -51,39 +59,54 @@ class stateroot {
         if (!this.filter) {
             actors = Object.keys(data).filter((k) => {
                 return !Object.values(ActorAddrs).includes(k);
-            }).slice(0, 10);
+            });
         } else {
+            let matchedCode = "";
+            Object.keys(lotusActor.Codes).forEach((k) => {
+                if (lotusActor.Codes[k].indexOf(this.filter) > -1) {
+                    matchedCode = k;
+                }
+            });
             Object.keys(data).forEach((k) => {
-                if (k == this.filter) {
+                if (k == this.filter ||
+                    data[k].Code["/"] == this.filter ||
+                    data[k].Code["/"] == matchedCode ||
+                    data[k].Head["/"] == this.filter) {
                     actors.push(k);
                     return
                 }
             })
         }
+
+        let shownActors = actors.slice(this.pn * 10, (this.pn + 1) * 10);
+
         let results = this.element.querySelector('[slot="results"]');
         if (!results) {
             results = document.createElement("ul");
             results.slot = 'results';
             this.element.appendChild(results);
         }
-        for(let i = 0; i < actors.length; i++) {
-            if (!results.querySelector(`[data-id="${actors[i]}"]`)) {
+        for(let i = 0; i < shownActors.length; i++) {
+            if (!results.querySelector(`[data-id="${shownActors[i]}"]`)) {
                 let newActor = document.createElement('filecoin-' + lotusActor.name.toLowerCase());
                 newActor.style.display = 'list-item';
                 newActor.style.verticalAlign = 'top';
-                newActor.setAttribute('data-id', actors[i]);
-                new lotusActor(newActor, data[actors[i]]);
+                newActor.setAttribute('data-id', shownActors[i]);
+                new lotusActor(newActor, data[shownActors[i]]);
                 results.appendChild(newActor);
             }
         }
         
         for (let i = 0; i < results.children.length; i++) {
             let ci = results.children[i].getAttribute("data-id");
-            if (!actors.includes(ci)) {
+            if (!shownActors.includes(ci)) {
                 results.removeChild(results.children[i]);
                 i--;
             }
         }
+
+        this.element.shadowRoot.querySelector('.pn').innerHTML = (this.pn + 1);
+        this.element.shadowRoot.querySelector('.pt').innerHTML = Math.ceil(actors.length / 10);
     }
 
     Close() {
@@ -103,7 +126,7 @@ System Actors:<br />
 <slot name='VerifiedRegistry'></slot><br />
 <slot name='BurntFunds'></slot><br />
 (<slot name='count'></slot> total)<br />
-<input type='search' /><br />
+<input type='search' />(page <span class='pn'></span> of <span class='pt'></span>)<button class='next'>Next</button><br />
 <slot name='results'></slot><br />
 </div>
 `;
