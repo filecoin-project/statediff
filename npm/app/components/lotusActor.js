@@ -31,6 +31,8 @@ class lotusActor {
         let hint = this.element.getAttribute('data-id');
         if (hint) {
             hint = ' @' + hint;
+        } else {
+            hint = '';
         }
         if (type == undefined) {
             renderer.FillTextSlot(this.element, 'type', data.Code["/"] + hint);
