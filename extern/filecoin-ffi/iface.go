@@ -5,7 +5,7 @@ import (
 	"os"
 
 	abi "github.com/filecoin-project/go-state-types/abi"
-	aabi "github.com/filecoin-project/specs-actors/actors/abi"
+	"github.com/filecoin-project/specs-actors/actors/runtime/proof"
 	"github.com/ipfs/go-cid"
 )
 
@@ -45,36 +45,36 @@ func ClearCache(uint64, string) error {
 	return nil
 }
 
-func GenerateWinningPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]aabi.PoStProof, error) {
+func GenerateWinningPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]proof.PoStProof, error) {
 	return nil, nil
 }
 
-func GenerateWindowPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]aabi.PoStProof, error) {
+func GenerateWindowPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]proof.PoStProof, error) {
 	return nil, nil
 }
 
-type SortedPrivateSectorInfo struct {abi.SectorNumber}
+type SortedPrivateSectorInfo struct{ abi.SectorNumber }
 type PrivateSectorInfo struct {
 	abi.SectorNumber
-	CacheDirPath string
-	PoStProofType abi.RegisteredPoStProof
+	CacheDirPath     string
+	PoStProofType    abi.RegisteredPoStProof
 	SealedSectorPath string
-	SectorInfo aabi.SectorInfo
+	SectorInfo       proof.SectorInfo
 }
 
 func NewSortedPrivateSectorInfo(...PrivateSectorInfo) SortedPrivateSectorInfo {
 	return SortedPrivateSectorInfo{}
 }
 
-func VerifySeal(aabi.SealVerifyInfo) (bool, error) {
+func VerifySeal(proof.SealVerifyInfo) (bool, error) {
 	return true, nil
 }
 
-func VerifyWinningPoSt(aabi.WinningPoStVerifyInfo) (bool, error) {
+func VerifyWinningPoSt(proof.WinningPoStVerifyInfo) (bool, error) {
 	return true, nil
 }
 
-func VerifyWindowPoSt(aabi.WindowPoStVerifyInfo) (bool, error) {
+func VerifyWindowPoSt(proof.WindowPoStVerifyInfo) (bool, error) {
 	return true, nil
 }
 

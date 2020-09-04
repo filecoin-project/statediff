@@ -5,9 +5,9 @@ go 1.14
 require (
 	github.com/filecoin-project/go-address v0.0.3
 	github.com/filecoin-project/go-bitfield v0.2.0
-	github.com/filecoin-project/go-state-types v0.0.0-20200903145444-247639ffa6ad
+	github.com/filecoin-project/go-state-types v0.0.0-20200904021452-1883f36ca2f4
 	github.com/filecoin-project/lotus v0.4.3-0.20200820203717-d1718369a182
-	github.com/filecoin-project/specs-actors v0.9.3
+	github.com/filecoin-project/specs-actors v0.9.4
 	github.com/filecoin-project/test-vectors v0.0.0-20200819133914-e20cc29cc926 // indirect
 	github.com/ipfs/go-block-format v0.0.2
 	github.com/ipfs/go-cid v0.0.7
