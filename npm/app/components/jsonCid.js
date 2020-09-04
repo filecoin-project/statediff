@@ -54,7 +54,7 @@ jsonCid.Template = `
     <div style='display:inline-block;'>
     CID: <slot></slot>
     </div>
-    <div style='display:none; margin-left:2em;'>
+    <div style='display:none; margin-left:2em;max-height:100vh;overflow-y:scroll;'>
         <slot name='deferred'></slot>
     </div>
 </div>

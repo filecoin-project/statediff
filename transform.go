@@ -1,9 +1,11 @@
 package statediff
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 
+	abi  "github.com/filecoin-project/go-state-types/abi"
 	addr "github.com/filecoin-project/go-address"
 	cbor "github.com/ipfs/go-ipld-cbor"
 	cbg "github.com/whyrusleeping/cbor-gen"
@@ -13,6 +15,7 @@ import (
 
 	lotusTypes "github.com/filecoin-project/lotus/chain/types"
 
+	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 	accountActor "github.com/filecoin-project/specs-actors/actors/builtin/account"
 	cronActor "github.com/filecoin-project/specs-actors/actors/builtin/cron"
 	initActor "github.com/filecoin-project/specs-actors/actors/builtin/init"
@@ -31,11 +34,21 @@ const (
 	CronActorState LotusType = "cronActor"
 	InitActorState LotusType = "initActor"
 	InitActorAddresses LotusType = "initActorAddresses"
-	MarketActorState LotusType = "marketActor"
+	MarketActorState LotusType = "storageMarketActor"
+	MarketActorProposals LotusType = "storageMarketActor.Proposals"
+	MarketActorStates LotusType = "storageMarketActor.State"
+	MarketActorPendingProposals LotusType = "storageMarketActor.PendingProposals"
+	MarketActorEscrowTable LotusType = "storageMarketActor.EscrowTable"
+	MarketActorLockedTable LotusType = "storageMarketActor.LockedTable"
+	MarketActorDealOpsByEpoch LotusType = "storageMarketActor.DealOpsByEpoch"
 	StorageMinerActorState LotusType = "storageMinerActor"
 	StoragePowerActorState LotusType = "storagePowerActor"
+	StoragePowerActorCronEventQueue LotusType = "storagePowerCronEventQueue"
+	StoragePowerActorClaims LotusType = "storagePowerClaims"
 	RewardActorState LotusType = "rewardActor"
 	VerifiedRegistryActorState LotusType = "verifiedRegistryActor"
+	VerifiedRegistryActorVerifiers LotusType = "verifiedRegistryActor.Verifiers"
+	VerifiedRegistryActorVerifiedClients LotusType = "verifiedRegistryActor.VerifiedClients"
 )
 
 // Transform will unmarshal cbor data based on a provided type hint.
@@ -43,48 +56,28 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 	// First select types which do their own store loading.
 	switch LotusType(as) {
 	case LotusTypeStateroot:
-		cborStore := cbor.NewCborStore(store)
-		node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
-		if err != nil {
-			return nil, err
-		}
-		m := make(map[string]*lotusTypes.Actor)
-		node.ForEach(ctx, func(k string, val interface{}) error {
-			actor := lotusTypes.Actor{}
-			asDef, ok := val.(*cbg.Deferred)
-			if !ok {
-				return fmt.Errorf("unexpected non-cbg.Deferred")
-			}
-			err := cbor.DecodeInto(asDef.Raw, &actor)
-			if err != nil {
-				return err
-			}
-			m[fmt.Sprintf("%x",k)] = &actor
-			return nil
-		})
-		return m, nil
+		return transformStateRoot(ctx, c, store)
 	case InitActorAddresses:
-		cborStore := cbor.NewCborStore(store)
-		node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
-		if err != nil {
-			return nil, err
-		}
-		m := make(map[string]uint64)
-		var actorID cbg.CborInt
-		node.ForEach(ctx, func(k string, val interface{}) error {
-			asDef, ok := val.(*cbg.Deferred)
-			if !ok {
-				return fmt.Errorf("unexpected non-cbg.Deferred")
-			}
-			err := cbor.DecodeInto(asDef.Raw, &actorID)
-			if err != nil {
-				return err
-			}
-			a, _ := addr.NewFromBytes([]byte(k))
-			m[a.String()] = uint64(actorID)
-			return nil
-		})
-		return m, nil
+		return transformInitActor(ctx, c, store)
+	case StoragePowerActorCronEventQueue:
+		return transformPowerActorEventQueue(ctx, c, store)
+	case StoragePowerActorClaims:
+		return transformPowerActorClaims(ctx, c, store)
+	case MarketActorProposals:
+		return transformMarketProposals(ctx, c, store)
+	case MarketActorStates:
+		return transformMarketStates(ctx, c, store)
+	case MarketActorPendingProposals:
+		return transformMarketPendingProposals(ctx, c, store)
+	case MarketActorEscrowTable:
+		fallthrough
+	case MarketActorLockedTable:
+		return transformMarketBalanceTable(ctx, c, store)
+	// TODO: MarketActorDealOpsByEpoch (multimap)
+	case VerifiedRegistryActorVerifiers:
+		fallthrough
+	case VerifiedRegistryActorVerifiedClients:
+		return transformVerifiedRegistryDataCaps(ctx, c, store)
 	default:
 	}
 
@@ -137,4 +130,200 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		err := cbor.DecodeInto(data, &dest)
 		return dest, err
 	}
+}
+
+func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
+	if err != nil {
+		return nil, err
+	}
+	m := make(map[string]*lotusTypes.Actor)
+	node.ForEach(ctx, func(k string, val interface{}) error {
+		actor := lotusTypes.Actor{}
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+		err := cbor.DecodeInto(asDef.Raw, &actor)
+		if err != nil {
+			return err
+		}
+		m[fmt.Sprintf("%x",k)] = &actor
+		return nil
+	})
+	return m, nil
+}
+
+func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
+	if err != nil {
+		return nil, err
+	}
+	m := make(map[string]uint64)
+	var actorID cbg.CborInt
+	node.ForEach(ctx, func(k string, val interface{}) error {
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+		err := cbor.DecodeInto(asDef.Raw, &actorID)
+		if err != nil {
+			return err
+		}
+		a, _ := addr.NewFromBytes([]byte(k))
+		m[a.String()] = uint64(actorID)
+		return nil
+	})
+	return m, nil
+}
+
+func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	node, err := adt.AsMultimap(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+	m := make(map[uint64]map[int64]storagePowerActor.CronEvent)
+	var key cbg.CborInt
+	if err := node.ForAll(func(k string, val *adt.Array) error {
+		eval := storagePowerActor.CronEvent{}
+		items := make(map[int64]storagePowerActor.CronEvent)
+		if err := val.ForEach(&eval, func(i int64) error {
+			items[i] = eval
+			return nil
+		}); err != nil {
+			return err;
+		}
+		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
+		m[uint64(key)] = items
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformPowerActorClaims(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
+	if err != nil {
+		return nil, err
+	}
+	m := make(map[string]storagePowerActor.Claim)
+	var claim storagePowerActor.Claim
+	node.ForEach(ctx, func(k string, val interface{}) error {
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+		err := cbor.DecodeInto(asDef.Raw, &claim)
+		if err != nil {
+			return err
+		}
+		a, _ := addr.NewFromBytes([]byte(k))
+		m[a.String()] = claim
+		return nil
+	})
+	return m, nil
+}
+
+func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
+	if err != nil {
+		return nil, err
+	}
+	m := make(map[string]verifiedRegistryActor.DataCap)
+	var dataCap verifiedRegistryActor.DataCap
+	node.ForEach(ctx, func(k string, val interface{}) error {
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+		err := cbor.DecodeInto(asDef.Raw, &dataCap)
+		if err != nil {
+			return err
+		}
+		a, _ := addr.NewFromBytes([]byte(k))
+		m[a.String()] = dataCap
+		return nil
+	})
+	return m, nil
+}
+
+func transformMarketPendingProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	mapper, err := adt.AsMap(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+	
+	m := make(map[string]marketActor.DealProposal)
+	cidr := cid.Undef
+	value := marketActor.DealProposal{}
+	if err := mapper.ForEach(&value, func(c string) error {
+		cidr.UnmarshalBinary([]byte(c))
+		m[cidr.String()] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformMarketProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+	
+	m := make(map[int64]marketActor.DealProposal)
+	value := marketActor.DealProposal{}
+	if err := list.ForEach(&value, func(k int64) error {
+		m[k] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformMarketStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+	
+	m := make(map[int64]marketActor.DealState)
+	value := marketActor.DealState{}
+	if err := list.ForEach(&value, func(k int64) error {
+		m[k] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformMarketBalanceTable(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	table, err := adt.AsMap(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+
+	m := make(map[string]abi.TokenAmount)
+	var value abi.TokenAmount
+	if err := table.ForEach(&value, func(k string) error {
+		a, _ := addr.NewFromBytes([]byte(k))
+		m[a.String()] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
