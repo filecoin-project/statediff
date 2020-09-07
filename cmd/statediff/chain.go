@@ -10,7 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"github.com/filecoin-project/lotus/chain/types"
-	"github.com/filecoin-project/specs-actors/actors/abi"
+	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/statediff"
 )
 
