@@ -47,6 +47,9 @@ class jsonPrinter {
             // array.
             let str = "";
             if (obj.__proto__.constructor.name == "Array") {
+                if (obj.length == 0) {
+                    return '[]';
+                }
                 str += "[\n";
                 for (let i = 0; i < obj.length; i++) {
                     if (i > 0) {
@@ -62,6 +65,8 @@ class jsonPrinter {
             } else if (Object.keys(obj).length == 1 && typeof obj["/"] == "string") {
                 // cid special case.
                 str += `<json-cid data-path="${path}">${obj["/"]}</json-cid>`;
+            } else if (Object.keys(obj).length == 0) {
+                return '{}';
             } else {
                 // object.
                 str += "{\n";
