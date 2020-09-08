@@ -24,6 +24,7 @@ func main() {
 		Description: "State Inspector 🕵️‍♂️",
 		Commands: []*cli.Command{
 			vectorCmd,
+			carCmd,
 			chainCmd,
 			exploreCmd,
 		},
