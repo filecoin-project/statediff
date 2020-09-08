@@ -10,6 +10,7 @@ import (
 	cbor "github.com/ipfs/go-ipld-cbor"
 	cbg "github.com/whyrusleeping/cbor-gen"
 	"github.com/ipfs/go-cid"
+	"github.com/filecoin-project/go-bitfield"
 	hamt "github.com/ipfs/go-hamt-ipld"
 	"github.com/ipfs/go-ipfs-blockstore"
 
@@ -46,6 +47,13 @@ const (
 	MultisigActorState LotusType = "multisigActor"
 	MultisigActorPending LotusType = "multisigActor.PendingTxns"
 	StorageMinerActorState LotusType = "storageMinerActor"
+	StorageMinerActorInfo LotusType = "storageMinerActor.Info"
+	StorageMinerActorVestingFunds LotusType = "storageMinerActor.VestingFunds"
+	StorageMinerActorPreCommittedSectors LotusType = "storageMinerActor.PreCommittedSectors"
+	StorageMinerActorPreCommittedSectorsExpiry LotusType = "storageMinerActor.PreCommittedSectorsExpiry"
+	StorageMinerActorAllocatedSectors LotusType = "storageMinerActor.AllocatedSectors"
+	StorageMinerActorSectors LotusType = "storageMinerActor.Sectors"
+	StorageMinerActorDeadlines LotusType = "storageMinerActor.Deadlines"
 	StoragePowerActorState LotusType = "storagePowerActor"
 	StoragePowerActorCronEventQueue LotusType = "storagePowerCronEventQueue"
 	StoragePowerActorClaims LotusType = "storagePowerClaims"
@@ -64,6 +72,10 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		return transformStateRoot(ctx, c, store)
 	case InitActorAddresses:
 		return transformInitActor(ctx, c, store)
+	case StorageMinerActorPreCommittedSectors:
+		return transformMinerActorPreCommittedSectors(ctx, c, store)
+	case StorageMinerActorSectors:
+		return transformMinerActorSectors(ctx, c, store)
 	case StoragePowerActorCronEventQueue:
 		return transformPowerActorEventQueue(ctx, c, store)
 	case StoragePowerActorClaims:
@@ -122,6 +134,22 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		return dest, err
 	case StorageMinerActorState:
 		dest := storageMinerActor.State{}
+		err := cbor.DecodeInto(data, &dest)
+		return dest, err
+	case StorageMinerActorInfo:
+		dest := storageMinerActor.MinerInfo{}
+		err := cbor.DecodeInto(data, &dest)
+		return dest, err
+	case StorageMinerActorVestingFunds:
+		dest := storageMinerActor.VestingFunds{}
+		err := cbor.DecodeInto(data, &dest)
+		return dest, err
+	case StorageMinerActorAllocatedSectors:
+		dest := bitfield.BitField{}
+		err := cbor.DecodeInto(data, &dest)
+		return dest, err
+	case StorageMinerActorDeadlines:
+		dest := storageMinerActor.Deadlines{}
 		err := cbor.DecodeInto(data, &dest)
 		return dest, err
 	case StoragePowerActorState:
@@ -191,6 +219,44 @@ func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockst
 		m[a.String()] = uint64(actorID)
 		return nil
 	})
+	return m, nil
+}
+
+func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	table, err := adt.AsMap(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+
+	m := make(map[int64]storageMinerActor.SectorPreCommitOnChainInfo)
+	var value storageMinerActor.SectorPreCommitOnChainInfo
+	var key cbg.CborInt
+	if err := table.ForEach(&value, func(k string) error {
+		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
+		m[int64(key)] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+	
+	m := make(map[int64]storageMinerActor.SectorOnChainInfo)
+	value := storageMinerActor.SectorOnChainInfo{}
+	if err := list.ForEach(&value, func(k int64) error {
+		m[k] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
 	return m, nil
 }
 

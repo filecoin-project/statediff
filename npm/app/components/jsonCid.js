@@ -21,6 +21,9 @@ class jsonCid extends HTMLElement {
         if (c.codec == "raw") {
             this.button.style.display = 'none';
             this.innerHTML = 'raw:' + new TextDecoder("utf-8").decode(c.bytes);
+        } else if (c.codec == "fil-commitment-sealed") {
+            this.button.style.display = 'none';
+            this.innerHTML = 'Sealed Commitment:' + c.toString();
         } else {
             this.toggle = this.toggle.bind(this);
             this.button.addEventListener('click', this.toggle, false);    
