@@ -14,8 +14,6 @@ import (
 
 var carFlags struct {
 	file string
-	preCid string
-	postCid string
 }
 
 var carCmd = &cli.Command{
@@ -27,18 +25,6 @@ var carCmd = &cli.Command{
 			Name:        "file",
 			Usage:       "car store of cids",
 			Destination: &carFlags.file,
-			Required: true,
-		},
-		&cli.StringFlag{
-			Name:        "preCid",
-			Usage:       "initial state root",
-			Destination: &carFlags.preCid,
-			Required: true,
-		},
-		&cli.StringFlag{
-			Name:        "postCid",
-			Usage:       "final state root",
-			Destination: &carFlags.postCid,
 			Required: true,
 		},
 		&expandActorsFlag,
@@ -57,11 +43,14 @@ func runCarCmd(c *cli.Context) error {
 		return err
 	}
 
-	preCid, err := cid.Parse(carFlags.preCid)
+	if c.Args().Len() != 2 {
+		return fmt.Errorf("Usage: statediff car --file <file> <pre CID> <post CID>")
+	}
+	preCid, err := cid.Parse(c.Args().Get(0))
 	if err != nil {
 		return err
 	}
-	postCid, err := cid.Parse(carFlags.postCid)
+	postCid, err := cid.Parse(c.Args().Get(1))
 	if err != nil {
 		return err
 	}
