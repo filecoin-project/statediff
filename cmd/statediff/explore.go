@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"path"
 
-	"github.com/urfave/cli/v2"
-	"github.com/ipfs/go-cid"
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/build"
+	"github.com/ipfs/go-cid"
+	"github.com/urfave/cli/v2"
 )
 
 var assetsFlag = cli.StringFlag{
@@ -21,7 +21,7 @@ var assetsFlag = cli.StringFlag{
 }
 
 var bindFlag = cli.StringFlag{
-	Name: "bind",
+	Name:  "bind",
 	Usage: "Bind to a specific local host:port. Specified as [address]:port",
 	Value: ":0",
 }
@@ -93,7 +93,6 @@ func runExploreCmd(c *cli.Context) error {
 		}
 	}
 
-
 	mux := http.NewServeMux()
 	mux.HandleFunc("/cid", cidResolver)
 	mux.HandleFunc("/head", headResolver)
@@ -104,7 +103,7 @@ func runExploreCmd(c *cli.Context) error {
 			io.WriteString(w, data)
 		}
 		mux.HandleFunc("/app.js", scriptResolver)
-		mux.Handle("/", http.FileServer(http.Dir(path.Join(c.String(assetsFlag.Name),"cmd","statediff","static"))))
+		mux.Handle("/", http.FileServer(http.Dir(path.Join(c.String(assetsFlag.Name), "cmd", "statediff", "static"))))
 	} else {
 		mux.Handle("/", http.FileServer(AssetFile()))
 	}

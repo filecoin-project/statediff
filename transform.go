@@ -5,63 +5,64 @@ import (
 	"context"
 	"fmt"
 
-	abi  "github.com/filecoin-project/go-state-types/abi"
 	addr "github.com/filecoin-project/go-address"
-	cbor "github.com/ipfs/go-ipld-cbor"
-	cbg "github.com/whyrusleeping/cbor-gen"
-	"github.com/ipfs/go-cid"
 	"github.com/filecoin-project/go-bitfield"
+	abi "github.com/filecoin-project/go-state-types/abi"
+	"github.com/ipfs/go-cid"
 	hamt "github.com/ipfs/go-hamt-ipld"
 	"github.com/ipfs/go-ipfs-blockstore"
+	cbor "github.com/ipfs/go-ipld-cbor"
+	cbg "github.com/whyrusleeping/cbor-gen"
 
 	lotusTypes "github.com/filecoin-project/lotus/chain/types"
 
-	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 	accountActor "github.com/filecoin-project/specs-actors/actors/builtin/account"
 	cronActor "github.com/filecoin-project/specs-actors/actors/builtin/cron"
-	paychActor "github.com/filecoin-project/specs-actors/actors/builtin/paych"
 	initActor "github.com/filecoin-project/specs-actors/actors/builtin/init"
 	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
-	multisigActor "github.com/filecoin-project/specs-actors/actors/builtin/multisig"
 	storageMinerActor "github.com/filecoin-project/specs-actors/actors/builtin/miner"
+	multisigActor "github.com/filecoin-project/specs-actors/actors/builtin/multisig"
+	paychActor "github.com/filecoin-project/specs-actors/actors/builtin/paych"
 	storagePowerActor "github.com/filecoin-project/specs-actors/actors/builtin/power"
 	rewardActor "github.com/filecoin-project/specs-actors/actors/builtin/reward"
 	verifiedRegistryActor "github.com/filecoin-project/specs-actors/actors/builtin/verifreg"
+	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 )
 
 type LotusType string
+
 const (
-	LotusTypeTipset LotusType = "tipset"
-	LotusTypeStateroot LotusType = "stateRoot"
-	AccountActorState LotusType = "accountActor"
-	CronActorState LotusType = "cronActor"
-	InitActorState LotusType = "initActor"
-	InitActorAddresses LotusType = "initActorAddresses"
-	MarketActorState LotusType = "storageMarketActor"
-	MarketActorProposals LotusType = "storageMarketActor.Proposals"
-	MarketActorStates LotusType = "storageMarketActor.State"
-	MarketActorPendingProposals LotusType = "storageMarketActor.PendingProposals"
-	MarketActorEscrowTable LotusType = "storageMarketActor.EscrowTable"
-	MarketActorLockedTable LotusType = "storageMarketActor.LockedTable"
-	MarketActorDealOpsByEpoch LotusType = "storageMarketActor.DealOpsByEpoch"
-	MultisigActorState LotusType = "multisigActor"
-	MultisigActorPending LotusType = "multisigActor.PendingTxns"
-	StorageMinerActorState LotusType = "storageMinerActor"
-	StorageMinerActorInfo LotusType = "storageMinerActor.Info"
-	StorageMinerActorVestingFunds LotusType = "storageMinerActor.VestingFunds"
-	StorageMinerActorPreCommittedSectors LotusType = "storageMinerActor.PreCommittedSectors"
+	LotusTypeTipset                            LotusType = "tipset"
+	LotusTypeStateroot                         LotusType = "stateRoot"
+	AccountActorState                          LotusType = "accountActor"
+	CronActorState                             LotusType = "cronActor"
+	InitActorState                             LotusType = "initActor"
+	InitActorAddresses                         LotusType = "initActorAddresses"
+	MarketActorState                           LotusType = "storageMarketActor"
+	MarketActorProposals                       LotusType = "storageMarketActor.Proposals"
+	MarketActorStates                          LotusType = "storageMarketActor.State"
+	MarketActorPendingProposals                LotusType = "storageMarketActor.PendingProposals"
+	MarketActorEscrowTable                     LotusType = "storageMarketActor.EscrowTable"
+	MarketActorLockedTable                     LotusType = "storageMarketActor.LockedTable"
+	MarketActorDealOpsByEpoch                  LotusType = "storageMarketActor.DealOpsByEpoch"
+	MultisigActorState                         LotusType = "multisigActor"
+	MultisigActorPending                       LotusType = "multisigActor.PendingTxns"
+	StorageMinerActorState                     LotusType = "storageMinerActor"
+	StorageMinerActorInfo                      LotusType = "storageMinerActor.Info"
+	StorageMinerActorVestingFunds              LotusType = "storageMinerActor.VestingFunds"
+	StorageMinerActorPreCommittedSectors       LotusType = "storageMinerActor.PreCommittedSectors"
 	StorageMinerActorPreCommittedSectorsExpiry LotusType = "storageMinerActor.PreCommittedSectorsExpiry"
-	StorageMinerActorAllocatedSectors LotusType = "storageMinerActor.AllocatedSectors"
-	StorageMinerActorSectors LotusType = "storageMinerActor.Sectors"
-	StorageMinerActorDeadlines LotusType = "storageMinerActor.Deadlines"
-	StoragePowerActorState LotusType = "storagePowerActor"
-	StoragePowerActorCronEventQueue LotusType = "storagePowerCronEventQueue"
-	StoragePowerActorClaims LotusType = "storagePowerClaims"
-	RewardActorState LotusType = "rewardActor"
-	VerifiedRegistryActorState LotusType = "verifiedRegistryActor"
-	VerifiedRegistryActorVerifiers LotusType = "verifiedRegistryActor.Verifiers"
-	VerifiedRegistryActorVerifiedClients LotusType = "verifiedRegistryActor.VerifiedClients"
-	PaymentChannelActorState LotusType = "paymentChannelActor"
+	StorageMinerActorAllocatedSectors          LotusType = "storageMinerActor.AllocatedSectors"
+	StorageMinerActorSectors                   LotusType = "storageMinerActor.Sectors"
+	StorageMinerActorDeadlines                 LotusType = "storageMinerActor.Deadlines"
+	StoragePowerActorState                     LotusType = "storagePowerActor"
+	StoragePowerActorCronEventQueue            LotusType = "storagePowerCronEventQueue"
+	StoragePowerActorClaims                    LotusType = "storagePowerClaims"
+	RewardActorState                           LotusType = "rewardActor"
+	VerifiedRegistryActorState                 LotusType = "verifiedRegistryActor"
+	VerifiedRegistryActorVerifiers             LotusType = "verifiedRegistryActor.Verifiers"
+	VerifiedRegistryActorVerifiedClients       LotusType = "verifiedRegistryActor.VerifiedClients"
+	PaymentChannelActorState                   LotusType = "paymentChannelActor"
 )
 
 // Transform will unmarshal cbor data based on a provided type hint.
@@ -192,7 +193,7 @@ func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockst
 		if err != nil {
 			return err
 		}
-		m[fmt.Sprintf("%x",k)] = &actor
+		m[fmt.Sprintf("%x", k)] = &actor
 		return nil
 	})
 	return m, nil
@@ -248,7 +249,7 @@ func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore
 	if err != nil {
 		return nil, err
 	}
-	
+
 	m := make(map[int64]storageMinerActor.SectorOnChainInfo)
 	value := storageMinerActor.SectorOnChainInfo{}
 	if err := list.ForEach(&value, func(k int64) error {
@@ -275,7 +276,7 @@ func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockst
 			items[i] = eval
 			return nil
 		}); err != nil {
-			return err;
+			return err
 		}
 		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
 		m[uint64(key)] = items
@@ -340,7 +341,7 @@ func transformMarketPendingProposals(ctx context.Context, c cid.Cid, store block
 	if err != nil {
 		return nil, err
 	}
-	
+
 	m := make(map[string]marketActor.DealProposal)
 	cidr := cid.Undef
 	value := marketActor.DealProposal{}
@@ -360,7 +361,7 @@ func transformMarketProposals(ctx context.Context, c cid.Cid, store blockstore.B
 	if err != nil {
 		return nil, err
 	}
-	
+
 	m := make(map[int64]marketActor.DealProposal)
 	value := marketActor.DealProposal{}
 	if err := list.ForEach(&value, func(k int64) error {
@@ -378,7 +379,7 @@ func transformMarketStates(ctx context.Context, c cid.Cid, store blockstore.Bloc
 	if err != nil {
 		return nil, err
 	}
-	
+
 	m := make(map[int64]marketActor.DealState)
 	value := marketActor.DealState{}
 	if err := list.ForEach(&value, func(k int64) error {
