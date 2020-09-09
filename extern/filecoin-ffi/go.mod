@@ -1,4 +1,4 @@
-module github.com/filecoin-project/filecoin-ffi
+module github.com/filecoin-project/statediff/extern/filecoin-ffi
 
 go 1.14
 

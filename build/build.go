@@ -10,10 +10,10 @@ import (
 func Compile(rootPath string) string {
 	res := api.Build(api.BuildOptions{
 		EntryPoints: []string{path.Join(rootPath, "index.js")},
-		Outfile: "app.js",
-		Bundle: true,
-		Write: false,
-		LogLevel: api.LogLevelInfo,
+		Outfile:     "app.js",
+		Bundle:      true,
+		Write:       false,
+		LogLevel:    api.LogLevelInfo,
 	})
 	if len(res.Errors) > 0 {
 		return ""
