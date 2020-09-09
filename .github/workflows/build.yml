@@ -19,6 +19,11 @@ jobs:
         go-version: ^1.14
       id: go
 
+    - name: Set up Node
+      uses: actions/setup-node@v2-beta
+      with:
+        node-version: '12'
+
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
@@ -31,7 +36,10 @@ jobs:
         fi
 
     - name: Build
-      run: go build -v .
+      run: |
+        go build -v ./cmd/statediff
+        go generate ./...
+        go build -v ./cmd/stateexplorer
 
     - name: Test
       run: go test -v .
