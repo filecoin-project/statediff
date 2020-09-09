@@ -81,6 +81,9 @@ class jsonPrinter {
             } else if (Object.keys(obj).length == 1 && typeof obj["/"] == "string") {
                 // cid special case.
                 str += `<json-cid data-path="${path}">${obj["/"]}</json-cid>`;
+            } else if (Object.keys(obj).length == 2 && obj["_type"] == "bitfield") {
+                // bitfield special case
+                str += `<json-bitfield>${obj["bytes"]}</json-bitfield>`;
             } else if (Object.keys(obj).length == 0) {
                 return '{}';
             } else {

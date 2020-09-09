@@ -17,7 +17,7 @@ import (
 
 var assetsFlag = cli.StringFlag{
 	Name:  "assets",
-	Usage: "Loads assets from disk at provided root (looking in '$assets/npm/app' and '$assets/cmd/statediff/static'), rather than in-binary generated bundle",
+	Usage: "Loads assets from disk at provided root (looking in '$assets/npm/app' and '$assets/cmd/stateexplorer/static'), rather than in-binary generated bundle",
 	Value: ".",
 }
 
@@ -104,7 +104,7 @@ func runExploreCmd(c *cli.Context) error {
 			io.WriteString(w, data)
 		}
 		mux.HandleFunc("/app.js", scriptResolver)
-		mux.Handle("/", http.FileServer(http.Dir(path.Join(c.String(assetsFlag.Name), "cmd", "statediff", "static"))))
+		mux.Handle("/", http.FileServer(http.Dir(path.Join(c.String(assetsFlag.Name), "cmd", "stateexplorer", "static"))))
 	} else {
 		mux.Handle("/", http.FileServer(AssetFile()))
 	}

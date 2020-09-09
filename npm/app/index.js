@@ -1,6 +1,7 @@
 const expander = require('./expander');
 const genericBlock = require('./components/genericBlock');
 const jsonPrinter = require('./components/jsonPrinter');
+const jsonBitfield = require('./components/jsonBitfield');
 const jsonCid = require('./components/jsonCid');
 const lotusActor = require('./components/lotusActor');
 const stateroot = require('./stateroot');
@@ -41,6 +42,7 @@ let onLoad = () => {
     document.getElementById('stateroot').addEventListener('keypress', stateRootEnter);
     renderer.Register(expander);
     renderer.Register(genericBlock);
+    renderer.Register(jsonBitfield);
     renderer.Register(jsonCid);
     renderer.Register(jsonPrinter);
     renderer.Register(lotusActor);
