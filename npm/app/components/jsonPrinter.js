@@ -50,18 +50,34 @@ class jsonPrinter {
                 if (obj.length == 0) {
                     return '[]';
                 }
-                str += "[\n";
-                for (let i = 0; i < obj.length; i++) {
-                    if (i > 0) {
-                        str += ",\n";
+                // if all entries are numbers, we'll skip returns.
+                if (obj.every(n => typeof n == "number")) {
+                    str += "[";
+                    for (let i = 0; i < obj.length; i++) {
+                        if (i > 0) {
+                            str += ", ";
+                        }
+                        str += this.stringify(obj[i], path + "[" + i + "]")
+                        if (i > 100 && !full) {
+                            str += ` ... and ${obj.length -i} more`;
+                            break
+                        }
                     }
-                    str += this.indent(this.stringify(obj[i], path + "[" + i + "]"));
-                    if (i > 100 && !full) {
-                        str += this.indent(` ... and ${obj.length - i} more`);
-                        break;
+                    str += "]";
+                } else {
+                    str += "[\n";
+                    for (let i = 0; i < obj.length; i++) {
+                        if (i > 0) {
+                            str += ",\n";
+                        }
+                        str += this.indent(this.stringify(obj[i], path + "[" + i + "]"));
+                        if (i > 100 && !full) {
+                            str += this.indent(` ... and ${obj.length - i} more`);
+                            break;
+                        }
                     }
+                    str += "\n]";
                 }
-                str += "\n]";
             } else if (Object.keys(obj).length == 1 && typeof obj["/"] == "string") {
                 // cid special case.
                 str += `<json-cid data-path="${path}">${obj["/"]}</json-cid>`;

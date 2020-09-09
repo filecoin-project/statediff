@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"regexp"
 
 	abi  "github.com/filecoin-project/go-state-types/abi"
 	addr "github.com/filecoin-project/go-address"
@@ -54,6 +55,9 @@ const (
 	StorageMinerActorAllocatedSectors LotusType = "storageMinerActor.AllocatedSectors"
 	StorageMinerActorSectors LotusType = "storageMinerActor.Sectors"
 	StorageMinerActorDeadlines LotusType = "storageMinerActor.Deadlines"
+	StorageMinerActorDeadline LotusType = "storageMinerActor.Deadlines.Due"
+	StorageMinerActorDeadlinePartitions LotusType = "storageMinerActor.Deadlines.Due.Partitions"
+	StorageMinerActorDeadlineExpiry LotusType = "storageMinerActor.Deadlines.Due.ExpirationsEpochs"
 	StoragePowerActorState LotusType = "storagePowerActor"
 	StoragePowerActorCronEventQueue LotusType = "storagePowerCronEventQueue"
 	StoragePowerActorClaims LotusType = "storagePowerClaims"
@@ -64,8 +68,12 @@ const (
 	PaymentChannelActorState LotusType = "paymentChannelActor"
 )
 
+var simplifyingRe = regexp.MustCompile(`\[\d+\]`)
+
 // Transform will unmarshal cbor data based on a provided type hint.
 func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as string) (interface{}, error) {
+	as = string(simplifyingRe.ReplaceAll([]byte(as), []byte("")))
+
 	// First select types which do their own store loading.
 	switch LotusType(as) {
 	case LotusTypeStateroot:
@@ -74,8 +82,14 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		return transformInitActor(ctx, c, store)
 	case StorageMinerActorPreCommittedSectors:
 		return transformMinerActorPreCommittedSectors(ctx, c, store)
+	case StorageMinerActorPreCommittedSectorsExpiry:
+		return transformMinerActorPreCommittedSectorsExpiry(ctx, c, store)
 	case StorageMinerActorSectors:
 		return transformMinerActorSectors(ctx, c, store)
+	case StorageMinerActorDeadlinePartitions:
+		return transformMinerActorDeadlinePartitions(ctx, c, store)
+	case StorageMinerActorDeadlineExpiry:
+		return transformMinerActorDeadlineExpiry(ctx, c, store)
 	case StoragePowerActorCronEventQueue:
 		return transformPowerActorEventQueue(ctx, c, store)
 	case StoragePowerActorClaims:
@@ -147,9 +161,13 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 	case StorageMinerActorAllocatedSectors:
 		dest := bitfield.BitField{}
 		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		return JSONBitField{dest}, err
 	case StorageMinerActorDeadlines:
 		dest := storageMinerActor.Deadlines{}
+		err := cbor.DecodeInto(data, &dest)
+		return dest, err
+	case StorageMinerActorDeadline:
+		dest := storageMinerActor.Deadline{}
 		err := cbor.DecodeInto(data, &dest)
 		return dest, err
 	case StoragePowerActorState:
@@ -242,6 +260,24 @@ func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, stor
 	return m, nil
 }
 
+func transformMinerActorPreCommittedSectorsExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+
+	m := make(map[int64]JSONBitField)
+	value := bitfield.BitField{}
+	if err := list.ForEach(&value, func(k int64) error {
+		m[k] = JSONBitField{value}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
@@ -253,6 +289,42 @@ func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore
 	value := storageMinerActor.SectorOnChainInfo{}
 	if err := list.ForEach(&value, func(k int64) error {
 		m[k] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformMinerActorDeadlinePartitions(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+	
+	m := make(map[int64]storageMinerActor.Partition)
+	value := storageMinerActor.Partition{}
+	if err := list.ForEach(&value, func(k int64) error {
+		m[k] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformMinerActorDeadlineExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+	
+	m := make(map[int64]JSONBitField)
+	value := bitfield.BitField{}
+	if err := list.ForEach(&value, func(k int64) error {
+		m[k] = JSONBitField{value}
 		return nil
 	}); err != nil {
 		return nil, err
