@@ -56,6 +56,7 @@ const (
 	StorageMinerActorAllocatedSectors          LotusType = "storageMinerActor.AllocatedSectors"
 	StorageMinerActorSectors                   LotusType = "storageMinerActor.Sectors"
 	StorageMinerActorDeadlines                 LotusType = "storageMinerActor.Deadlines"
+	StorageMinerActorDeadline                  LotusType = "storageMinerActor.Deadlines.Due"
 	StorageMinerActorDeadlinePartitions        LotusType = "storageMinerActor.Deadlines.Due.Partitions"
 	StorageMinerActorDeadlineExpiry            LotusType = "storageMinerActor.Deadlines.Due.ExpirationsEpochs"
 	StoragePowerActorState                     LotusType = "storagePowerActor"

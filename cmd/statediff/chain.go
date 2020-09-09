@@ -12,6 +12,7 @@ import (
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/statediff"
+	"github.com/filecoin-project/statediff/lib"
 )
 
 var chainCmd = &cli.Command{
@@ -19,7 +20,7 @@ var chainCmd = &cli.Command{
 	Description: "Examine the state delta of an API object",
 	Action:      runChainCmd,
 	Flags: []cli.Flag{
-		&apiFlag,
+		&lib.ApiFlag,
 		&expandActorsFlag,
 	},
 }
@@ -80,7 +81,7 @@ func runChainCmd(c *cli.Context) error {
 		return fmt.Errorf("no descriptor provided")
 	}
 
-	client, err := GetAPI(c)
+	client, err := lib.GetAPI(c)
 	if err != nil {
 		return err
 	}

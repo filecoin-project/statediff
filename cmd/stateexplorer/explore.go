@@ -9,6 +9,7 @@ import (
 	"path"
 
 	"github.com/filecoin-project/statediff"
+	"github.com/filecoin-project/statediff/lib"
 	"github.com/filecoin-project/statediff/build"
 	"github.com/ipfs/go-cid"
 	"github.com/urfave/cli/v2"
@@ -31,14 +32,14 @@ var exploreCmd = &cli.Command{
 	Description: "Examine a state tree in a browser",
 	Action:      runExploreCmd,
 	Flags: []cli.Flag{
-		&apiFlag,
+		&lib.ApiFlag,
 		&assetsFlag,
 		&bindFlag,
 	},
 }
 
 func runExploreCmd(c *cli.Context) error {
-	client, err := GetAPI(c)
+	client, err := lib.GetAPI(c)
 	if err != nil {
 		return err
 	}

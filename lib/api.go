@@ -1,6 +1,6 @@
 // establish connection to a 'FullNode' filecoin API with cli configuration.
 // Mostly with an eye towards ease of use for lotus users.
-package main
+package lib
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var apiFlag = cli.StringFlag{
+var ApiFlag = cli.StringFlag{
 	Name:    "api",
 	Usage:   "api endpoint, formatted as token:multiaddr",
 	Value:   "",
@@ -46,7 +46,7 @@ func tryGetAPIFromHomeDir() ([]string, error) {
 
 func GetAPI(c *cli.Context) (api.FullNode, error) {
 	var err error
-	api := c.String(apiFlag.Name)
+	api := c.String(ApiFlag.Name)
 	sp := strings.SplitN(api, ":", 2)
 	if len(sp) != 2 {
 		sp, err = tryGetAPIFromHomeDir()

@@ -1,6 +1,3 @@
-//go:generate go run github.com/filecoin-project/statediff/build/gen "../../npm/app" static/app.js
-//go:generate go run github.com/go-bindata/go-bindata/go-bindata -fs -prefix "static/" static/
-
 package main
 
 import (
@@ -26,7 +23,6 @@ func main() {
 			vectorCmd,
 			carCmd,
 			chainCmd,
-			exploreCmd,
 		},
 	}
 
