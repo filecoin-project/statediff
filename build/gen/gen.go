@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path"
 
 	"github.com/filecoin-project/statediff/build"
 )
@@ -19,8 +20,10 @@ func main() {
 	cmd.Dir = os.Args[1]
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("Failed to install frontend dependencies: %v", err)
-		os.Exit(1)
+		fmt.Printf("Failed to install frontend dependencies: %v\n", err)
+		if _, err := os.Stat(path.Join(os.Args[1], "node_modules")); os.IsNotExist(err) {
+			os.Exit(1)
+		}
 	}
 
 	data := build.Compile(os.Args[1])
