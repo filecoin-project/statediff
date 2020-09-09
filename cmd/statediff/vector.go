@@ -9,8 +9,8 @@ import (
 	"os"
 
 	bs "github.com/filecoin-project/lotus/lib/blockstore"
-	"github.com/ipld/go-car"
 	"github.com/ipfs/go-cid"
+	"github.com/ipld/go-car"
 	"github.com/urfave/cli/v2"
 
 	"github.com/filecoin-project/statediff"
@@ -37,8 +37,8 @@ var vectorCmd = &cli.Command{
 type TestVector struct {
 	CAR string `json:"car"`
 
-	Pre           *Preconditions  `json:"preconditions"`
-	Post          *Postconditions `json:"postconditions"`
+	Pre  *Preconditions  `json:"preconditions"`
+	Post *Postconditions `json:"postconditions"`
 }
 
 type StateTree struct {
@@ -46,14 +46,13 @@ type StateTree struct {
 }
 
 type Preconditions struct {
-	StateTree *StateTree     `json:"state_tree"`
+	StateTree *StateTree `json:"state_tree"`
 }
 
 // Postconditions contain a representation of VM state at th end of the test
 type Postconditions struct {
 	StateTree *StateTree `json:"state_tree"`
 }
-
 
 func runVectorCmd(c *cli.Context) error {
 	file, err := os.Open(vectorFlags.file)

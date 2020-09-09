@@ -5,8 +5,8 @@ import (
 	"os"
 
 	bs "github.com/filecoin-project/lotus/lib/blockstore"
-	"github.com/ipld/go-car"
 	"github.com/ipfs/go-cid"
+	"github.com/ipld/go-car"
 	"github.com/urfave/cli/v2"
 
 	"github.com/filecoin-project/statediff"
@@ -25,7 +25,7 @@ var carCmd = &cli.Command{
 			Name:        "file",
 			Usage:       "car store of cids",
 			Destination: &carFlags.file,
-			Required: true,
+			Required:    true,
 		},
 		&expandActorsFlag,
 	},
