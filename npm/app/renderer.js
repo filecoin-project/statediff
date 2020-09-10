@@ -21,12 +21,16 @@ function FillHTMLSlot(el, name, fragment) {
 }
 
 function FillSlot(el, name, cls) /*, args to cls... */ {
+    return FillSlotArgs(el, name, cls, Array.prototype.slice.call(arguments, 3));
+}
+
+function FillSlotArgs(el, name, cls, args) {
     let node = document.createElement('filecoin-' + cls.name.toLowerCase());
     node.style.display = 'inline-block';
     node.style.verticalAlign = 'top';
     node.slot = name;
 
-    let args = [node].concat(Array.prototype.slice.call(arguments, 3));
+    args = [node].concat(args);
     // eww (would be better w/ es6 rest args, per)
     // https://stackoverflow.com/questions/3871731/dynamic-object-construction-in-javascript
     let inst = new (Function.prototype.bind.apply(cls, [null].concat(args)))();
@@ -73,5 +77,6 @@ module.exports = {
     FillTextSlot: FillTextSlot,
     FillHTMLSlot: FillHTMLSlot,
     FillSlot: FillSlot,
+    FillSlotArgs, FillSlotArgs,
     Register: Register,
 };

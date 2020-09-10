@@ -1,6 +1,7 @@
 'use strict'
 
 const lotusActor = require('./components/lotusActor');
+const expander = require('./expander');
 const renderer = require('./renderer');
 const store = require('./store');
 
@@ -53,7 +54,7 @@ class stateroot {
         let data = this.data;
         renderer.FillTextSlot(this.element, 'count', Object.keys(data).length);
         Object.keys(ActorAddrs).forEach((k) => {
-            renderer.FillSlot(this.element, k, lotusActor, data[ActorAddrs[k]]);
+            renderer.FillSlot(this.element, k, expander, k, lotusActor, [data[ActorAddrs[k]]]);
         });
         let actors = [];
         if (!this.filter) {
