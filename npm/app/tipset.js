@@ -36,10 +36,10 @@ class tipset {
         renderer.FillTextSlot(this.element, 'height', data.Height);
         renderer.FillTextSlot(this.element, 'date', new Date(data.Timestamp * 1000));
         renderer.FillTextSlot(this.element, 'basefee', data.ParentBaseFee);
-        renderer.FillSlot(this.element, 'stateroot', expander, data.ParentStateRoot["/"], stateroot);
+        renderer.FillSlot(this.element, 'stateroot', expander, data.ParentStateRoot["/"], stateroot, [data.ParentStateRoot["/"]]);
 
         // todo: other parents?
-        renderer.FillSlot(this.element, 'parents', expander, data.Parents[0]["/"], tipset);
+        renderer.FillSlot(this.element, 'parents', expander, data.Parents[0]["/"], tipset, [data.Parents[0]["/"]]);
     }
 
     Close() {
