@@ -16,5 +16,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: filecoin-project/statediff/stateexplorer
+          tags: latest
           tag_with_ref: true
+          add_git_labels: true
 
