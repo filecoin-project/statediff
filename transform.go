@@ -211,7 +211,8 @@ func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockst
 		if err != nil {
 			return err
 		}
-		m[fmt.Sprintf("%x", k)] = &actor
+		a, _ := addr.NewFromBytes([]byte(k))
+		m[a.String()] = &actor
 		return nil
 	})
 	return m, nil
