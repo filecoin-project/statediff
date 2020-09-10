@@ -7,13 +7,13 @@ const store = require('./store');
 
 // from https://github.com/filecoin-project/specs-actors/blob/master/actors/builtin/singletons.go
 const ActorAddrs = {
-    "System": "0000",
-    "Init": "0001",
-    "Reward": "0002",
-    "Cron": "0003",
-    "StoragePower": "0004",
-    "StorageMarket": "0005",
-    "VerifiedRegistry": "0006"
+    "System": "t00",
+    "Init": "t01",
+    "Reward": "t02",
+    "Cron": "t03",
+    "StoragePower": "t04",
+    "StorageMarket": "t05",
+    "VerifiedRegistry": "t06"
 }
 
 class stateroot {
@@ -38,10 +38,15 @@ class stateroot {
         }
     }
 
-    onSearch(ev) {
+    async onSearch(ev) {
         if (ev.keyCode == 13) {
             this.filter = this.element.shadowRoot.querySelector('input').value;
-            this.Render()
+            if (this.filter.indexOf('t') >= 0) {
+                let initMap = await this.getInitMap();
+                this.Render(initMap);
+            } else {
+                this.Render({});
+            }
         }
     }
 
@@ -50,11 +55,22 @@ class stateroot {
         this.Render()
     }
 
-    Render() {
+    async getInitMap() {
+        if (this.initMap) {
+            return this.initMap;
+        }
+        let initHeadCid = this.data[ActorAddrs["Init"]]["Head"]["/"];
+        let initState = await store(initHeadCid, "initActor");
+        let initAddrMap = await store(initState[1]["AddressMap"]["/"], "initActorAddresses");
+        this.initMap = initAddrMap;
+        return initAddrMap;
+    }
+
+    Render(lookupMap) {
         let data = this.data;
         renderer.FillTextSlot(this.element, 'count', Object.keys(data).length);
         Object.keys(ActorAddrs).forEach((k) => {
-            renderer.FillSlot(this.element, k, expander, k, lotusActor, [data[ActorAddrs[k]]]);
+            renderer.FillSlot(this.element, k, expander, `${k} @ ${ActorAddrs[k]}`, lotusActor, [data[ActorAddrs[k]]]);
         });
         let actors = [];
         if (!this.filter) {
@@ -77,6 +93,18 @@ class stateroot {
                     return
                 }
             })
+            // for explicit addresses.
+            if (this.filter[0] == "t" || this.filter[0] == "f") {
+                if (this.filter[1] == "0") {
+                    let addr = this.filter.substr(2);
+
+                    Object.keys(data).forEach((k) => {
+                        if (k == addr) {
+                            actors.push(k);
+                        }
+                    });
+                }
+            }
         }
 
         let shownActors = actors.slice(this.pn * 10, (this.pn + 1) * 10);
