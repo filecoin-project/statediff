@@ -11,6 +11,7 @@ import (
 
 	addr "github.com/filecoin-project/go-address"
 	bitfield "github.com/filecoin-project/go-bitfield"
+	"github.com/filecoin-project/go-state-types/cbor"
 	chainState "github.com/filecoin-project/lotus/chain/state"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/lib/blockstore"
@@ -23,7 +24,6 @@ import (
 	storagePowerActor "github.com/filecoin-project/specs-actors/actors/builtin/power"
 	rewardActor "github.com/filecoin-project/specs-actors/actors/builtin/reward"
 	verifiedRegistryActor "github.com/filecoin-project/specs-actors/actors/builtin/verifreg"
-	runtime "github.com/filecoin-project/specs-actors/actors/runtime"
 	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 	blocks "github.com/ipfs/go-block-format"
 	"github.com/ipfs/go-cid"
@@ -315,7 +315,7 @@ func cidTransformer(ctx context.Context, store blockstore.Blockstore, cborStore 
 						panic(fmt.Sprintf("loading %s failed: %v", name, err))
 					}
 					val := reflect.New(t.Elem().Elem())
-					asUnmarshaller, ok := val.Interface().(runtime.CBORUnmarshaler)
+					asUnmarshaller, ok := val.Interface().(cbor.Unmarshaler)
 					if !ok {
 						if t.Elem().String() == "*big.Int" {
 							var um cbg.CborInt
@@ -340,7 +340,7 @@ func cidTransformer(ctx context.Context, store blockstore.Blockstore, cborStore 
 						panic(fmt.Sprintf("loading %s failed: %v", name, err))
 					}
 					val := reflect.New(t.Elem().Elem())
-					asUnmarshaller, ok := val.Interface().(runtime.CBORUnmarshaler)
+					asUnmarshaller, ok := val.Interface().(cbor.Unmarshaler)
 					if !ok {
 						panic(fmt.Sprintf("%s must implement CBORUnmarshaler", t.Elem().String()))
 					}
@@ -356,7 +356,7 @@ func cidTransformer(ctx context.Context, store blockstore.Blockstore, cborStore 
 				}
 
 				val := reflect.New(t.Elem())
-				asUnmarshaller, ok := val.Interface().(runtime.CBORUnmarshaler)
+				asUnmarshaller, ok := val.Interface().(cbor.Unmarshaler)
 				block, _ := store.Get(c)
 				if !ok {
 					return block.RawData()
