@@ -21,19 +21,28 @@ function FillHTMLSlot(el, name, fragment) {
 }
 
 function FillSlot(el, name, cls) /*, args to cls... */ {
-    return FillSlotArgs(el, name, cls, Array.prototype.slice.call(arguments, 3));
+    return FillSlotArgs(el, name, cls, false, Array.prototype.slice.call(arguments, 3));
 }
 
-function FillSlotArgs(el, name, cls, args) {
+async function RestoreSlot(el, name, cls, state, args) {
+    return await FillSlotArgs(el, name, cls, state, args);
+}
+
+function FillSlotArgs(el, name, cls, restore, args) {
     let node = document.createElement('filecoin-' + cls.name.toLowerCase());
     node.style.display = 'inline-block';
     node.style.verticalAlign = 'top';
     node.slot = name;
 
-    args = [node].concat(args);
-    // eww (would be better w/ es6 rest args, per)
-    // https://stackoverflow.com/questions/3871731/dynamic-object-construction-in-javascript
-    let inst = new (Function.prototype.bind.apply(cls, [null].concat(args)))();
+    let inst;
+    if (restore) {
+        inst = cls.RestoreFromState(node, args, restore);
+    } else {
+        args = [node].concat(args);
+        // eww (would be better w/ es6 rest args, per)
+        // https://stackoverflow.com/questions/3871731/dynamic-object-construction-in-javascript
+        inst = new (Function.prototype.bind.apply(cls, [null].concat(args)))();
+    }
 
     let existing = el.querySelector('[slot="' + name + '"]');
     if (existing != undefined) {
@@ -77,6 +86,7 @@ module.exports = {
     FillTextSlot: FillTextSlot,
     FillHTMLSlot: FillHTMLSlot,
     FillSlot: FillSlot,
-    FillSlotArgs, FillSlotArgs,
+    FillSlotArgs: FillSlotArgs,
+    RestoreSlot: RestoreSlot,
     Register: Register,
 };

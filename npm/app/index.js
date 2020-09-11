@@ -6,6 +6,7 @@ const jsonCid = require('./components/jsonCid');
 const lotusActor = require('./components/lotusActor');
 const stateroot = require('./stateroot');
 const tipset = require('./tipset');
+const changeEvent = require('./event');
 
 const renderer = require('./renderer');
 
@@ -20,6 +21,26 @@ async function GetCurrentRoot() {
 
 function setup(rootEl, rootcid) {
     renderedRoot = renderer.FillSlot(rootEl, 'root', tipset, rootcid);
+    changeEvent();
+}
+
+async function GetState() {
+    if(renderedRoot == null) {
+        return "";
+    }
+    return await renderedRoot.GetState();
+}
+
+async function UpdateState(s) {
+    let rootEl = document.getElementById('root');
+    if(s == null || s == "") {
+        renderer.FillTextSlot(rootEl, 'root', '');
+        renderedRoot = null;
+        return;
+    }
+    if (renderedRoot == null || !await renderedRoot.UpdateState(s)) {
+        renderedRoot = await renderer.RestoreSlot(rootEl, 'root', tipset, s);
+    }
 }
 
 async function currentClicked() {
@@ -27,14 +48,14 @@ async function currentClicked() {
         renderedRoot.Close();
     }
     rootCid = await GetCurrentRoot()
-    renderedRoot = setup(document.getElementById('root'), rootCid);
+    setup(document.getElementById('root'), rootCid);
 }
 
 function stateRootEnter() {
     if (renderedRoot != null) {
         renderedRoot.Close();
     }
-    renderedRoot = setup(document.getElementById('root'), document.getElementById('stateroot').value);
+    setup(document.getElementById('root'), document.getElementById('stateroot').value);
 }
 
 let onLoad = () => {
@@ -48,6 +69,20 @@ let onLoad = () => {
     renderer.Register(lotusActor);
     renderer.Register(stateroot);
     renderer.Register(tipset);
+    document.addEventListener(changeEvent.Event.type, async () => {
+        console.log('ev');
+        let newState = await GetState();
+        if (newState != history.state) {
+            history.pushState(newState, "", "?state=" + JSON.stringify(newState));
+        }
+    });
+    window.onpopstate = (ev) => {
+        UpdateState(ev.state);
+    };
+    if (window.location.search.indexOf("state=") > -1) {
+        let str = decodeURIComponent(window.location.search.split("state=").slice(1).join("state="));
+        UpdateState(JSON.parse(str));
+    }
 }
 
 window.addEventListener('load', onLoad);

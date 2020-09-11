@@ -18,15 +18,26 @@ const ActorAddrs = {
 
 class stateroot {
     constructor(element, cid) {
+        this.cid = cid;
         this.element = element;
         this.pn = 0;
+        this.children = {};
 
         element.innerHTML = "Loading: " + cid;
         let search = this.element.shadowRoot.children[0].querySelector('input');
         search.addEventListener('keyup', this.onSearch.bind(this));
         let next = this.element.shadowRoot.children[0].querySelector('.next');
         next.addEventListener('click', this.onClickNextButton.bind(this));
-        store(cid, "stateRoot").then((r) => this.onStateroot(r));
+        this.Load();
+    }
+
+    Load() {
+        this.load = store(this.cid, "stateRoot");
+        this.load.then((r) => this.onStateroot(r));
+        return this.load;
+    }
+    Ready() {
+        return this.load;
     }
 
     onStateroot(resp) {
@@ -70,7 +81,7 @@ class stateroot {
         let data = this.data;
         renderer.FillTextSlot(this.element, 'count', Object.keys(data).length);
         Object.keys(ActorAddrs).forEach((k) => {
-            renderer.FillSlot(this.element, k, expander, `${k} @ ${ActorAddrs[k]}`, lotusActor, [data[ActorAddrs[k]]]);
+            this.children[k] = renderer.FillSlot(this.element, k, expander, `${k} @ ${ActorAddrs[k]}`, lotusActor, [data[ActorAddrs[k]]]);
         });
         let actors = [];
         if (!this.filter) {
@@ -136,6 +147,39 @@ class stateroot {
 
         this.element.shadowRoot.querySelector('.pn').innerHTML = (this.pn + 1);
         this.element.shadowRoot.querySelector('.pt').innerHTML = Math.ceil(actors.length / 10);
+    }
+
+    async GetState() {
+        await this.Ready();
+        let state = [];
+        let sys = Object.keys(ActorAddrs).sort();
+        for (let i = 0; i < sys.length; i++) {
+            state.push(await this.children[sys[i]].GetState());
+        }
+        return state;
+    }
+
+    async UpdateState(s) {
+        await this.Ready();
+        let sys = Object.keys(ActorAddrs).sort();
+        for (let i = 0; i < sys.length; i++) {
+            if (!await this.children[sys[i]].UpdateState(s[i])) {
+                let addr = ActorAddrs[sys[i]];
+                this.children[sys[i]] = renderer.RestoreSlot(this.element, sys[i], expander, s[i], [
+                    `${k} @ ${addr}`,
+                    lotusActor,
+                    [this.data[addr]],
+                ]);
+            }
+        }
+
+        return true;
+    }
+
+    static async RestoreFromState(element, args, state) {
+        let inst = new stateroot(element, args[0]);
+        await inst.UpdateState(state);
+        return inst;
     }
 
     Close() {

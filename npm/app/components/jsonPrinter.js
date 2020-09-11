@@ -11,8 +11,12 @@ class jsonPrinter {
 
         if (cid != undefined) {
             let as = atlas.Get(at);
-            store(cid, as).then((r) => this.Render(r));
+            this.ready = store(cid, as).then((r) => this.Render(r));
         }
+    }
+
+    Ready() {
+        return this.ready;
     }
 
     Render(data) {
