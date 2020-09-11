@@ -53,7 +53,7 @@ class lotusActor {
         await this.tick();
         let children = this.GetChildren(this.element);
         for (let i = 0; i < children.length; i++) {
-            children[i].UpdateState(s[i]);
+            await children[i].UpdateState(s[i]);
         }
         return true;
     }
@@ -64,7 +64,7 @@ class lotusActor {
 
     static async RestoreFromState(element, args, state) {
         let inst = new lotusActor(element, args[0]);
-        inst.UpdateState(state);
+        await inst.UpdateState(state);
         return inst;
     }
 }

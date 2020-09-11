@@ -98,8 +98,9 @@ class jsonPrinter {
                     if (i > 0) {
                         str += ",\n";
                     }
-                    str += this.indent(`"<span class=json-key>${keys[i]}</span>" : ` +
-                        this.stringify(obj[keys[i]], path + "." + keys[i]))
+                    let subPath = path + "." + keys[i];
+                    str += this.indent(`"<span class=json-key><a name="${subPath}" href="#${subPath}">${keys[i]}</a></span>" : ` +
+                        this.stringify(obj[keys[i]], subPath))
                     if (i > 100 && !full) {
                         str += this.indent(` ... and ${keys.length - i} more`);
                         break;

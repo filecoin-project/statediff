@@ -72,15 +72,26 @@ let onLoad = () => {
     document.addEventListener(changeEvent.Event.type, async () => {
         let newState = await GetState();
         if (newState != history.state) {
-            history.pushState(newState, "", "?state=" + JSON.stringify(newState));
+            history.pushState(newState, "", "?state=" + JSON.stringify(newState) + window.location.hash);
         }
     });
     window.onpopstate = (ev) => {
-        UpdateState(ev.state);
+        if (!ev.state) {
+            // this happens e.g. when clicking on the anchor links.
+            GetState().then(s => {
+                history.replaceState(s, "", "?state=" + JSON.stringify(s) + window.location.hash);
+            });
+        } else {
+            UpdateState(ev.state);
+        }
     };
     if (window.location.search.indexOf("state=") > -1) {
         let str = decodeURIComponent(window.location.search.split("state=").slice(1).join("state="));
-        UpdateState(JSON.parse(str));
+        UpdateState(JSON.parse(str)).then(() => {
+            if (window.location.hash != "") {
+                window.location.hash = window.location.hash;
+            }
+        });
     }
 }
 

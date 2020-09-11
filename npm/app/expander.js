@@ -29,7 +29,7 @@ class expander {
 
     static async RestoreFromState(element, args, state) {
         let inst = new expander(element, args[0], args[1], args[2]);
-        inst.UpdateState(state);
+        await inst.UpdateState(state);
         return inst;
     }
 

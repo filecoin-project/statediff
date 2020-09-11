@@ -82,6 +82,9 @@ class jsonCid extends HTMLElement {
         return l;
     }
 
+    tick() {
+        return new Promise(r => setTimeout(r, 0));
+    }
     async UpdateState(s) {
         if (s === 0 && this.open) {
             this.toggle();
@@ -95,14 +98,13 @@ class jsonCid extends HTMLElement {
             } else if (prom.Ready) {
                 await prom.Ready();
             }
+            await this.tick();
         }
         // wait a tick for dom to populate
-        setTimeout(() => {
-            let children = this.GetChildren(this);
-            for (let i = 0; i < children.length; i++) {
-                children[i].UpdateState(s[i]);
-            }
-        }, 0);
+        let children = this.GetChildren(this);
+        for (let i = 0; i < children.length; i++) {
+            await children[i].UpdateState(s[i]);
+        }
 
         return true;
     }

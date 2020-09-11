@@ -59,7 +59,7 @@ class tipset {
             await this.Load();
         }
 
-        if (!this.stateroot.UpdateState(s[1])) {
+        if (!await this.stateroot.UpdateState(s[1])) {
             renderer.RestoreSlot(this.element, 'stateroot', expander, s[1], [
                 this.data.ParentStateRoot["/"],
                 stateroot,
@@ -67,7 +67,7 @@ class tipset {
             ]);
         }
 
-        if (!this.parents.UpdateState(s[2])) {
+        if (!await this.parents.UpdateState(s[2])) {
             renderer.RestoreSlot(this.element, 'parents', expander, s[2], [
                 this.data.Parents["/"],
                 tipset,
