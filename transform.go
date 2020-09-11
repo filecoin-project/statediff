@@ -67,6 +67,7 @@ const (
 	VerifiedRegistryActorVerifiers             LotusType = "verifiedRegistryActor.Verifiers"
 	VerifiedRegistryActorVerifiedClients       LotusType = "verifiedRegistryActor.VerifiedClients"
 	PaymentChannelActorState                   LotusType = "paymentChannelActor"
+	PaymentChannelActorLaneStates              LotusType = "paymentChannelActor.LaneStates"
 )
 
 var simplifyingRe = regexp.MustCompile(`\[\d+\]`)
@@ -112,6 +113,8 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		fallthrough
 	case VerifiedRegistryActorVerifiedClients:
 		return transformVerifiedRegistryDataCaps(ctx, c, store)
+	case PaymentChannelActorLaneStates:
+		return transformPaymentChannelLaneStates(ctx, c, store)
 	default:
 	}
 
@@ -496,6 +499,24 @@ func transformMultisigPending(ctx context.Context, c cid.Cid, store blockstore.B
 	if err := table.ForEach(&value, func(k string) error {
 		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
 		m[int64(key)] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformPaymentChannelLaneStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+
+	m := make(map[int64]paychActor.LaneState)
+	value := paychActor.LaneState{}
+	if err := list.ForEach(&value, func(k int64) error {
+		m[k] = value
 		return nil
 	}); err != nil {
 		return nil, err

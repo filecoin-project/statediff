@@ -46,11 +46,11 @@ class lotusActor {
 
     async GetState() {
         let s = await Promise.all(this.GetChildren(this.element).map(async (c) => await c.GetState()));
-        console.log('la:', s);
         return s;
     }
 
     async UpdateState(s) {
+        await this.tick();
         let children = this.GetChildren(this.element);
         for (let i = 0; i < children.length; i++) {
             children[i].UpdateState(s[i]);
@@ -64,7 +64,6 @@ class lotusActor {
 
     static async RestoreFromState(element, args, state) {
         let inst = new lotusActor(element, args[0]);
-        await this.tick();
         inst.UpdateState(state);
         return inst;
     }

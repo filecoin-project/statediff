@@ -22,6 +22,7 @@ class stateroot {
         this.element = element;
         this.pn = 0;
         this.children = {};
+        this.shownActors = {};
 
         element.innerHTML = "Loading: " + cid;
         let search = this.element.shadowRoot.children[0].querySelector('input');
@@ -50,7 +51,7 @@ class stateroot {
     }
 
     async onSearch(ev) {
-        if (ev.keyCode == 13) {
+        if (ev === true || ev.keyCode == 13) {
             this.filter = this.element.shadowRoot.querySelector('input').value;
             if (this.filter.indexOf('t') >= 0) {
                 let initMap = await this.getInitMap();
@@ -132,7 +133,7 @@ class stateroot {
                 newActor.style.display = 'list-item';
                 newActor.style.verticalAlign = 'top';
                 newActor.setAttribute('data-id', shownActors[i]);
-                new lotusActor(newActor, data[shownActors[i]]);
+                this.shownActors[shownActors[i]] = new lotusActor(newActor, data[shownActors[i]]);
                 results.appendChild(newActor);
             }
         }
@@ -141,6 +142,7 @@ class stateroot {
             let ci = results.children[i].getAttribute("data-id");
             if (!shownActors.includes(ci)) {
                 results.removeChild(results.children[i]);
+                delete this.shownActors[ci];
                 i--;
             }
         }
@@ -156,6 +158,12 @@ class stateroot {
         for (let i = 0; i < sys.length; i++) {
             state.push(await this.children[sys[i]].GetState());
         }
+        state.push(this.filter || '');
+        state.push(this.pn || 0);
+        let browse = Object.keys(this.shownActors).sort();
+        for(let i = 0; i < browse.length; i++) {
+            state.push(await this.shownActors[browse[i]].GetState());
+        }
         return state;
     }
 
@@ -163,14 +171,34 @@ class stateroot {
         await this.Ready();
         let sys = Object.keys(ActorAddrs).sort();
         for (let i = 0; i < sys.length; i++) {
-            if (!await this.children[sys[i]].UpdateState(s[i])) {
+            let stateI = s.shift();
+            if (!await this.children[sys[i]].UpdateState(stateI)) {
                 let addr = ActorAddrs[sys[i]];
-                this.children[sys[i]] = renderer.RestoreSlot(this.element, sys[i], expander, s[i], [
+                this.children[sys[i]] = renderer.RestoreSlot(this.element, sys[i], expander, stateI, [
                     `${k} @ ${addr}`,
                     lotusActor,
                     [this.data[addr]],
                 ]);
             }
+        }
+
+        let dirty = false;
+        let filter = s.shift();
+        if (filter != this.filter) {
+            dirty = true;
+            this.filter = filter;
+        }
+        let pn = s.shift();
+        if (pn != this.pn) {
+            this.pn = pn;
+            dirty = true;
+        }
+        if (dirty) {
+            await this.onSearch(true);
+        }
+        let browse = Object.keys(this.shownActors).sort();
+        for (let i = 0; i < browse.length; i++) {
+            await this.shownActors[browse[i]].UpdateState(s[i]);
         }
 
         return true;

@@ -64,7 +64,6 @@ class jsonCid extends HTMLElement {
         }
 
         let s = await Promise.all(this.GetChildren(this).map(async (c) => await c.GetState()));
-        console.log('jcid:', s);
         return s;
     }
 
@@ -93,6 +92,8 @@ class jsonCid extends HTMLElement {
             let prom = this.toggle();
             if (prom instanceof Promise) {
                 await prom;
+            } else if (prom.Ready) {
+                await prom.Ready();
             }
         }
         // wait a tick for dom to populate

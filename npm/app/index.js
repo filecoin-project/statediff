@@ -70,7 +70,6 @@ let onLoad = () => {
     renderer.Register(stateroot);
     renderer.Register(tipset);
     document.addEventListener(changeEvent.Event.type, async () => {
-        console.log('ev');
         let newState = await GetState();
         if (newState != history.state) {
             history.pushState(newState, "", "?state=" + JSON.stringify(newState));
