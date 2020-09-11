@@ -187,6 +187,7 @@ class stateroot {
         if (filter != this.filter) {
             dirty = true;
             this.filter = filter;
+            this.element.shadowRoot.querySelector('input').value = filter;
         }
         let pn = s.shift();
         if (pn != this.pn) {
