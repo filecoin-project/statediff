@@ -1,6 +1,7 @@
 'use strict'
 
 const jsonPrinter = require('./jsonPrinter');
+const jsonCid = require('./jsonCid');
 
 
 // encodings of https://github.com/filecoin-project/specs-actors/blob/master/actors/builtin/codes.go
@@ -28,6 +29,8 @@ class lotusActor {
         if (hint != undefined && hint != null) {
             state.Address = hint;
         }
+        let jp = new jsonCid();
+        this.GetChildren = jp.GetChildren.bind(this);
 
         this.Render(state);
     }
@@ -39,6 +42,30 @@ class lotusActor {
 
     Close() {
         this.element.innerHTML = "";
+    }
+
+    async GetState() {
+        let s = await Promise.all(this.GetChildren(this.element).map(async (c) => await c.GetState()));
+        return s;
+    }
+
+    async UpdateState(s) {
+        await this.tick();
+        let children = this.GetChildren(this.element);
+        for (let i = 0; i < children.length; i++) {
+            await children[i].UpdateState(s[i]);
+        }
+        return true;
+    }
+
+    tick() {
+        return new Promise(r => setTimeout(r, 0));
+    }
+
+    static async RestoreFromState(element, args, state) {
+        let inst = new lotusActor(element, args[0]);
+        await inst.UpdateState(state);
+        return inst;
     }
 }
 

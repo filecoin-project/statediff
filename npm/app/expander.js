@@ -1,6 +1,6 @@
 'use strict'
 
-const store = require('./store');
+const changeEvent = require('./event');
 const renderer = require('./renderer');
 
 class expander {
@@ -21,13 +21,42 @@ class expander {
     Render() {
         renderer.FillTextSlot(this.element, 'label', this.label);
         if (this.open) {
-            renderer.FillSlotArgs(this.element, 'deferred', this.cls, this.args)
+            this.child = renderer.FillSlotArgs(this.element, 'deferred', this.cls, false, this.args)
         } else {
             renderer.FillTextSlot(this.element, 'deferred', '');
         }
     }
 
-    toggle() {
+    static async RestoreFromState(element, args, state) {
+        let inst = new expander(element, args[0], args[1], args[2]);
+        await inst.UpdateState(state);
+        return inst;
+    }
+
+    async GetState() {
+        if(!this.open) {
+            return 0;
+        } else {
+            return [await this.child.GetState()];
+        }
+    }
+
+    async UpdateState(s) {
+        if (s===0) {
+            if (this.open) {
+              this.doToggle();
+            }
+            return true;
+        } else if (!this.open) {
+            this.doToggle();
+        }
+        if (this.child && await this.child.UpdateState(s[0])) {
+            return true;
+        }
+        return false;
+    }
+
+    doToggle() {
         this.open = !this.open;
         if (this.open) {
             this.button.innerHTML = "▿";
@@ -37,6 +66,10 @@ class expander {
             this.deferred.style.display = "none";
         }
         this.Render();
+    }
+    toggle() {
+        this.doToggle();
+        changeEvent();
     }
 
     Close() {

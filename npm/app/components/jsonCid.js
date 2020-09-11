@@ -1,8 +1,10 @@
 'use strict'
 
+const changeEvent = require('../event');
 const renderer = require('../renderer');
 const jsonPrinter = require('./jsonPrinter');
 const cids = require('cids/src/index');
+
 
 class jsonCid extends HTMLElement {
     constructor() {
@@ -12,6 +14,9 @@ class jsonCid extends HTMLElement {
 
         this.path = this.getAttribute("data-path");
         this.cid = this.innerHTML;
+        if (!this.cid) {
+            return;
+        }
         let c = new cids(this.cid);
 
         this.open = false;
@@ -25,19 +30,23 @@ class jsonCid extends HTMLElement {
             this.button.style.display = 'none';
             this.innerHTML = 'Sealed Commitment:' + c.toString();
         } else {
-            this.toggle = this.toggle.bind(this);
-            this.button.addEventListener('click', this.toggle, false);    
+            this.doToggle = this.doToggle.bind(this);
+            this.button.addEventListener('click', this.doToggle, false);    
         }
     }
 
     Render() {
         if (this.open) {
-            renderer.FillSlot(this, 'deferred', jsonPrinter, this.cid, this.path)
+            return renderer.FillSlot(this, 'deferred', jsonPrinter, this.cid, this.path)
         } else {
-            renderer.FillTextSlot(this, 'deferred', '');
+            return renderer.FillTextSlot(this, 'deferred', '');
         }
     }
 
+    doToggle() {
+        this.toggle();
+        changeEvent();
+    }
     toggle() {
         this.open = !this.open;
         if (this.open) {
@@ -47,11 +56,61 @@ class jsonCid extends HTMLElement {
             this.button.innerHTML = "▷";
             this.deferred.style.display = "none";
         }
-        this.Render();
+        return this.Render();
+    }
+    async GetState() {
+        if (!this.open) {
+            return 0;
+        }
+
+        let s = await Promise.all(this.GetChildren(this).map(async (c) => await c.GetState()));
+        return s;
+    }
+
+    GetChildren(e) {
+        let l = [];
+        if (!e.children || !e.children.length) {
+            return l;
+        }
+        for (let i = 0; i < e.children.length; i++) {
+            if (e.children[i].GetState) {
+                l.push(e.children[i]);
+            } else if (e.children[i].children && e.children[i].children.length) {
+                l = l.concat(this.GetChildren(e.children[i]));
+            }
+        }
+        return l;
+    }
+
+    tick() {
+        return new Promise(r => setTimeout(r, 0));
+    }
+    async UpdateState(s) {
+        if (s === 0 && this.open) {
+            this.toggle();
+            return true;
+        } else if (s === 0) {
+            return true;
+        } else if (!this.open) {
+            let prom = this.toggle();
+            if (prom instanceof Promise) {
+                await prom;
+            } else if (prom.Ready) {
+                await prom.Ready();
+            }
+            await this.tick();
+        }
+        // wait a tick for dom to populate
+        let children = this.GetChildren(this);
+        for (let i = 0; i < children.length; i++) {
+            await children[i].UpdateState(s[i]);
+        }
+
+        return true;
     }
 
     Close() {
-        this.button.removeEventListener('click', this.toggle, false);
+        this.button.removeEventListener('click', this.doToggle, false);
         this.innerHTML = "";
     }
 }

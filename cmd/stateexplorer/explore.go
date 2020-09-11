@@ -86,12 +86,13 @@ func runExploreCmd(c *cli.Context) error {
 
 	headResolver := func(w http.ResponseWriter, r *http.Request) {
 		head, err := client.ChainHead(r.Context())
-		w.Header().Set("Content-Type", "text/plain")
 		if err != nil {
+			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte(fmt.Sprintf("error: %w", err)))
-		} else {
-			w.Write([]byte(head.Key().String()))
+			return
 		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(head.Key().String()))
 	}
 
 	mux := http.NewServeMux()
