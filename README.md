@@ -63,7 +63,7 @@ or run the explorer in its self-contained-binary form
 (assets are bundled via the `go generate` above.)
 
 ```
-go run ./cmd/stateexplorer explore --bind 0.0.0.0:33333 --api $(cat ~/.lotus/api):$(cat ~/.lotus/token)
+go run ./cmd/stateexplorer explore --bind 0.0.0.0:33333 --api $(cat ~/.lotus/token):$(cat ~/.lotus/api)
 ```
 
 If not explicitly provided as an argument, statediff/stateexplorer will attempt to locate a lotus instance running on the same host by probing your home directory.
