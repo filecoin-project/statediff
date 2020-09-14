@@ -13,7 +13,7 @@ const renderer = require('./renderer');
 let renderedRoot = null;
 
 async function GetCurrentRoot() {
-    let data = await fetch("/head").then((r) => {
+    let data = await fetch("head").then((r) => {
         return r.text();
     });
     return data;
