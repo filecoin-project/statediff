@@ -106,9 +106,10 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		fallthrough
 	case MarketActorLockedTable:
 		return transformMarketBalanceTable(ctx, c, store)
+	case MarketActorDealOpsByEpoch:
+		return transformMarketDealOpsByEpoch(ctx, c, store)
 	case MultisigActorPending:
 		return transformMultisigPending(ctx, c, store)
-	// TODO: MarketActorDealOpsByEpoch (multimap)
 	case VerifiedRegistryActorVerifiers:
 		fallthrough
 	case VerifiedRegistryActorVerifiedClients:
@@ -479,6 +480,40 @@ func transformMarketBalanceTable(ctx context.Context, c cid.Cid, store blockstor
 	if err := table.ForEach(&value, func(k string) error {
 		a, _ := addr.NewFromBytes([]byte(k))
 		m[a.String()] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	adtStore := adt.WrapStore(ctx, cbor.NewCborStore(store))
+	table, err := adt.AsMap(adtStore, c)
+	if err != nil {
+		return nil, err
+	}
+
+	m := make(map[uint64][]abi.DealID)
+	var key cbg.CborInt
+	var value cbg.CborCid
+	if err := table.ForEach(&value, func(k string) error {
+		set, err := adt.AsSet(adtStore, cid.Cid(value))
+		if err != nil {
+			return err
+		}
+		vals := make([]abi.DealID, 0)
+		set.ForEach(func (d string) error {
+			key, err := abi.ParseUIntKey(d)
+			if err != nil {
+				return err
+			}
+			vals = append(vals, abi.DealID(key))
+			return nil
+		})
+
+		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
+		m[uint64(key)] = vals
 		return nil
 	}); err != nil {
 		return nil, err
