@@ -50,6 +50,7 @@ func runExploreCmd(c *cli.Context) error {
 	store := statediff.StoreFor(c.Context, client)
 
 	cidResolver := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		keys, ok := r.URL.Query()["cid"]
 		if !ok || len(keys[0]) < 1 {
 			w.Header().Set("Content-Type", "text/plain")
