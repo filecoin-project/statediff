@@ -7,7 +7,10 @@ import (
 	"net"
 	"net/http"
 	"path"
+	"strconv"
 
+	"github.com/filecoin-project/go-state-types/abi"
+	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/lib"
 	"github.com/filecoin-project/statediff/build"
@@ -95,9 +98,31 @@ func runExploreCmd(c *cli.Context) error {
 		w.Write([]byte(head.Key().String()))
 	}
 
+	heightResolver := func(w http.ResponseWriter, r *http.Request) {
+		h, ok := r.URL.Query()["h"]
+		w.Header().Set("Content-Type", "text/plain")
+		if !ok || len(h[0]) < 1 {
+			w.Write([]byte(fmt.Sprintf("error: no height")))
+			return
+		}
+
+		asNumber, err := strconv.Atoi(h[0])
+		if err != nil {
+			w.Write([]byte(fmt.Sprintf("error: invalid height")))
+			return
+		}
+		tipset, err := client.ChainGetTipSetByHeight(r.Context(), abi.ChainEpoch(asNumber), types.EmptyTSK)
+		if err != nil {
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
+			return
+		}
+		w.Write([]byte(tipset.Key().String()))
+	}
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/cid", cidResolver)
 	mux.HandleFunc("/head", headResolver)
+	mux.HandleFunc("/height", heightResolver)
 	if c.IsSet(assetsFlag.Name) {
 		scriptResolver := func(w http.ResponseWriter, r *http.Request) {
 			data := build.Compile(path.Join(c.String(assetsFlag.Name), "npm", "app"))
