@@ -6,6 +6,7 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"os"
 	"path"
 	"strconv"
 
@@ -16,6 +17,7 @@ import (
 	"github.com/filecoin-project/statediff/build"
 	"github.com/ipfs/go-cid"
 	"github.com/urfave/cli/v2"
+	"github.com/gorilla/handlers"
 )
 
 var assetsFlag = cli.StringFlag{
@@ -142,7 +144,7 @@ func runExploreCmd(c *cli.Context) error {
 		return err
 	}
 	s := &http.Server{
-		Handler: mux,
+		Handler: handlers.LoggingHandler(os.Stdout, mux),
 	}
 	fmt.Printf("Listening at %v\n", lis.Addr())
 	return s.Serve(lis)

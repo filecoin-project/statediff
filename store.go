@@ -2,6 +2,7 @@ package statediff
 
 import (
 	"context"
+	"sync"
 
 	"github.com/filecoin-project/lotus/api"
 	"github.com/filecoin-project/lotus/lib/blockstore"
@@ -14,13 +15,18 @@ type proxyingBlockstore struct {
 	ctx context.Context
 	api api.FullNode
 
+
+	bsLock sync.RWMutex
 	blockstore.Blockstore
 }
 
 func (pb *proxyingBlockstore) Get(cid cid.Cid) (blocks.Block, error) {
+	pb.bsLock.RLock()
 	if block, err := pb.Blockstore.Get(cid); err == nil {
+		pb.bsLock.RUnlock();
 		return block, err
 	}
+	pb.bsLock.RUnlock();
 
 	// fmt.Printf("fetching cid via rpc: %v\n", cid)
 	item, err := pb.api.ChainReadObj(pb.ctx, cid)
@@ -32,6 +38,8 @@ func (pb *proxyingBlockstore) Get(cid cid.Cid) (blocks.Block, error) {
 		return nil, err
 	}
 
+	pb.bsLock.Lock();
+	defer pb.bsLock.Unlock();
 	err = pb.Blockstore.Put(block)
 	if err != nil {
 		return nil, err
