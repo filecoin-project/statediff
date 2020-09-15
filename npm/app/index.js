@@ -19,6 +19,13 @@ async function GetCurrentRoot() {
     return data;
 }
 
+async function GetHeight(h) {
+    let data = await fetch("height?h=" + h).then((r) => {
+        return r.text();
+    });
+    return data;
+}
+
 function setup(rootEl, rootcid) {
     renderedRoot = renderer.FillSlot(rootEl, 'root', tipset, rootcid);
     changeEvent();
@@ -51,11 +58,21 @@ async function currentClicked() {
     setup(document.getElementById('root'), rootCid);
 }
 
-function stateRootEnter() {
+function stateRootEnter(ev) {
+    if (ev.keyCode != 13) {
+        return
+    }
     if (renderedRoot != null) {
         renderedRoot.Close();
     }
-    setup(document.getElementById('root'), document.getElementById('stateroot').value);
+    let val = document.getElementById('stateroot').value;
+    if (val.length < 15 && !isNaN(+val)) {
+        GetHeight(val).then((sr) => {
+            setup(document.getElementById('root'), sr);
+        });
+    } else {
+        setup(document.getElementById('root'), val);
+    }
 }
 
 let onLoad = () => {
