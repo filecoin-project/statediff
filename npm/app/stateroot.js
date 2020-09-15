@@ -3,6 +3,7 @@
 const lotusActor = require('./components/lotusActor');
 const expander = require('./expander');
 const renderer = require('./renderer');
+const sparseArray = require('./sparsearray');
 const store = require('./store');
 
 // from https://github.com/filecoin-project/specs-actors/blob/master/actors/builtin/singletons.go
@@ -164,14 +165,19 @@ class stateroot {
         for(let i = 0; i < browse.length; i++) {
             state.push(await this.shownActors[browse[i]].GetState());
         }
-        return state;
+        return sparseArray.MaybeSparse(state);
     }
 
     async UpdateState(s) {
+        if (s === 0 || s === undefined) {
+            s = {};
+        }
+
         await this.Ready();
         let sys = Object.keys(ActorAddrs).sort();
-        for (let i = 0; i < sys.length; i++) {
-            let stateI = s.shift();
+        let i = 0;
+        for (i = 0; i < sys.length; i++) {
+            let stateI = s[i] || 0;
             if (!await this.children[sys[i]].UpdateState(stateI)) {
                 let addr = ActorAddrs[sys[i]];
                 this.children[sys[i]] = renderer.RestoreSlot(this.element, sys[i], expander, stateI, [
@@ -183,13 +189,13 @@ class stateroot {
         }
 
         let dirty = false;
-        let filter = s.shift();
+        let filter = s[i++] || "";
         if (filter != this.filter) {
             dirty = true;
             this.filter = filter;
             this.element.shadowRoot.querySelector('input').value = filter;
         }
-        let pn = s.shift();
+        let pn = s[i++] || 0;
         if (pn != this.pn) {
             this.pn = pn;
             dirty = true;
@@ -198,8 +204,8 @@ class stateroot {
             await this.onSearch(true);
         }
         let browse = Object.keys(this.shownActors).sort();
-        for (let i = 0; i < browse.length; i++) {
-            await this.shownActors[browse[i]].UpdateState(s[i]);
+        for (let j = 0; j < browse.length; j++) {
+            await this.shownActors[browse[j]].UpdateState(s[i + j]);
         }
 
         return true;

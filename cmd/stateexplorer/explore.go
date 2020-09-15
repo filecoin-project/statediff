@@ -89,6 +89,7 @@ func runExploreCmd(c *cli.Context) error {
 	}
 
 	headResolver := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		head, err := client.ChainHead(r.Context())
 		if err != nil {
 			w.Header().Set("Content-Type", "text/plain")

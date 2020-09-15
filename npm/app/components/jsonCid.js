@@ -2,6 +2,7 @@
 
 const changeEvent = require('../event');
 const renderer = require('../renderer');
+const sparseArray = require('../sparsearray');
 const jsonPrinter = require('./jsonPrinter');
 const cids = require('cids/src/index');
 
@@ -64,7 +65,7 @@ class jsonCid extends HTMLElement {
         }
 
         let s = await Promise.all(this.GetChildren(this).map(async (c) => await c.GetState()));
-        return s;
+        return sparseArray.MaybeSparse(s);
     }
 
     GetChildren(e) {
@@ -86,6 +87,9 @@ class jsonCid extends HTMLElement {
         return new Promise(r => setTimeout(r, 0));
     }
     async UpdateState(s) {
+        if (s === undefined) {
+            s = 0;
+        }
         if (s === 0 && this.open) {
             this.toggle();
             return true;
@@ -103,7 +107,7 @@ class jsonCid extends HTMLElement {
         // wait a tick for dom to populate
         let children = this.GetChildren(this);
         for (let i = 0; i < children.length; i++) {
-            await children[i].UpdateState(s[i]);
+            await children[i].UpdateState(s[i] || 0);
         }
 
         return true;

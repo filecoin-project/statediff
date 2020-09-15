@@ -2,6 +2,7 @@
 
 const jsonPrinter = require('./jsonPrinter');
 const jsonCid = require('./jsonCid');
+const sparseArray = require('../sparsearray');
 
 
 // encodings of https://github.com/filecoin-project/specs-actors/blob/master/actors/builtin/codes.go
@@ -46,10 +47,13 @@ class lotusActor {
 
     async GetState() {
         let s = await Promise.all(this.GetChildren(this.element).map(async (c) => await c.GetState()));
-        return s;
+        return sparseArray.MaybeSparse(s);
     }
 
     async UpdateState(s) {
+        if (s === 0 || s === undefined) {
+            s = {};
+        }
         await this.tick();
         let children = this.GetChildren(this.element);
         for (let i = 0; i < children.length; i++) {
