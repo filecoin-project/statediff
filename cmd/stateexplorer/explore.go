@@ -13,11 +13,11 @@ import (
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/statediff"
-	"github.com/filecoin-project/statediff/lib"
 	"github.com/filecoin-project/statediff/build"
+	"github.com/filecoin-project/statediff/lib"
+	"github.com/gorilla/handlers"
 	"github.com/ipfs/go-cid"
 	"github.com/urfave/cli/v2"
-	"github.com/gorilla/handlers"
 )
 
 var assetsFlag = cli.StringFlag{
@@ -129,7 +129,7 @@ func runExploreCmd(c *cli.Context) error {
 	mux.HandleFunc("/height", heightResolver)
 	if c.IsSet(assetsFlag.Name) {
 		scriptResolver := func(w http.ResponseWriter, r *http.Request) {
-			data := build.Compile(path.Join(c.String(assetsFlag.Name), "npm", "app"))
+			data := build.Compile(path.Join(c.String(assetsFlag.Name), "npm", "app"), false)
 			w.Header().Set("Content-Type", "application/json")
 			io.WriteString(w, data)
 		}

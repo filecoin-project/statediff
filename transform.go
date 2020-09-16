@@ -505,7 +505,7 @@ func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockst
 			return err
 		}
 		vals := make([]abi.DealID, 0)
-		set.ForEach(func (d string) error {
+		set.ForEach(func(d string) error {
 			key, err := abi.ParseUIntKey(d)
 			if err != nil {
 				return err

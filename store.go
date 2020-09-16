@@ -15,7 +15,6 @@ type proxyingBlockstore struct {
 	ctx context.Context
 	api api.FullNode
 
-
 	bsLock sync.RWMutex
 	blockstore.Blockstore
 }
@@ -23,10 +22,10 @@ type proxyingBlockstore struct {
 func (pb *proxyingBlockstore) Get(cid cid.Cid) (blocks.Block, error) {
 	pb.bsLock.RLock()
 	if block, err := pb.Blockstore.Get(cid); err == nil {
-		pb.bsLock.RUnlock();
+		pb.bsLock.RUnlock()
 		return block, err
 	}
-	pb.bsLock.RUnlock();
+	pb.bsLock.RUnlock()
 
 	// fmt.Printf("fetching cid via rpc: %v\n", cid)
 	item, err := pb.api.ChainReadObj(pb.ctx, cid)
@@ -38,8 +37,8 @@ func (pb *proxyingBlockstore) Get(cid cid.Cid) (blocks.Block, error) {
 		return nil, err
 	}
 
-	pb.bsLock.Lock();
-	defer pb.bsLock.Unlock();
+	pb.bsLock.Lock()
+	defer pb.bsLock.Unlock()
 	err = pb.Blockstore.Put(block)
 	if err != nil {
 		return nil, err

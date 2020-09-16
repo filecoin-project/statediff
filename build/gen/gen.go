@@ -26,7 +26,7 @@ func main() {
 		}
 	}
 
-	data := build.Compile(os.Args[1])
+	data := build.Compile(os.Args[1], true)
 	if len(os.Args) < 3 {
 		fmt.Printf("%s\n", data)
 	}
