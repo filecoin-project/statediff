@@ -253,12 +253,14 @@ func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, stor
 		return nil, err
 	}
 
-	m := make(map[int64]storageMinerActor.SectorPreCommitOnChainInfo)
+	m := make(map[uint64]storageMinerActor.SectorPreCommitOnChainInfo)
 	var value storageMinerActor.SectorPreCommitOnChainInfo
-	var key cbg.CborInt
 	if err := table.ForEach(&value, func(k string) error {
-		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
-		m[int64(key)] = value
+		key, err := abi.ParseUIntKey(k)
+		if err != nil {
+			return err
+		}
+		m[key] = value
 		return nil
 	}); err != nil {
 		return nil, err
