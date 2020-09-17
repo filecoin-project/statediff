@@ -58,6 +58,8 @@ const (
 	StorageMinerActorDeadlines                 LotusType = "storageMinerActor.Deadlines"
 	StorageMinerActorDeadline                  LotusType = "storageMinerActor.Deadlines.Due"
 	StorageMinerActorDeadlinePartitions        LotusType = "storageMinerActor.Deadlines.Due.Partitions"
+	StorageMinerActorDeadlinePartitionExpiry   LotusType = "storageMinerActor.Deadlines.Due.Partitions.ExpirationsEpochs"
+	StorageMinerActorDeadlinePartitionEarly    LotusType = "storageMinerActor.Deadlines.Due.Partitions.EarlyTerminated"
 	StorageMinerActorDeadlineExpiry            LotusType = "storageMinerActor.Deadlines.Due.ExpirationsEpochs"
 	StoragePowerActorState                     LotusType = "storagePowerActor"
 	StoragePowerActorCronEventQueue            LotusType = "storagePowerCronEventQueue"
@@ -71,10 +73,11 @@ const (
 )
 
 var simplifyingRe = regexp.MustCompile(`\[\d+\]`)
+var simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
 
 // Transform will unmarshal cbor data based on a provided type hint.
 func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as string) (interface{}, error) {
-	as = string(simplifyingRe.ReplaceAll([]byte(as), []byte("")))
+	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")),[]byte(".")))
 
 	// First select types which do their own store loading.
 	switch LotusType(as) {
@@ -84,12 +87,16 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		return transformInitActor(ctx, c, store)
 	case StorageMinerActorPreCommittedSectors:
 		return transformMinerActorPreCommittedSectors(ctx, c, store)
+	case StorageMinerActorDeadlinePartitionEarly:
+		fallthrough
 	case StorageMinerActorPreCommittedSectorsExpiry:
 		return transformMinerActorPreCommittedSectorsExpiry(ctx, c, store)
 	case StorageMinerActorSectors:
 		return transformMinerActorSectors(ctx, c, store)
 	case StorageMinerActorDeadlinePartitions:
 		return transformMinerActorDeadlinePartitions(ctx, c, store)
+	case StorageMinerActorDeadlinePartitionExpiry:
+		return transformMinerActorDeadlinePartitionExpiry(ctx, c, store)
 	case StorageMinerActorDeadlineExpiry:
 		return transformMinerActorDeadlineExpiry(ctx, c, store)
 	case StoragePowerActorCronEventQueue:
@@ -313,6 +320,24 @@ func transformMinerActorDeadlinePartitions(ctx context.Context, c cid.Cid, store
 
 	m := make(map[int64]storageMinerActor.Partition)
 	value := storageMinerActor.Partition{}
+	if err := list.ForEach(&value, func(k int64) error {
+		m[k] = value
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func transformMinerActorDeadlinePartitionExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return nil, err
+	}
+
+	m := make(map[int64]storageMinerActor.ExpirationSet)
+	value := storageMinerActor.ExpirationSet{}
 	if err := list.ForEach(&value, func(k int64) error {
 		m[k] = value
 		return nil
