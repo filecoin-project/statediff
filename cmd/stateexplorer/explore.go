@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"time"
 
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/chain/types"
@@ -53,6 +54,8 @@ func runExploreCmd(c *cli.Context) error {
 
 	cidResolver := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Cache-Control", "public, max-age=604800, immutable")
+		w.Header().Set("Expires", time.Now().Add(7*24*time.Hour).Format(http.TimeFormat))
 		keys, ok := r.URL.Query()["cid"]
 		if !ok || len(keys[0]) < 1 {
 			w.Header().Set("Content-Type", "text/plain")
