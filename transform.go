@@ -77,7 +77,7 @@ var simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
 
 // Transform will unmarshal cbor data based on a provided type hint.
 func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as string) (interface{}, error) {
-	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")),[]byte(".")))
+	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")), []byte(".")))
 
 	// First select types which do their own store loading.
 	switch LotusType(as) {

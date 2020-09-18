@@ -3,7 +3,11 @@
 package lib
 
 import (
+	"bytes"
+	"compress/gzip"
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -11,16 +15,16 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ipld/go-car"
 	"github.com/filecoin-project/lotus/api"
 	"github.com/filecoin-project/lotus/api/client"
-	"github.com/mitchellh/go-homedir"
+	"github.com/filecoin-project/lotus/lib/blockstore"
+	"github.com/filecoin-project/statediff"
 	"github.com/ipfs/go-cid"
+	"github.com/ipld/go-car"
+	"github.com/mitchellh/go-homedir"
 	"github.com/multiformats/go-multiaddr"
 	manet "github.com/multiformats/go-multiaddr-net"
 	"github.com/urfave/cli/v2"
-	"github.com/filecoin-project/lotus/lib/blockstore"
-	"github.com/filecoin-project/statediff"
 )
 
 type StateRootFunc func(context.Context) []cid.Cid
@@ -33,8 +37,14 @@ var ApiFlag = cli.StringFlag{
 }
 
 var CarFlag = cli.StringFlag{
-	Name: "car",
+	Name:  "car",
 	Usage: "car file location for data source",
+	Value: "",
+}
+
+var VectorFlag = cli.StringFlag{
+	Name:  "vector",
+	Usage: "test-vector.json file location for data source",
 	Value: "",
 }
 
@@ -113,7 +123,39 @@ func GetCar(c *cli.Context) (StateRootFunc, blockstore.Blockstore, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	return func(_ context.Context) []cid.Cid {return root.Roots}, store, nil
+	return func(_ context.Context) []cid.Cid { return root.Roots }, store, nil
+}
+
+func GetVector(c *cli.Context) (StateRootFunc, blockstore.Blockstore, error) {
+	file, err := os.Open(c.String(VectorFlag.Name))
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var tv TestVector
+	if err := json.NewDecoder(file).Decode(&tv); err != nil {
+		return nil, nil, err
+	}
+
+	b, err := base64.StdEncoding.DecodeString(tv.CAR)
+	if err != nil {
+		return nil, nil, err
+	}
+	buf := bytes.NewBuffer(b)
+	gr, err := gzip.NewReader(buf)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer gr.Close()
+
+	store := blockstore.NewTemporary()
+	_, err = car.LoadCar(store, gr)
+	if err != nil {
+		return nil, nil, err
+	}
+	cids := []cid.Cid{tv.Pre.StateTree.RootCID, tv.Post.StateTree.RootCID}
+
+	return func(_ context.Context) []cid.Cid { return cids }, store, nil
 }
 
 func GetBlockstore(c *cli.Context) (api.FullNode, StateRootFunc, blockstore.Blockstore, error) {
@@ -121,10 +163,14 @@ func GetBlockstore(c *cli.Context) (api.FullNode, StateRootFunc, blockstore.Bloc
 		srf, store, err := GetCar(c)
 		return nil, srf, store, err
 	}
+	if c.IsSet(VectorFlag.Name) {
+		srf, store, err := GetVector(c)
+		return nil, srf, store, err
+	}
 
 	client, err := GetAPI(c)
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	return client, GetHead(client),statediff.StoreFor(c.Context, client), nil		
+	return client, GetHead(client), statediff.StoreFor(c.Context, client), nil
 }
