@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"strings"
 
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/lib"
@@ -12,13 +11,6 @@ import (
 	"github.com/ipfs/go-cid"
 	"github.com/urfave/cli/v2"
 )
-
-
-var accountsFlag = cli.StringFlag{
-	Name:  "accounts",
-	Usage: "Filter to specified account(s)",
-	Value: "",
-}
 
 var byActorFlag = cli.BoolFlag{
 	Name: "byActor",
@@ -34,7 +26,6 @@ var dumpCmd = &cli.Command{
 		&lib.ApiFlag,
 		&lib.CarFlag,
 		&lib.VectorFlag,
-		&accountsFlag,
 		&byActorFlag,
 	},
 }
@@ -56,8 +47,9 @@ func runDumpCmd(c *cli.Context) error {
 	// TODO: support alternate start 'as'
 	as := "tipset"
 
-	if c.IsSet(accountsFlag.Name) {
-		accountFilter = strings.Split(c.String(accountsFlag.Name), ",")
+	accts := c.Args().Slice()
+	if len(accts) > 0 {
+		accountFilter = accts
 	}
 
 	stateTree, err := ToJSON(c.Context, store, as, h)
