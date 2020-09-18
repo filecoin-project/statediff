@@ -72,15 +72,42 @@ const (
 	PaymentChannelActorLaneStates              LotusType = "paymentChannelActor.LaneStates"
 )
 
+var LotusTypeAliases = map[string]LotusType{
+	"tipset.ParentStateRoot": LotusTypeStateroot,
+	"initActor.AddressMap": InitActorAddresses,
+	"storagePowerActor.CronEventQueue": StoragePowerActorCronEventQueue,
+    "storagePowerActor.Claims": StoragePowerActorClaims,
+}
+
+var LotusActorCodes = map[string]LotusType{
+		"bafkqaddgnfwc6mjpon4xg5dfnu": LotusType("systemActor"),
+		"bafkqactgnfwc6mjpnfxgs5a": InitActorState,
+		"bafkqaddgnfwc6mjpojsxoylsmq": RewardActorState,
+		"bafkqactgnfwc6mjpmnzg63q": CronActorState,
+		"bafkqaetgnfwc6mjpon2g64tbm5sxa33xmvza": StoragePowerActorState,
+		"bafkqae3gnfwc6mjpon2g64tbm5sw2ylsnnsxi": MarketActorState,
+		"bafkqaftgnfwc6mjpozsxe2lgnfswi4tfm5uxg5dspe": VerifiedRegistryActorState,
+		"bafkqadlgnfwc6mjpmfrwg33vnz2a": AccountActorState,
+		"bafkqadtgnfwc6mjpnv2wy5djonuwo": MultisigActorState,
+		"bafkqafdgnfwc6mjpobqxs3lfnz2gg2dbnzxgk3a": PaymentChannelActorState,
+		"bafkqaetgnfwc6mjpon2g64tbm5sw22lomvza": StorageMinerActorState,
+}
+
 var simplifyingRe = regexp.MustCompile(`\[\d+\]`)
 var simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
 
+func ResolveType(as string) LotusType {
+	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")), []byte(".")))
+	if alias, ok := LotusTypeAliases[as]; ok {
+		as = string(alias)
+	}
+	return LotusType(as)
+}
+
 // Transform will unmarshal cbor data based on a provided type hint.
 func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as string) (interface{}, error) {
-	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")), []byte(".")))
-
 	// First select types which do their own store loading.
-	switch LotusType(as) {
+	switch ResolveType(as) {
 	case LotusTypeStateroot:
 		return transformStateRoot(ctx, c, store)
 	case InitActorAddresses:

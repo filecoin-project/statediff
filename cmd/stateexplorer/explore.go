@@ -40,6 +40,7 @@ var exploreCmd = &cli.Command{
 	Flags: []cli.Flag{
 		&lib.ApiFlag,
 		&lib.CarFlag,
+		&lib.VectorFlag,
 		&assetsFlag,
 		&bindFlag,
 	},
