@@ -9,7 +9,6 @@ import (
 	"os"
 
 	bs "github.com/filecoin-project/lotus/lib/blockstore"
-	"github.com/ipfs/go-cid"
 	"github.com/ipld/go-car"
 	"github.com/urfave/cli/v2"
 
