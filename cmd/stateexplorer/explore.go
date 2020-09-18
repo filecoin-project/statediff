@@ -39,18 +39,17 @@ var exploreCmd = &cli.Command{
 	Action:      runExploreCmd,
 	Flags: []cli.Flag{
 		&lib.ApiFlag,
+		&lib.CarFlag,
 		&assetsFlag,
 		&bindFlag,
 	},
 }
 
 func runExploreCmd(c *cli.Context) error {
-	client, err := lib.GetAPI(c)
+	client, head, store, err := lib.GetBlockstore(c)
 	if err != nil {
 		return err
 	}
-
-	store := statediff.StoreFor(c.Context, client)
 
 	cidResolver := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -95,20 +94,16 @@ func runExploreCmd(c *cli.Context) error {
 
 	headResolver := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		head, err := client.ChainHead(r.Context())
-		if err != nil {
-			w.Header().Set("Content-Type", "text/plain")
-			w.Write([]byte(fmt.Sprintf("error: %w", err)))
-			return
-		}
+		cid := head(r.Context())
+		cidBytes, _ := json.Marshal(cid)
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(head.Key().String()))
+		w.Write(cidBytes)
 	}
 
 	heightResolver := func(w http.ResponseWriter, r *http.Request) {
 		h, ok := r.URL.Query()["h"]
 		w.Header().Set("Content-Type", "text/plain")
-		if !ok || len(h[0]) < 1 {
+		if !ok || len(h[0]) < 1 || client == nil {
 			w.Write([]byte(fmt.Sprintf("error: no height")))
 			return
 		}

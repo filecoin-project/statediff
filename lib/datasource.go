@@ -3,19 +3,27 @@
 package lib
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/ipld/go-car"
 	"github.com/filecoin-project/lotus/api"
 	"github.com/filecoin-project/lotus/api/client"
 	"github.com/mitchellh/go-homedir"
+	"github.com/ipfs/go-cid"
 	"github.com/multiformats/go-multiaddr"
 	manet "github.com/multiformats/go-multiaddr-net"
 	"github.com/urfave/cli/v2"
+	"github.com/filecoin-project/lotus/lib/blockstore"
+	"github.com/filecoin-project/statediff"
 )
+
+type StateRootFunc func(context.Context) []cid.Cid
 
 var ApiFlag = cli.StringFlag{
 	Name:    "api",
@@ -24,8 +32,13 @@ var ApiFlag = cli.StringFlag{
 	EnvVars: []string{"FULLNODE_API_INFO"},
 }
 
-func tryGetAPIFromHomeDir() ([]string, error) {
+var CarFlag = cli.StringFlag{
+	Name: "car",
+	Usage: "car file location for data source",
+	Value: "",
+}
 
+func tryGetAPIFromHomeDir() ([]string, error) {
 	p, err := homedir.Expand("~/.lotus")
 	if err != nil {
 		return nil, fmt.Errorf("Could not find API from file system. specify explicitly")
@@ -77,4 +90,41 @@ func GetAPI(c *cli.Context) (api.FullNode, error) {
 		return nil, fmt.Errorf("could not connect to api: %w", err)
 	}
 	return node, nil
+}
+
+func GetHead(client api.FullNode) StateRootFunc {
+	return func(ctx context.Context) []cid.Cid {
+		head, err := client.ChainHead(ctx)
+		if err != nil {
+			return []cid.Cid{}
+		}
+		return head.Cids()
+	}
+}
+
+func GetCar(c *cli.Context) (StateRootFunc, blockstore.Blockstore, error) {
+	file, err := os.Open(c.String(CarFlag.Name))
+	if err != nil {
+		return nil, nil, err
+	}
+
+	store := blockstore.NewTemporary()
+	root, err := car.LoadCar(store, file)
+	if err != nil {
+		return nil, nil, err
+	}
+	return func(_ context.Context) []cid.Cid {return root.Roots}, store, nil
+}
+
+func GetBlockstore(c *cli.Context) (api.FullNode, StateRootFunc, blockstore.Blockstore, error) {
+	if c.IsSet(CarFlag.Name) {
+		srf, store, err := GetCar(c)
+		return nil, srf, store, err
+	}
+
+	client, err := GetAPI(c)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	return client, GetHead(client),statediff.StoreFor(c.Context, client), nil		
 }
