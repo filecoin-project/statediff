@@ -208,7 +208,7 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 	case StorageMinerActorDeadline:
 		dest := storageMinerActor.Deadline{}
 		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		return MinerDeadlineJSONBitfield{dest}, err
 	case StoragePowerActorState:
 		dest := storagePowerActor.State{}
 		err := cbor.DecodeInto(data, &dest)
