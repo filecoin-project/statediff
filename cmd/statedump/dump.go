@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
+	"runtime/pprof"
 
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/lib"
@@ -18,6 +20,11 @@ var byActorFlag = cli.BoolFlag{
 	Value: false,
 }
 
+var profileFlag = cli.StringFlag{
+	Name: "profile",
+	Usage: "collect cpu profile",
+}
+
 var dumpCmd = &cli.Command{
 	Name:        "dump",
 	Description: "Dump a state tree to json",
@@ -26,6 +33,7 @@ var dumpCmd = &cli.Command{
 		&lib.ApiFlag,
 		&lib.CarFlag,
 		&lib.VectorFlag,
+		&profileFlag,
 		&byActorFlag,
 	},
 }
@@ -36,6 +44,15 @@ var noAccountExpand bool
 var denormalizedTipsetKeys = []string{"BeaconEntries", "ElectionProof", "ForkSignaling", "Height", "Miner", "ParentBaseFee", "Timestamp"}
 
 func runDumpCmd(c *cli.Context) error {
+	if c.String(profileFlag.Name) != "" {
+        f, err := os.Create(c.String(profileFlag.Name))
+        if err != nil {
+			return err
+        }
+        pprof.StartCPUProfile(f)
+        defer pprof.StopCPUProfile()
+    }
+
 	_, head, store, err := lib.GetBlockstore(c)
 	if err != nil {
 		return err

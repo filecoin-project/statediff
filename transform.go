@@ -160,7 +160,7 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 	data := block.RawData()
 
 	// Then select types which use block data.
-	switch LotusType(as) {
+	switch ResolveType(as) {
 	case LotusTypeTipset:
 		dest := lotusTypes.BlockHeader{}
 		err := cbor.DecodeInto(data, &dest)

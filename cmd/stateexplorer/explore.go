@@ -102,6 +102,7 @@ func runExploreCmd(c *cli.Context) error {
 	}
 
 	heightResolver := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		h, ok := r.URL.Query()["h"]
 		w.Header().Set("Content-Type", "text/plain")
 		if !ok || len(h[0]) < 1 || client == nil {

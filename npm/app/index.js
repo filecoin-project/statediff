@@ -13,8 +13,9 @@ const renderer = require('./renderer');
 let renderedRoot = null;
 
 async function GetCurrentRoot() {
-    let data = await fetch("head").then((r) => {
-        return r.text();
+    let data = await fetch("head").then(async (r) => {
+        let cids = await r.json()
+        return cids[0]["/"];
     });
     return data;
 }
