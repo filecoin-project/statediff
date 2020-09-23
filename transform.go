@@ -345,10 +345,10 @@ func transformMinerActorDeadlinePartitions(ctx context.Context, c cid.Cid, store
 		return nil, err
 	}
 
-	m := make(map[int64]storageMinerActor.Partition)
+	m := make(map[int64]MinerPartitionJSONBitfield)
 	value := storageMinerActor.Partition{}
 	if err := list.ForEach(&value, func(k int64) error {
-		m[k] = value
+		m[k] = MinerPartitionJSONBitfield{value}
 		return nil
 	}); err != nil {
 		return nil, err
