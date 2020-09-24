@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ipld/go-ipld-prime/codec/dagjson"
+	"github.com/filecoin-project/statediff/codec/fcjson"
 	ipld "github.com/ipld/go-ipld-prime"
 
 	"github.com/filecoin-project/go-state-types/abi"
@@ -88,7 +88,7 @@ func runExploreCmd(c *cli.Context) error {
 		}
 		if node, ok := transformed.(ipld.Node); ok {
 			w.Header().Set("Content-Type", "application/json")
-			_ = dagjson.Encoder(node, w)
+			_ = fcjson.Encoder(node, w)
 			return
 		}
 		transformedBytes, err := json.Marshal(transformed)

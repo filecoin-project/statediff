@@ -26,10 +26,12 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/multiformats/go-multiaddr v0.3.1
 	github.com/multiformats/go-multiaddr-net v0.2.0
+	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
 	github.com/urfave/cli/v2 v2.2.0
 	github.com/whyrusleeping/cbor-gen v0.0.0-20200814224545-656e08ce49ee
 	github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345
 )
 
 replace github.com/filecoin-project/filecoin-ffi => ./extern/filecoin-ffi
+
 //replace github.com/filecoin-project/filecoin-ffi => github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20200904233626-6a3c8611ff64
