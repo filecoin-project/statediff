@@ -49,8 +49,8 @@ func GenerateWinningPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomnes
 	return nil, nil
 }
 
-func GenerateWindowPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]proof.PoStProof, error) {
-	return nil, nil
+func GenerateWindowPoSt(abi.ActorID, SortedPrivateSectorInfo, abi.PoStRandomness) ([]proof.PoStProof, []abi.SectorNumber, error) {
+	return nil, nil, nil
 }
 
 type SortedPrivateSectorInfo struct{ abi.SectorNumber }

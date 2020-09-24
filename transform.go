@@ -14,10 +14,12 @@ import (
 	"github.com/ipfs/go-ipfs-blockstore"
 	cbor "github.com/ipfs/go-ipld-cbor"
 	cbg "github.com/whyrusleeping/cbor-gen"
+	"github.com/ipld/go-ipld-prime/codec/dagcbor"
+
+	"github.com/filecoin-project/statediff/types"
 
 	lotusTypes "github.com/filecoin-project/lotus/chain/types"
 
-	accountActor "github.com/filecoin-project/specs-actors/actors/builtin/account"
 	cronActor "github.com/filecoin-project/specs-actors/actors/builtin/cron"
 	initActor "github.com/filecoin-project/specs-actors/actors/builtin/init"
 	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
@@ -166,9 +168,11 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		err := cbor.DecodeInto(data, &dest)
 		return dest, err
 	case AccountActorState:
-		dest := accountActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		na := types.Type.AccountV0State.NewBuilder()
+		if err := dagcbor.Decoder(na, bytes.NewBuffer(data)); err != nil {
+			return nil, err
+		}
+		return na.Build(), nil
 	case CronActorState:
 		dest := cronActor.State{}
 		err := cbor.DecodeInto(data, &dest)
