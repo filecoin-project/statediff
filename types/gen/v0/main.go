@@ -7,4 +7,5 @@ import (
 func Accumulate(ts schema.TypeSystem) {
 	accumulateAccount(ts)
 	accumulateCron(ts)
+	accumulateInit(ts)
 }

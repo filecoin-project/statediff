@@ -6,4 +6,5 @@ import (
 
 func accumulateABI(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnInt("MethodNum"))
+	ts.Accumulate(schema.SpawnInt("ActorID"))
 }
