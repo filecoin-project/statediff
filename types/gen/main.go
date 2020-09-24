@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/filecoin-project/statediff/types/gen/v0"
 
@@ -11,6 +12,11 @@ import (
 )
 
 func main() {
+	if len(os.Args) < 2 {
+		fmt.Printf("Must specify destination directory")
+		os.Exit(1)
+	}
+
 	ts := schema.TypeSystem{}
 	ts.Init()
 	adjCfg := &gengo.AdjunctCfg{
@@ -68,5 +74,5 @@ func main() {
 		panic("not happening")
 	}
 
-	gengo.Generate("..", "types", ts, adjCfg)
+	gengo.Generate(os.Args[1], "types", ts, adjCfg)
 }

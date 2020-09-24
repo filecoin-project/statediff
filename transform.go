@@ -1,5 +1,7 @@
 package statediff
 
+//go:generate go run ./types/gen ./types
+
 import (
 	"bytes"
 	"context"
