@@ -20,7 +20,6 @@ import (
 
 	lotusTypes "github.com/filecoin-project/lotus/chain/types"
 
-	cronActor "github.com/filecoin-project/specs-actors/actors/builtin/cron"
 	initActor "github.com/filecoin-project/specs-actors/actors/builtin/init"
 	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
 	storageMinerActor "github.com/filecoin-project/specs-actors/actors/builtin/miner"
@@ -168,15 +167,17 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		err := cbor.DecodeInto(data, &dest)
 		return dest, err
 	case AccountActorState:
-		na := types.Type.AccountV0State.NewBuilder()
+		na := types.Type.AccountV0State__Repr.NewBuilder()
 		if err := dagcbor.Decoder(na, bytes.NewBuffer(data)); err != nil {
 			return nil, err
 		}
 		return na.Build(), nil
 	case CronActorState:
-		dest := cronActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		na := types.Type.CronV0State__Repr.NewBuilder()
+		if err := dagcbor.Decoder(na, bytes.NewBuffer(data)); err != nil {
+			return nil, err
+		}
+		return na.Build(), nil
 	case InitActorState:
 		dest := initActor.State{}
 		err := cbor.DecodeInto(data, &dest)

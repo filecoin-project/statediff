@@ -11,6 +11,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/ipld/go-ipld-prime/codec/dagjson"
+	ipld "github.com/ipld/go-ipld-prime"
+
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/statediff"
@@ -81,6 +84,11 @@ func runExploreCmd(c *cli.Context) error {
 		if err != nil {
 			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
+			return
+		}
+		if node, ok := transformed.(ipld.Node); ok {
+			w.Header().Set("Content-Type", "application/json")
+			_ = dagjson.Encoder(node, w)
 			return
 		}
 		transformedBytes, err := json.Marshal(transformed)

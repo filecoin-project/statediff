@@ -23,6 +23,10 @@ type typeSlab struct {
 	Bool__Repr _Bool__ReprPrototype
 	Bytes       _Bytes__Prototype
 	Bytes__Repr _Bytes__ReprPrototype
+	CronV0Entry       _CronV0Entry__Prototype
+	CronV0Entry__Repr _CronV0Entry__ReprPrototype
+	CronV0State       _CronV0State__Prototype
+	CronV0State__Repr _CronV0State__ReprPrototype
 	Float       _Float__Prototype
 	Float__Repr _Float__ReprPrototype
 	Int       _Int__Prototype
@@ -31,8 +35,12 @@ type typeSlab struct {
 	Link__Repr _Link__ReprPrototype
 	List       _List__Prototype
 	List__Repr _List__ReprPrototype
+	List__CronV0Entry       _List__CronV0Entry__Prototype
+	List__CronV0Entry__Repr _List__CronV0Entry__ReprPrototype
 	Map       _Map__Prototype
 	Map__Repr _Map__ReprPrototype
+	MethodNum       _MethodNum__Prototype
+	MethodNum__Repr _MethodNum__ReprPrototype
 	String       _String__Prototype
 	String__Repr _String__ReprPrototype
 }
