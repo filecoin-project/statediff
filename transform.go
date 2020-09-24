@@ -22,7 +22,6 @@ import (
 
 	lotusTypes "github.com/filecoin-project/lotus/chain/types"
 
-	initActor "github.com/filecoin-project/specs-actors/actors/builtin/init"
 	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
 	storageMinerActor "github.com/filecoin-project/specs-actors/actors/builtin/miner"
 	multisigActor "github.com/filecoin-project/specs-actors/actors/builtin/multisig"
@@ -181,9 +180,11 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		}
 		return na.Build(), nil
 	case InitActorState:
-		dest := initActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		na := types.Type.InitV0State__Repr.NewBuilder()
+		if err := dagcbor.Decoder(na, bytes.NewBuffer(data)); err != nil {
+			return nil, err
+		}
+		return na.Build(), nil
 	case MarketActorState:
 		dest := marketActor.State{}
 		err := cbor.DecodeInto(data, &dest)
