@@ -13,4 +13,5 @@ func accumulateInit(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	// TODO: AddressMap hamt[Address]ActorID
 }

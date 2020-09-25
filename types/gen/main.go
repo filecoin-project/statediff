@@ -64,6 +64,7 @@ func main() {
 
 	accumulateABI(ts)
 	ts.Accumulate(schema.SpawnBytes("Address"))
+	ts.Accumulate(schema.SpawnList("List__Address", "Address", true))
 	v0.Accumulate(ts)
 	
 
