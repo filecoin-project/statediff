@@ -11,6 +11,7 @@ import (
 
 	addr "github.com/filecoin-project/go-address"
 	bitfield "github.com/filecoin-project/go-bitfield"
+	cboriface "github.com/filecoin-project/go-state-types/cbor"
 	chainState "github.com/filecoin-project/lotus/chain/state"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/lib/blockstore"
@@ -23,7 +24,6 @@ import (
 	storagePowerActor "github.com/filecoin-project/specs-actors/actors/builtin/power"
 	rewardActor "github.com/filecoin-project/specs-actors/actors/builtin/reward"
 	verifiedRegistryActor "github.com/filecoin-project/specs-actors/actors/builtin/verifreg"
-	cboriface "github.com/filecoin-project/go-state-types/cbor"
 	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 	blocks "github.com/ipfs/go-block-format"
 	"github.com/ipfs/go-cid"

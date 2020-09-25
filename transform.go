@@ -15,8 +15,8 @@ import (
 	hamt "github.com/ipfs/go-hamt-ipld"
 	"github.com/ipfs/go-ipfs-blockstore"
 	cbor "github.com/ipfs/go-ipld-cbor"
-	cbg "github.com/whyrusleeping/cbor-gen"
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"
+	cbg "github.com/whyrusleeping/cbor-gen"
 
 	"github.com/filecoin-project/statediff/types"
 
@@ -75,24 +75,24 @@ const (
 )
 
 var LotusTypeAliases = map[string]LotusType{
-	"tipset.ParentStateRoot": LotusTypeStateroot,
-	"initActor.AddressMap": InitActorAddresses,
+	"tipset.ParentStateRoot":           LotusTypeStateroot,
+	"initActor.AddressMap":             InitActorAddresses,
 	"storagePowerActor.CronEventQueue": StoragePowerActorCronEventQueue,
-    "storagePowerActor.Claims": StoragePowerActorClaims,
+	"storagePowerActor.Claims":         StoragePowerActorClaims,
 }
 
 var LotusActorCodes = map[string]LotusType{
-		"bafkqaddgnfwc6mjpon4xg5dfnu": LotusType("systemActor"),
-		"bafkqactgnfwc6mjpnfxgs5a": InitActorState,
-		"bafkqaddgnfwc6mjpojsxoylsmq": RewardActorState,
-		"bafkqactgnfwc6mjpmnzg63q": CronActorState,
-		"bafkqaetgnfwc6mjpon2g64tbm5sxa33xmvza": StoragePowerActorState,
-		"bafkqae3gnfwc6mjpon2g64tbm5sw2ylsnnsxi": MarketActorState,
-		"bafkqaftgnfwc6mjpozsxe2lgnfswi4tfm5uxg5dspe": VerifiedRegistryActorState,
-		"bafkqadlgnfwc6mjpmfrwg33vnz2a": AccountActorState,
-		"bafkqadtgnfwc6mjpnv2wy5djonuwo": MultisigActorState,
-		"bafkqafdgnfwc6mjpobqxs3lfnz2gg2dbnzxgk3a": PaymentChannelActorState,
-		"bafkqaetgnfwc6mjpon2g64tbm5sw22lomvza": StorageMinerActorState,
+	"bafkqaddgnfwc6mjpon4xg5dfnu":                 LotusType("systemActor"),
+	"bafkqactgnfwc6mjpnfxgs5a":                    InitActorState,
+	"bafkqaddgnfwc6mjpojsxoylsmq":                 RewardActorState,
+	"bafkqactgnfwc6mjpmnzg63q":                    CronActorState,
+	"bafkqaetgnfwc6mjpon2g64tbm5sxa33xmvza":       StoragePowerActorState,
+	"bafkqae3gnfwc6mjpon2g64tbm5sw2ylsnnsxi":      MarketActorState,
+	"bafkqaftgnfwc6mjpozsxe2lgnfswi4tfm5uxg5dspe": VerifiedRegistryActorState,
+	"bafkqadlgnfwc6mjpmfrwg33vnz2a":               AccountActorState,
+	"bafkqadtgnfwc6mjpnv2wy5djonuwo":              MultisigActorState,
+	"bafkqafdgnfwc6mjpobqxs3lfnz2gg2dbnzxgk3a":    PaymentChannelActorState,
+	"bafkqaetgnfwc6mjpon2g64tbm5sw22lomvza":       StorageMinerActorState,
 }
 
 var simplifyingRe = regexp.MustCompile(`\[\d+\]`)

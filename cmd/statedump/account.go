@@ -7,9 +7,8 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-
 var changedFlag = cli.BoolFlag{
-	Name: "changed",
+	Name:  "changed",
 	Usage: "When set, only actors which have changed since previous root.",
 	Value: false,
 }

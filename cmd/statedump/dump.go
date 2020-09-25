@@ -7,21 +7,21 @@ import (
 	"os"
 	"runtime/pprof"
 
+	"github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/lib"
-	"github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/ipfs/go-cid"
 	"github.com/urfave/cli/v2"
 )
 
 var byActorFlag = cli.BoolFlag{
-	Name: "byActor",
+	Name:  "byActor",
 	Usage: "When set, one line of json is output for each actor",
 	Value: false,
 }
 
 var profileFlag = cli.StringFlag{
-	Name: "profile",
+	Name:  "profile",
 	Usage: "collect cpu profile",
 }
 
@@ -45,13 +45,13 @@ var denormalizedTipsetKeys = []string{"BeaconEntries", "ElectionProof", "ForkSig
 
 func runDumpCmd(c *cli.Context) error {
 	if c.String(profileFlag.Name) != "" {
-        f, err := os.Create(c.String(profileFlag.Name))
-        if err != nil {
+		f, err := os.Create(c.String(profileFlag.Name))
+		if err != nil {
 			return err
-        }
-        pprof.StartCPUProfile(f)
-        defer pprof.StopCPUProfile()
-    }
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+	}
 
 	_, head, store, err := lib.GetBlockstore(c)
 	if err != nil {
@@ -98,14 +98,13 @@ func runDumpCmd(c *cli.Context) error {
 	return nil
 }
 
-
 func ToJSON(ctx context.Context, store blockstore.Blockstore, as string, c cid.Cid) (interface{}, error) {
 	// Load Data
 	transformed, err := statediff.Transform(ctx, c, store, as)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Destructure to untyped.
 	flat, err := json.Marshal(transformed)
 	if err != nil {
@@ -193,7 +192,7 @@ func unfollow(m map[string]interface{}, k string) {
 
 func unfollowObj(m map[string]interface{}) interface{} {
 	if c, ok := m["/"]; ok && len(m) == 1 {
-		return c;
+		return c
 	}
 	for k2, _ := range m {
 		unfollow(m, k2)
@@ -217,9 +216,9 @@ func unfollowSlice(l []interface{}) []interface{} {
 
 func follow(ctx context.Context, store blockstore.Blockstore, as string, m map[string]interface{}, k string) {
 	if a, ok := m[k].(map[string]interface{}); ok {
-		m[k] = followObj(ctx, store, as + "." + k, a)
+		m[k] = followObj(ctx, store, as+"."+k, a)
 	} else if b, ok := m[k].([]interface{}); ok {
-		m[k] = followSlice(ctx, store, as + "." + k, b)
+		m[k] = followSlice(ctx, store, as+"."+k, b)
 	}
 }
 
@@ -236,7 +235,7 @@ func followObj(ctx context.Context, store blockstore.Blockstore, as string, m ma
 		if err != nil {
 			return fmt.Sprintf("%s", err)
 		}
-		return j;
+		return j
 	}
 	for k2, _ := range m {
 		follow(ctx, store, as, m, k2)

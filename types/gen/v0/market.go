@@ -7,13 +7,13 @@ import (
 func accumulateMarket(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnStruct("MarketV0State",
 		[]schema.StructField{
-			schema.SpawnStructField("Proposals", "Link", false, false), //AMT[DealID]DealProposal
-			schema.SpawnStructField("States", "Link", false, false), //AMT[DealID]DealState
+			schema.SpawnStructField("Proposals", "Link", false, false),        //AMT[DealID]DealProposal
+			schema.SpawnStructField("States", "Link", false, false),           //AMT[DealID]DealState
 			schema.SpawnStructField("PendingProposals", "Link", false, false), // HAMT[DealCid]DealProposal
-			schema.SpawnStructField("EscrowTable", "Link", false, false),// BalanceTable
-			schema.SpawnStructField("LockedTable", "Link", false, false),// BalanceTable
+			schema.SpawnStructField("EscrowTable", "Link", false, false),      // BalanceTable
+			schema.SpawnStructField("LockedTable", "Link", false, false),      // BalanceTable
 			schema.SpawnStructField("NextID", "DealID", false, false),
-			schema.SpawnStructField("DealOpsByEpoch", "Link", false, false),// SetMultimap, HAMT[epoch]Set
+			schema.SpawnStructField("DealOpsByEpoch", "Link", false, false), // SetMultimap, HAMT[epoch]Set
 			schema.SpawnStructField("LastCron", "ChainEpoch", false, false),
 			schema.SpawnStructField("TotalClientLockedCollateral", "TokenAmount", false, false),
 			schema.SpawnStructField("TotalProviderLockedCollateral", "TokenAmount", false, false),
@@ -38,7 +38,7 @@ func accumulateMarket(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
-	
+
 	ts.Accumulate(schema.SpawnStruct("MarketV0DealState",
 		[]schema.StructField{
 			schema.SpawnStructField("SectorStartEpoch", "ChainEpoch", false, false),

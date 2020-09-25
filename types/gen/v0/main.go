@@ -10,4 +10,9 @@ func Accumulate(ts schema.TypeSystem) {
 	accumulateInit(ts)
 	accumulateMarket(ts)
 	accumulateMiner(ts)
+	accumulateMultisig(ts)
+	accumulatePaych(ts)
+	accumulatePower(ts)
+	accumulateReward(ts)
+	accumulateVerifiedRegistry(ts)
 }
