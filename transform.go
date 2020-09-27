@@ -13,27 +13,29 @@ import (
 	abi "github.com/filecoin-project/go-state-types/abi"
 	"github.com/ipfs/go-cid"
 	hamt "github.com/ipfs/go-hamt-ipld"
-	"github.com/ipfs/go-ipfs-blockstore"
 	cbor "github.com/ipfs/go-ipld-cbor"
+	"github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"
 	cbg "github.com/whyrusleeping/cbor-gen"
 
 	"github.com/filecoin-project/statediff/types"
 
 	lotusTypes "github.com/filecoin-project/lotus/chain/types"
+	"github.com/filecoin-project/lotus/lib/blockstore"
 
 	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
 	storageMinerActor "github.com/filecoin-project/specs-actors/actors/builtin/miner"
 	multisigActor "github.com/filecoin-project/specs-actors/actors/builtin/multisig"
 	paychActor "github.com/filecoin-project/specs-actors/actors/builtin/paych"
 	storagePowerActor "github.com/filecoin-project/specs-actors/actors/builtin/power"
-	rewardActor "github.com/filecoin-project/specs-actors/actors/builtin/reward"
 	verifiedRegistryActor "github.com/filecoin-project/specs-actors/actors/builtin/verifreg"
 	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 )
 
+// LotusType represents known types
 type LotusType string
 
+// LotusType enum
 const (
 	LotusTypeTipset                            LotusType = "tipset"
 	LotusTypeStateroot                         LotusType = "stateRoot"
@@ -74,6 +76,7 @@ const (
 	PaymentChannelActorLaneStates              LotusType = "paymentChannelActor.LaneStates"
 )
 
+// LotusTypeAliases lists non-direct mapped aliases
 var LotusTypeAliases = map[string]LotusType{
 	"tipset.ParentStateRoot":           LotusTypeStateroot,
 	"initActor.AddressMap":             InitActorAddresses,
@@ -81,6 +84,7 @@ var LotusTypeAliases = map[string]LotusType{
 	"storagePowerActor.Claims":         StoragePowerActorClaims,
 }
 
+// LotusActorCodes for v0 actor states
 var LotusActorCodes = map[string]LotusType{
 	"bafkqaddgnfwc6mjpon4xg5dfnu":                 LotusType("systemActor"),
 	"bafkqactgnfwc6mjpnfxgs5a":                    InitActorState,
@@ -98,6 +102,7 @@ var LotusActorCodes = map[string]LotusType{
 var simplifyingRe = regexp.MustCompile(`\[\d+\]`)
 var simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
 
+// ResolveType maps incoming type strings to enum known types
 func ResolveType(as string) LotusType {
 	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")), []byte(".")))
 	if alias, ok := LotusTypeAliases[as]; ok {
@@ -162,82 +167,48 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 	data := block.RawData()
 
 	// Then select types which use block data.
+	var assembler ipld.NodeBuilder
 	switch ResolveType(as) {
 	case LotusTypeTipset:
-		dest := lotusTypes.BlockHeader{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.LotusBlockHeader__Repr.NewBuilder()
 	case AccountActorState:
-		na := types.Type.AccountV0State__Repr.NewBuilder()
-		if err := dagcbor.Decoder(na, bytes.NewBuffer(data)); err != nil {
-			return nil, err
-		}
-		return na.Build(), nil
+		assembler = types.Type.AccountV0State__Repr.NewBuilder()
 	case CronActorState:
-		na := types.Type.CronV0State__Repr.NewBuilder()
-		if err := dagcbor.Decoder(na, bytes.NewBuffer(data)); err != nil {
-			return nil, err
-		}
-		return na.Build(), nil
+		assembler = types.Type.CronV0State__Repr.NewBuilder()
 	case InitActorState:
-		na := types.Type.InitV0State__Repr.NewBuilder()
-		if err := dagcbor.Decoder(na, bytes.NewBuffer(data)); err != nil {
-			return nil, err
-		}
-		return na.Build(), nil
+		assembler = types.Type.InitV0State__Repr.NewBuilder()
 	case MarketActorState:
-		dest := marketActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.MarketV0State__Repr.NewBuilder()
 	case MultisigActorState:
-		dest := multisigActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.MultisigV0State__Repr.NewBuilder()
 	case StorageMinerActorState:
-		dest := storageMinerActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.MinerV0State__Repr.NewBuilder()
 	case StorageMinerActorInfo:
-		dest := storageMinerActor.MinerInfo{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.MinerV0Info__Repr.NewBuilder()
 	case StorageMinerActorVestingFunds:
-		dest := storageMinerActor.VestingFunds{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.MinerV0VestingFunds__Repr.NewBuilder()
 	case StorageMinerActorAllocatedSectors:
-		dest := bitfield.BitField{}
-		err := cbor.DecodeInto(data, &dest)
-		return JSONBitField{dest}, err
+		assembler = types.Type.BitField__Repr.NewBuilder()
 	case StorageMinerActorDeadlines:
-		dest := storageMinerActor.Deadlines{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.MinerV0Deadlines__Repr.NewBuilder()
 	case StorageMinerActorDeadline:
-		dest := storageMinerActor.Deadline{}
-		err := cbor.DecodeInto(data, &dest)
-		return MinerDeadlineJSONBitfield{dest}, err
+		assembler = types.Type.MinerV0Deadline__Repr.NewBuilder()
 	case StoragePowerActorState:
-		dest := storagePowerActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.PowerV0State__Repr.NewBuilder()
 	case RewardActorState:
-		dest := rewardActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.RewardV0State__Repr.NewBuilder()
 	case VerifiedRegistryActorState:
-		dest := verifiedRegistryActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.VerifregV0State__Repr.NewBuilder()
 	case PaymentChannelActorState:
-		dest := paychActor.State{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		assembler = types.Type.PaychV0State__Repr.NewBuilder()
 	default:
-		var dest interface{}
-		err := cbor.DecodeInto(data, &dest)
-		return dest, err
+		return nil, fmt.Errorf("unknown type: %s", as)
 	}
+
+	if err := dagcbor.Decoder(assembler, bytes.NewBuffer(data)); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
 func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/filecoin-project/statediff/types/gen/v0"
+	v0 "github.com/filecoin-project/statediff/types/gen/v0"
 
 	ipld "github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/schema"
@@ -64,6 +64,9 @@ func main() {
 	accumulateABI(ts)
 	ts.Accumulate(schema.SpawnBytes("Address"))
 	ts.Accumulate(schema.SpawnList("List__Address", "Address", true))
+	ts.Accumulate(schema.SpawnList("List__Link", "Link", true))
+	accumulateCrypto(ts)
+	accumulateLotus(ts)
 	v0.Accumulate(ts)
 
 	if errs := ts.ValidateGraph(); errs != nil {

@@ -20,7 +20,6 @@ func accumulateMiner(ts schema.TypeSystem) {
 			schema.SpawnStructField("ProvingPeriodStart", "ChainEpoch", false, false),
 			schema.SpawnStructField("CurrentDeadline", "Int", false, false),
 			schema.SpawnStructField("Deadlines", "Link__MinerV0Deadlines", false, false),
-			schema.SpawnStructField("CurrentDeadline", "Int", false, false),
 			schema.SpawnStructField("EarlyTerminations", "BitField", false, false),
 		},
 		schema.StructRepresentation_Tuple{},
