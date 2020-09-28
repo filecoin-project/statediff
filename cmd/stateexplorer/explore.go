@@ -76,7 +76,7 @@ func runExploreCmd(c *cli.Context) error {
 		parsed, err := cid.Parse(keys[0])
 		if err != nil {
 			w.Header().Set("Content-Type", "text/plain")
-			w.Write([]byte(fmt.Sprintf("error: %w", err)))
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
 
@@ -88,7 +88,10 @@ func runExploreCmd(c *cli.Context) error {
 		}
 		if node, ok := transformed.(ipld.Node); ok {
 			w.Header().Set("Content-Type", "application/json")
-			_ = fcjson.Encoder(node, w)
+			err = fcjson.Encoder(node, w)
+			if err != nil {
+				w.Write([]byte(fmt.Sprintf("error: %s", err)))
+			}
 			return
 		}
 		transformedBytes, err := json.Marshal(transformed)

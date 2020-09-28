@@ -70,7 +70,6 @@ func main() {
 	accumulateCrypto(ts)
 	accumulateLotus(ts)
 	v0.Accumulate(ts)
-	ts.Accumulate(schema.SpawnMap("Map__RawAddress", "RawAddress", "Any", false))
 
 	if errs := ts.ValidateGraph(); errs != nil {
 		for _, err := range errs {

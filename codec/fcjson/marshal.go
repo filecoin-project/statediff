@@ -151,7 +151,9 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 		} else if _, ok := n.(types.BitField); ok {
 			b, err := bitfield.NewFromBytes(v)
 			if err != nil {
-				return err
+				if err = b.UnmarshalCBOR(bytes.NewBuffer(v)); err != nil {
+					return err
+				}
 			}
 			tk.Type = tok.TMapOpen
 			tk.Length = 2

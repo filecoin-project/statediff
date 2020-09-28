@@ -16,6 +16,8 @@ func accumulateABI(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnInt("SectorNumber"))
 	ts.Accumulate(schema.SpawnLinkReference("Link__BitField", "BitField"))
 	ts.Accumulate(schema.SpawnBytes("BitField"))
+	ts.Accumulate(schema.SpawnMap("Map__BitField", "String", "BitField", true))
+
 	ts.Accumulate(schema.SpawnLink("RegisteredSealProof"))
 	//ts.Accumulate(schema.SpawnBytes("StoragePower")) // big.Int
 

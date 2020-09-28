@@ -10,7 +10,6 @@ import (
 	"regexp"
 
 	addr "github.com/filecoin-project/go-address"
-	"github.com/filecoin-project/go-bitfield"
 	abi "github.com/filecoin-project/go-state-types/abi"
 	"github.com/ipfs/go-cid"
 	hamt "github.com/ipfs/go-hamt-ipld"
@@ -24,7 +23,6 @@ import (
 	"github.com/filecoin-project/lotus/lib/blockstore"
 
 	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
-	storageMinerActor "github.com/filecoin-project/specs-actors/actors/builtin/miner"
 	multisigActor "github.com/filecoin-project/specs-actors/actors/builtin/multisig"
 	paychActor "github.com/filecoin-project/specs-actors/actors/builtin/paych"
 	storagePowerActor "github.com/filecoin-project/specs-actors/actors/builtin/power"
@@ -320,94 +318,140 @@ func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, stor
 	return assembler.Build(), nil
 }
 
-func transformMinerActorPreCommittedSectorsExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformMinerActorPreCommittedSectorsExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[int64]JSONBitField)
-	value := bitfield.BitField{}
+	assembler := types.Type.Map__BitField__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	value := CBORBytes{}
 	if err := list.ForEach(&value, func(k int64) error {
-		m[k] = JSONBitField{value}
-		return nil
+		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+		if err != nil {
+			return err
+		}
+
+		return v.AssignBytes(value)
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
-func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[int64]storageMinerActor.SectorOnChainInfo)
-	value := storageMinerActor.SectorOnChainInfo{}
+	assembler := types.Type.Map__SectorOnChainInfo__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	value := cbg.Deferred{}
 	if err := list.ForEach(&value, func(k int64) error {
-		m[k] = value
-		return nil
+		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+		if err != nil {
+			return err
+		}
+
+		actor := types.Type.MinerV0SectorOnChainInfo__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
-func transformMinerActorDeadlinePartitions(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformMinerActorDeadlinePartitions(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[int64]MinerPartitionJSONBitfield)
-	value := storageMinerActor.Partition{}
+	assembler := types.Type.Map__MinerV0Partition__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	value := cbg.Deferred{}
 	if err := list.ForEach(&value, func(k int64) error {
-		m[k] = MinerPartitionJSONBitfield{value}
-		return nil
+		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+		if err != nil {
+			return err
+		}
+
+		actor := types.Type.MinerV0Partition__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
-func transformMinerActorDeadlinePartitionExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformMinerActorDeadlinePartitionExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[int64]storageMinerActor.ExpirationSet)
-	value := storageMinerActor.ExpirationSet{}
+	assembler := types.Type.Map__MinerV0ExpirationSet__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	value := cbg.Deferred{}
 	if err := list.ForEach(&value, func(k int64) error {
-		m[k] = value
-		return nil
+		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+		if err != nil {
+			return err
+		}
+
+		actor := types.Type.MinerV0ExpirationSet__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
-func transformMinerActorDeadlineExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
-	cborStore := cbor.NewCborStore(store)
-	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
-	if err != nil {
-		return nil, err
-	}
-
-	m := make(map[int64]JSONBitField)
-	value := bitfield.BitField{}
-	if err := list.ForEach(&value, func(k int64) error {
-		m[k] = JSONBitField{value}
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-	return m, nil
+func transformMinerActorDeadlineExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+	return transformMinerActorPreCommittedSectorsExpiry(ctx, c, store)
 }
 
 func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {

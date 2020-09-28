@@ -8,6 +8,8 @@ import (
 	"bytes"
 	"encoding/hex"
 	"encoding/json"
+	"io"
+
 	"github.com/filecoin-project/go-bitfield"
 )
 
@@ -29,4 +31,19 @@ func (j JSONBitField) MarshalJSON() ([]byte, error) {
 		T: "bitfield",
 		B: hex.EncodeToString(b.Bytes()),
 	})
+}
+
+// Wraps already-serialized bytes as CBOR-marshalable.
+type CBORBytes []byte
+
+func (b CBORBytes) MarshalCBOR(w io.Writer) error {
+	_, err := w.Write(b)
+	return err
+}
+
+func (b *CBORBytes) UnmarshalCBOR(r io.Reader) error {
+	var c bytes.Buffer
+	_, err := c.ReadFrom(r)
+	*b = c.Bytes()
+	return err
 }
