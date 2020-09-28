@@ -18,7 +18,7 @@ func accumulatePower(ts schema.TypeSystem) {
 			schema.SpawnStructField("ThisEpochQAPowerSmoothed", "V0FilterEstimate", false, true),
 			schema.SpawnStructField("MinerCount", "Int", false, false),
 			schema.SpawnStructField("MinerAboveMinPowerCount", "Int", false, false),
-			schema.SpawnStructField("CronEventQueue", "Link", false, false), // Multimap, (HAMT[ChainEpoch]AMT[CronEvent]
+			schema.SpawnStructField("CronEventQueue", "Link__PowerV0CronEvent", false, false), // Multimap, (HAMT[ChainEpoch]AMT[CronEvent]
 			schema.SpawnStructField("FirstCronEpoch", "ChainEpoch", false, false),
 			schema.SpawnStructField("LastProcessedCronEpoch", "ChainEpoch", false, false),
 			schema.SpawnStructField("Claims", "Link", false, false), // Map, HAMT[address]Claim
@@ -33,6 +33,9 @@ func accumulatePower(ts schema.TypeSystem) {
 			schema.SpawnStructField("CallbackPayload", "Bytes", false, false),
 		},
 		schema.StructRepresentation_Tuple{}))
+	ts.Accumulate(schema.SpawnMap("Map__PowerV0CronEvent", "String", "PowerV0CronEvent", true))
+	ts.Accumulate(schema.SpawnMap("Multimap__PowerV0CronEvent", "String", "Map__PowerV0CronEvent", true)) //ChainEpoch keys
+	ts.Accumulate(schema.SpawnLinkReference("Link__PowerV0CronEvent", "Multimap__PowerV0CronEvent"))
 
 	ts.Accumulate(schema.SpawnStruct("PowerV0Claim",
 		[]schema.StructField{

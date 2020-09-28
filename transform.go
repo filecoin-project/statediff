@@ -454,30 +454,58 @@ func transformMinerActorDeadlineExpiry(ctx context.Context, c cid.Cid, store blo
 	return transformMinerActorPreCommittedSectorsExpiry(ctx, c, store)
 }
 
-func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	node, err := adt.AsMultimap(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
 		return nil, err
 	}
-	m := make(map[uint64]map[int64]storagePowerActor.CronEvent)
-	var key cbg.CborInt
+	assembler := types.Type.Multimap__PowerV0CronEvent__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
 	if err := node.ForAll(func(k string, val *adt.Array) error {
-		eval := storagePowerActor.CronEvent{}
-		items := make(map[int64]storagePowerActor.CronEvent)
+		bi := big.NewInt(0)
+		bi.SetBytes([]byte(k))
+		v, err := mapper.AssembleEntry(bi.String())
+		if err != nil {
+			return err
+		}
+
+		amt := types.Type.Map__PowerV0CronEvent__Repr.NewBuilder()
+		amtM, err := amt.BeginMap(0)
+		if err != nil {
+			return err
+		}
+
+		var eval cbg.Deferred
 		if err := val.ForEach(&eval, func(i int64) error {
-			items[i] = eval
-			return nil
+			subv, err := amtM.AssembleEntry(fmt.Sprintf("%d", i))
+			if err != nil {
+				return err
+			}
+
+			actor := types.Type.PowerV0CronEvent__Repr.NewBuilder()
+			if err := dagcbor.Decoder(actor, bytes.NewBuffer(eval.Raw)); err != nil {
+				return err
+			}
+			return subv.AssignNode(actor.Build())
 		}); err != nil {
 			return err
 		}
-		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
-		m[uint64(key)] = items
-		return nil
+		if err := amtM.Finish(); err != nil {
+			return err
+		}
+		return v.AssignNode(amt.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
 func transformPowerActorClaims(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
