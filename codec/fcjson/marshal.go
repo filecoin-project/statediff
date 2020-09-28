@@ -1,7 +1,9 @@
 package fcjson
 
 import (
+	"bytes"
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"math/big"
 
@@ -12,6 +14,7 @@ import (
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
 
 	"github.com/filecoin-project/go-address"
+	"github.com/filecoin-project/go-bitfield"
 	"github.com/filecoin-project/statediff/types"
 )
 
@@ -145,6 +148,36 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 			i := big.NewInt(0)
 			i.SetBytes(v)
 			tk.Str = i.String()
+		} else if _, ok := n.(types.BitField); ok {
+			b, err := bitfield.NewFromBytes(v)
+			if err != nil {
+				return err
+			}
+			tk.Type = tok.TMapOpen
+			tk.Length = 2
+			if _, err = sink.Step(&tk); err != nil {
+				return err
+			}
+			tk.Type = tok.TString
+			tk.Str = "_type"
+			if _, err = sink.Step(&tk); err != nil {
+				return err
+			}
+			tk.Str = "bitfield"
+			if _, err = sink.Step(&tk); err != nil {
+				return err
+			}
+			tk.Str = "bytes"
+			if _, err = sink.Step(&tk); err != nil {
+				return err
+			}
+			buf := bytes.NewBuffer([]byte{})
+			b.MarshalCBOR(buf)
+			tk.Str = hex.EncodeToString(buf.Bytes())
+			if _, err = sink.Step(&tk); err != nil {
+				return err
+			}
+			tk.Type = tok.TMapClose
 		} else {
 			tk.Str = base64.StdEncoding.EncodeToString(v)
 		}
