@@ -6,11 +6,11 @@ import (
 
 func accumulateReward(ts schema.TypeSystem) {
 
-	ts.Accumulate(schema.SpawnBytes("V0Spacetime"))
+	//ts.Accumulate(schema.SpawnBytes("V0Spacetime"))
 	ts.Accumulate(schema.SpawnStruct("RewardV0State",
 		[]schema.StructField{
-			schema.SpawnStructField("CumsumBaseline", "V0Spacetime", false, false),
-			schema.SpawnStructField("CumsumRealized", "V0Spacetime", false, false),
+			schema.SpawnStructField("CumsumBaseline", "BigInt", false, false), //Spacetime
+			schema.SpawnStructField("CumsumRealized", "BigInt", false, false), //Spacetime
 			schema.SpawnStructField("EffectiveNetworkTime", "ChainEpoch", false, false),
 			schema.SpawnStructField("EffectiveBaselinePower", "BigInt", false, false), //StoragePower
 			schema.SpawnStructField("ThisEpochReward", "BigInt", false, false),        //TokenAmount

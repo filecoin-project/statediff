@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"math/big"
 	"regexp"
 
 	addr "github.com/filecoin-project/go-address"
@@ -216,7 +217,7 @@ func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockst
 	if err != nil {
 		return nil, err
 	}
-	assembler := types.Type.Map__RawAddress__Repr.NewBuilder()
+	assembler := types.Type.Map__LotusActors__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
 		return nil, err
@@ -251,7 +252,7 @@ func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockst
 	if err != nil {
 		return nil, err
 	}
-	assembler := types.Type.Map__RawAddress__Repr.NewBuilder()
+	assembler := types.Type.Map__ActorID__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
 		return nil, err
@@ -279,26 +280,44 @@ func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockst
 	return assembler.Build(), nil
 }
 
-func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
-	table, err := adt.AsMap(adt.WrapStore(ctx, cborStore), c)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[uint64]storageMinerActor.SectorPreCommitOnChainInfo)
-	var value storageMinerActor.SectorPreCommitOnChainInfo
-	if err := table.ForEach(&value, func(k string) error {
-		key, err := abi.ParseUIntKey(k)
+	assembler := types.Type.Map__SectorPreCommitOnChainInfo__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := node.ForEach(ctx, func(k string, val interface{}) error {
+		i := big.NewInt(0)
+		i.SetBytes([]byte(k))
+		v, err := mapper.AssembleEntry(i.String())
 		if err != nil {
 			return err
 		}
-		m[key] = value
-		return nil
+
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+
+		actor := types.Type.MinerV0SectorPreCommitOnChainInfo__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
 func transformMinerActorPreCommittedSectorsExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {

@@ -75,4 +75,5 @@ func accumulateLotus(ts schema.TypeSystem) {
 			schema.SpawnStructField("Balance", "BigInt", false, false),
 		},
 		schema.StructRepresentation_Tuple{}))
+	ts.Accumulate(schema.SpawnMap("Map__LotusActors", "RawAddress", "LotusActors", false))
 }

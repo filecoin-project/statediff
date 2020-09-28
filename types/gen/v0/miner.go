@@ -11,10 +11,10 @@ func accumulateMiner(ts schema.TypeSystem) {
 			schema.SpawnStructField("PreCommitDeposits", "BigInt", false, false), //TokenAmount
 			schema.SpawnStructField("LockedFunds", "BigInt", false, false),       //TokenAmount
 			schema.SpawnStructField("VestingFunds", "Link__MinerV0VestingFunds", false, false),
-			schema.SpawnStructField("FeeDebt", "BigInt", false, false),                 //TokenAmount
-			schema.SpawnStructField("InitialPledge", "BigInt", false, false),           //TokenAmount
-			schema.SpawnStructField("PreCommittedSectors", "Link", false, false),       // Map, HAMT[SectorNumber]SectorPreCommitOnChainInfo
-			schema.SpawnStructField("PreCommittedSectorsExpiry", "Link", false, false), // BitFieldQueue (AMT[Epoch]*BitField)
+			// /schema.SpawnStructField("FeeDebt", "BigInt", false, false),                 //TokenAmount
+			schema.SpawnStructField("InitialPledgeRequirement", "BigInt", false, false),                   //TokenAmount
+			schema.SpawnStructField("PreCommittedSectors", "Link__MinerV0SectorPreCommits", false, false), // Map, HAMT[SectorNumber]SectorPreCommitOnChainInfo
+			schema.SpawnStructField("PreCommittedSectorsExpiry", "Link", false, false),                    // BitFieldQueue (AMT[Epoch]*BitField)
 			schema.SpawnStructField("AllocatedSectors", "Link__BitField", false, false),
 			schema.SpawnStructField("Sectors", "Link", false, false), // Array, AMT[SectorNumber]SectorOnChainInfo (sparse)
 			schema.SpawnStructField("ProvingPeriodStart", "ChainEpoch", false, false),
@@ -32,14 +32,14 @@ func accumulateMiner(ts schema.TypeSystem) {
 		[]schema.StructField{
 			schema.SpawnStructField("Owner", "Address", false, false),
 			schema.SpawnStructField("Worker", "Address", false, false),
-			schema.SpawnStructField("ControlAddresses", "List__Address", false, false),
+			schema.SpawnStructField("ControlAddresses", "List__Address", false, true),
 			schema.SpawnStructField("PendingWorkerKey", "MinerV0WorkerChangeKey", false, true),
 			schema.SpawnStructField("PeerId", "PeerID", false, false),
 			schema.SpawnStructField("Multiaddrs", "List__Multiaddrs", false, true),
-			schema.SpawnStructField("SealProofType", "RegisteredSealProof", false, false),
+			schema.SpawnStructField("SealProofType", "Int", false, false),
 			schema.SpawnStructField("SectorSize", "SectorSize", false, false),
 			schema.SpawnStructField("WindowPoStPartitionSectors", "Int", false, false),
-			schema.SpawnStructField("ConsensusFaultElapsed", "ChainEpoch", false, false),
+			//schema.SpawnStructField("ConsensusFaultElapsed", "ChainEpoch", false, false),
 		},
 		schema.StructRepresentation_Tuple{},
 	))
@@ -142,14 +142,16 @@ func accumulateMiner(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnMap("Map__SectorPreCommitOnChainInfo", "String", "MinerV0SectorPreCommitOnChainInfo", true)) // Key=SectorNumber
+	ts.Accumulate(schema.SpawnLinkReference("Link__MinerV0SectorPreCommits", "Map__SectorPreCommitOnChainInfo"))
 
 	ts.Accumulate(schema.SpawnStruct("MinerV0SectorPreCommitInfo",
 		[]schema.StructField{
-			schema.SpawnStructField("SealProof", "RegisteredSealProof", false, false),
+			schema.SpawnStructField("SealProof", "Int", false, false), // RegisteredSealProof
 			schema.SpawnStructField("SectorNumber", "SectorNumber", false, false),
 			schema.SpawnStructField("SealedCID", "Link", false, false),
 			schema.SpawnStructField("SealRandEpoch", "ChainEpoch", false, false),
-			schema.SpawnStructField("DealIDs", "List__DealID", false, false),
+			schema.SpawnStructField("DealIDs", "List__DealID", false, true),
 			schema.SpawnStructField("Expiration", "ChainEpoch", false, false),
 			schema.SpawnStructField("ReplaceCapacity", "Bool", false, false),
 			schema.SpawnStructField("ReplaceSectorDeadline", "Int", false, false),
