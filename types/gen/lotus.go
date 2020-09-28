@@ -13,7 +13,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 			schema.SpawnStructField("BeaconEntries", "List__LotusBeaconEntry", false, false),
 			schema.SpawnStructField("WinPoStProof", "List__PoStProof", false, false),
 			schema.SpawnStructField("Parents", "List__Link", false, false),
-			schema.SpawnStructField("ParentWeight", "Bytes", false, false), // big.int
+			schema.SpawnStructField("ParentWeight", "BigInt", false, false),
 			schema.SpawnStructField("Height", "ChainEpoch", false, false),
 			schema.SpawnStructField("ParentStateRoot", "Link__LotusStateRoot", false, false),
 			schema.SpawnStructField("ParentMessageReceipts", "Link", false, false),
@@ -22,7 +22,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 			schema.SpawnStructField("Timestamp", "Int", false, false),
 			schema.SpawnStructField("BlockSig", "Signature", false, true),
 			schema.SpawnStructField("ForkSignaling", "Int", false, false),
-			schema.SpawnStructField("ParentBaseFee", "TokenAmount", false, false),
+			schema.SpawnStructField("ParentBaseFee", "BigInt", false, false), //TokenAmount
 		},
 		schema.StructRepresentation_Tuple{},
 	))
@@ -64,6 +64,15 @@ func accumulateLotus(ts schema.TypeSystem) {
 			schema.SpawnStructField("Version", "Int", false, false),
 			schema.SpawnStructField("Actors", "Link", false, false),
 			schema.SpawnStructField("Info", "Link", false, false),
+		},
+		schema.StructRepresentation_Tuple{}))
+
+	ts.Accumulate(schema.SpawnStruct("LotusActors",
+		[]schema.StructField{
+			schema.SpawnStructField("Code", "Link", false, false),
+			schema.SpawnStructField("Head", "Link", false, false),
+			schema.SpawnStructField("Nonce", "Int", false, false),
+			schema.SpawnStructField("Balance", "BigInt", false, false),
 		},
 		schema.StructRepresentation_Tuple{}))
 }

@@ -8,7 +8,7 @@ func accumulatePaych(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnStruct("PaychV0State",
 		[]schema.StructField{
 			schema.SpawnStructField("To", "Address", false, false),
-			schema.SpawnStructField("ToSend", "TokenAmount", false, false),
+			schema.SpawnStructField("ToSend", "BigInt", false, false), //TokenAmount
 			schema.SpawnStructField("SettlingAt", "ChainEpoch", false, false),
 			schema.SpawnStructField("MinSettleHeight", "ChainEpoch", false, false),
 			schema.SpawnStructField("LateStates", "Link", false, false), //AMT<LaneState>

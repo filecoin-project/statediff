@@ -12,12 +12,12 @@ func accumulateReward(ts schema.TypeSystem) {
 			schema.SpawnStructField("CumsumBaseline", "V0Spacetime", false, false),
 			schema.SpawnStructField("CumsumRealized", "V0Spacetime", false, false),
 			schema.SpawnStructField("EffectiveNetworkTime", "ChainEpoch", false, false),
-			schema.SpawnStructField("EffectiveBaselinePower", "StoragePower", false, false),
-			schema.SpawnStructField("ThisEpochReward", "TokenAmount", false, false),
+			schema.SpawnStructField("EffectiveBaselinePower", "BigInt", false, false), //StoragePower
+			schema.SpawnStructField("ThisEpochReward", "BigInt", false, false),        //TokenAmount
 			schema.SpawnStructField("ThisEpochRewardSmoothed", "V0FilterEstimate", false, true),
-			schema.SpawnStructField("ThisEpochBaselinePower", "StoragePower", false, false),
+			schema.SpawnStructField("ThisEpochBaselinePower", "BigInt", false, false), //StoragePower
 			schema.SpawnStructField("Epoch", "ChainEpoch", false, false),
-			schema.SpawnStructField("TotalMined", "TokenAmount", false, false),
+			schema.SpawnStructField("TotalMined", "BigInt", false, false), //TokenAmount
 		},
 		schema.StructRepresentation_Tuple{},
 	))

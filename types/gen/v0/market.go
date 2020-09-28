@@ -15,9 +15,9 @@ func accumulateMarket(ts schema.TypeSystem) {
 			schema.SpawnStructField("NextID", "DealID", false, false),
 			schema.SpawnStructField("DealOpsByEpoch", "Link", false, false), // SetMultimap, HAMT[epoch]Set
 			schema.SpawnStructField("LastCron", "ChainEpoch", false, false),
-			schema.SpawnStructField("TotalClientLockedCollateral", "TokenAmount", false, false),
-			schema.SpawnStructField("TotalProviderLockedCollateral", "TokenAmount", false, false),
-			schema.SpawnStructField("TotalClientStorageFee", "TokenAmount", false, false),
+			schema.SpawnStructField("TotalClientLockedCollateral", "BigInt", false, false),   //TokenAmount
+			schema.SpawnStructField("TotalProviderLockedCollateral", "BigInt", false, false), //TokenAmount
+			schema.SpawnStructField("TotalClientStorageFee", "BigInt", false, false),         //TokenAmount
 		},
 		schema.StructRepresentation_Tuple{},
 	))
@@ -32,9 +32,9 @@ func accumulateMarket(ts schema.TypeSystem) {
 			schema.SpawnStructField("Label", "String", false, false),
 			schema.SpawnStructField("StartEpoch", "ChainEpoch", false, false),
 			schema.SpawnStructField("EndEpoch", "ChainEpoch", false, false),
-			schema.SpawnStructField("StoragePricePerEpoch", "TokenAmount", false, false),
-			schema.SpawnStructField("ProviderCollateral", "TokenAmount", false, false),
-			schema.SpawnStructField("ClientCollateral", "TokenAmount", false, false),
+			schema.SpawnStructField("StoragePricePerEpoch", "BigInt", false, false), //TokenAmount
+			schema.SpawnStructField("ProviderCollateral", "BigInt", false, false),   //TokenAmount
+			schema.SpawnStructField("ClientCollateral", "BigInt", false, false),     //TokenAmount
 		},
 		schema.StructRepresentation_Tuple{},
 	))

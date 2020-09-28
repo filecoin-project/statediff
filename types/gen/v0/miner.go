@@ -8,11 +8,11 @@ func accumulateMiner(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnStruct("MinerV0State",
 		[]schema.StructField{
 			schema.SpawnStructField("Info", "Link__MinerV0Info", false, false),
-			schema.SpawnStructField("PreCommitDeposits", "TokenAmount", false, false),
-			schema.SpawnStructField("LockedFunds", "TokenAmount", false, false),
+			schema.SpawnStructField("PreCommitDeposits", "BigInt", false, false), //TokenAmount
+			schema.SpawnStructField("LockedFunds", "BigInt", false, false),       //TokenAmount
 			schema.SpawnStructField("VestingFunds", "Link__MinerV0VestingFunds", false, false),
-			schema.SpawnStructField("FeeDebt", "TokenAmount", false, false),
-			schema.SpawnStructField("InitialPledge", "TokenAmount", false, false),
+			schema.SpawnStructField("FeeDebt", "BigInt", false, false),                 //TokenAmount
+			schema.SpawnStructField("InitialPledge", "BigInt", false, false),           //TokenAmount
 			schema.SpawnStructField("PreCommittedSectors", "Link", false, false),       // Map, HAMT[SectorNumber]SectorPreCommitOnChainInfo
 			schema.SpawnStructField("PreCommittedSectorsExpiry", "Link", false, false), // BitFieldQueue (AMT[Epoch]*BitField)
 			schema.SpawnStructField("AllocatedSectors", "Link__BitField", false, false),
@@ -66,7 +66,7 @@ func accumulateMiner(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnStruct("MinerV0VestingFund",
 		[]schema.StructField{
 			schema.SpawnStructField("Epoch", "ChainEpoch", false, false),
-			schema.SpawnStructField("Amount", "TokenAmount", false, false),
+			schema.SpawnStructField("Amount", "BigInt", false, false), //TokenAmount
 		},
 		schema.StructRepresentation_Tuple{},
 	))
@@ -98,8 +98,8 @@ func accumulateMiner(ts schema.TypeSystem) {
 	))
 	ts.Accumulate(schema.SpawnStruct("MinerV0PowerPair",
 		[]schema.StructField{
-			schema.SpawnStructField("Raw", "StoragePower", false, false),
-			schema.SpawnStructField("QA", "StoragePower", false, false),
+			schema.SpawnStructField("Raw", "BigInt", false, false), //StoragePower
+			schema.SpawnStructField("QA", "BigInt", false, false),  //StoragePower
 		},
 		schema.StructRepresentation_Tuple{},
 	))
@@ -125,7 +125,7 @@ func accumulateMiner(ts schema.TypeSystem) {
 		[]schema.StructField{
 			schema.SpawnStructField("OnTimeSectors", "BitField", false, false),
 			schema.SpawnStructField("EarlySectors", "BitField", false, false),
-			schema.SpawnStructField("OnTimePledge", "TokenAmount", false, false),
+			schema.SpawnStructField("OnTimePledge", "BigInt", false, false), //TokenAmount
 			schema.SpawnStructField("ActivePower", "MinerV0PowerPair", false, false),
 			schema.SpawnStructField("FaultyPower", "MinerV0PowerPair", false, false),
 		},
@@ -135,10 +135,10 @@ func accumulateMiner(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnStruct("MinerV0SectorPreCommitOnChainInfo",
 		[]schema.StructField{
 			schema.SpawnStructField("Info", "MinerV0SectorPreCommitInfo", false, false),
-			schema.SpawnStructField("PreCommitDeposit", "TokenAmount", false, false),
+			schema.SpawnStructField("PreCommitDeposit", "BigInt", false, false), //TokenAmount
 			schema.SpawnStructField("PreCommitEpoch", "ChainEpoch", false, false),
-			schema.SpawnStructField("DealWeight", "DealWeight", false, false),
-			schema.SpawnStructField("VerifiedDealWeight", "DealWeight", false, false),
+			schema.SpawnStructField("DealWeight", "BigInt", false, false),         //DealWeight
+			schema.SpawnStructField("VerifiedDealWeight", "BigInt", false, false), //DealWeight
 		},
 		schema.StructRepresentation_Tuple{},
 	))
@@ -167,13 +167,13 @@ func accumulateMiner(ts schema.TypeSystem) {
 			schema.SpawnStructField("DealIDs", "List__DealID", false, false),
 			schema.SpawnStructField("Activation", "ChainEpoch", false, false),
 			schema.SpawnStructField("Expiration", "ChainEpoch", false, false),
-			schema.SpawnStructField("DealWeight", "DealWeight", false, false),
-			schema.SpawnStructField("VerifiedDealWeight", "DealWeight", false, false),
-			schema.SpawnStructField("InitialPledge", "TokenAmount", false, false),
-			schema.SpawnStructField("ExpectedDayReward", "TokenAmount", false, false),
-			schema.SpawnStructField("ExpectedStorageReward", "TokenAmount", false, false),
+			schema.SpawnStructField("DealWeight", "BigInt", false, false),            //DealWeight
+			schema.SpawnStructField("VerifiedDealWeight", "BigInt", false, false),    //DealWeight
+			schema.SpawnStructField("InitialPledge", "BigInt", false, false),         //TokenAmount
+			schema.SpawnStructField("ExpectedDayReward", "BigInt", false, false),     //TokenAmount
+			schema.SpawnStructField("ExpectedStorageReward", "BigInt", false, false), //TokenAmount
 			schema.SpawnStructField("ReplacedSectorAge", "ChainEpoch", false, false),
-			schema.SpawnStructField("ReplacedDayReward", "TokenAmount", false, false),
+			schema.SpawnStructField("ReplacedDayReward", "BigInt", false, false), //TokenAmount
 		},
 		schema.StructRepresentation_Tuple{},
 	))

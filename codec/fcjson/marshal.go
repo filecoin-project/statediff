@@ -3,6 +3,7 @@ package fcjson
 import (
 	"encoding/base64"
 	"fmt"
+	"math/big"
 
 	"github.com/polydawn/refmt/shared"
 	"github.com/polydawn/refmt/tok"
@@ -42,6 +43,13 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 			tk.Str, err = k.AsString()
 			if err != nil {
 				return err
+			}
+			if _, ok := k.(types.RawAddress); ok {
+				a, err := address.NewFromBytes([]byte(tk.Str))
+				if err != nil {
+					return err
+				}
+				tk.Str = a.String()
 			}
 			if _, err := sink.Step(&tk); err != nil {
 				return err
@@ -108,8 +116,16 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 		if err != nil {
 			return err
 		}
+		if _, ok := n.(types.RawAddress); ok {
+			a, err := address.NewFromBytes([]byte(v))
+			if err != nil {
+				return err
+			}
+			tk.Str = a.String()
+		} else {
+			tk.Str = v
+		}
 		tk.Type = tok.TString
-		tk.Str = v
 		_, err = sink.Step(&tk)
 		return err
 	case ipld.ReprKind_Bytes:
@@ -125,6 +141,10 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 				return err
 			}
 			tk.Str = a.String()
+		} else if _, ok := n.(types.BigInt); ok {
+			i := big.NewInt(0)
+			i.SetBytes(v)
+			tk.Str = i.String()
 		} else {
 			tk.Str = base64.StdEncoding.EncodeToString(v)
 		}

@@ -20,7 +20,6 @@ import (
 
 	"github.com/filecoin-project/statediff/types"
 
-	lotusTypes "github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/lib/blockstore"
 
 	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
@@ -211,28 +210,39 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 	return assembler.Build(), nil
 }
 
-func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
 		return nil, err
 	}
-	m := make(map[string]*lotusTypes.Actor)
+	assembler := types.Type.Map__RawAddress__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
 	node.ForEach(ctx, func(k string, val interface{}) error {
-		actor := lotusTypes.Actor{}
+		v, err := mapper.AssembleEntry(k)
+		if err != nil {
+			return err
+		}
+
 		asDef, ok := val.(*cbg.Deferred)
 		if !ok {
 			return fmt.Errorf("unexpected non-cbg.Deferred")
 		}
-		err := cbor.DecodeInto(asDef.Raw, &actor)
-		if err != nil {
+
+		actor := types.Type.LotusActors__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
 			return err
 		}
-		a, _ := addr.NewFromBytes([]byte(k))
-		m[a.String()] = &actor
-		return nil
+		return v.AssignNode(actor.Build())
 	})
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
 func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {

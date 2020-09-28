@@ -5,7 +5,7 @@ import (
 )
 
 func accumulateVerifiedRegistry(ts schema.TypeSystem) {
-	ts.Accumulate(schema.SpawnBytes("DataCap")) // = StoragePower = big.int
+	//ts.Accumulate(schema.SpawnBytes("DataCap")) // = StoragePower = big.int
 	ts.Accumulate(schema.SpawnStruct("VerifregV0State",
 		[]schema.StructField{
 			schema.SpawnStructField("RootKey", "Address", false, false),
