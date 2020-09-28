@@ -245,28 +245,38 @@ func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockst
 	return assembler.Build(), nil
 }
 
-func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
 		return nil, err
 	}
-	m := make(map[string]uint64)
+	assembler := types.Type.Map__RawAddress__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
 	var actorID cbg.CborInt
 	node.ForEach(ctx, func(k string, val interface{}) error {
+		v, err := mapper.AssembleEntry(k)
+		if err != nil {
+			return err
+		}
+
 		asDef, ok := val.(*cbg.Deferred)
 		if !ok {
 			return fmt.Errorf("unexpected non-cbg.Deferred")
 		}
-		err := cbor.DecodeInto(asDef.Raw, &actorID)
-		if err != nil {
+		if err := cbor.DecodeInto(asDef.Raw, &actorID); err != nil {
 			return err
 		}
-		a, _ := addr.NewFromBytes([]byte(k))
-		m[a.String()] = uint64(actorID)
-		return nil
+		return v.AssignInt(int(actorID))
 	})
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
 func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
