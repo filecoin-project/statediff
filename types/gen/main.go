@@ -64,6 +64,7 @@ func main() {
 	accumulateABI(ts)
 	ts.Accumulate(schema.SpawnBytes("Address"))
 	ts.Accumulate(schema.SpawnString("RawAddress"))
+	ts.Accumulate(schema.SpawnString("CidString"))
 	ts.Accumulate(schema.SpawnList("List__Address", "Address", true))
 	ts.Accumulate(schema.SpawnList("List__Link", "Link", true))
 	ts.Accumulate(schema.SpawnBytes("BigInt"))

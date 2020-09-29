@@ -7,11 +7,11 @@ import (
 func accumulateMarket(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnStruct("MarketV0State",
 		[]schema.StructField{
-			schema.SpawnStructField("Proposals", "Link", false, false),        //AMT[DealID]DealProposal
-			schema.SpawnStructField("States", "Link", false, false),           //AMT[DealID]DealState
-			schema.SpawnStructField("PendingProposals", "Link", false, false), // HAMT[DealCid]DealProposal
-			schema.SpawnStructField("EscrowTable", "Link", false, false),      // BalanceTable
-			schema.SpawnStructField("LockedTable", "Link", false, false),      // BalanceTable
+			schema.SpawnStructField("Proposals", "Link__MarketV0RawDealProposal", false, false),     //AMT[DealID]DealProposal
+			schema.SpawnStructField("States", "Link__MarketV0DealState", false, false),              //AMT[DealID]DealState
+			schema.SpawnStructField("PendingProposals", "Link__MarketV0DealProposal", false, false), // HAMT[DealCid]DealProposal
+			schema.SpawnStructField("EscrowTable", "Link__BalanceTable", false, false),              // BalanceTable
+			schema.SpawnStructField("LockedTable", "Link__BalanceTable", false, false),              // BalanceTable
 			schema.SpawnStructField("NextID", "DealID", false, false),
 			schema.SpawnStructField("DealOpsByEpoch", "Link", false, false), // SetMultimap, HAMT[epoch]Set
 			schema.SpawnStructField("LastCron", "ChainEpoch", false, false),
@@ -38,6 +38,10 @@ func accumulateMarket(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnMap("Map__MarketV0DealProposal", "CidString", "MarketV0DealProposal", false))
+	ts.Accumulate(schema.SpawnLinkReference("Link__MarketV0DealProposal", "Map__MarketV0DealProposal"))
+	ts.Accumulate(schema.SpawnMap("Map__MarketV0RawDealProposal", "String", "MarketV0DealProposal", false))
+	ts.Accumulate(schema.SpawnLinkReference("Link__MarketV0RawDealProposal", "Map__MarketV0RawDealProposal"))
 
 	ts.Accumulate(schema.SpawnStruct("MarketV0DealState",
 		[]schema.StructField{
@@ -47,4 +51,9 @@ func accumulateMarket(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnMap("Map__MarketV0DealState", "String", "MarketV0DealState", false))
+	ts.Accumulate(schema.SpawnLinkReference("Link__MarketV0DealState", "Map__MarketV0DealState"))
+
+	ts.Accumulate(schema.SpawnMap("Map__BalanceTable", "RawAddress", "BigInt", false))
+	ts.Accumulate(schema.SpawnLinkReference("Link__BalanceTable", "Map__BalanceTable"))
 }

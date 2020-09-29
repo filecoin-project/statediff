@@ -21,6 +21,7 @@ func accumulateABI(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnLink("RegisteredSealProof"))
 	//ts.Accumulate(schema.SpawnBytes("StoragePower")) // big.Int
 
+	ts.Accumulate(schema.SpawnMap("Map__List__DealID", "String", "List__DealID", false))
 	ts.Accumulate(schema.SpawnList("List__DealID", "DealID", true))
 	ts.Accumulate(schema.SpawnInt("DealID"))
 	//ts.Accumulate(schema.SpawnBytes("DealWeight")) // big.Int

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/ipfs/go-cid"
 	"github.com/polydawn/refmt/shared"
 	"github.com/polydawn/refmt/tok"
 
@@ -53,6 +54,12 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 					return err
 				}
 				tk.Str = a.String()
+			} else if _, ok := k.(types.CidString); ok {
+				c := cid.Undef
+				if err := c.UnmarshalBinary([]byte(tk.Str)); err != nil {
+					return err
+				}
+				tk.Str = c.String()
 			}
 			if _, err := sink.Step(&tk); err != nil {
 				return err
@@ -125,6 +132,12 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 				return err
 			}
 			tk.Str = a.String()
+		} else if _, ok := n.(types.CidString); ok {
+			c := cid.Undef
+			if err := c.UnmarshalBinary([]byte(v)); err != nil {
+				return err
+			}
+			tk.Str = c.String()
 		} else {
 			tk.Str = v
 		}

@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/filecoin-project/statediff/codec/fcjson"
-	ipld "github.com/ipld/go-ipld-prime"
 
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/chain/types"
@@ -86,22 +85,11 @@ func runExploreCmd(c *cli.Context) error {
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
-		if node, ok := transformed.(ipld.Node); ok {
-			w.Header().Set("Content-Type", "application/json")
-			err = fcjson.Encoder(node, w)
-			if err != nil {
-				w.Write([]byte(fmt.Sprintf("error: %s", err)))
-			}
-			return
-		}
-		transformedBytes, err := json.Marshal(transformed)
-		if err != nil {
-			w.Header().Set("Content-Type", "text/plain")
-			w.Write([]byte(fmt.Sprintf("error: %s", err)))
-			return
-		}
 		w.Header().Set("Content-Type", "application/json")
-		io.WriteString(w, string(transformedBytes))
+		err = fcjson.Encoder(transformed, w)
+		if err != nil {
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
+		}
 	}
 
 	headResolver := func(w http.ResponseWriter, r *http.Request) {

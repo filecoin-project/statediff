@@ -9,7 +9,6 @@ import (
 	"math/big"
 	"regexp"
 
-	addr "github.com/filecoin-project/go-address"
 	abi "github.com/filecoin-project/go-state-types/abi"
 	"github.com/ipfs/go-cid"
 	hamt "github.com/ipfs/go-hamt-ipld"
@@ -22,11 +21,6 @@ import (
 
 	"github.com/filecoin-project/lotus/lib/blockstore"
 
-	marketActor "github.com/filecoin-project/specs-actors/actors/builtin/market"
-	multisigActor "github.com/filecoin-project/specs-actors/actors/builtin/multisig"
-	paychActor "github.com/filecoin-project/specs-actors/actors/builtin/paych"
-	storagePowerActor "github.com/filecoin-project/specs-actors/actors/builtin/power"
-	verifiedRegistryActor "github.com/filecoin-project/specs-actors/actors/builtin/verifreg"
 	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 )
 
@@ -43,7 +37,7 @@ const (
 	InitActorAddresses                         LotusType = "initActorAddresses"
 	MarketActorState                           LotusType = "storageMarketActor"
 	MarketActorProposals                       LotusType = "storageMarketActor.Proposals"
-	MarketActorStates                          LotusType = "storageMarketActor.State"
+	MarketActorStates                          LotusType = "storageMarketActor.States"
 	MarketActorPendingProposals                LotusType = "storageMarketActor.PendingProposals"
 	MarketActorEscrowTable                     LotusType = "storageMarketActor.EscrowTable"
 	MarketActorLockedTable                     LotusType = "storageMarketActor.LockedTable"
@@ -110,7 +104,7 @@ func ResolveType(as string) LotusType {
 }
 
 // Transform will unmarshal cbor data based on a provided type hint.
-func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as string) (interface{}, error) {
+func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as string) (ipld.Node, error) {
 	// First select types which do their own store loading.
 	switch ResolveType(as) {
 	case LotusTypeStateroot:
@@ -508,197 +502,346 @@ func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockst
 	return assembler.Build(), nil
 }
 
-func transformPowerActorClaims(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformPowerActorClaims(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
 		return nil, err
 	}
-	m := make(map[string]storagePowerActor.Claim)
-	var claim storagePowerActor.Claim
-	node.ForEach(ctx, func(k string, val interface{}) error {
-		asDef, ok := val.(*cbg.Deferred)
-		if !ok {
-			return fmt.Errorf("unexpected non-cbg.Deferred")
-		}
-		err := cbor.DecodeInto(asDef.Raw, &claim)
-		if err != nil {
-			return err
-		}
-		a, _ := addr.NewFromBytes([]byte(k))
-		m[a.String()] = claim
-		return nil
-	})
-	return m, nil
-}
 
-func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
-	cborStore := cbor.NewCborStore(store)
-	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
-	if err != nil {
-		return nil, err
-	}
-	m := make(map[string]verifiedRegistryActor.DataCap)
-	var dataCap verifiedRegistryActor.DataCap
-	node.ForEach(ctx, func(k string, val interface{}) error {
-		asDef, ok := val.(*cbg.Deferred)
-		if !ok {
-			return fmt.Errorf("unexpected non-cbg.Deferred")
-		}
-		err := cbor.DecodeInto(asDef.Raw, &dataCap)
-		if err != nil {
-			return err
-		}
-		a, _ := addr.NewFromBytes([]byte(k))
-		m[a.String()] = dataCap
-		return nil
-	})
-	return m, nil
-}
-
-func transformMarketPendingProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
-	cborStore := cbor.NewCborStore(store)
-	mapper, err := adt.AsMap(adt.WrapStore(ctx, cborStore), c)
+	assembler := types.Type.Map__PowerV0Claim__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[string]marketActor.DealProposal)
-	cidr := cid.Undef
-	value := marketActor.DealProposal{}
-	if err := mapper.ForEach(&value, func(c string) error {
-		cidr.UnmarshalBinary([]byte(c))
-		m[cidr.String()] = value
-		return nil
+	if err := node.ForEach(ctx, func(k string, val interface{}) error {
+		v, err := mapper.AssembleEntry(k)
+		if err != nil {
+			return err
+		}
+
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+
+		actor := types.Type.PowerV0Claim__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
-func transformMarketProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
+	if err != nil {
+		return nil, err
+	}
+
+	assembler := types.Type.Map__DataCap__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := node.ForEach(ctx, func(k string, val interface{}) error {
+		v, err := mapper.AssembleEntry(k)
+		if err != nil {
+			return err
+		}
+
+		// Deferred parsing of big.Int
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+
+		return v.AssignBytes(asDef.Raw)
+	}); err != nil {
+		return nil, err
+	}
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
+}
+
+func transformMarketPendingProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
+	if err != nil {
+		return nil, err
+	}
+
+	assembler := types.Type.Map__MarketV0DealProposal__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := node.ForEach(ctx, func(k string, val interface{}) error {
+		v, err := mapper.AssembleEntry(k)
+		if err != nil {
+			return err
+		}
+
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+
+		actor := types.Type.MarketV0DealProposal__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
+	}); err != nil {
+		return nil, err
+	}
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
+}
+
+func transformMarketProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[int64]marketActor.DealProposal)
-	value := marketActor.DealProposal{}
+	assembler := types.Type.Map__MarketV0RawDealProposal__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	value := cbg.Deferred{}
 	if err := list.ForEach(&value, func(k int64) error {
-		m[k] = value
-		return nil
+		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+		if err != nil {
+			return err
+		}
+
+		actor := types.Type.MarketV0DealProposal__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
-func transformMarketStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformMarketStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[int64]marketActor.DealState)
-	value := marketActor.DealState{}
-	if err := list.ForEach(&value, func(k int64) error {
-		m[k] = value
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func transformMarketBalanceTable(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
-	cborStore := cbor.NewCborStore(store)
-	table, err := adt.AsMap(adt.WrapStore(ctx, cborStore), c)
+	assembler := types.Type.Map__MarketV0DealState__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[string]abi.TokenAmount)
-	var value abi.TokenAmount
-	if err := table.ForEach(&value, func(k string) error {
-		a, _ := addr.NewFromBytes([]byte(k))
-		m[a.String()] = value
-		return nil
+	value := cbg.Deferred{}
+	if err := list.ForEach(&value, func(k int64) error {
+		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+		if err != nil {
+			return err
+		}
+
+		actor := types.Type.MarketV0DealState__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
-func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformMarketBalanceTable(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
+	if err != nil {
+		return nil, err
+	}
+
+	assembler := types.Type.Map__BalanceTable__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := node.ForEach(ctx, func(k string, val interface{}) error {
+		v, err := mapper.AssembleEntry(k)
+		if err != nil {
+			return err
+		}
+
+		// Deferred parsing of big.Int
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+
+		return v.AssignBytes(asDef.Raw)
+	}); err != nil {
+		return nil, err
+	}
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
+}
+
+func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	adtStore := adt.WrapStore(ctx, cbor.NewCborStore(store))
 	table, err := adt.AsMap(adtStore, c)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[uint64][]abi.DealID)
-	var key cbg.CborInt
+	assembler := types.Type.Map__List__DealID__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
 	var value cbg.CborCid
 	if err := table.ForEach(&value, func(k string) error {
 		set, err := adt.AsSet(adtStore, cid.Cid(value))
 		if err != nil {
 			return err
 		}
-		vals := make([]abi.DealID, 0)
+
+		b := big.NewInt(0)
+		b.SetBytes([]byte(k))
+		v, err := mapper.AssembleEntry(b.String())
+		if err != nil {
+			return err
+		}
+
+		amt := types.Type.List__DealID__Repr.NewBuilder()
+		amtL, err := amt.BeginList(0)
+		if err != nil {
+			return err
+		}
+
 		set.ForEach(func(d string) error {
 			key, err := abi.ParseUIntKey(d)
 			if err != nil {
 				return err
 			}
-			vals = append(vals, abi.DealID(key))
-			return nil
+			return amtL.AssembleValue().AssignInt(int(key))
 		})
 
-		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
-		m[uint64(key)] = vals
-		return nil
+		if err := amtL.Finish(); err != nil {
+			return err
+		}
+
+		return v.AssignNode(amt.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
-func transformMultisigPending(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformMultisigPending(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
-	table, err := adt.AsMap(adt.WrapStore(ctx, cborStore), c)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[int64]multisigActor.Transaction)
-	var value multisigActor.Transaction
-	var key cbg.CborInt
-	if err := table.ForEach(&value, func(k string) error {
-		(&key).UnmarshalCBOR(bytes.NewBuffer([]byte(k)))
-		m[int64(key)] = value
-		return nil
+	assembler := types.Type.Map__MultisigV0Transaction__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := node.ForEach(ctx, func(k string, val interface{}) error {
+		i := big.NewInt(0)
+		i.SetBytes([]byte(k))
+		v, err := mapper.AssembleEntry(i.String())
+		if err != nil {
+			return err
+		}
+
+		asDef, ok := val.(*cbg.Deferred)
+		if !ok {
+			return fmt.Errorf("unexpected non-cbg.Deferred")
+		}
+
+		actor := types.Type.MultisigV0Transaction__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }
 
-func transformPaymentChannelLaneStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (interface{}, error) {
+func transformPaymentChannelLaneStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
 		return nil, err
 	}
 
-	m := make(map[int64]paychActor.LaneState)
-	value := paychActor.LaneState{}
+	assembler := types.Type.Map__PaychV0LaneState__Repr.NewBuilder()
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return nil, err
+	}
+
+	value := cbg.Deferred{}
 	if err := list.ForEach(&value, func(k int64) error {
-		m[k] = value
-		return nil
+		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+		if err != nil {
+			return err
+		}
+
+		actor := types.Type.PaychV0LaneState__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if err := mapper.Finish(); err != nil {
+		return nil, err
+	}
+	return assembler.Build(), nil
 }

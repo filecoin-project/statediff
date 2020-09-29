@@ -21,7 +21,7 @@ func accumulatePower(ts schema.TypeSystem) {
 			schema.SpawnStructField("CronEventQueue", "Link__PowerV0CronEvent", false, false), // Multimap, (HAMT[ChainEpoch]AMT[CronEvent]
 			schema.SpawnStructField("FirstCronEpoch", "ChainEpoch", false, false),
 			schema.SpawnStructField("LastProcessedCronEpoch", "ChainEpoch", false, false),
-			schema.SpawnStructField("Claims", "Link", false, false), // Map, HAMT[address]Claim
+			schema.SpawnStructField("Claims", "Link__PowerV0Claim", false, false), // Map, HAMT[address]Claim
 			schema.SpawnStructField("ProofValidationBatch", "Link", false, true),
 		},
 		schema.StructRepresentation_Tuple{},
@@ -43,6 +43,8 @@ func accumulatePower(ts schema.TypeSystem) {
 			schema.SpawnStructField("QualityAdjPower", "BigInt", false, false), //StoragePower
 		},
 		schema.StructRepresentation_Tuple{}))
+	ts.Accumulate(schema.SpawnMap("Map__PowerV0Claim", "RawAddress", "PowerV0Claim", true))
+	ts.Accumulate(schema.SpawnLinkReference("Link__PowerV0Claim", "Map__PowerV0Claim"))
 
 	ts.Accumulate(schema.SpawnStruct("V0FilterEstimate",
 		[]schema.StructField{
