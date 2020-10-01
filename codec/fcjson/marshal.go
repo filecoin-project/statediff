@@ -2,6 +2,7 @@ package fcjson
 
 import (
 	"bytes"
+	"context"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
@@ -21,7 +22,23 @@ import (
 
 // This is dagjson with special pretty-print sauce.
 
+// Marshal is a non-link-aware marshaler
 func Marshal(n ipld.Node, sink shared.TokenSink) error {
+	return (&DagMarshaler{}).MarshalRecursive(n, sink)
+}
+
+type Loader func(cid.Cid, ipld.Path) ipld.Node
+
+// DagMarshaler acts like traversal.Progress, but with emission of a token stream
+// over the depth-first-search traversal.
+type DagMarshaler struct {
+	ctx context.Context
+	Loader
+	Path ipld.Path
+}
+
+// MarshalRecursive is a combination traversal + codec
+func (d *DagMarshaler) MarshalRecursive(n ipld.Node, sink shared.TokenSink) error {
 	var tk tok.Token
 	switch n.ReprKind() {
 	case ipld.ReprKind_Invalid:
@@ -64,7 +81,9 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 			if _, err := sink.Step(&tk); err != nil {
 				return err
 			}
-			if err := Marshal(v, sink); err != nil {
+			next := *d
+			next.Path = next.Path.AppendSegment(ipld.PathSegmentOfString(tk.Str))
+			if err := next.MarshalRecursive(v, sink); err != nil {
 				return err
 			}
 		}
@@ -86,7 +105,9 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 			if err != nil {
 				return err
 			}
-			if err := Marshal(v, sink); err != nil {
+			next := *d
+			next.Path.AppendSegment(ipld.PathSegmentOfInt(i))
+			if err := next.MarshalRecursive(v, sink); err != nil {
 				return err
 			}
 		}
@@ -205,6 +226,14 @@ func Marshal(n ipld.Node, sink shared.TokenSink) error {
 		}
 		switch lnk := v.(type) {
 		case cidlink.Link:
+			if d.Loader != nil {
+				node := d.Loader(lnk.Cid, d.Path)
+
+				if node != nil {
+					next := *d
+					return next.MarshalRecursive(node, sink)
+				}
+			}
 			// Precisely four tokens to emit:
 			tk.Type = tok.TMapOpen
 			tk.Length = 1

@@ -1,16 +1,17 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"runtime/pprof"
 
-	"github.com/filecoin-project/lotus/lib/blockstore"
+	"github.com/filecoin-project/go-address"
 	"github.com/filecoin-project/statediff"
+	"github.com/filecoin-project/statediff/codec/fcjson"
 	"github.com/filecoin-project/statediff/lib"
 	"github.com/ipfs/go-cid"
+	ipld "github.com/ipld/go-ipld-prime"
+	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
 	"github.com/urfave/cli/v2"
 )
 
@@ -64,195 +65,93 @@ func runDumpCmd(c *cli.Context) error {
 	// TODO: support alternate start 'as'
 	as := "tipset"
 
-	accts := c.Args().Slice()
-	if len(accts) > 0 {
-		accountFilter = accts
-	}
-
-	stateTree, err := ToJSON(c.Context, store, as, h)
+	tipset, err := statediff.Transform(c.Context, h, store, as)
 	if err != nil {
 		return err
 	}
-	if c.Bool(byActorFlag.Name) {
-		base := mustMap(stateTree)
-		root := mustMap(base["ParentStateRoot"])
-		for acct, m := range root {
-			acctMap := mustMap(m)
-			acctMap["Address"] = acct
-			for _, k := range denormalizedTipsetKeys {
-				acctMap[k] = base[k]
-			}
-			acctBytes, err := json.Marshal(acctMap)
+
+	follow := func(n ipld.Node, to ipld.Path, as string) ipld.Node {
+		for _, s := range to.Segments() {
+			node, err := n.LookupBySegment(s)
 			if err != nil {
-				return err
+				return nil
 			}
-			fmt.Printf("%s\n", string(acctBytes))
+			n = node
 		}
-	} else {
-		bytes, err := json.Marshal(stateTree)
+		l, err := n.AsLink()
+		if err != nil {
+			return nil
+		}
+		asCid, ok := l.(cidlink.Link)
+		if !ok {
+			return nil
+		}
+		followed, err := statediff.Transform(c.Context, asCid.Cid, store, as)
+		if err != nil {
+			return nil
+		}
+		return followed
+	}
+
+	stateroot := follow(tipset, ipld.ParsePath("ParentStateRoot"), "stateRoot")
+
+	for _, acct := range c.Args().Slice() {
+		asAddr, err := address.NewFromString(acct)
 		if err != nil {
 			return err
 		}
-		fmt.Printf("%s\n", string(bytes))
+		t, err := TypeOfActor(stateroot, string(asAddr.Bytes()))
+		if err != nil {
+			return err
+		}
+		actor := follow(stateroot, ipld.NewPath([]ipld.PathSegment{ipld.PathSegmentOfString(string(asAddr.Bytes())), ipld.PathSegmentOfString("Head")}), t)
+		if actor == nil {
+			return fmt.Errorf("invalid actor %s", acct)
+		}
+
+		p := fcjson.DagMarshaler{
+			Path: ipld.ParsePath(t),
+			Loader: func(ci cid.Cid, p ipld.Path) ipld.Node {
+				if ci.Prefix().Codec == cid.FilCommitmentSealed || ci.Prefix().Codec == cid.FilCommitmentUnsealed {
+					return nil
+				}
+				node, err := statediff.Transform(c.Context, ci, store, p.String())
+				if err == nil {
+					return node
+				}
+				fmt.Printf("err: %v\n", err)
+				return nil
+			},
+		}
+
+		if err := p.Encoder(actor, os.Stdout); err != nil {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+			return err
+		}
 	}
 	return nil
 }
 
-func ToJSON(ctx context.Context, store blockstore.Blockstore, as string, c cid.Cid) (interface{}, error) {
-	// Load Data
-	transformed, err := statediff.Transform(ctx, c, store, as)
+func TypeOfActor(stateroot ipld.Node, actor string) (string, error) {
+	actr, err := stateroot.LookupByString(actor)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-
-	// Destructure to untyped.
-	flat, err := json.Marshal(transformed)
+	ref, err := actr.LookupByString("Code")
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	m := make(map[string]interface{})
-	if err := json.Unmarshal(flat, &m); err != nil {
-		a := make([]interface{}, 0)
-		if err := json.Unmarshal(flat, &a); err == nil {
-			return a, nil
-		}
-
-		s := ""
-		if err := json.Unmarshal(flat, &s); err == nil {
-			return s, nil
-		}
-		return nil, err
+	l, err := ref.AsLink()
+	if err != nil {
+		return "", err
 	}
-
-	realAs := statediff.ResolveType(as)
-	// special case hacks.
-	if realAs == statediff.LotusTypeTipset {
-		unfollow(m, "ParentMessageReceipts")
-		unfollow(m, "Messages")
-		unfollow(m, "Parents")
-	} else if realAs == statediff.LotusTypeStateroot {
-		if accountFilter != nil {
-			m2 := make(map[string]interface{})
-			for _, a := range accountFilter {
-				m2[a] = m[a]
-			}
-			m = m2
-		}
-		for _, val := range m {
-			vm := mustMap(val)
-			unfollow(vm, "Code")
-			t := statediff.LotusActorCodes[asString(vm, "Code")]
-			vm["HeadCID"] = vm["Head"]
-			unfollow(vm, "HeadCID")
-			if !noAccountExpand {
-				vm["Head"] = followObj(ctx, store, string(t), mustMap(vm["Head"]))
-			}
-			vm["Type"] = t
-		}
-		return m, nil
+	asCid, ok := l.(cidlink.Link)
+	if !ok {
+		return "", fmt.Errorf("%s is not a cid", actor)
 	}
-
-	// recursive expansions.
-	followObj(ctx, store, string(realAs), m)
-
-	return m, nil
-}
-
-func asString(m map[string]interface{}, key string) string {
-	if v, ok := m[key]; ok {
-		if n, ok := v.(string); ok {
-			return n
-		}
+	code, ok := statediff.LotusActorCodes[asCid.Cid.String()]
+	if !ok {
+		return "", fmt.Errorf("%s was not a known code", asCid.Cid.String())
 	}
-	return ""
-}
-
-func mustList(m interface{}) []interface{} {
-	if ms, ok := m.([]interface{}); ok {
-		return ms
-	}
-	fmt.Printf("%v not list!\n", m)
-	return []interface{}{}
-}
-
-func mustMap(m interface{}) map[string]interface{} {
-	if b, ok := m.(map[string]interface{}); ok {
-		return b
-	}
-	return make(map[string]interface{})
-}
-
-func unfollow(m map[string]interface{}, k string) {
-	if a, ok := m[k].(map[string]interface{}); ok {
-		m[k] = unfollowObj(a)
-	} else if b, ok := m[k].([]interface{}); ok {
-		m[k] = unfollowSlice(b)
-	}
-}
-
-func unfollowObj(m map[string]interface{}) interface{} {
-	if c, ok := m["/"]; ok && len(m) == 1 {
-		return c
-	}
-	for k2, _ := range m {
-		unfollow(m, k2)
-	}
-	return m
-}
-
-func unfollowSlice(l []interface{}) []interface{} {
-	n := make([]interface{}, 0, len(l))
-	for i := range l {
-		if a, ok := l[i].(map[string]interface{}); ok {
-			n = append(n, unfollowObj(a))
-		} else if b, ok := l[i].([]interface{}); ok {
-			n = append(n, unfollowSlice(b))
-		} else {
-			n = append(n, l[i])
-		}
-	}
-	return n
-}
-
-func follow(ctx context.Context, store blockstore.Blockstore, as string, m map[string]interface{}, k string) {
-	if a, ok := m[k].(map[string]interface{}); ok {
-		m[k] = followObj(ctx, store, as+"."+k, a)
-	} else if b, ok := m[k].([]interface{}); ok {
-		m[k] = followSlice(ctx, store, as+"."+k, b)
-	}
-}
-
-func followObj(ctx context.Context, store blockstore.Blockstore, as string, m map[string]interface{}) interface{} {
-	if c, ok := m["/"]; ok && len(m) == 1 {
-		asCid, err := cid.Parse(c)
-		if err != nil {
-			return fmt.Sprintf("%s", err)
-		}
-		if asCid.Type() != cid.DagCBOR {
-			return c
-		}
-		j, err := ToJSON(ctx, store, as, asCid)
-		if err != nil {
-			return fmt.Sprintf("%s", err)
-		}
-		return j
-	}
-	for k2, _ := range m {
-		follow(ctx, store, as, m, k2)
-	}
-	return m
-}
-
-func followSlice(ctx context.Context, store blockstore.Blockstore, as string, l []interface{}) []interface{} {
-	n := make([]interface{}, 0, len(l))
-	for i := range l {
-		if a, ok := l[i].(map[string]interface{}); ok {
-			n = append(n, followObj(ctx, store, as, a))
-		} else if b, ok := l[i].([]interface{}); ok {
-			n = append(n, followSlice(ctx, store, as, b))
-		} else {
-			n = append(n, l[i])
-		}
-	}
-	return n
+	return string(code), nil
 }

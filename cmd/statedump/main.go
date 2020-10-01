@@ -15,7 +15,6 @@ func main() {
 		Description: "State Dumper 🚚",
 		Commands: []*cli.Command{
 			dumpCmd,
-			accountCmd,
 		},
 	}
 

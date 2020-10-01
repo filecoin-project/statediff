@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/big"
 	"regexp"
+	"strings"
 
 	abi "github.com/filecoin-project/go-state-types/abi"
 	"github.com/ipfs/go-cid"
@@ -91,131 +92,126 @@ var LotusActorCodes = map[string]LotusType{
 	"bafkqaetgnfwc6mjpon2g64tbm5sw22lomvza":       StorageMinerActorState,
 }
 
+// LotusPrototypes provide expected node types for each state type.
+var LotusPrototypes = map[LotusType]ipld.NodePrototype{
+	LotusTypeTipset:                   types.Type.LotusBlockHeader__Repr,
+	AccountActorState:                 types.Type.AccountV0State__Repr,
+	CronActorState:                    types.Type.CronV0State__Repr,
+	InitActorState:                    types.Type.InitV0State__Repr,
+	MarketActorState:                  types.Type.MarketV0State__Repr,
+	MultisigActorState:                types.Type.MultisigV0State__Repr,
+	StorageMinerActorState:            types.Type.MinerV0State__Repr,
+	StorageMinerActorInfo:             types.Type.MinerV0Info__Repr,
+	StorageMinerActorVestingFunds:     types.Type.MinerV0VestingFund__Repr,
+	StorageMinerActorAllocatedSectors: types.Type.BitField__Repr,
+	StorageMinerActorDeadlines:        types.Type.MinerV0Deadlines__Repr,
+	StorageMinerActorDeadline:         types.Type.MinerV0Deadline__Repr,
+	StoragePowerActorState:            types.Type.PowerV0State__Repr,
+	RewardActorState:                  types.Type.RewardV0State__Repr,
+	VerifiedRegistryActorState:        types.Type.VerifregV0State__Repr,
+	PaymentChannelActorState:          types.Type.PaychV0State__Repr,
+	// Complex types
+	LotusTypeStateroot:                         types.Type.Map__LotusActors__Repr,
+	InitActorAddresses:                         types.Type.Map__ActorID__Repr,
+	StorageMinerActorPreCommittedSectors:       types.Type.Map__SectorPreCommitOnChainInfo__Repr,
+	StorageMinerActorDeadlinePartitionEarly:    types.Type.Map__BitField__Repr,
+	StorageMinerActorPreCommittedSectorsExpiry: types.Type.Map__BitField__Repr,
+	StorageMinerActorSectors:                   types.Type.Map__SectorOnChainInfo__Repr,
+	StorageMinerActorDeadlinePartitions:        types.Type.Map__MinerV0Partition__Repr,
+	StorageMinerActorDeadlinePartitionExpiry:   types.Type.Map__MinerV0ExpirationSet__Repr,
+	StorageMinerActorDeadlineExpiry:            types.Type.Map__BitField__Repr,
+	StoragePowerActorCronEventQueue:            types.Type.Map__PowerV0CronEvent__Repr,
+	StoragePowerActorClaims:                    types.Type.Map__PowerV0Claim__Repr,
+	VerifiedRegistryActorVerifiers:             types.Type.Map__DataCap__Repr,
+	VerifiedRegistryActorVerifiedClients:       types.Type.Map__DataCap__Repr,
+	MarketActorPendingProposals:                types.Type.Map__MarketV0DealProposal__Repr,
+	MarketActorProposals:                       types.Type.Map__MarketV0RawDealProposal__Repr,
+	MarketActorStates:                          types.Type.Map__MarketV0DealState__Repr,
+	MarketActorEscrowTable:                     types.Type.Map__BalanceTable__Repr,
+	MarketActorLockedTable:                     types.Type.Map__BalanceTable__Repr,
+	MarketActorDealOpsByEpoch:                  types.Type.Map__List__DealID__Repr,
+	MultisigActorPending:                       types.Type.Map__MultisigV0Transaction__Repr,
+	PaymentChannelActorLaneStates:              types.Type.Map__PaychV0LaneState__Repr,
+}
+
+type Loader func(context.Context, cid.Cid, blockstore.Blockstore, ipld.NodeAssembler) error
+
+var complexLoaders = map[ipld.NodePrototype]Loader{
+	types.Type.Map__LotusActors__Repr:                transformStateRoot,
+	types.Type.Map__ActorID__Repr:                    transformInitActor,
+	types.Type.Map__SectorPreCommitOnChainInfo__Repr: transformMinerActorPreCommittedSectors,
+	types.Type.Map__BitField__Repr:                   transformMinerActorBitfieldHamt,
+	types.Type.Map__SectorOnChainInfo__Repr:          transformMinerActorSectors,
+	types.Type.Map__MinerV0Partition__Repr:           transformMinerActorDeadlinePartitions,
+	types.Type.Map__MinerV0ExpirationSet__Repr:       transformMinerActorDeadlinePartitionExpiry,
+	types.Type.Map__PowerV0CronEvent__Repr:           transformPowerActorEventQueue,
+	types.Type.Map__PowerV0Claim__Repr:               transformPowerActorClaims,
+	types.Type.Map__DataCap__Repr:                    transformVerifiedRegistryDataCaps,
+	types.Type.Map__MarketV0DealProposal__Repr:       transformMarketProposals,
+	types.Type.Map__MarketV0RawDealProposal__Repr:    transformMarketPendingProposals,
+	types.Type.Map__MarketV0DealState__Repr:          transformMarketStates,
+	types.Type.Map__BalanceTable__Repr:               transformMarketBalanceTable,
+	types.Type.Map__List__DealID__Repr:               transformMarketDealOpsByEpoch,
+	types.Type.Map__MultisigV0Transaction__Repr:      transformMultisigPending,
+	types.Type.Map__PaychV0LaneState__Repr:           transformPaymentChannelLaneStates,
+}
+
 var simplifyingRe = regexp.MustCompile(`\[\d+\]`)
 var simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
 
 // ResolveType maps incoming type strings to enum known types
 func ResolveType(as string) LotusType {
 	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")), []byte(".")))
+	as = strings.ReplaceAll(as, string('/'), string('.'))
 	if alias, ok := LotusTypeAliases[as]; ok {
 		as = string(alias)
 	}
 	return LotusType(as)
 }
 
-// Transform will unmarshal cbor data based on a provided type hint.
-func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as string) (ipld.Node, error) {
-	// First select types which do their own store loading.
-	switch ResolveType(as) {
-	case LotusTypeStateroot:
-		return transformStateRoot(ctx, c, store)
-	case InitActorAddresses:
-		return transformInitActor(ctx, c, store)
-	case StorageMinerActorPreCommittedSectors:
-		return transformMinerActorPreCommittedSectors(ctx, c, store)
-	case StorageMinerActorDeadlinePartitionEarly:
-		fallthrough
-	case StorageMinerActorPreCommittedSectorsExpiry:
-		return transformMinerActorPreCommittedSectorsExpiry(ctx, c, store)
-	case StorageMinerActorSectors:
-		return transformMinerActorSectors(ctx, c, store)
-	case StorageMinerActorDeadlinePartitions:
-		return transformMinerActorDeadlinePartitions(ctx, c, store)
-	case StorageMinerActorDeadlinePartitionExpiry:
-		return transformMinerActorDeadlinePartitionExpiry(ctx, c, store)
-	case StorageMinerActorDeadlineExpiry:
-		return transformMinerActorDeadlineExpiry(ctx, c, store)
-	case StoragePowerActorCronEventQueue:
-		return transformPowerActorEventQueue(ctx, c, store)
-	case StoragePowerActorClaims:
-		return transformPowerActorClaims(ctx, c, store)
-	case MarketActorProposals:
-		return transformMarketProposals(ctx, c, store)
-	case MarketActorStates:
-		return transformMarketStates(ctx, c, store)
-	case MarketActorPendingProposals:
-		return transformMarketPendingProposals(ctx, c, store)
-	case MarketActorEscrowTable:
-		fallthrough
-	case MarketActorLockedTable:
-		return transformMarketBalanceTable(ctx, c, store)
-	case MarketActorDealOpsByEpoch:
-		return transformMarketDealOpsByEpoch(ctx, c, store)
-	case MultisigActorPending:
-		return transformMultisigPending(ctx, c, store)
-	case VerifiedRegistryActorVerifiers:
-		fallthrough
-	case VerifiedRegistryActorVerifiedClients:
-		return transformVerifiedRegistryDataCaps(ctx, c, store)
-	case PaymentChannelActorLaneStates:
-		return transformPaymentChannelLaneStates(ctx, c, store)
-	default:
+func Load(ctx context.Context, c cid.Cid, store blockstore.Blockstore, into ipld.NodeAssembler) error {
+	prototype := into.Prototype()
+	if complexLoader, ok := complexLoaders[prototype]; ok {
+		return complexLoader(ctx, c, store, into)
 	}
 
 	block, err := store.Get(c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	data := block.RawData()
 
-	// Then select types which use block data.
-	var assembler ipld.NodeBuilder
-	switch ResolveType(as) {
-	case LotusTypeTipset:
-		assembler = types.Type.LotusBlockHeader__Repr.NewBuilder()
-	case AccountActorState:
-		assembler = types.Type.AccountV0State__Repr.NewBuilder()
-	case CronActorState:
-		assembler = types.Type.CronV0State__Repr.NewBuilder()
-	case InitActorState:
-		assembler = types.Type.InitV0State__Repr.NewBuilder()
-	case MarketActorState:
-		assembler = types.Type.MarketV0State__Repr.NewBuilder()
-	case MultisigActorState:
-		assembler = types.Type.MultisigV0State__Repr.NewBuilder()
-	case StorageMinerActorState:
-		assembler = types.Type.MinerV0State__Repr.NewBuilder()
-	case StorageMinerActorInfo:
-		assembler = types.Type.MinerV0Info__Repr.NewBuilder()
-	case StorageMinerActorVestingFunds:
-		assembler = types.Type.MinerV0VestingFunds__Repr.NewBuilder()
-	case StorageMinerActorAllocatedSectors:
-		assembler = types.Type.BitField__Repr.NewBuilder()
-	case StorageMinerActorDeadlines:
-		assembler = types.Type.MinerV0Deadlines__Repr.NewBuilder()
-	case StorageMinerActorDeadline:
-		assembler = types.Type.MinerV0Deadline__Repr.NewBuilder()
-	case StoragePowerActorState:
-		assembler = types.Type.PowerV0State__Repr.NewBuilder()
-	case RewardActorState:
-		assembler = types.Type.RewardV0State__Repr.NewBuilder()
-	case VerifiedRegistryActorState:
-		assembler = types.Type.VerifregV0State__Repr.NewBuilder()
-	case PaymentChannelActorState:
-		assembler = types.Type.PaychV0State__Repr.NewBuilder()
-	default:
+	if err := dagcbor.Decoder(into, bytes.NewBuffer(data)); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Transform will unmarshal cbor data based on a provided type hint.
+func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as string) (ipld.Node, error) {
+	proto, ok := LotusPrototypes[ResolveType(as)]
+	if !ok {
 		return nil, fmt.Errorf("unknown type: %s", as)
 	}
-
-	if err := dagcbor.Decoder(assembler, bytes.NewBuffer(data)); err != nil {
+	assembler := proto.NewBuilder()
+	if err := Load(ctx, c, store, assembler); err != nil {
 		return nil, err
 	}
 	return assembler.Build(), nil
 }
 
-func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
-		return nil, err
+		return err
 	}
-	assembler := types.Type.Map__LotusActors__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	node.ForEach(ctx, func(k string, val interface{}) error {
+	if err := node.ForEach(ctx, func(k string, val interface{}) error {
 		v, err := mapper.AssembleEntry(k)
 		if err != nil {
 			return err
@@ -231,27 +227,28 @@ func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockst
 			return err
 		}
 		return v.AssignNode(actor.Build())
-	})
-	if err := mapper.Finish(); err != nil {
-		return nil, err
+	}); err != nil {
+		return err
 	}
-	return assembler.Build(), nil
+	if err := mapper.Finish(); err != nil {
+		return err
+	}
+	return nil
 }
 
-func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
-		return nil, err
+		return err
 	}
-	assembler := types.Type.Map__ActorID__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	var actorID cbg.CborInt
-	node.ForEach(ctx, func(k string, val interface{}) error {
+	if err := node.ForEach(ctx, func(k string, val interface{}) error {
 		v, err := mapper.AssembleEntry(k)
 		if err != nil {
 			return err
@@ -265,24 +262,22 @@ func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockst
 			return err
 		}
 		return v.AssignInt(int(actorID))
-	})
-	if err := mapper.Finish(); err != nil {
-		return nil, err
+	}); err != nil {
+		return err
 	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__SectorPreCommitOnChainInfo__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := node.ForEach(ctx, func(k string, val interface{}) error {
@@ -304,25 +299,21 @@ func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, stor
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMinerActorPreCommittedSectorsExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMinerActorBitfieldHamt(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__BitField__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	value := CBORBytes{}
@@ -334,25 +325,21 @@ func transformMinerActorPreCommittedSectorsExpiry(ctx context.Context, c cid.Cid
 
 		return v.AssignBytes(value)
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__SectorOnChainInfo__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	value := cbg.Deferred{}
@@ -368,25 +355,21 @@ func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMinerActorDeadlinePartitions(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMinerActorDeadlinePartitions(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__MinerV0Partition__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	value := cbg.Deferred{}
@@ -402,25 +385,21 @@ func transformMinerActorDeadlinePartitions(ctx context.Context, c cid.Cid, store
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMinerActorDeadlinePartitionExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMinerActorDeadlinePartitionExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__MinerV0ExpirationSet__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	value := cbg.Deferred{}
@@ -436,28 +415,20 @@ func transformMinerActorDeadlinePartitionExpiry(ctx context.Context, c cid.Cid, 
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMinerActorDeadlineExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
-	return transformMinerActorPreCommittedSectorsExpiry(ctx, c, store)
-}
-
-func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := adt.AsMultimap(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	assembler := types.Type.Multimap__PowerV0CronEvent__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := node.ForAll(func(k string, val *adt.Array) error {
@@ -494,25 +465,21 @@ func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockst
 		}
 		return v.AssignNode(amt.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformPowerActorClaims(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformPowerActorClaims(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__PowerV0Claim__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := node.ForEach(ctx, func(k string, val interface{}) error {
@@ -532,25 +499,21 @@ func transformPowerActorClaims(ctx context.Context, c cid.Cid, store blockstore.
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__DataCap__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := node.ForEach(ctx, func(k string, val interface{}) error {
@@ -567,25 +530,21 @@ func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blo
 
 		return v.AssignBytes(asDef.Raw)
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMarketPendingProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMarketPendingProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__MarketV0DealProposal__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := node.ForEach(ctx, func(k string, val interface{}) error {
@@ -605,25 +564,21 @@ func transformMarketPendingProposals(ctx context.Context, c cid.Cid, store block
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMarketProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMarketProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__MarketV0RawDealProposal__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	value := cbg.Deferred{}
@@ -639,25 +594,21 @@ func transformMarketProposals(ctx context.Context, c cid.Cid, store blockstore.B
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMarketStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMarketStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__MarketV0DealState__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	value := cbg.Deferred{}
@@ -673,25 +624,21 @@ func transformMarketStates(ctx context.Context, c cid.Cid, store blockstore.Bloc
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMarketBalanceTable(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMarketBalanceTable(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__BalanceTable__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := node.ForEach(ctx, func(k string, val interface{}) error {
@@ -708,25 +655,21 @@ func transformMarketBalanceTable(ctx context.Context, c cid.Cid, store blockstor
 
 		return v.AssignBytes(asDef.Raw)
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	adtStore := adt.WrapStore(ctx, cbor.NewCborStore(store))
 	table, err := adt.AsMap(adtStore, c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__List__DealID__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	var value cbg.CborCid
@@ -763,26 +706,22 @@ func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockst
 
 		return v.AssignNode(amt.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
 
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformMultisigPending(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformMultisigPending(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__MultisigV0Transaction__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := node.ForEach(ctx, func(k string, val interface{}) error {
@@ -804,25 +743,21 @@ func transformMultisigPending(ctx context.Context, c cid.Cid, store blockstore.B
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
 
-func transformPaymentChannelLaneStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
+func transformPaymentChannelLaneStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	assembler := types.Type.Map__PaychV0LaneState__Repr.NewBuilder()
 	mapper, err := assembler.BeginMap(0)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	value := cbg.Deferred{}
@@ -838,10 +773,7 @@ func transformPaymentChannelLaneStates(ctx context.Context, c cid.Cid, store blo
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {
-		return nil, err
+		return err
 	}
-	if err := mapper.Finish(); err != nil {
-		return nil, err
-	}
-	return assembler.Build(), nil
+	return mapper.Finish()
 }
