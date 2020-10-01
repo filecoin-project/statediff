@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"runtime/pprof"
@@ -124,8 +125,13 @@ func runDumpCmd(c *cli.Context) error {
 			},
 		}
 
-		if err := p.Encoder(actor, os.Stdout); err != nil {
+		ob := bytes.NewBuffer(nil)
+		if err := p.Encoder(actor, ob); err != nil {
 			fmt.Fprintf(os.Stderr, "%v\n", err)
+			return err
+		}
+		_, err = ob.WriteTo(os.Stdout)
+		if err != nil {
 			return err
 		}
 	}

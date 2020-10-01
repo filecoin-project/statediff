@@ -71,10 +71,12 @@ const (
 
 // LotusTypeAliases lists non-direct mapped aliases
 var LotusTypeAliases = map[string]LotusType{
-	"tipset.ParentStateRoot":           LotusTypeStateroot,
-	"initActor.AddressMap":             InitActorAddresses,
-	"storagePowerActor.CronEventQueue": StoragePowerActorCronEventQueue,
-	"storagePowerActor.Claims":         StoragePowerActorClaims,
+	"tipset.ParentStateRoot":                                      LotusTypeStateroot,
+	"initActor.AddressMap":                                        InitActorAddresses,
+	"storagePowerActor.CronEventQueue":                            StoragePowerActorCronEventQueue,
+	"storagePowerActor.Claims":                                    StoragePowerActorClaims,
+	"storageMinerActor.Deadlines.Due.ExpirationEpochs":            StorageMinerActorDeadlineExpiry,
+	"storageMinerActor.Deadlines.Due.Partitions.ExpirationEpochs": StorageMinerActorDeadlinePartitionExpiry,
 }
 
 // LotusActorCodes for v0 actor states
@@ -102,7 +104,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	MultisigActorState:                types.Type.MultisigV0State__Repr,
 	StorageMinerActorState:            types.Type.MinerV0State__Repr,
 	StorageMinerActorInfo:             types.Type.MinerV0Info__Repr,
-	StorageMinerActorVestingFunds:     types.Type.MinerV0VestingFund__Repr,
+	StorageMinerActorVestingFunds:     types.Type.MinerV0VestingFunds__Repr,
 	StorageMinerActorAllocatedSectors: types.Type.BitField__Repr,
 	StorageMinerActorDeadlines:        types.Type.MinerV0Deadlines__Repr,
 	StorageMinerActorDeadline:         types.Type.MinerV0Deadline__Repr,
@@ -161,8 +163,8 @@ var simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
 
 // ResolveType maps incoming type strings to enum known types
 func ResolveType(as string) LotusType {
-	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")), []byte(".")))
 	as = strings.ReplaceAll(as, string('/'), string('.'))
+	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")), []byte(".")))
 	if alias, ok := LotusTypeAliases[as]; ok {
 		as = string(alias)
 	}
