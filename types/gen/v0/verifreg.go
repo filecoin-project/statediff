@@ -14,6 +14,8 @@ func accumulateVerifiedRegistry(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__VerifregV0State", "VerifregV0State"))
+
 	ts.Accumulate(schema.SpawnMap("Map__DataCap", "RawAddress", "BigInt", false))
 	ts.Accumulate(schema.SpawnLinkReference("Link__DataCap", "Map__DataCap"))
 }

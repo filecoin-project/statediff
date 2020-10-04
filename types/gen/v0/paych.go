@@ -16,6 +16,7 @@ func accumulatePaych(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__PaychV0State", "PaychV0State"))
 
 	ts.Accumulate(schema.SpawnMap("Map__PaychV0LaneState", "String", "PaychV0LaneState", false))
 	ts.Accumulate(schema.SpawnLinkReference("Link__PaychV0LaneState", "Map__PaychV0LaneState"))

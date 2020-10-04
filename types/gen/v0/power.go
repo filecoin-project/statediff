@@ -26,6 +26,7 @@ func accumulatePower(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__PowerV0State", "PowerV0State"))
 
 	ts.Accumulate(schema.SpawnStruct("PowerV0CronEvent",
 		[]schema.StructField{

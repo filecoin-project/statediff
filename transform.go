@@ -160,51 +160,45 @@ var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.Map__PaychV0LaneState__Repr:           transformPaymentChannelLaneStates,
 }
 
+var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
+	types.Type.Link__BalanceTable:            types.Type.Map__BalanceTable__Repr,
+	types.Type.Link__BitField:                types.Type.BitField__Repr,
+	types.Type.Link__DataCap:                 types.Type.Map__DataCap__Repr,
+	types.Type.Link__LotusStateRoot:          types.Type.LotusStateRoot__Repr,
+	types.Type.Link__MapActorID:              types.Type.Map__ActorID__Repr,
+	types.Type.Link__MarketV0DealProposal:    types.Type.Map__MarketV0DealProposal__Repr,
+	types.Type.Link__MarketV0DealState:       types.Type.Map__MarketV0DealState__Repr,
+	types.Type.Link__MarketV0RawDealProposal: types.Type.Map__MarketV0RawDealProposal__Repr,
+	types.Type.Link__MultimapDealID:          types.Type.Map__List__DealID__Repr,
+	types.Type.Link__MinerV0Deadlines:        types.Type.List__MinerV0DeadlineLink__Repr,
+	types.Type.Link__MinerV0Deadline:         types.Type.MinerV0Deadline__Repr,
+	types.Type.Link__MinerV0ExpirationSet:    types.Type.Map__MinerV0ExpirationSet__Repr,
+	types.Type.Link__MinerV0Info:             types.Type.MinerV0Info__Repr,
+	types.Type.Link__MinerV0Partition:        types.Type.Map__MinerV0Partition__Repr,
+	types.Type.Link__MinerV0SectorInfo:       types.Type.Map__SectorOnChainInfo__Repr,
+	types.Type.Link__MinerV0SectorPreCommits: types.Type.Map__SectorPreCommitOnChainInfo__Repr,
+	types.Type.Link__MinerV0VestingFunds:     types.Type.MinerV0VestingFunds__Repr,
+	types.Type.Link__MultisigV0Transaction:   types.Type.Map__MultisigV0Transaction__Repr,
+	types.Type.Link__PaychV0LaneState:        types.Type.Map__PaychV0LaneState__Repr,
+	types.Type.Link__PowerV0Claim:            types.Type.Map__PowerV0Claim__Repr,
+	types.Type.Link__PowerV0CronEvent:        types.Type.Map__PowerV0CronEvent__Repr,
+	types.Type.Link__AccountV0State:          types.Type.AccountV0State__Repr,
+	types.Type.Link__CronV0State:             types.Type.CronV0State__Repr,
+	types.Type.Link__InitV0State:             types.Type.InitV0State__Repr,
+	types.Type.Link__MarketV0State:           types.Type.MarketV0State__Repr,
+	types.Type.Link__MinerV0State:            types.Type.MinerV0State__Repr,
+	types.Type.Link__MultisigV0State:         types.Type.MultisigV0State__Repr,
+	types.Type.Link__PaychV0State:            types.Type.PaychV0State__Repr,
+	types.Type.Link__PowerV0State:            types.Type.PowerV0State__Repr,
+	types.Type.Link__RewardV0State:           types.Type.RewardV0State__Repr,
+	types.Type.Link__VerifregV0State:         types.Type.VerifregV0State__Repr,
+}
+
 // LinkDest fills in a gap in current schema: what type does a `LinkReference` point to
 func LinkDest(n ipld.Node) ipld.NodePrototype {
-	switch n.Prototype() {
-	case types.Type.Link__BalanceTable:
-		return types.Type.Map__BalanceTable__Repr
-	case types.Type.Link__BitField:
-		return types.Type.BitField__Repr
-	case types.Type.Link__DataCap:
-		return types.Type.Map__DataCap__Repr
-	case types.Type.Link__LotusStateRoot:
-		return types.Type.LotusStateRoot__Repr
-	case types.Type.Link__MapActorID:
-		return types.Type.Map__ActorID__Repr
-	case types.Type.Link__MarketV0DealProposal:
-		return types.Type.Map__MarketV0DealProposal__Repr
-	case types.Type.Link__MarketV0DealState:
-		return types.Type.Map__MarketV0DealState__Repr
-	case types.Type.Link__MarketV0RawDealProposal:
-		return types.Type.Map__MarketV0RawDealProposal__Repr
-	case types.Type.Link__MultimapDealID:
-		return types.Type.Map__List__DealID__Repr
-	case types.Type.Link__MinerV0Deadlines:
-		return types.Type.List__MinerV0DeadlineLink__Repr
-	case types.Type.Link__MinerV0Deadline:
-		return types.Type.MinerV0Deadline__Repr
-	case types.Type.Link__MinerV0ExpirationSet:
-		return types.Type.Map__MinerV0ExpirationSet__Repr
-	case types.Type.Link__MinerV0Info:
-		return types.Type.MinerV0Info__Repr
-	case types.Type.Link__MinerV0Partition:
-		return types.Type.Map__MinerV0Partition__Repr
-	case types.Type.Link__MinerV0SectorInfo:
-		return types.Type.Map__SectorOnChainInfo__Repr
-	case types.Type.Link__MinerV0SectorPreCommits:
-		return types.Type.Map__SectorPreCommitOnChainInfo__Repr
-	case types.Type.Link__MinerV0VestingFunds:
-		return types.Type.MinerV0VestingFunds__Repr
-	case types.Type.Link__MultisigV0Transaction:
-		return types.Type.Map__MultisigV0Transaction__Repr
-	case types.Type.Link__PaychV0LaneState:
-		return types.Type.Map__PaychV0LaneState__Repr
-	case types.Type.Link__PowerV0Claim:
-		return types.Type.Map__PowerV0Claim__Repr
-	case types.Type.Link__PowerV0CronEvent:
-		return types.Type.Map__PowerV0CronEvent__Repr
+	proto, ok := typedLinks[n.Prototype()]
+	if ok {
+		return proto
 	}
 	return nil
 }
@@ -260,7 +254,11 @@ func TypeOfActor(stateroot ipld.Node, actor string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ref, err := actr.LookupByString("Code")
+	return actorTypeOf(actr)
+}
+
+func actorTypeOf(n ipld.Node) (string, error) {
+	ref, err := n.LookupByString("Code")
 	if err != nil {
 		return "", err
 	}
@@ -270,13 +268,43 @@ func TypeOfActor(stateroot ipld.Node, actor string) (string, error) {
 	}
 	asCid, ok := l.(cidlink.Link)
 	if !ok {
-		return "", fmt.Errorf("%s is not a cid", actor)
+		return "", fmt.Errorf("%s is not a cid", l.String())
 	}
 	code, ok := LotusActorCodes[asCid.Cid.String()]
 	if !ok {
 		return "", fmt.Errorf("%s was not a known code", asCid.Cid.String())
 	}
 	return string(code), nil
+}
+
+// TypeActorHead takes a LotusActor node, and returns a `Link__<actortype>State`
+// link reference corresponding to the untyped `Head` Link when the type can be
+// inferred from the `Code` of the actor.
+func TypeActorHead(actor ipld.Node) (ipld.Node, error) {
+	t, err := actorTypeOf(actor)
+	if err != nil {
+		return nil, err
+	}
+	proto, ok := LotusPrototypes[LotusType(t)]
+	if !ok {
+		return nil, fmt.Errorf("Unknown prototype for %s", t)
+	}
+	linkNode, err := actor.LookupByString("Head")
+	if err != nil {
+		return nil, err
+	}
+	link, err := linkNode.AsLink()
+	if err != nil {
+		return nil, err
+	}
+	for k, v := range typedLinks {
+		if v == proto {
+			typedBuilder := k.NewBuilder()
+			typedBuilder.AssignLink(link)
+			return typedBuilder.Build(), nil
+		}
+	}
+	return nil, fmt.Errorf("unknown type of actor: %s", t)
 }
 
 func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {

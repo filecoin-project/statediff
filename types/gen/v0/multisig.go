@@ -17,6 +17,7 @@ func accumulateMultisig(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__MultisigV0State", "MultisigV0State"))
 	ts.Accumulate(schema.SpawnMap("Map__MultisigV0Transaction", "String", "MultisigV0Transaction", false))
 	ts.Accumulate(schema.SpawnLinkReference("Link__MultisigV0Transaction", "Map__MultisigV0Transaction"))
 	ts.Accumulate(schema.SpawnStruct("MultisigV0Transaction",

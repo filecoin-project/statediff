@@ -11,4 +11,5 @@ func accumulateAccount(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__AccountV0State", "AccountV0State"))
 }

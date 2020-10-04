@@ -21,4 +21,5 @@ func accumulateReward(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__RewardV0State", "RewardV0State"))
 }

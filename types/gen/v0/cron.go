@@ -22,4 +22,5 @@ func accumulateCron(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__CronV0State", "CronV0State"))
 }

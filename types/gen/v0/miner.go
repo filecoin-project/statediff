@@ -24,6 +24,7 @@ func accumulateMiner(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__MinerV0State", "MinerV0State"))
 
 	ts.Accumulate(schema.SpawnLinkReference("Link__MinerV0Info",
 		"MinerV0Info",

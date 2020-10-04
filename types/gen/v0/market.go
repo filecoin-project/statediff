@@ -21,6 +21,7 @@ func accumulateMarket(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__MarketV0State", "MarketV0State"))
 	ts.Accumulate(schema.SpawnLinkReference("Link__MultimapDealID", "Map__List__DealID"))
 
 	ts.Accumulate(schema.SpawnStruct("MarketV0DealProposal",

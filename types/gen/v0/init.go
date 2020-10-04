@@ -13,6 +13,7 @@ func accumulateInit(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__InitV0State", "InitV0State"))
 	ts.Accumulate(schema.SpawnLinkReference("Link__MapActorID", "Map__ActorID"))
 	ts.Accumulate(schema.SpawnMap("Map__ActorID", "RawAddress", "ActorID", false))
 }

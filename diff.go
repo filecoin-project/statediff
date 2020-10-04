@@ -5,6 +5,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/filecoin-project/statediff/types"
+	"github.com/ipfs/go-cid"
 	blockstore "github.com/ipfs/go-ipfs-blockstore"
 	"github.com/ipld/go-ipld-prime"
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
@@ -120,13 +122,39 @@ func makeNodeLoader(ctx context.Context, store blockstore.Blockstore) func(n ipl
 				return fmt.Sprintf("Unresolved CID %T: %s", n, l.String())
 			}
 			builder := proto.NewBuilder()
-			Load(ctx, c, store, builder)
+			err := Load(ctx, c, store, builder)
+			if err != nil {
+				return fmt.Sprintf("load of %s failed: %v", c, err)
+			}
 			dest := builder.Build()
 			return Ref{dest}
 		}
+		// A special interpretation for lotus actors.
+		if n.Prototype() == types.Type.LotusActors {
+			m := nodeTerminator(n).(map[string]ipld.Node)
+			typed, err := TypeActorHead(n)
+			if err != nil {
+				return m
+			}
+			m["Head"] = typed
+			return m
+		}
+
 		return nodeTerminator(n)
 	}
 	return nodeLoader
+}
+
+func mustCid(n ipld.Node) cid.Cid {
+	l, err := n.AsLink()
+	if err != nil {
+		return cid.Undef
+	}
+	asCid, ok := l.(cidlink.Link)
+	if !ok {
+		return cid.Undef
+	}
+	return asCid.Cid
 }
 
 // Diff provides a human readable difference between two ipld dags
