@@ -16,6 +16,7 @@ import (
 	cbor "github.com/ipfs/go-ipld-cbor"
 	"github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"
+	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
 	cbg "github.com/whyrusleeping/cbor-gen"
 
 	"github.com/filecoin-project/statediff/types"
@@ -136,6 +137,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	PaymentChannelActorLaneStates:              types.Type.Map__PaychV0LaneState__Repr,
 }
 
+// Loader is the conformer for our wrapper around ADLs
 type Loader func(context.Context, cid.Cid, blockstore.Blockstore, ipld.NodeAssembler) error
 
 var complexLoaders = map[ipld.NodePrototype]Loader{
@@ -158,6 +160,55 @@ var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.Map__PaychV0LaneState__Repr:           transformPaymentChannelLaneStates,
 }
 
+// LinkDest fills in a gap in current schema: what type does a `LinkReference` point to
+func LinkDest(n ipld.Node) ipld.NodePrototype {
+	switch n.Prototype() {
+	case types.Type.Link__BalanceTable:
+		return types.Type.Map__BalanceTable__Repr
+	case types.Type.Link__BitField:
+		return types.Type.BitField__Repr
+	case types.Type.Link__DataCap:
+		return types.Type.Map__DataCap__Repr
+	case types.Type.Link__LotusStateRoot:
+		return types.Type.LotusStateRoot__Repr
+	case types.Type.Link__MapActorID:
+		return types.Type.Map__ActorID__Repr
+	case types.Type.Link__MarketV0DealProposal:
+		return types.Type.Map__MarketV0DealProposal__Repr
+	case types.Type.Link__MarketV0DealState:
+		return types.Type.Map__MarketV0DealState__Repr
+	case types.Type.Link__MarketV0RawDealProposal:
+		return types.Type.Map__MarketV0RawDealProposal__Repr
+	case types.Type.Link__MultimapDealID:
+		return types.Type.Map__List__DealID__Repr
+	case types.Type.Link__MinerV0Deadlines:
+		return types.Type.List__MinerV0DeadlineLink__Repr
+	case types.Type.Link__MinerV0Deadline:
+		return types.Type.MinerV0Deadline__Repr
+	case types.Type.Link__MinerV0ExpirationSet:
+		return types.Type.Map__MinerV0ExpirationSet__Repr
+	case types.Type.Link__MinerV0Info:
+		return types.Type.MinerV0Info__Repr
+	case types.Type.Link__MinerV0Partition:
+		return types.Type.Map__MinerV0Partition__Repr
+	case types.Type.Link__MinerV0SectorInfo:
+		return types.Type.Map__SectorOnChainInfo__Repr
+	case types.Type.Link__MinerV0SectorPreCommits:
+		return types.Type.Map__SectorPreCommitOnChainInfo__Repr
+	case types.Type.Link__MinerV0VestingFunds:
+		return types.Type.MinerV0VestingFunds__Repr
+	case types.Type.Link__MultisigV0Transaction:
+		return types.Type.Map__MultisigV0Transaction__Repr
+	case types.Type.Link__PaychV0LaneState:
+		return types.Type.Map__PaychV0LaneState__Repr
+	case types.Type.Link__PowerV0Claim:
+		return types.Type.Map__PowerV0Claim__Repr
+	case types.Type.Link__PowerV0CronEvent:
+		return types.Type.Map__PowerV0CronEvent__Repr
+	}
+	return nil
+}
+
 var simplifyingRe = regexp.MustCompile(`\[\d+\]`)
 var simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
 
@@ -171,6 +222,7 @@ func ResolveType(as string) LotusType {
 	return LotusType(as)
 }
 
+// Load will load c into a given assembler.
 func Load(ctx context.Context, c cid.Cid, store blockstore.Blockstore, into ipld.NodeAssembler) error {
 	prototype := into.Prototype()
 	if complexLoader, ok := complexLoaders[prototype]; ok {
@@ -200,6 +252,31 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 		return nil, err
 	}
 	return assembler.Build(), nil
+}
+
+// TypeOfActor returns the type a given actor will be based on its binary address and stateroot.
+func TypeOfActor(stateroot ipld.Node, actor string) (string, error) {
+	actr, err := stateroot.LookupByString(actor)
+	if err != nil {
+		return "", err
+	}
+	ref, err := actr.LookupByString("Code")
+	if err != nil {
+		return "", err
+	}
+	l, err := ref.AsLink()
+	if err != nil {
+		return "", err
+	}
+	asCid, ok := l.(cidlink.Link)
+	if !ok {
+		return "", fmt.Errorf("%s is not a cid", actor)
+	}
+	code, ok := LotusActorCodes[asCid.Cid.String()]
+	if !ok {
+		return "", fmt.Errorf("%s was not a known code", asCid.Cid.String())
+	}
+	return string(code), nil
 }
 
 func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {

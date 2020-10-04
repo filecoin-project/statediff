@@ -13,7 +13,7 @@ func accumulateMarket(ts schema.TypeSystem) {
 			schema.SpawnStructField("EscrowTable", "Link__BalanceTable", false, false),              // BalanceTable
 			schema.SpawnStructField("LockedTable", "Link__BalanceTable", false, false),              // BalanceTable
 			schema.SpawnStructField("NextID", "DealID", false, false),
-			schema.SpawnStructField("DealOpsByEpoch", "Link", false, false), // SetMultimap, HAMT[epoch]Set
+			schema.SpawnStructField("DealOpsByEpoch", "Link__MultimapDealID", false, false), // SetMultimap, HAMT[epoch]Set
 			schema.SpawnStructField("LastCron", "ChainEpoch", false, false),
 			schema.SpawnStructField("TotalClientLockedCollateral", "BigInt", false, false),   //TokenAmount
 			schema.SpawnStructField("TotalProviderLockedCollateral", "BigInt", false, false), //TokenAmount
@@ -21,6 +21,7 @@ func accumulateMarket(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{},
 	))
+	ts.Accumulate(schema.SpawnLinkReference("Link__MultimapDealID", "Map__List__DealID"))
 
 	ts.Accumulate(schema.SpawnStruct("MarketV0DealProposal",
 		[]schema.StructField{

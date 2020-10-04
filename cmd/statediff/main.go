@@ -8,17 +8,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var expandActorsFlag = cli.StringFlag{
-	Name:  "expand-actors",
-	Usage: "Control which actors state is expanded. pass with no argument or 'all' to expand all states, provide a class, like 'InitActor', or specific state root cid(s) separate by commas",
-	Value: "",
-}
-
 func main() {
 	app := &cli.App{
 		Name:        "statediff",
-		Usage:       "State Inspector 🕵️‍♂️",
-		Description: "State Inspector 🕵️‍♂️",
+		Usage:       "State Diff 🕵️‍♂️",
+		Description: "State Diff 🕵️‍♂️",
 		Commands: []*cli.Command{
 			vectorCmd,
 			carCmd,

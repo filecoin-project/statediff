@@ -101,7 +101,7 @@ func runDumpCmd(c *cli.Context) error {
 		if err != nil {
 			return err
 		}
-		t, err := TypeOfActor(stateroot, string(asAddr.Bytes()))
+		t, err := statediff.TypeOfActor(stateroot, string(asAddr.Bytes()))
 		if err != nil {
 			return err
 		}
@@ -136,28 +136,4 @@ func runDumpCmd(c *cli.Context) error {
 		}
 	}
 	return nil
-}
-
-func TypeOfActor(stateroot ipld.Node, actor string) (string, error) {
-	actr, err := stateroot.LookupByString(actor)
-	if err != nil {
-		return "", err
-	}
-	ref, err := actr.LookupByString("Code")
-	if err != nil {
-		return "", err
-	}
-	l, err := ref.AsLink()
-	if err != nil {
-		return "", err
-	}
-	asCid, ok := l.(cidlink.Link)
-	if !ok {
-		return "", fmt.Errorf("%s is not a cid", actor)
-	}
-	code, ok := statediff.LotusActorCodes[asCid.Cid.String()]
-	if !ok {
-		return "", fmt.Errorf("%s was not a known code", asCid.Cid.String())
-	}
-	return string(code), nil
 }

@@ -21,7 +21,6 @@ var chainCmd = &cli.Command{
 	Action:      runChainCmd,
 	Flags: []cli.Flag{
 		&lib.ApiFlag,
-		&expandActorsFlag,
 	},
 }
 
@@ -114,28 +113,20 @@ func runChainCmd(c *cli.Context) error {
 
 	fmt.Printf("comparing state trees at %s-%s\n", preCid, postCid)
 
-	if c.IsSet(expandActorsFlag.Name) {
-		interestCids := c.String(expandActorsFlag.Name)
-		opt := statediff.ExpandActors
-		if len(interestCids) > 0 {
-			opt, err = statediff.WithActorExpansionFromUser(interestCids)
-			if err != nil {
-				return err
-			}
-		}
-		fmt.Printf("%v\n", statediff.Diff(
-			c.Context,
-			store,
-			preCid,
-			postCid,
-			opt))
-	} else {
-		fmt.Printf("%v\n", statediff.Diff(
-			c.Context,
-			store,
-			preCid,
-			postCid))
+	l, err := statediff.Transform(c.Context, preCid, store, "stateRoot")
+	if err != nil {
+		return fmt.Errorf("Could not load %s: %s", preCid, err)
 	}
+	r, err := statediff.Transform(c.Context, postCid, store, "stateRoot")
+	if err != nil {
+		return fmt.Errorf("Could not load %s: %s", postCid, err)
+	}
+
+	fmt.Printf("%v\n", statediff.Diff(
+		c.Context,
+		store,
+		l,
+		r))
 
 	return nil
 }
