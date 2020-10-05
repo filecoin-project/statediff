@@ -63,6 +63,7 @@ func runCarCmd(c *cli.Context) error {
 		return fmt.Errorf("Could not load %s: %s", postCid, err)
 	}
 
+	fmt.Printf("--- %s\n+++ %s\n@@ -1,1 +1,1 @@\n", preCid, postCid)
 	fmt.Printf("%v\n", statediff.Diff(
 		c.Context,
 		store,
