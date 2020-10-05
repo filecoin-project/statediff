@@ -17,7 +17,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 			schema.SpawnStructField("Height", "ChainEpoch", false, false),
 			schema.SpawnStructField("ParentStateRoot", "Link__LotusStateRoot", false, false),
 			schema.SpawnStructField("ParentMessageReceipts", "Link", false, false),
-			schema.SpawnStructField("Messages", "Link", false, false),
+			schema.SpawnStructField("Messages", "Link__LotusMsgMeta", false, false),
 			schema.SpawnStructField("BLSAggregate", "Signature", false, true),
 			schema.SpawnStructField("Timestamp", "Int", false, false),
 			schema.SpawnStructField("BlockSig", "Signature", false, true),
@@ -76,4 +76,29 @@ func accumulateLotus(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{}))
 	ts.Accumulate(schema.SpawnMap("Map__LotusActors", "RawAddress", "LotusActors", false))
+
+	ts.Accumulate(schema.SpawnLinkReference("Link__LotusMsgMeta", "LotusMsgMeta"))
+	ts.Accumulate(schema.SpawnStruct("LotusMsgMeta",
+		[]schema.StructField{
+			schema.SpawnStructField("BlsMessages", "Link__ListLotusMessage", false, false),
+			schema.SpawnStructField("SecpkMessages", "Link", false, false),
+		},
+		schema.StructRepresentation_Tuple{}))
+	ts.Accumulate(schema.SpawnLinkReference("Link__ListLotusMessage", "List__LinkLotusMessage"))
+	ts.Accumulate(schema.SpawnList("List__LinkLotusMessage", "Link__LotusMessage", false)) //Encoded as AMT
+	ts.Accumulate(schema.SpawnLinkReference("Link__LotusMessage", "LotusMessage"))
+	ts.Accumulate(schema.SpawnStruct("LotusMessage",
+		[]schema.StructField{
+			schema.SpawnStructField("Version", "Int", false, false),
+			schema.SpawnStructField("To", "Address", false, false),
+			schema.SpawnStructField("From", "Address", false, false),
+			schema.SpawnStructField("Nonce", "Int", false, false),
+			schema.SpawnStructField("Value", "BigInt", false, false),
+			schema.SpawnStructField("GasLimit", "Int", false, false),
+			schema.SpawnStructField("GasFeeCap", "BigInt", false, false),
+			schema.SpawnStructField("GasPremium", "BigInt", false, false),
+			schema.SpawnStructField("Method", "MethodNum", false, false),
+			schema.SpawnStructField("Params", "Bytes", false, false),
+		},
+		schema.StructRepresentation_Tuple{}))
 }

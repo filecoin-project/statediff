@@ -32,6 +32,9 @@ type LotusType string
 // LotusType enum
 const (
 	LotusTypeTipset                            LotusType = "tipset"
+	LotusTypeMsgMeta                           LotusType = "msgMeta"
+	LotusTypeMsgList                           LotusType = "msgMeta.BlsMessages"
+	LotusTypeMessage                           LotusType = "msgMeta.BlsMessages[]"
 	LotusTypeStateroot                         LotusType = "stateRoot"
 	AccountActorState                          LotusType = "accountActor"
 	CronActorState                             LotusType = "cronActor"
@@ -78,6 +81,8 @@ var LotusTypeAliases = map[string]LotusType{
 	"storagePowerActor.Claims":                                    StoragePowerActorClaims,
 	"storageMinerActor.Deadlines.Due.ExpirationEpochs":            StorageMinerActorDeadlineExpiry,
 	"storageMinerActor.Deadlines.Due.Partitions.ExpirationEpochs": StorageMinerActorDeadlinePartitionExpiry,
+	"msgMeta.SecpkMessages":                                       LotusTypeMsgList,
+	"msgMeta.SecpkMessages[]":                                     LotusTypeMessage,
 }
 
 // LotusActorCodes for v0 actor states
@@ -98,6 +103,8 @@ var LotusActorCodes = map[string]LotusType{
 // LotusPrototypes provide expected node types for each state type.
 var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	LotusTypeTipset:                   types.Type.LotusBlockHeader__Repr,
+	LotusTypeMsgMeta:                  types.Type.LotusMsgMeta__Repr,
+	LotusTypeMessage:                  types.Type.LotusMessage__Repr,
 	AccountActorState:                 types.Type.AccountV0State__Repr,
 	CronActorState:                    types.Type.CronV0State__Repr,
 	InitActorState:                    types.Type.InitV0State__Repr,
@@ -114,6 +121,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	VerifiedRegistryActorState:        types.Type.VerifregV0State__Repr,
 	PaymentChannelActorState:          types.Type.PaychV0State__Repr,
 	// Complex types
+	LotusTypeMsgList:                           types.Type.List__LinkLotusMessage__Repr,
 	LotusTypeStateroot:                         types.Type.Map__LotusActors__Repr,
 	InitActorAddresses:                         types.Type.Map__ActorID__Repr,
 	StorageMinerActorPreCommittedSectors:       types.Type.Map__SectorPreCommitOnChainInfo__Repr,
@@ -142,6 +150,7 @@ type Loader func(context.Context, cid.Cid, blockstore.Blockstore, ipld.NodeAssem
 
 var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.Map__LotusActors__Repr:                transformStateRoot,
+	types.Type.List__LinkLotusMessage__Repr:          transformMessageAmt,
 	types.Type.Map__ActorID__Repr:                    transformInitActor,
 	types.Type.Map__SectorPreCommitOnChainInfo__Repr: transformMinerActorPreCommittedSectors,
 	types.Type.Map__BitField__Repr:                   transformMinerActorBitfieldHamt,
@@ -192,6 +201,9 @@ var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
 	types.Type.Link__PowerV0State:            types.Type.PowerV0State__Repr,
 	types.Type.Link__RewardV0State:           types.Type.RewardV0State__Repr,
 	types.Type.Link__VerifregV0State:         types.Type.VerifregV0State__Repr,
+	types.Type.Link__LotusMsgMeta:            types.Type.LotusMsgMeta__Repr,
+	types.Type.Link__ListLotusMessage:        types.Type.List__LinkLotusMessage__Repr,
+	types.Type.Link__LotusMessage:            types.Type.LotusMessage__Repr,
 }
 
 // LinkDest fills in a gap in current schema: what type does a `LinkReference` point to
@@ -203,13 +215,15 @@ func LinkDest(n ipld.Node) ipld.NodePrototype {
 	return nil
 }
 
-var simplifyingRe = regexp.MustCompile(`\[\d+\]`)
+var simplifyingRe = regexp.MustCompile(`\[\d+\]\.`)
 var simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
+var finalRe = regexp.MustCompile(`\[\d+\]`)
 
 // ResolveType maps incoming type strings to enum known types
 func ResolveType(as string) LotusType {
 	as = strings.ReplaceAll(as, string('/'), string('.'))
-	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte("")), []byte(".")))
+	as = string(simplifyingRe2.ReplaceAll(simplifyingRe.ReplaceAll([]byte(as), []byte(".")), []byte(".")))
+	as = string(finalRe.ReplaceAll([]byte(as), []byte("[]")))
 	if alias, ok := LotusTypeAliases[as]; ok {
 		as = string(alias)
 	}
@@ -341,6 +355,27 @@ func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockst
 		return err
 	}
 	return nil
+}
+
+func transformMessageAmt(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return err
+	}
+
+	lister, err := assembler.BeginList(0)
+	if err != nil {
+		return err
+	}
+
+	value := cbg.CborCid{}
+	if err := list.ForEach(&value, func(k int64) error {
+		return lister.AssembleValue().AssignLink(cidlink.Link{cid.Cid(value)})
+	}); err != nil {
+		return err
+	}
+	return lister.Finish()
 }
 
 func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {

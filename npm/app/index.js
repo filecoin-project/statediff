@@ -4,6 +4,7 @@ const jsonPrinter = require('./components/jsonPrinter');
 const jsonBitfield = require('./components/jsonBitfield');
 const jsonCid = require('./components/jsonCid');
 const lotusActor = require('./components/lotusActor');
+const msgMeta = require('./msgmeta');
 const stateroot = require('./stateroot');
 const tipset = require('./tipset');
 const changeEvent = require('./event');
@@ -85,6 +86,7 @@ let onLoad = () => {
     renderer.Register(jsonCid);
     renderer.Register(jsonPrinter);
     renderer.Register(lotusActor);
+    renderer.Register(msgMeta);
     renderer.Register(stateroot);
     renderer.Register(tipset);
     document.addEventListener(changeEvent.Event.type, async () => {
