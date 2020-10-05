@@ -31,6 +31,7 @@ type LotusType string
 
 // LotusType enum
 const (
+	LotusTypeUnknown                           LotusType = "unknown"
 	LotusTypeTipset                            LotusType = "tipset"
 	LotusTypeMsgMeta                           LotusType = "msgMeta"
 	LotusTypeMsgList                           LotusType = "msgMeta.BlsMessages"
@@ -57,7 +58,7 @@ const (
 	StorageMinerActorAllocatedSectors          LotusType = "storageMinerActor.AllocatedSectors"
 	StorageMinerActorSectors                   LotusType = "storageMinerActor.Sectors"
 	StorageMinerActorDeadlines                 LotusType = "storageMinerActor.Deadlines"
-	StorageMinerActorDeadline                  LotusType = "storageMinerActor.Deadlines.Due"
+	StorageMinerActorDeadline                  LotusType = "storageMinerActor.Deadlines.Due[]"
 	StorageMinerActorDeadlinePartitions        LotusType = "storageMinerActor.Deadlines.Due.Partitions"
 	StorageMinerActorDeadlinePartitionExpiry   LotusType = "storageMinerActor.Deadlines.Due.Partitions.ExpirationsEpochs"
 	StorageMinerActorDeadlinePartitionEarly    LotusType = "storageMinerActor.Deadlines.Due.Partitions.EarlyTerminated"
@@ -102,6 +103,7 @@ var LotusActorCodes = map[string]LotusType{
 
 // LotusPrototypes provide expected node types for each state type.
 var LotusPrototypes = map[LotusType]ipld.NodePrototype{
+	LotusTypeUnknown:                  types.Type.Any__Repr,
 	LotusTypeTipset:                   types.Type.LotusBlockHeader__Repr,
 	LotusTypeMsgMeta:                  types.Type.LotusMsgMeta__Repr,
 	LotusTypeMessage:                  types.Type.LotusMessage__Repr,
