@@ -373,7 +373,7 @@ func transformMessageAmt(ctx context.Context, c cid.Cid, store blockstore.Blocks
 
 	value := cbg.CborCid{}
 	if err := list.ForEach(&value, func(k int64) error {
-		return lister.AssembleValue().AssignLink(cidlink.Link{cid.Cid(value)})
+		return lister.AssembleValue().AssignLink(cidlink.Link{Cid: cid.Cid(value)})
 	}); err != nil {
 		return err
 	}

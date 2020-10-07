@@ -37,9 +37,10 @@ jobs:
 
     - name: Build
       run: |
-        go build -v ./cmd/statediff
         go generate ./...
+        go build -v ./cmd/statediff
         go build -v ./cmd/stateexplorer
+        go build -v ./cmd/statedump
 
     - name: Test
-      run: go test -v .
+      run: go test -v ./...
