@@ -18,6 +18,18 @@ const codeMap = {
     "bafkqadtgnfwc6mjpnv2wy5djonuwo": "multisigActor",
     "bafkqafdgnfwc6mjpobqxs3lfnz2gg2dbnzxgk3a": "paymentChannelActor",
     "bafkqaetgnfwc6mjpon2g64tbm5sw22lomvza": "storageMinerActor",
+    // v2:
+    "bafkqaddgnfwc6mrpon4xg5dfnu": "systemActor",
+    "bafkqactgnfwc6mrpnfxgs5a": "initActor",
+    "bafkqaddgnfwc6mrpojsxoylsmq": "rewardActorV2",
+    "bafkqactgnfwc6mrpmnzg63q": "cronActor",
+    "bafkqaetgnfwc6mrpon2g64tbm5sxa33xmvza": "storagePowerActorV2",
+    "bafkqae3gnfwc6mrpon2g64tbm5sw2ylsnnsxi": "storageMarketActorV2",
+    "bafkqaftgnfwc6mrpozsxe2lgnfswi4tfm5uxg5dspe": "verifiedRegistryActor",
+    "bafkqadlgnfwc6mrpmfrwg33vnz2a": "accountActor",
+    "bafkqadtgnfwc6mrpnv2wy5djonuwo": "multisigActor",
+    "bafkqafdgnfwc6mrpobqxs3lfnz2gg2dbnzxgk3a": "paymentChannelActor",
+    "bafkqaetgnfwc6mrpon2g64tbm5sw22lomvza": "storageMinerActorV2",
 }
 class lotusActor {
     constructor(element, state) {

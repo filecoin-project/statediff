@@ -8,9 +8,11 @@ require (
 	github.com/filecoin-project/go-address v0.0.3
 	github.com/filecoin-project/go-amt-ipld/v2 v2.1.1-0.20200731171407-e559a0579161 // indirect
 	github.com/filecoin-project/go-bitfield v0.2.0
-	github.com/filecoin-project/go-state-types v0.0.0-20200911004822-964d6c679cfc
+	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
+	github.com/filecoin-project/go-state-types v0.0.0-20200928172055-2df22083d8ab
 	github.com/filecoin-project/lotus v0.7.2
-	github.com/filecoin-project/specs-actors v0.9.10
+	github.com/filecoin-project/specs-actors v0.9.12
+	github.com/filecoin-project/specs-actors/v2 v2.0.1
 	github.com/gorilla/handlers v1.4.2
 	github.com/ipfs/go-block-format v0.0.2
 	github.com/ipfs/go-cid v0.0.7

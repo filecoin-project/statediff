@@ -5,6 +5,7 @@ import (
 	"os"
 
 	v0 "github.com/filecoin-project/statediff/types/gen/v0"
+	v2 "github.com/filecoin-project/statediff/types/gen/v2"
 
 	ipld "github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/schema"
@@ -71,6 +72,7 @@ func main() {
 	accumulateCrypto(ts)
 	accumulateLotus(ts)
 	v0.Accumulate(ts)
+	v2.Accumulate(ts)
 
 	if errs := ts.ValidateGraph(); errs != nil {
 		for _, err := range errs {
