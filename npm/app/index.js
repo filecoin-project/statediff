@@ -4,6 +4,7 @@ const jsonPrinter = require('./components/jsonPrinter');
 const jsonBitfield = require('./components/jsonBitfield');
 const jsonCid = require('./components/jsonCid');
 const lotusActor = require('./components/lotusActor');
+const msgMeta = require('./msgmeta');
 const stateroot = require('./stateroot');
 const tipset = require('./tipset');
 const changeEvent = require('./event');
@@ -13,8 +14,9 @@ const renderer = require('./renderer');
 let renderedRoot = null;
 
 async function GetCurrentRoot() {
-    let data = await fetch("head").then((r) => {
-        return r.text();
+    let data = await fetch("head").then(async (r) => {
+        let cids = await r.json()
+        return cids[0]["/"];
     });
     return data;
 }
@@ -84,6 +86,7 @@ let onLoad = () => {
     renderer.Register(jsonCid);
     renderer.Register(jsonPrinter);
     renderer.Register(lotusActor);
+    renderer.Register(msgMeta);
     renderer.Register(stateroot);
     renderer.Register(tipset);
     document.addEventListener(changeEvent.Event.type, async () => {

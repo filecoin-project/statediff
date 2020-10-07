@@ -10,13 +10,11 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:        "statediff",
-		Usage:       "State Diff 🕵️‍♂️",
-		Description: "State Diff 🕵️‍♂️",
+		Name:        "statedump",
+		Usage:       "State Dumper 🚚",
+		Description: "State Dumper 🚚",
 		Commands: []*cli.Command{
-			vectorCmd,
-			carCmd,
-			chainCmd,
+			dumpCmd,
 		},
 	}
 

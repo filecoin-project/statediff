@@ -27,7 +27,6 @@ var carCmd = &cli.Command{
 			Destination: &carFlags.file,
 			Required:    true,
 		},
-		&expandActorsFlag,
 	},
 }
 
@@ -55,12 +54,21 @@ func runCarCmd(c *cli.Context) error {
 		return err
 	}
 
+	l, err := statediff.Transform(c.Context, preCid, store, "stateRoot")
+	if err != nil {
+		return fmt.Errorf("Could not load %s: %s", preCid, err)
+	}
+	r, err := statediff.Transform(c.Context, postCid, store, "stateRoot")
+	if err != nil {
+		return fmt.Errorf("Could not load %s: %s", postCid, err)
+	}
+
+	fmt.Printf("--- %s\n+++ %s\n@@ -1,1 +1,1 @@\n", preCid, postCid)
 	fmt.Printf("%v\n", statediff.Diff(
 		c.Context,
 		store,
-		preCid,
-		postCid,
-		statediff.ExpandActors))
+		l,
+		r))
 
 	return nil
 }

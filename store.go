@@ -47,6 +47,7 @@ func (pb *proxyingBlockstore) Get(cid cid.Cid) (blocks.Block, error) {
 	return block, nil
 }
 
+// StoreFor creates a blockstore proxying access to a lotus node.
 func StoreFor(ctx context.Context, client api.FullNode) blockstore.Blockstore {
 	ds := ds.NewMapDatastore()
 
