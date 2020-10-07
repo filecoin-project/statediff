@@ -21,6 +21,7 @@ class stateroot {
     constructor(element, cid) {
         this.cid = cid;
         this.element = element;
+        this.type = "stateRoot";
         this.pn = 0;
         this.children = {};
         this.shownActors = {};
@@ -34,7 +35,7 @@ class stateroot {
     }
 
     Load() {
-        this.load = store(this.cid, "stateRoot");
+        this.load = store(this.cid, this.type);
         this.load.then((r) => this.onStateroot(r));
         return this.load;
     }
@@ -42,10 +43,22 @@ class stateroot {
         return this.load;
     }
 
-    onStateroot(resp) {
+    async onStateroot(resp) {
         if(resp[0]) {
-            this.data = resp[1];
-            this.Render();
+            if (this.type == "stateRoot") {
+                this.data = resp[1];
+                this.Render();
+            } else {
+                let actormap = store(resp[1]["Actors"]["/"], "stateRoot");
+                actormap.then((r) => {
+                    this.data = r[1];
+                    this.Render();
+                });
+                return actormap;
+            }
+        } else if (this.type == "stateRoot") {
+            this.type = "versionedStateRoot"
+            return this.Load();
         } else {
             this.element.innerHTML = "Failed to parse: " + resp[1];
         }
@@ -74,7 +87,7 @@ class stateroot {
         }
         let initHeadCid = this.data[ActorAddrs["Init"]]["Head"]["/"];
         let initState = await store(initHeadCid, "initActor");
-        let initAddrMap = await store(initState[1]["AddressMap"]["/"], "initActorAddresses");
+        let initAddrMap = await store(initState[1]["AddressMap"]["/"], "stateRoot");
         this.initMap = initAddrMap;
         return initAddrMap;
     }

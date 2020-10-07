@@ -37,6 +37,7 @@ const (
 	LotusTypeMsgList                           LotusType = "msgMeta.BlsMessages"
 	LotusTypeMessage                           LotusType = "msgMeta.BlsMessages[]"
 	LotusTypeStateroot                         LotusType = "stateRoot"
+	LotusVersionedStateroot                    LotusType = "versionedStateRoot"
 	AccountActorState                          LotusType = "accountActor"
 	CronActorState                             LotusType = "cronActor"
 	InitActorState                             LotusType = "initActor"
@@ -105,6 +106,7 @@ var LotusActorCodes = map[string]LotusType{
 var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	LotusTypeUnknown:                  types.Type.Any__Repr,
 	LotusTypeTipset:                   types.Type.LotusBlockHeader__Repr,
+	LotusVersionedStateroot:           types.Type.LotusStateRoot__Repr,
 	LotusTypeMsgMeta:                  types.Type.LotusMsgMeta__Repr,
 	LotusTypeMessage:                  types.Type.LotusMessage__Repr,
 	AccountActorState:                 types.Type.AccountV0State__Repr,

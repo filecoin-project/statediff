@@ -95,7 +95,7 @@ class tipset {
             this.data = resp[1];
             this.Render(resp[1]);
         } else {
-            renderer.FillSlot(this.element, 'stateroot', expander, this.cid, stateroot);
+            renderer.FillSlot(this.element, 'stateroot', expander, this.cid, stateroot, [this.cid]);
         }
     }
 
