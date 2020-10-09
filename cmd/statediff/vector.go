@@ -61,6 +61,8 @@ func runVectorCmd(c *cli.Context) error {
 		return err
 	}
 
+	statediff.AllowDegradedADLNodes = true
+
 	preCid := tv.Pre.StateTree.RootCID
 	postCid := tv.Post.StateTree.RootCID
 	l, err := statediff.Transform(c.Context, preCid, store, "stateRoot")

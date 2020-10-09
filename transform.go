@@ -10,7 +10,6 @@ import (
 	"regexp"
 	"strings"
 
-	hamtv2 "github.com/filecoin-project/go-hamt-ipld/v2"
 	abi "github.com/filecoin-project/go-state-types/abi"
 	"github.com/ipfs/go-cid"
 	hamt "github.com/ipfs/go-hamt-ipld"
@@ -203,7 +202,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 type Loader func(context.Context, cid.Cid, blockstore.Blockstore, ipld.NodeAssembler) error
 
 var complexLoaders = map[ipld.NodePrototype]Loader{
-	types.Type.Map__LotusActors__Repr:                transformStateRoot,
+	types.Type.Map__LotusActors__Repr:                loadMap,
 	types.Type.List__LinkLotusMessage__Repr:          transformMessageAmt,
 	types.Type.Map__ActorID__Repr:                    transformInitActor,
 	types.Type.Map__SectorPreCommitOnChainInfo__Repr: transformMinerActorPreCommittedSectors,
@@ -213,12 +212,12 @@ var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.Map__MinerV2Partition__Repr:           transformMinerActorDeadlinePartitions,
 	types.Type.Map__MinerV0ExpirationSet__Repr:       transformMinerActorDeadlinePartitionExpiry,
 	types.Type.Map__PowerV0CronEvent__Repr:           transformPowerActorEventQueue,
-	types.Type.Map__PowerV0Claim__Repr:               transformPowerActorClaims,
-	types.Type.Map__PowerV2Claim__Repr:               transformPowerActorClaims,
+	types.Type.Map__PowerV0Claim__Repr:               loadMap,
+	types.Type.Map__PowerV2Claim__Repr:               loadMap,
 	types.Type.Map__DataCap__Repr:                    transformVerifiedRegistryDataCaps,
 	types.Type.Map__MarketV0DealProposal__Repr:       transformMarketProposals,
-	types.Type.Map__MarketV2DealProposal__Repr:       transformMarketV2PendingProposals,
-	types.Type.Map__MarketV0RawDealProposal__Repr:    transformMarketPendingProposals,
+	types.Type.Map__MarketV2DealProposal__Repr:       loadMap,
+	types.Type.Map__MarketV0RawDealProposal__Repr:    loadMap,
 	types.Type.Map__MarketV2RawDealProposal__Repr:    transformMarketV2Proposals,
 	types.Type.Map__MarketV0DealState__Repr:          transformMarketStates,
 	types.Type.Map__BalanceTable__Repr:               transformMarketBalanceTable,
@@ -390,18 +389,20 @@ func TypeActorHead(actor ipld.Node) (ipld.Node, error) {
 	return nil, fmt.Errorf("unknown type of actor: %s", t)
 }
 
-func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+var AllowDegradedADLNodes = false
+
+func loadMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
 	if err != nil {
-		return err
+		return fmt.Errorf("hamt load node errored: %v", err)
 	}
-	mapper, err := assembler.BeginMap(0)
+	mapper, err := as.BeginMap(0)
 	if err != nil {
 		return err
 	}
 
-	if err := node.ForEach(ctx, func(k string, val interface{}) error {
+	mapcb := func(k string, val interface{}) error {
 		v, err := mapper.AssembleEntry(k)
 		if err != nil {
 			return err
@@ -412,13 +413,21 @@ func transformStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockst
 			return fmt.Errorf("unexpected non-cbg.Deferred")
 		}
 
-		actor := types.Type.LotusActors__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
+		value := mapper.ValuePrototype(k).NewBuilder()
+		if err := dagcbor.Decoder(value, bytes.NewBuffer(asDef.Raw)); err != nil {
 			return err
 		}
-		return v.AssignNode(actor.Build())
-	}); err != nil {
-		return err
+		return v.AssignNode(value.Build())
+	}
+
+	if AllowDegradedADLNodes {
+		if err := degradedForEach(node, mapcb, cborStore); err != nil {
+			return fmt.Errorf("Hamt browse failed: %v", err)
+		}
+	} else {
+		if err := node.ForEach(ctx, mapcb); err != nil {
+			return fmt.Errorf("Hamt browse failed: %v", err)
+		}
 	}
 	if err := mapper.Finish(); err != nil {
 		return err
@@ -686,45 +695,6 @@ func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockst
 	return mapper.Finish()
 }
 
-func transformPowerActorClaims(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
-	if err != nil {
-		return err
-	}
-
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	elProto := ipld.NodePrototype(types.Type.PowerV0Claim__Repr)
-	if assembler.Prototype() == types.Type.Map__PowerV2Claim__Repr {
-		elProto = types.Type.PowerV2Claim__Repr
-	}
-
-	if err := node.ForEach(ctx, func(k string, val interface{}) error {
-		v, err := mapper.AssembleEntry(k)
-		if err != nil {
-			return err
-		}
-
-		asDef, ok := val.(*cbg.Deferred)
-		if !ok {
-			return fmt.Errorf("unexpected non-cbg.Deferred")
-		}
-
-		actor := elProto.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
-			return err
-		}
-		return v.AssignNode(actor.Build())
-	}); err != nil {
-		return err
-	}
-	return mapper.Finish()
-}
-
 func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
@@ -750,74 +720,6 @@ func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blo
 		}
 
 		return v.AssignBytes(asDef.Raw)
-	}); err != nil {
-		return err
-	}
-	return mapper.Finish()
-}
-
-func transformMarketPendingProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
-	if err != nil {
-		return err
-	}
-
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	if err := node.ForEach(ctx, func(k string, val interface{}) error {
-		v, err := mapper.AssembleEntry(k)
-		if err != nil {
-			return err
-		}
-
-		asDef, ok := val.(*cbg.Deferred)
-		if !ok {
-			return fmt.Errorf("unexpected non-cbg.Deferred")
-		}
-
-		actor := types.Type.MarketV0DealProposal__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
-			return err
-		}
-		return v.AssignNode(actor.Build())
-	}); err != nil {
-		return err
-	}
-	return mapper.Finish()
-}
-
-func transformMarketV2PendingProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	node, err := hamtv2.LoadNode(ctx, cborStore, c, hamtv2.UseTreeBitWidth(5))
-	if err != nil {
-		return fmt.Errorf("failed hamt restore: %w", err)
-	}
-
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	if err := node.ForEach(ctx, func(k string, val interface{}) error {
-		v, err := mapper.AssembleEntry(k)
-		if err != nil {
-			return err
-		}
-
-		asDef, ok := val.(*cbg.Deferred)
-		if !ok {
-			return fmt.Errorf("unexpected non-cbg.Deferred")
-		}
-
-		actor := types.Type.MarketV2DealProposal__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
-			return fmt.Errorf("failed unmarshal of proposal: %w", err)
-		}
-		return v.AssignNode(actor.Build())
 	}); err != nil {
 		return err
 	}

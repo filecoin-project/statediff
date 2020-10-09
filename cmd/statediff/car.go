@@ -54,6 +54,8 @@ func runCarCmd(c *cli.Context) error {
 		return err
 	}
 
+	statediff.AllowDegradedADLNodes = true
+
 	l, err := statediff.Transform(c.Context, preCid, store, "stateRoot")
 	if err != nil {
 		return fmt.Errorf("Could not load %s: %s", preCid, err)
