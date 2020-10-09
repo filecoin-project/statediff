@@ -14,12 +14,14 @@ import (
 	"github.com/filecoin-project/statediff/codec/fcjson"
 
 	"github.com/filecoin-project/go-state-types/abi"
+	"github.com/filecoin-project/lotus/api"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/build"
 	"github.com/filecoin-project/statediff/lib"
 	"github.com/gorilla/handlers"
 	"github.com/ipfs/go-cid"
+	blockstore "github.com/ipfs/go-ipfs-blockstore"
 	"github.com/urfave/cli/v2"
 )
 
@@ -48,12 +50,23 @@ var exploreCmd = &cli.Command{
 	},
 }
 
-func runExploreCmd(c *cli.Context) error {
-	client, head, store, err := lib.GetBlockstore(c)
+var client api.FullNode
+var head lib.StateRootFunc
+var store blockstore.Blockstore
+
+func lazy(c *cli.Context) error {
+	if client != nil {
+		return nil
+	}
+	var err error
+	client, head, store, err = lib.GetBlockstore(c)
 	if err != nil {
 		return err
 	}
+	return nil
+}
 
+func runExploreCmd(c *cli.Context) error {
 	cidResolver := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Cache-Control", "public, max-age=604800, immutable")
@@ -79,8 +92,16 @@ func runExploreCmd(c *cli.Context) error {
 			return
 		}
 
+		if err := lazy(c); err != nil {
+			w.Header().Set("Content-Type", "text/plain")
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
+			return
+		}
 		transformed, err := statediff.Transform(r.Context(), parsed, store, as[0])
 		if err != nil {
+			if head(c.Context) == nil {
+				client = nil
+			}
 			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
@@ -94,6 +115,11 @@ func runExploreCmd(c *cli.Context) error {
 
 	headResolver := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
+		if err := lazy(c); err != nil {
+			w.Header().Set("Content-Type", "text/plain")
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
+			return
+		}
 		cid := head(r.Context())
 		cidBytes, _ := json.Marshal(cid)
 		w.Header().Set("Content-Type", "application/json")
@@ -103,6 +129,11 @@ func runExploreCmd(c *cli.Context) error {
 	heightResolver := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		h, ok := r.URL.Query()["h"]
+		if err := lazy(c); err != nil {
+			w.Header().Set("Content-Type", "text/plain")
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
+			return
+		}
 		w.Header().Set("Content-Type", "text/plain")
 		if !ok || len(h[0]) < 1 || client == nil {
 			w.Write([]byte(fmt.Sprintf("error: no height")))
