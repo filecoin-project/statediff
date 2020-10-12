@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	messages "github.com/filecoin-project/statediff/types/gen/messages"
 	v0 "github.com/filecoin-project/statediff/types/gen/v0"
 	v2 "github.com/filecoin-project/statediff/types/gen/v2"
 
@@ -73,6 +74,7 @@ func main() {
 	accumulateLotus(ts)
 	v0.Accumulate(ts)
 	v2.Accumulate(ts)
+	messages.Accumulate(ts)
 
 	if errs := ts.ValidateGraph(); errs != nil {
 		for _, err := range errs {
