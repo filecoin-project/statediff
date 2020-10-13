@@ -71,6 +71,18 @@ var paychTable = methodtable{
 	4: types.Type.Any__Repr,
 }
 
+var powerTable = methodtable{
+	1: types.Type.Any__Repr,
+	2: types.Type.MessageParamsPowerCreateMiner__Repr,
+	3: types.Type.MessageParamsPowerUpdateClaimed__Repr,
+	4: types.Type.MessageParamsPowerEnrollCron__Repr,
+	5: types.Type.Any__Repr,
+	6: types.Type.BigInt__Repr,
+	7: types.Type.Any__Repr, // deprecated
+	8: types.Type.SealVerifyInfo__Repr,
+	9: types.Type.MessageParamsPowerCurrentTotal__Repr,
+}
+
 var messageParamTable = map[LotusType]methodtable{
 	InitActorState:           initTable,
 	MarketActorState:         marketTable,
@@ -79,6 +91,8 @@ var messageParamTable = map[LotusType]methodtable{
 	StorageMinerActorV2State: minerTable,
 	MultisigActorState:       multisigTable,
 	PaymentChannelActorState: paychTable,
+	StoragePowerActorState:   powerTable,
+	StoragePowerActorV2State: powerTable,
 }
 
 func ParamFor(destType LotusType, msg ipld.Node) (ipld.Node, error) {

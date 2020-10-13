@@ -29,4 +29,16 @@ func accumulateABI(ts schema.TypeSystem) {
 
 	ts.Accumulate(schema.SpawnList("List__Multiaddrs", "Multiaddr", true))
 	ts.Accumulate(schema.SpawnBytes("Multiaddr"))
+
+	ts.Accumulate(schema.SpawnStruct("SealVerifyInfo",
+		[]schema.StructField{
+			schema.SpawnStructField("SealProof", "RegisteredSealProof", false, false),
+			schema.SpawnStructField("SectorID", "Int", false, false),
+			schema.SpawnStructField("DealIDs", "List__DealID", false, false),
+			schema.SpawnStructField("Randomness", "Bytes", false, false),
+			schema.SpawnStructField("InteractiveRandomness", "Bytes", false, false),
+			schema.SpawnStructField("Proof", "Bytes", false, false),
+			schema.SpawnStructField("SealedCID", "Link", false, false),
+			schema.SpawnStructField("UnsealedCID", "Link", false, false),
+		}, schema.StructRepresentation_Tuple{}))
 }

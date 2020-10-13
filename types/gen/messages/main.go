@@ -18,4 +18,5 @@ func Accumulate(ts schema.TypeSystem) {
 	accumulateMiner(ts)
 	accumulateMultisig(ts)
 	accumulatePaych(ts)
+	accumulatePower(ts)
 }
