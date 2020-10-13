@@ -83,16 +83,35 @@ var powerTable = methodtable{
 	9: types.Type.MessageParamsPowerCurrentTotal__Repr,
 }
 
+var rewardTable = methodtable{
+	1: types.Type.BigInt__Repr,
+	2: types.Type.MessageParamsRewardAwardBlock__Repr,
+	3: types.Type.Any__Repr,
+	4: types.Type.BigInt__Repr,
+}
+
+var verifregTable = methodtable{
+	1: types.Type.Address__Repr,
+	2: types.Type.MessageParamsVerifregAddVerifier__Repr,
+	3: types.Type.Address__Repr,
+	4: types.Type.MessageParamsVerifregAddVerifier__Repr,
+	5: types.Type.MessageParamsVerifregUseBytes__Repr,
+	6: types.Type.MessageParamsVerifregUseBytes__Repr,
+}
+
 var messageParamTable = map[LotusType]methodtable{
-	InitActorState:           initTable,
-	MarketActorState:         marketTable,
-	MarketActorV2State:       marketTable,
-	StorageMinerActorState:   minerTable,
-	StorageMinerActorV2State: minerTable,
-	MultisigActorState:       multisigTable,
-	PaymentChannelActorState: paychTable,
-	StoragePowerActorState:   powerTable,
-	StoragePowerActorV2State: powerTable,
+	InitActorState:             initTable,
+	MarketActorState:           marketTable,
+	MarketActorV2State:         marketTable,
+	StorageMinerActorState:     minerTable,
+	StorageMinerActorV2State:   minerTable,
+	MultisigActorState:         multisigTable,
+	PaymentChannelActorState:   paychTable,
+	StoragePowerActorState:     powerTable,
+	StoragePowerActorV2State:   powerTable,
+	RewardActorState:           rewardTable,
+	RewardActorV2State:         rewardTable,
+	VerifiedRegistryActorState: verifregTable,
 }
 
 func ParamFor(destType LotusType, msg ipld.Node) (ipld.Node, error) {
