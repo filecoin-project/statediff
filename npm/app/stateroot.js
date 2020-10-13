@@ -32,13 +32,12 @@ class stateroot {
         search.addEventListener('keyup', this.onSearch.bind(this));
         let next = this.element.shadowRoot.children[0].querySelector('.next');
         next.addEventListener('click', this.onClickNextButton.bind(this));
-        this.Load();
+        this.load = this.Load();
     }
 
     Load() {
-        this.load = store(this.cid, this.type);
-        this.load.then((r) => this.onStateroot(r));
-        return this.load;
+        let l = store(this.cid, this.type);
+        return l.then(async (r) => { return await this.onStateroot(r) });
     }
     Ready() {
         return this.load;
@@ -50,12 +49,9 @@ class stateroot {
                 this.data = resp[1];
                 this.Render();
             } else {
-                let actormap = store(resp[1]["Actors"]["/"], "stateRoot");
-                actormap.then((r) => {
-                    this.data = r[1];
-                    this.Render();
-                });
-                return actormap;
+                let actormap = await store(resp[1]["Actors"]["/"], "stateRoot");
+                this.data = actormap[1];
+                this.Render();
             }
         } else if (this.type == "stateRoot") {
             this.type = "versionedStateRoot"
@@ -63,7 +59,7 @@ class stateroot {
             Object.keys(ActorAddrs).forEach((a) => {
                 this.aa[a] = ActorAddrs[a].replace("t", "f");
             })
-            return this.Load();
+            await this.Load();
         } else {
             this.element.innerHTML = "Failed to parse: " + resp[1];
         }
