@@ -1,8 +1,12 @@
 package statediff
 
 import (
+	"bytes"
+	"fmt"
+
 	"github.com/filecoin-project/statediff/types"
 	"github.com/ipld/go-ipld-prime"
+	"github.com/ipld/go-ipld-prime/codec/dagcbor"
 )
 
 type methodtable map[int]ipld.NodePrototype
@@ -52,4 +56,30 @@ var messageParamTable = map[LotusType]methodtable{
 	InitActorState:         initTable,
 	MarketActorState:       marketTable,
 	StorageMinerActorState: minerTable,
+}
+
+func ParamFor(destType LotusType, msg ipld.Node) (ipld.Node, error) {
+	tMsg, ok := msg.(types.LotusMessage)
+	if !ok {
+		return nil, fmt.Errorf("not a LotusMessage: %v", msg)
+	}
+	method, err := tMsg.Method.AsInt()
+	if err != nil {
+		return nil, err
+	}
+	proto := ipld.NodePrototype(types.Type.Any__Repr)
+	table, ok := messageParamTable[destType]
+	if ok {
+		proto, ok = table[method]
+		if !ok {
+			proto = ipld.NodePrototype(types.Type.Any__Repr)
+		}
+	}
+
+	builder := proto.NewBuilder()
+	if err := dagcbor.Decoder(builder, bytes.NewBuffer(tMsg.Params.Bytes())); err != nil {
+		return nil, err
+	}
+
+	return builder.Build(), nil
 }

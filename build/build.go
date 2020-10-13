@@ -17,7 +17,7 @@ func Compile(rootPath string, minify bool) string {
 	}
 	if minify {
 		opts.MinifyWhitespace = true
-		opts.MinifyIdentifiers = true
+		opts.MinifyIdentifiers = false
 		opts.MinifySyntax = true
 	}
 	res := api.Build(opts)

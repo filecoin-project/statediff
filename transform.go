@@ -17,6 +17,7 @@ import (
 	"github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
+	basicnode "github.com/ipld/go-ipld-prime/node/basic"
 	cbg "github.com/whyrusleeping/cbor-gen"
 
 	"github.com/filecoin-project/statediff/types"
@@ -140,13 +141,15 @@ var LotusActorCodes = map[string]LotusType{
 	"bafkqaetgnfwc6mrpon2g64tbm5sw22lomvza":       StorageMinerActorV2State,
 }
 
+var lotusMessageMap = basicnode.Prototype__Map{}
+
 // LotusPrototypes provide expected node types for each state type.
 var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	LotusTypeUnknown:                  types.Type.Any__Repr,
 	LotusTypeTipset:                   types.Type.LotusBlockHeader__Repr,
 	LotusVersionedStateroot:           types.Type.LotusStateRoot__Repr,
 	LotusTypeMsgMeta:                  types.Type.LotusMsgMeta__Repr,
-	LotusTypeMessage:                  types.Type.LotusMessage__Repr,
+	LotusTypeMessage:                  lotusMessageMap,
 	AccountActorState:                 types.Type.AccountV0State__Repr,
 	CronActorState:                    types.Type.CronV0State__Repr,
 	InitActorState:                    types.Type.InitV0State__Repr,
@@ -224,6 +227,10 @@ var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.Map__List__DealID__Repr:               transformMarketDealOpsByEpoch,
 	types.Type.Map__MultisigV0Transaction__Repr:      transformMultisigPending,
 	types.Type.Map__PaychV0LaneState__Repr:           transformPaymentChannelLaneStates,
+}
+
+func init() {
+	complexLoaders[lotusMessageMap] = loadMessage
 }
 
 var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
@@ -481,6 +488,83 @@ func loadListAsMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, 
 	}); err != nil {
 		return err
 	}
+	return mapper.Finish()
+}
+
+type StateRootFunc func(context.Context) []cid.Cid
+
+var StateRootKey = "stateroot"
+
+func loadMessage(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	mapper, err := assembler.BeginMap(2)
+	if err != nil {
+		return err
+	}
+
+	messager, err := mapper.AssembleEntry("Message")
+	if err != nil {
+		return err
+	}
+	block, err := store.Get(c)
+	if err != nil {
+		return err
+	}
+	data := block.RawData()
+
+	mproto := types.Type.LotusMessage__Repr.NewBuilder()
+	if err := dagcbor.Decoder(mproto, bytes.NewBuffer(data)); err != nil {
+		return err
+	}
+	msgNode := mproto.Build()
+	if err := messager.AssignNode(msgNode); err != nil {
+		return err
+	}
+
+	params, err := mapper.AssembleEntry("Params")
+	if err != nil {
+		return err
+	}
+
+	// try to learn stateroot from context.
+	actorType := "miner"
+	sr := ctx.Value(StateRootKey)
+	if sr != nil {
+		srf, ok := sr.(StateRootFunc)
+		if ok {
+			blkCid := srf(ctx)[0]
+			sr, err := GetStateRoot(ctx, blkCid, store)
+			if err != nil {
+				return err
+			}
+			toAddr, err := msgNode.LookupByString("To")
+			if err != nil {
+				return err
+			}
+			addrBytes, err := toAddr.AsBytes()
+			if err != nil {
+				return err
+			}
+			actorType, err = TypeOfActor(sr, string(addrBytes))
+			if err != nil {
+				return err
+			}
+		} else {
+			return fmt.Errorf("invalid context")
+		}
+	} else if at, ok := ctx.Value("actorType").(string); ok {
+		actorType = at
+	} else {
+		return fmt.Errorf("unspecified target actor type")
+	}
+
+	pn, err := ParamFor(LotusType(actorType), msgNode)
+	if err != nil {
+		return err
+	}
+	if err := params.AssignNode(pn); err != nil {
+		return err
+	}
+
 	return mapper.Finish()
 }
 
