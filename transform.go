@@ -496,7 +496,7 @@ type StateRootFunc func(context.Context) []cid.Cid
 var StateRootKey = "stateroot"
 
 func loadMessage(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	mapper, err := assembler.BeginMap(2)
+	mapper, err := assembler.BeginMap(3)
 	if err != nil {
 		return err
 	}
@@ -564,6 +564,12 @@ func loadMessage(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as
 	if err := params.AssignNode(pn); err != nil {
 		return err
 	}
+
+	dat, err := mapper.AssembleEntry("DestinationActorType")
+	if err != nil {
+		return err
+	}
+	dat.AssignString(actorType)
 
 	return mapper.Finish()
 }

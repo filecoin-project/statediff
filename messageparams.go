@@ -52,10 +52,33 @@ var minerTable = methodtable{
 	23: types.Type.Address__Repr,
 }
 
+var multisigTable = methodtable{
+	1: types.Type.MessageParamsMultisigConstructor__Repr,
+	2: types.Type.MessageParamsMultisigPropose__Repr,
+	3: types.Type.MessageParamsMultisigTxnID__Repr,
+	4: types.Type.MessageParamsMultisigTxnID__Repr,
+	5: types.Type.MessageParamsMultisigAddSigner__Repr,
+	6: types.Type.MessageParamsMultisigRemoveSigner__Repr,
+	7: types.Type.MessageParamsMultisigSwapSigner__Repr,
+	8: types.Type.MessageParamsMultisigChangeThreshold__Repr,
+	9: types.Type.MessageParamsMultisigLockBalance__Repr,
+}
+
+var paychTable = methodtable{
+	1: types.Type.MessageParamsPaychConstructor__Repr,
+	2: types.Type.MessageParamsPaychUpdateChannelState__Repr,
+	3: types.Type.Any__Repr,
+	4: types.Type.Any__Repr,
+}
+
 var messageParamTable = map[LotusType]methodtable{
-	InitActorState:         initTable,
-	MarketActorState:       marketTable,
-	StorageMinerActorState: minerTable,
+	InitActorState:           initTable,
+	MarketActorState:         marketTable,
+	MarketActorV2State:       marketTable,
+	StorageMinerActorState:   minerTable,
+	StorageMinerActorV2State: minerTable,
+	MultisigActorState:       multisigTable,
+	PaymentChannelActorState: paychTable,
 }
 
 func ParamFor(destType LotusType, msg ipld.Node) (ipld.Node, error) {
