@@ -38,6 +38,7 @@ const (
 	LotusTypeMsgMeta                           LotusType = "msgMeta"
 	LotusTypeMsgList                           LotusType = "msgMeta.BlsMessages"
 	LotusTypeMessage                           LotusType = "msgMeta.BlsMessages[]"
+	LotusTypeSignedMessage                     LotusType = "msgMeta.SecpkMessages[]"
 	LotusTypeStateroot                         LotusType = "stateRoot"
 	LotusVersionedStateroot                    LotusType = "versionedStateRoot"
 	AccountActorState                          LotusType = "accountActor"
@@ -111,7 +112,6 @@ var LotusTypeAliases = map[string]LotusType{
 	"storageMinerActorV2.Deadlines.Due.Partitions.ExpirationsEpochs": StorageMinerActorDeadlinePartitionExpiry,
 	"storageMinerActorV2.Deadlines.Due.Partitions.EarlyTerminated":   StorageMinerActorDeadlinePartitionEarly,
 	"msgMeta.SecpkMessages":                                          LotusTypeMsgList,
-	"msgMeta.SecpkMessages[]":                                        LotusTypeMessage,
 }
 
 // LotusActorCodes for actor states
@@ -150,6 +150,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	LotusVersionedStateroot:           types.Type.LotusStateRoot__Repr,
 	LotusTypeMsgMeta:                  types.Type.LotusMsgMeta__Repr,
 	LotusTypeMessage:                  lotusMessageMap,
+	LotusTypeSignedMessage:            types.Type.LotusSignedMessage__Repr,
 	AccountActorState:                 types.Type.AccountV0State__Repr,
 	CronActorState:                    types.Type.CronV0State__Repr,
 	InitActorState:                    types.Type.InitV0State__Repr,
