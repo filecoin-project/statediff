@@ -55,10 +55,6 @@ class stateroot {
             }
         } else if (this.type == "stateRoot") {
             this.type = "versionedStateRoot"
-            this.aa = {};
-            Object.keys(ActorAddrs).forEach((a) => {
-                this.aa[a] = ActorAddrs[a].replace("t", "f");
-            })
             await this.Load();
         } else {
             this.element.innerHTML = "Failed to parse: " + resp[1];
@@ -95,6 +91,12 @@ class stateroot {
 
     Render(lookupMap) {
         let data = this.data;
+        if (Object.keys(data)[0].indexOf('f') === 0) {
+            this.aa = {};
+            Object.keys(ActorAddrs).forEach((a) => {
+                this.aa[a] = ActorAddrs[a].replace("t", "f");
+            })
+        }
         renderer.FillTextSlot(this.element, 'count', Object.keys(data).length);
         Object.keys(this.aa).forEach((k) => {
             this.children[k] = renderer.FillSlot(this.element, k, expander, `${k} @ ${this.aa[k]}`, lotusActor, [data[this.aa[k]]]);
