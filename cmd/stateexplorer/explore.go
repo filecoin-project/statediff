@@ -11,6 +11,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/filecoin-project/statediff/codec/fcjson"
+
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/statediff"
@@ -40,6 +42,7 @@ var exploreCmd = &cli.Command{
 	Flags: []cli.Flag{
 		&lib.ApiFlag,
 		&lib.CarFlag,
+		&lib.VectorFlag,
 		&assetsFlag,
 		&bindFlag,
 	},
@@ -72,7 +75,7 @@ func runExploreCmd(c *cli.Context) error {
 		parsed, err := cid.Parse(keys[0])
 		if err != nil {
 			w.Header().Set("Content-Type", "text/plain")
-			w.Write([]byte(fmt.Sprintf("error: %w", err)))
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
 
@@ -82,14 +85,11 @@ func runExploreCmd(c *cli.Context) error {
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
-		transformedBytes, err := json.Marshal(transformed)
-		if err != nil {
-			w.Header().Set("Content-Type", "text/plain")
-			w.Write([]byte(fmt.Sprintf("error: %s", err)))
-			return
-		}
 		w.Header().Set("Content-Type", "application/json")
-		io.WriteString(w, string(transformedBytes))
+		err = fcjson.Encoder(transformed, w)
+		if err != nil {
+			w.Write([]byte(fmt.Sprintf("error: %s", err)))
+		}
 	}
 
 	headResolver := func(w http.ResponseWriter, r *http.Request) {
@@ -101,6 +101,7 @@ func runExploreCmd(c *cli.Context) error {
 	}
 
 	heightResolver := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		h, ok := r.URL.Query()["h"]
 		w.Header().Set("Content-Type", "text/plain")
 		if !ok || len(h[0]) < 1 || client == nil {

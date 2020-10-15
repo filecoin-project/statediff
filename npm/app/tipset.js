@@ -3,6 +3,7 @@
 const expander = require('./expander');
 const renderer = require('./renderer');
 const stateroot = require('./stateroot');
+const msgmeta = require('./msgmeta');
 const store = require('./store');
 
 class tipset {
@@ -48,6 +49,9 @@ class tipset {
         if (this.parents) {
             state[2] = await this.parents.GetState();
         }
+        if (this.msgmeta) {
+            state[3] = await this.msgmeta.GetState();
+        }
         return state;
     }
 
@@ -75,6 +79,14 @@ class tipset {
             ]);
         }
 
+        if (!await this.msgmeta.UpdateState(s[3])) {
+            renderer.RestoreSlot(this.element, 'msgmeta', expander, s[3], [
+                this.data.Messages["/"],
+                msgmeta,
+                [this.data.Messages["/"]],
+            ]);
+        }
+
         return true;
     }
 
@@ -94,6 +106,7 @@ class tipset {
         renderer.FillTextSlot(this.element, 'basefee', data.ParentBaseFee);
         this.stateroot = renderer.FillSlot(this.element, 'stateroot', expander, data.ParentStateRoot["/"], stateroot, [data.ParentStateRoot["/"]]);
 
+        this.msgmeta = renderer.FillSlot(this.element, 'msgmeta', expander, data.Messages["/"], msgmeta, [data.Messages["/"]]);
         // todo: other parents?
         this.parents = renderer.FillSlot(this.element, 'parents', expander, data.Parents[0]["/"], tipset, [data.Parents[0]["/"]]);
     }
@@ -108,6 +121,7 @@ tipset.Template = `
 Mined by <slot name='miner'></slot> at height <slot name='height'></slot> at <slot name='date'></slot><br />
 Base fee: <slot name='basefee'></slot><br />
 State Root: <slot name='stateroot'></slot><br />
+Messages: <slot name='msgmeta'></slot><br />
 Parents: <slot name='parents'></slot>
 </div>
 `;

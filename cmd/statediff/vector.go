@@ -30,7 +30,6 @@ var vectorCmd = &cli.Command{
 			Usage:       "compare the pre and post states of a test vector",
 			Destination: &vectorFlags.file,
 		},
-		&expandActorsFlag,
 	},
 }
 
@@ -62,12 +61,23 @@ func runVectorCmd(c *cli.Context) error {
 		return err
 	}
 
+	preCid := tv.Pre.StateTree.RootCID
+	postCid := tv.Post.StateTree.RootCID
+	l, err := statediff.Transform(c.Context, preCid, store, "stateRoot")
+	if err != nil {
+		return fmt.Errorf("Could not load pre root: %s", err)
+	}
+	r, err := statediff.Transform(c.Context, postCid, store, "stateRoot")
+	if err != nil {
+		return fmt.Errorf("Could not load postroot: %s", err)
+	}
+
+	fmt.Printf("--- %s\n+++ %s\n@@ -1,1 +1,1 @@\n", preCid, postCid)
 	fmt.Printf("%v\n", statediff.Diff(
 		c.Context,
 		store,
-		tv.Pre.StateTree.RootCID,
-		tv.Post.StateTree.RootCID,
-		statediff.ExpandActors))
+		l,
+		r))
 
 	return nil
 }
