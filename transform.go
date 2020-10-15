@@ -558,7 +558,7 @@ func loadMessage(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as
 		return fmt.Errorf("unspecified target actor type")
 	}
 
-	pn, err := ParamFor(LotusType(actorType), msgNode)
+	pn, method, err := ParamFor(LotusType(actorType), msgNode)
 	if err != nil {
 		return err
 	}
@@ -566,7 +566,13 @@ func loadMessage(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as
 		return err
 	}
 
-	dat, err := mapper.AssembleEntry("DestinationActorType")
+	dat, err := mapper.AssembleEntry("MethodName")
+	if err != nil {
+		return err
+	}
+	dat.AssignString(method)
+
+	dat, err = mapper.AssembleEntry("DestinationActorType")
 	if err != nil {
 		return err
 	}
