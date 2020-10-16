@@ -27,8 +27,6 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-type StateRootFunc func(context.Context) []cid.Cid
-
 var ApiFlag = cli.StringFlag{
 	Name:    "api",
 	Usage:   "api endpoint, formatted as token:multiaddr",
@@ -102,7 +100,7 @@ func GetAPI(c *cli.Context) (api.FullNode, error) {
 	return node, nil
 }
 
-func GetHead(client api.FullNode) StateRootFunc {
+func GetHead(client api.FullNode) statediff.StateRootFunc {
 	return func(ctx context.Context) []cid.Cid {
 		head, err := client.ChainHead(ctx)
 		if err != nil {
@@ -112,7 +110,7 @@ func GetHead(client api.FullNode) StateRootFunc {
 	}
 }
 
-func GetCar(c *cli.Context) (StateRootFunc, blockstore.Blockstore, error) {
+func GetCar(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
 	file, err := os.Open(c.String(CarFlag.Name))
 	if err != nil {
 		return nil, nil, err
@@ -126,7 +124,7 @@ func GetCar(c *cli.Context) (StateRootFunc, blockstore.Blockstore, error) {
 	return func(_ context.Context) []cid.Cid { return root.Roots }, store, nil
 }
 
-func GetVector(c *cli.Context) (StateRootFunc, blockstore.Blockstore, error) {
+func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
 	file, err := os.Open(c.String(VectorFlag.Name))
 	if err != nil {
 		return nil, nil, err
@@ -158,7 +156,7 @@ func GetVector(c *cli.Context) (StateRootFunc, blockstore.Blockstore, error) {
 	return func(_ context.Context) []cid.Cid { return cids }, store, nil
 }
 
-func GetBlockstore(c *cli.Context) (api.FullNode, StateRootFunc, blockstore.Blockstore, error) {
+func GetBlockstore(c *cli.Context) (api.FullNode, statediff.StateRootFunc, blockstore.Blockstore, error) {
 	if c.IsSet(CarFlag.Name) {
 		srf, store, err := GetCar(c)
 		return nil, srf, store, err

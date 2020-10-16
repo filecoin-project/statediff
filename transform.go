@@ -17,6 +17,7 @@ import (
 	"github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
+	basicnode "github.com/ipld/go-ipld-prime/node/basic"
 	cbg "github.com/whyrusleeping/cbor-gen"
 
 	"github.com/filecoin-project/statediff/types"
@@ -37,6 +38,7 @@ const (
 	LotusTypeMsgMeta                           LotusType = "msgMeta"
 	LotusTypeMsgList                           LotusType = "msgMeta.BlsMessages"
 	LotusTypeMessage                           LotusType = "msgMeta.BlsMessages[]"
+	LotusTypeSignedMessage                     LotusType = "msgMeta.SecpkMessages[]"
 	LotusTypeStateroot                         LotusType = "stateRoot"
 	LotusVersionedStateroot                    LotusType = "versionedStateRoot"
 	AccountActorState                          LotusType = "accountActor"
@@ -110,7 +112,6 @@ var LotusTypeAliases = map[string]LotusType{
 	"storageMinerActorV2.Deadlines.Due.Partitions.ExpirationsEpochs": StorageMinerActorDeadlinePartitionExpiry,
 	"storageMinerActorV2.Deadlines.Due.Partitions.EarlyTerminated":   StorageMinerActorDeadlinePartitionEarly,
 	"msgMeta.SecpkMessages":                                          LotusTypeMsgList,
-	"msgMeta.SecpkMessages[]":                                        LotusTypeMessage,
 }
 
 // LotusActorCodes for actor states
@@ -140,13 +141,16 @@ var LotusActorCodes = map[string]LotusType{
 	"bafkqaetgnfwc6mrpon2g64tbm5sw22lomvza":       StorageMinerActorV2State,
 }
 
+var lotusMessageMap = basicnode.Prototype__Map{}
+
 // LotusPrototypes provide expected node types for each state type.
 var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	LotusTypeUnknown:                  types.Type.Any__Repr,
 	LotusTypeTipset:                   types.Type.LotusBlockHeader__Repr,
 	LotusVersionedStateroot:           types.Type.LotusStateRoot__Repr,
 	LotusTypeMsgMeta:                  types.Type.LotusMsgMeta__Repr,
-	LotusTypeMessage:                  types.Type.LotusMessage__Repr,
+	LotusTypeMessage:                  lotusMessageMap,
+	LotusTypeSignedMessage:            types.Type.LotusSignedMessage__Repr,
 	AccountActorState:                 types.Type.AccountV0State__Repr,
 	CronActorState:                    types.Type.CronV0State__Repr,
 	InitActorState:                    types.Type.InitV0State__Repr,
@@ -203,27 +207,31 @@ type Loader func(context.Context, cid.Cid, blockstore.Blockstore, ipld.NodeAssem
 
 var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.Map__LotusActors__Repr:                loadMap,
-	types.Type.List__LinkLotusMessage__Repr:          transformMessageAmt,
+	types.Type.List__LinkLotusMessage__Repr:          loadList,
 	types.Type.Map__ActorID__Repr:                    transformInitActor,
 	types.Type.Map__SectorPreCommitOnChainInfo__Repr: transformMinerActorPreCommittedSectors,
-	types.Type.Map__BitField__Repr:                   transformMinerActorBitfieldHamt,
-	types.Type.Map__SectorOnChainInfo__Repr:          transformMinerActorSectors,
-	types.Type.Map__MinerV0Partition__Repr:           transformMinerActorDeadlinePartitions,
-	types.Type.Map__MinerV2Partition__Repr:           transformMinerActorDeadlinePartitions,
-	types.Type.Map__MinerV0ExpirationSet__Repr:       transformMinerActorDeadlinePartitionExpiry,
+	types.Type.Map__BitField__Repr:                   loadListAsMap,
+	types.Type.Map__SectorOnChainInfo__Repr:          loadListAsMap,
+	types.Type.Map__MinerV0Partition__Repr:           loadListAsMap,
+	types.Type.Map__MinerV2Partition__Repr:           loadListAsMap,
+	types.Type.Map__MinerV0ExpirationSet__Repr:       loadListAsMap,
 	types.Type.Map__PowerV0CronEvent__Repr:           transformPowerActorEventQueue,
 	types.Type.Map__PowerV0Claim__Repr:               loadMap,
 	types.Type.Map__PowerV2Claim__Repr:               loadMap,
 	types.Type.Map__DataCap__Repr:                    transformVerifiedRegistryDataCaps,
-	types.Type.Map__MarketV0DealProposal__Repr:       transformMarketProposals,
+	types.Type.Map__MarketV0DealProposal__Repr:       loadListAsMap,
 	types.Type.Map__MarketV2DealProposal__Repr:       loadMap,
 	types.Type.Map__MarketV0RawDealProposal__Repr:    loadMap,
 	types.Type.Map__MarketV2RawDealProposal__Repr:    transformMarketV2Proposals,
-	types.Type.Map__MarketV0DealState__Repr:          transformMarketStates,
+	types.Type.Map__MarketV0DealState__Repr:          loadListAsMap,
 	types.Type.Map__BalanceTable__Repr:               transformMarketBalanceTable,
 	types.Type.Map__List__DealID__Repr:               transformMarketDealOpsByEpoch,
 	types.Type.Map__MultisigV0Transaction__Repr:      transformMultisigPending,
 	types.Type.Map__PaychV0LaneState__Repr:           transformPaymentChannelLaneStates,
+}
+
+func init() {
+	complexLoaders[lotusMessageMap] = loadMessage
 }
 
 var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
@@ -389,6 +397,7 @@ func TypeActorHead(actor ipld.Node) (ipld.Node, error) {
 	return nil, fmt.Errorf("unknown type of actor: %s", t)
 }
 
+// AllowDegradedADLNodes uses adl walks that ignore store.Get fails
 var AllowDegradedADLNodes = false
 
 func loadMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipld.NodeAssembler) error {
@@ -435,7 +444,7 @@ func loadMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipl
 	return nil
 }
 
-func transformMessageAmt(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+func loadList(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
 	if err != nil {
@@ -447,13 +456,129 @@ func transformMessageAmt(ctx context.Context, c cid.Cid, store blockstore.Blocks
 		return err
 	}
 
-	value := cbg.CborCid{}
+	value := cbg.Deferred{}
 	if err := list.ForEach(&value, func(k int64) error {
-		return lister.AssembleValue().AssignLink(cidlink.Link{Cid: cid.Cid(value)})
+		vb := lister.AssembleValue()
+		return dagcbor.Decoder(vb, bytes.NewBuffer(value.Raw))
 	}); err != nil {
 		return err
 	}
 	return lister.Finish()
+}
+
+func loadListAsMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return err
+	}
+
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return err
+	}
+
+	value := cbg.Deferred{}
+	if err := list.ForEach(&value, func(k int64) error {
+		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+		if err != nil {
+			return err
+		}
+
+		return dagcbor.Decoder(v, bytes.NewBuffer(value.Raw))
+	}); err != nil {
+		return err
+	}
+	return mapper.Finish()
+}
+
+type StateRootFunc func(context.Context) []cid.Cid
+
+var StateRootKey = "stateroot"
+
+func loadMessage(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	mapper, err := assembler.BeginMap(3)
+	if err != nil {
+		return err
+	}
+
+	messager, err := mapper.AssembleEntry("Message")
+	if err != nil {
+		return err
+	}
+	block, err := store.Get(c)
+	if err != nil {
+		return err
+	}
+	data := block.RawData()
+
+	mproto := types.Type.LotusMessage__Repr.NewBuilder()
+	if err := dagcbor.Decoder(mproto, bytes.NewBuffer(data)); err != nil {
+		return err
+	}
+	msgNode := mproto.Build()
+	if err := messager.AssignNode(msgNode); err != nil {
+		return err
+	}
+
+	params, err := mapper.AssembleEntry("Params")
+	if err != nil {
+		return err
+	}
+
+	// try to learn stateroot from context.
+	actorType := "miner"
+	sr := ctx.Value(StateRootKey)
+	if sr != nil {
+		srf, ok := sr.(StateRootFunc)
+		if ok {
+			blkCid := srf(ctx)[0]
+			sr, err := GetStateRoot(ctx, blkCid, store)
+			if err != nil {
+				return err
+			}
+			toAddr, err := msgNode.LookupByString("To")
+			if err != nil {
+				return err
+			}
+			addrBytes, err := toAddr.AsBytes()
+			if err != nil {
+				return err
+			}
+			actorType, err = TypeOfActor(sr, string(addrBytes))
+			if err != nil {
+				return err
+			}
+		} else {
+			return fmt.Errorf("invalid context")
+		}
+	} else if at, ok := ctx.Value("actorType").(string); ok {
+		actorType = at
+	} else {
+		return fmt.Errorf("unspecified target actor type")
+	}
+
+	pn, method, err := ParamFor(LotusType(actorType), msgNode)
+	if err != nil {
+		return err
+	}
+	if err := params.AssignNode(pn); err != nil {
+		return err
+	}
+
+	dat, err := mapper.AssembleEntry("MethodName")
+	if err != nil {
+		return err
+	}
+	dat.AssignString(method)
+
+	dat, err = mapper.AssembleEntry("DestinationActorType")
+	if err != nil {
+		return err
+	}
+	dat.AssignString(actorType)
+
+	return mapper.Finish()
 }
 
 func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
@@ -515,127 +640,6 @@ func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, stor
 
 		actor := types.Type.MinerV0SectorPreCommitOnChainInfo__Repr.NewBuilder()
 		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
-			return err
-		}
-		return v.AssignNode(actor.Build())
-	}); err != nil {
-		return err
-	}
-	return mapper.Finish()
-}
-
-func transformMinerActorBitfieldHamt(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
-	if err != nil {
-		return err
-	}
-
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	value := CBORBytes{}
-	if err := list.ForEach(&value, func(k int64) error {
-		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
-		if err != nil {
-			return err
-		}
-
-		return v.AssignBytes(value)
-	}); err != nil {
-		return err
-	}
-	return mapper.Finish()
-}
-
-func transformMinerActorSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
-	if err != nil {
-		return err
-	}
-
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	value := cbg.Deferred{}
-	if err := list.ForEach(&value, func(k int64) error {
-		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
-		if err != nil {
-			return err
-		}
-
-		actor := types.Type.MinerV0SectorOnChainInfo__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
-			return err
-		}
-		return v.AssignNode(actor.Build())
-	}); err != nil {
-		return err
-	}
-	return mapper.Finish()
-}
-
-func transformMinerActorDeadlinePartitions(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
-	if err != nil {
-		return err
-	}
-
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	elProto := ipld.NodePrototype(types.Type.MinerV0Partition__Repr)
-	if assembler.Prototype() == types.Type.Map__MinerV2Partition__Repr {
-		elProto = types.Type.MinerV2Partition__Repr
-	}
-
-	value := cbg.Deferred{}
-	if err := list.ForEach(&value, func(k int64) error {
-		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
-		if err != nil {
-			return err
-		}
-
-		actor := elProto.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
-			return err
-		}
-		return v.AssignNode(actor.Build())
-	}); err != nil {
-		return err
-	}
-	return mapper.Finish()
-}
-
-func transformMinerActorDeadlinePartitionExpiry(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
-	if err != nil {
-		return err
-	}
-
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	value := cbg.Deferred{}
-	if err := list.ForEach(&value, func(k int64) error {
-		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
-		if err != nil {
-			return err
-		}
-
-		actor := types.Type.MinerV0ExpirationSet__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
 			return err
 		}
 		return v.AssignNode(actor.Build())
@@ -726,36 +730,6 @@ func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blo
 	return mapper.Finish()
 }
 
-func transformMarketProposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
-	if err != nil {
-		return err
-	}
-
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	value := cbg.Deferred{}
-	if err := list.ForEach(&value, func(k int64) error {
-		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
-		if err != nil {
-			return err
-		}
-
-		actor := types.Type.MarketV0DealProposal__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
-			return err
-		}
-		return v.AssignNode(actor.Build())
-	}); err != nil {
-		return err
-	}
-	return mapper.Finish()
-}
-
 func transformMarketV2Proposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adtv2.AsArray(adtv2.WrapStore(ctx, cborStore), c)
@@ -778,36 +752,6 @@ func transformMarketV2Proposals(ctx context.Context, c cid.Cid, store blockstore
 		actor := types.Type.MarketV2DealProposal__Repr.NewBuilder()
 		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
 			return fmt.Errorf("unmarshal of individual proposal failed: %w", err)
-		}
-		return v.AssignNode(actor.Build())
-	}); err != nil {
-		return err
-	}
-	return mapper.Finish()
-}
-
-func transformMarketStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
-	if err != nil {
-		return err
-	}
-
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	value := cbg.Deferred{}
-	if err := list.ForEach(&value, func(k int64) error {
-		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
-		if err != nil {
-			return err
-		}
-
-		actor := types.Type.MarketV0DealState__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
-			return err
 		}
 		return v.AssignNode(actor.Build())
 	}); err != nil {

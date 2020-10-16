@@ -101,4 +101,9 @@ func accumulateLotus(ts schema.TypeSystem) {
 			schema.SpawnStructField("Params", "Bytes", false, false),
 		},
 		schema.StructRepresentation_Tuple{}))
+	ts.Accumulate(schema.SpawnStruct("LotusSignedMessage",
+		[]schema.StructField{
+			schema.SpawnStructField("Message", "LotusMessage", false, false),
+			schema.SpawnStructField("Signature", "Signature", false, false),
+		}, schema.StructRepresentation_Tuple{}))
 }

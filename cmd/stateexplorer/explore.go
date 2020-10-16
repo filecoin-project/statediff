@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -51,7 +52,7 @@ var exploreCmd = &cli.Command{
 }
 
 var client api.FullNode
-var head lib.StateRootFunc
+var head statediff.StateRootFunc
 var store blockstore.Blockstore
 
 func lazy(c *cli.Context) error {
@@ -97,7 +98,8 @@ func runExploreCmd(c *cli.Context) error {
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
-		transformed, err := statediff.Transform(r.Context(), parsed, store, as[0])
+		txCtx := context.WithValue(r.Context(), statediff.StateRootKey, head)
+		transformed, err := statediff.Transform(txCtx, parsed, store, as[0])
 		if err != nil {
 			if head(c.Context) == nil {
 				client = nil

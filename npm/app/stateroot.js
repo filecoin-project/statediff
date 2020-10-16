@@ -25,19 +25,19 @@ class stateroot {
         this.pn = 0;
         this.children = {};
         this.shownActors = {};
+        this.aa = ActorAddrs;
 
         element.innerHTML = "Loading: " + cid;
         let search = this.element.shadowRoot.children[0].querySelector('input');
         search.addEventListener('keyup', this.onSearch.bind(this));
         let next = this.element.shadowRoot.children[0].querySelector('.next');
         next.addEventListener('click', this.onClickNextButton.bind(this));
-        this.Load();
+        this.load = this.Load();
     }
 
     Load() {
-        this.load = store(this.cid, this.type);
-        this.load.then((r) => this.onStateroot(r));
-        return this.load;
+        let l = store(this.cid, this.type);
+        return l.then(async (r) => { return await this.onStateroot(r) });
     }
     Ready() {
         return this.load;
@@ -49,16 +49,13 @@ class stateroot {
                 this.data = resp[1];
                 this.Render();
             } else {
-                let actormap = store(resp[1]["Actors"]["/"], "stateRoot");
-                actormap.then((r) => {
-                    this.data = r[1];
-                    this.Render();
-                });
-                return actormap;
+                let actormap = await store(resp[1]["Actors"]["/"], "stateRoot");
+                this.data = actormap[1];
+                this.Render();
             }
         } else if (this.type == "stateRoot") {
             this.type = "versionedStateRoot"
-            return this.Load();
+            await this.Load();
         } else {
             this.element.innerHTML = "Failed to parse: " + resp[1];
         }
@@ -67,7 +64,7 @@ class stateroot {
     async onSearch(ev) {
         if (ev === true || ev.keyCode == 13) {
             this.filter = this.element.shadowRoot.querySelector('input').value;
-            if (this.filter.indexOf('t') >= 0) {
+            if (this.filter.indexOf('t') >= 0 || this.filter.indexOf('f') >= 0) {
                 let initMap = await this.getInitMap();
                 this.Render(initMap);
             } else {
@@ -85,7 +82,7 @@ class stateroot {
         if (this.initMap) {
             return this.initMap;
         }
-        let initHeadCid = this.data[ActorAddrs["Init"]]["Head"]["/"];
+        let initHeadCid = this.data[this.aa["Init"]]["Head"]["/"];
         let initState = await store(initHeadCid, "initActor");
         let initAddrMap = await store(initState[1]["AddressMap"]["/"], "stateRoot");
         this.initMap = initAddrMap;
@@ -94,14 +91,20 @@ class stateroot {
 
     Render(lookupMap) {
         let data = this.data;
+        if (Object.keys(data)[0].indexOf('f') === 0) {
+            this.aa = {};
+            Object.keys(ActorAddrs).forEach((a) => {
+                this.aa[a] = ActorAddrs[a].replace("t", "f");
+            })
+        }
         renderer.FillTextSlot(this.element, 'count', Object.keys(data).length);
-        Object.keys(ActorAddrs).forEach((k) => {
-            this.children[k] = renderer.FillSlot(this.element, k, expander, `${k} @ ${ActorAddrs[k]}`, lotusActor, [data[ActorAddrs[k]]]);
+        Object.keys(this.aa).forEach((k) => {
+            this.children[k] = renderer.FillSlot(this.element, k, expander, `${k} @ ${this.aa[k]}`, lotusActor, [data[this.aa[k]]]);
         });
         let actors = [];
         if (!this.filter) {
             actors = Object.keys(data).filter((k) => {
-                return !Object.values(ActorAddrs).includes(k);
+                return !Object.values(this.aa).includes(k);
             });
         } else {
             let matchedCode = "";
@@ -168,7 +171,7 @@ class stateroot {
     async GetState() {
         await this.Ready();
         let state = [];
-        let sys = Object.keys(ActorAddrs).sort();
+        let sys = Object.keys(this.aa).sort();
         for (let i = 0; i < sys.length; i++) {
             state.push(await this.children[sys[i]].GetState());
         }
@@ -187,12 +190,12 @@ class stateroot {
         }
 
         await this.Ready();
-        let sys = Object.keys(ActorAddrs).sort();
+        let sys = Object.keys(this.aa).sort();
         let i = 0;
         for (i = 0; i < sys.length; i++) {
             let stateI = s[i] || 0;
             if (!await this.children[sys[i]].UpdateState(stateI)) {
-                let addr = ActorAddrs[sys[i]];
+                let addr = this.aa[sys[i]];
                 this.children[sys[i]] = renderer.RestoreSlot(this.element, sys[i], expander, stateI, [
                     `${k} @ ${addr}`,
                     lotusActor,
