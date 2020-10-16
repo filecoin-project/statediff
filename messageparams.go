@@ -116,6 +116,7 @@ var messageParamTable = map[LotusType]methodtable{
 	RewardActorState:           rewardTable,
 	RewardActorV2State:         rewardTable,
 	VerifiedRegistryActorState: verifregTable,
+	LotusTypeUnknown:           methodtable{},
 }
 
 func ParamFor(destType LotusType, msg ipld.Node) (ipld.Node, string, error) {
@@ -127,20 +128,25 @@ func ParamFor(destType LotusType, msg ipld.Node) (ipld.Node, string, error) {
 	if err != nil {
 		return nil, "", err
 	}
+	return ParseParams(tMsg.Params.Bytes(), method, destType)
+}
+
+func ParseParams(params []byte, method int, destType LotusType) (ipld.Node, string, error) {
+	mthdTable, ok := messageParamTable[destType]
+	if !ok {
+		return nil, "", fmt.Errorf("unknown parameters for %s", destType)
+	}
+
 	proto := ipld.NodePrototype(types.Type.Any__Repr)
 	name := "Unknown"
-	table, ok := messageParamTable[destType]
+	mthd, ok := mthdTable[method]
 	if ok {
-		mthd, ok := table[method]
-		if ok {
-			proto = mthd.NodePrototype
-			name = mthd.Name
-		}
-
+		proto = mthd.NodePrototype
+		name = mthd.Name
 	}
 
 	builder := proto.NewBuilder()
-	if err := dagcbor.Decoder(builder, bytes.NewBuffer(tMsg.Params.Bytes())); err != nil {
+	if err := dagcbor.Decoder(builder, bytes.NewBuffer(params)); err != nil {
 		return nil, "", err
 	}
 
