@@ -62,7 +62,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnStruct("LotusStateRoot",
 		[]schema.StructField{
 			schema.SpawnStructField("Version", "Int", false, false),
-			schema.SpawnStructField("Actors", "Link", false, false),
+			schema.SpawnStructField("Actors", "Link__LotusActors", false, false),
 			schema.SpawnStructField("Info", "Link", false, false),
 		},
 		schema.StructRepresentation_Tuple{}))
@@ -76,6 +76,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{}))
 	ts.Accumulate(schema.SpawnMap("Map__LotusActors", "RawAddress", "LotusActors", false))
+	ts.Accumulate(schema.SpawnLinkReference("Link__LotusActors", "Map__LotusActors"))
 
 	ts.Accumulate(schema.SpawnLinkReference("Link__LotusMsgMeta", "LotusMsgMeta"))
 	ts.Accumulate(schema.SpawnStruct("LotusMsgMeta",
