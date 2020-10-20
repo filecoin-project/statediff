@@ -3,12 +3,15 @@ package main
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"os"
 
 	bs "github.com/filecoin-project/lotus/lib/blockstore"
+	"github.com/ipfs/go-cid"
+	blockstore "github.com/ipfs/go-ipfs-blockstore"
 	"github.com/ipld/go-car"
 	"github.com/urfave/cli/v2"
 
@@ -65,21 +68,37 @@ func runVectorCmd(c *cli.Context) error {
 
 	preCid := tv.Pre.StateTree.RootCID
 	postCid := tv.Post.StateTree.RootCID
-	l, err := statediff.Transform(c.Context, preCid, store, "stateRoot")
+
+	d, err := PrintDiff(c.Context, preCid, postCid, store)
 	if err != nil {
-		return fmt.Errorf("Could not load pre root: %s", err)
+		return err
 	}
-	r, err := statediff.Transform(c.Context, postCid, store, "stateRoot")
+	fmt.Printf("%s", d)
+
+	return nil
+}
+
+func PrintDiff(ctx context.Context, pre, post cid.Cid, store blockstore.Blockstore) (string, error) {
+	l, err := statediff.Transform(ctx, pre, store, "stateRoot")
 	if err != nil {
-		return fmt.Errorf("Could not load postroot: %s", err)
+		l, err = statediff.Transform(ctx, pre, store, "versionedStateRoot")
+		if err != nil {
+			return "", fmt.Errorf("Could not load left root: %s", err)
+		}
+	}
+	r, err := statediff.Transform(ctx, post, store, "stateRoot")
+	if err != nil {
+		r, err = statediff.Transform(ctx, post, store, "versionedStateRoot")
+		if err != nil {
+			return "", fmt.Errorf("Could not load right root: %s", err)
+		}
 	}
 
-	fmt.Printf("--- %s\n+++ %s\n@@ -1,1 +1,1 @@\n", preCid, postCid)
-	fmt.Printf("%v\n", statediff.Diff(
-		c.Context,
+	s := fmt.Sprintf("--- %s\n+++ %s\n@@ -1,1 +1,1 @@\n", pre, post)
+	s += fmt.Sprintf("%v\n", statediff.Diff(
+		ctx,
 		store,
 		l,
 		r))
-
-	return nil
+	return s, nil
 }

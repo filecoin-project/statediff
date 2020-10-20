@@ -113,21 +113,11 @@ func runChainCmd(c *cli.Context) error {
 
 	fmt.Printf("comparing state trees at %s-%s\n", preCid, postCid)
 
-	l, err := statediff.Transform(c.Context, preCid, store, "stateRoot")
+	d, err := PrintDiff(c.Context, preCid, postCid, store)
 	if err != nil {
-		return fmt.Errorf("Could not load %s: %s", preCid, err)
+		return err
 	}
-	r, err := statediff.Transform(c.Context, postCid, store, "stateRoot")
-	if err != nil {
-		return fmt.Errorf("Could not load %s: %s", postCid, err)
-	}
-
-	fmt.Printf("--- %s\n+++ %s\n@@ -1,1 +1,1 @@\n", preCid, postCid)
-	fmt.Printf("%v\n", statediff.Diff(
-		c.Context,
-		store,
-		l,
-		r))
+	fmt.Printf("%s", d)
 
 	return nil
 }
