@@ -63,6 +63,8 @@ type typeSlab struct {
 	Link__InitV0State__Repr _Link__InitV0State__ReprPrototype
 	Link__ListLotusMessage       _Link__ListLotusMessage__Prototype
 	Link__ListLotusMessage__Repr _Link__ListLotusMessage__ReprPrototype
+	Link__LotusActors       _Link__LotusActors__Prototype
+	Link__LotusActors__Repr _Link__LotusActors__ReprPrototype
 	Link__LotusMessage       _Link__LotusMessage__Prototype
 	Link__LotusMessage__Repr _Link__LotusMessage__ReprPrototype
 	Link__LotusMsgMeta       _Link__LotusMsgMeta__Prototype

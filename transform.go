@@ -280,6 +280,7 @@ var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
 	types.Type.Link__LotusMsgMeta:            types.Type.LotusMsgMeta__Repr,
 	types.Type.Link__ListLotusMessage:        types.Type.List__LinkLotusMessage__Repr,
 	types.Type.Link__LotusMessage:            types.Type.LotusMessage__Repr,
+	types.Type.Link__LotusActors:             types.Type.Map__LotusActors__Repr,
 }
 
 // LinkDest fills in a gap in current schema: what type does a `LinkReference` point to

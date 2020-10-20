@@ -10,7 +10,7 @@ import (
 
 type _LotusStateRoot struct {
 	Version _Int
-	Actors _Link
+	Actors _Link__LotusActors
 	Info _Link
 }
 type LotusStateRoot = *_LotusStateRoot
@@ -18,7 +18,7 @@ type LotusStateRoot = *_LotusStateRoot
 func (n _LotusStateRoot) FieldVersion()	Int {
 	return &n.Version
 }
-func (n _LotusStateRoot) FieldActors()	Link {
+func (n _LotusStateRoot) FieldActors()	Link__LotusActors {
 	return &n.Actors
 }
 func (n _LotusStateRoot) FieldInfo()	Link {
@@ -188,7 +188,7 @@ type _LotusStateRoot__Assembler struct {
 
 	cm schema.Maybe
 	ca_Version _Int__Assembler
-	ca_Actors _Link__Assembler
+	ca_Actors _Link__LotusActors__Assembler
 	ca_Info _Link__Assembler
 	}
 
@@ -659,7 +659,7 @@ type _LotusStateRoot__ReprAssembler struct {
 
 	cm schema.Maybe
 	ca_Version _Int__ReprAssembler
-	ca_Actors _Link__ReprAssembler
+	ca_Actors _Link__LotusActors__ReprAssembler
 	ca_Info _Link__ReprAssembler
 	}
 
