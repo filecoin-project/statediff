@@ -4,15 +4,13 @@ go 1.14
 
 require (
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c // indirect
-	github.com/evanw/esbuild v0.7.13
+	github.com/evanw/esbuild v0.7.18
 	github.com/filecoin-project/go-address v0.0.4
 	github.com/filecoin-project/go-bitfield v0.2.1
-	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
 	github.com/filecoin-project/go-state-types v0.0.0-20200928172055-2df22083d8ab
 	github.com/filecoin-project/lotus v0.9.0
 	github.com/filecoin-project/specs-actors v0.9.12
 	github.com/filecoin-project/specs-actors/v2 v2.0.1
-	github.com/go-bindata/go-bindata v3.1.2+incompatible // indirect
 	github.com/gorilla/handlers v1.5.1
 	github.com/ipfs/go-block-format v0.0.2
 	github.com/ipfs/go-cid v0.0.7
