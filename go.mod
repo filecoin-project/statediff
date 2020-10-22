@@ -7,10 +7,10 @@ require (
 	github.com/evanw/esbuild v0.7.18
 	github.com/filecoin-project/go-address v0.0.4
 	github.com/filecoin-project/go-bitfield v0.2.1
-	github.com/filecoin-project/go-state-types v0.0.0-20200928172055-2df22083d8ab
-	github.com/filecoin-project/lotus v0.9.0
+	github.com/filecoin-project/go-state-types v0.0.0-20201003010437-c33112184a2b
+	github.com/filecoin-project/lotus v0.10.2
 	github.com/filecoin-project/specs-actors v0.9.12
-	github.com/filecoin-project/specs-actors/v2 v2.0.1
+	github.com/filecoin-project/specs-actors/v2 v2.1.0
 	github.com/gorilla/handlers v1.5.1
 	github.com/ipfs/go-block-format v0.0.2
 	github.com/ipfs/go-cid v0.0.7
@@ -20,7 +20,6 @@ require (
 	github.com/ipfs/go-ipld-cbor v0.0.5-0.20200428170625-a0bd04d3cbdf
 	github.com/ipld/go-car v0.1.1-0.20200923150018-8cdef32e2da4
 	github.com/ipld/go-ipld-prime v0.5.1-0.20200910124733-350032422383
-	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/multiformats/go-multiaddr v0.3.1
 	github.com/multiformats/go-multiaddr-net v0.2.0
