@@ -185,7 +185,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	StorageMinerActorV2DeadlinePartitions:      types.Type.Map__MinerV2Partition__Repr,
 	StorageMinerActorDeadlinePartitionExpiry:   types.Type.Map__MinerV0ExpirationSet__Repr,
 	StorageMinerActorDeadlineExpiry:            types.Type.Map__BitField__Repr,
-	StoragePowerActorCronEventQueue:            types.Type.Map__PowerV0CronEvent__Repr,
+	StoragePowerActorCronEventQueue:            types.Type.Multimap__PowerV0CronEvent__Repr,
 	StoragePowerActorClaims:                    types.Type.Map__PowerV0Claim__Repr,
 	StoragePowerActorV2Claims:                  types.Type.Map__PowerV2Claim__Repr,
 	VerifiedRegistryActorVerifiers:             types.Type.Map__DataCap__Repr,
@@ -215,7 +215,7 @@ var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.Map__MinerV0Partition__Repr:           loadListAsMap,
 	types.Type.Map__MinerV2Partition__Repr:           loadListAsMap,
 	types.Type.Map__MinerV0ExpirationSet__Repr:       loadListAsMap,
-	types.Type.Map__PowerV0CronEvent__Repr:           transformPowerActorEventQueue,
+	types.Type.Multimap__PowerV0CronEvent__Repr:      transformPowerActorEventQueue,
 	types.Type.Map__PowerV0Claim__Repr:               loadMap,
 	types.Type.Map__PowerV2Claim__Repr:               loadMap,
 	types.Type.Map__DataCap__Repr:                    transformVerifiedRegistryDataCaps,
@@ -262,7 +262,7 @@ var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
 	types.Type.Link__PaychV0LaneState:        types.Type.Map__PaychV0LaneState__Repr,
 	types.Type.Link__PowerV0Claim:            types.Type.Map__PowerV0Claim__Repr,
 	types.Type.Link__PowerV2Claim:            types.Type.Map__PowerV2Claim__Repr,
-	types.Type.Link__PowerV0CronEvent:        types.Type.Map__PowerV0CronEvent__Repr,
+	types.Type.Link__PowerV0CronEvent:        types.Type.Multimap__PowerV0CronEvent__Repr,
 	types.Type.Link__AccountV0State:          types.Type.AccountV0State__Repr,
 	types.Type.Link__CronV0State:             types.Type.CronV0State__Repr,
 	types.Type.Link__InitV0State:             types.Type.InitV0State__Repr,
@@ -684,9 +684,12 @@ func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockst
 
 			actor := types.Type.PowerV0CronEvent__Repr.NewBuilder()
 			if err := dagcbor.Decoder(actor, bytes.NewBuffer(eval.Raw)); err != nil {
-				return err
+				return fmt.Errorf("decoding of event leaf failed: %w", err)
 			}
-			return subv.AssignNode(actor.Build())
+			if err := subv.AssignNode(actor.Build()); err != nil {
+				return fmt.Errorf("Aassign of thign sad:%w", err)
+			}
+			return nil
 		}); err != nil {
 			return err
 		}
