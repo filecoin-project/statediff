@@ -145,9 +145,14 @@ func ParseParams(params []byte, method int, destType LotusType) (ipld.Node, stri
 		name = mthd.Name
 	}
 
+	if len(params) == 0 {
+		b, err := types.Type.Bytes__Repr.FromBytes(params)
+		return b, name, err
+	}
+
 	builder := proto.NewBuilder()
 	if err := dagcbor.Decoder(builder, bytes.NewBuffer(params)); err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("cbor decode into %s (%s.%d) failed: %v", name, destType, method, err)
 	}
 
 	return builder.Build(), name, nil
