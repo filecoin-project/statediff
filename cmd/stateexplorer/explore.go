@@ -123,6 +123,9 @@ func runExploreCmd(c *cli.Context) error {
 			return
 		}
 		cid := head(r.Context())
+		if len(cid) == 0 {
+			client = nil
+		}
 		cidBytes, _ := json.Marshal(cid)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(cidBytes)
