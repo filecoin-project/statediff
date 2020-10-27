@@ -205,6 +205,9 @@ func (_Link__MinerV0ExpirationSet__Assembler) Prototype() ipld.NodePrototype {
 func (Link__MinerV0ExpirationSet) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__MinerV0ExpirationSet) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__MinerV0ExpirationSet__Repr
+}
 func (n Link__MinerV0ExpirationSet) Representation() ipld.Node {
 	return (*_Link__MinerV0ExpirationSet__Repr)(n)
 }

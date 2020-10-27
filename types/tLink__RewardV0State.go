@@ -205,6 +205,9 @@ func (_Link__RewardV0State__Assembler) Prototype() ipld.NodePrototype {
 func (Link__RewardV0State) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__RewardV0State) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__RewardV0State__Repr
+}
 func (n Link__RewardV0State) Representation() ipld.Node {
 	return (*_Link__RewardV0State__Repr)(n)
 }

@@ -205,6 +205,9 @@ func (_Link__MultisigV0Transaction__Assembler) Prototype() ipld.NodePrototype {
 func (Link__MultisigV0Transaction) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__MultisigV0Transaction) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__MultisigV0Transaction__Repr
+}
 func (n Link__MultisigV0Transaction) Representation() ipld.Node {
 	return (*_Link__MultisigV0Transaction__Repr)(n)
 }

@@ -205,6 +205,9 @@ func (_Link__MinerV0SectorPreCommits__Assembler) Prototype() ipld.NodePrototype 
 func (Link__MinerV0SectorPreCommits) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__MinerV0SectorPreCommits) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__MinerV0SectorPreCommits__Repr
+}
 func (n Link__MinerV0SectorPreCommits) Representation() ipld.Node {
 	return (*_Link__MinerV0SectorPreCommits__Repr)(n)
 }

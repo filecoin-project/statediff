@@ -205,6 +205,9 @@ func (_Link__MapActorID__Assembler) Prototype() ipld.NodePrototype {
 func (Link__MapActorID) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__MapActorID) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__MapActorID__Repr
+}
 func (n Link__MapActorID) Representation() ipld.Node {
 	return (*_Link__MapActorID__Repr)(n)
 }

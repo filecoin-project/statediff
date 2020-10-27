@@ -205,6 +205,9 @@ func (_Link__LotusStateRoot__Assembler) Prototype() ipld.NodePrototype {
 func (Link__LotusStateRoot) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__LotusStateRoot) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__LotusStateRoot__Repr
+}
 func (n Link__LotusStateRoot) Representation() ipld.Node {
 	return (*_Link__LotusStateRoot__Repr)(n)
 }

@@ -161,6 +161,8 @@ type typeSlab struct {
 	List__Merge__Repr _List__Merge__ReprPrototype
 	List__MinerExpirationExtend       _List__MinerExpirationExtend__Prototype
 	List__MinerExpirationExtend__Repr _List__MinerExpirationExtend__ReprPrototype
+	List__MinerPoStProof       _List__MinerPoStProof__Prototype
+	List__MinerPoStProof__Repr _List__MinerPoStProof__ReprPrototype
 	List__MinerPostPartition       _List__MinerPostPartition__Prototype
 	List__MinerPostPartition__Repr _List__MinerPostPartition__ReprPrototype
 	List__MinerTerminationDecl       _List__MinerTerminationDecl__Prototype
@@ -175,8 +177,6 @@ type typeSlab struct {
 	List__Multiaddrs__Repr _List__Multiaddrs__ReprPrototype
 	List__PoStProof       _List__PoStProof__Prototype
 	List__PoStProof__Repr _List__PoStProof__ReprPrototype
-	List__RegisteredPoStProof       _List__RegisteredPoStProof__Prototype
-	List__RegisteredPoStProof__Repr _List__RegisteredPoStProof__ReprPrototype
 	List__SectorNumber       _List__SectorNumber__Prototype
 	List__SectorNumber__Repr _List__SectorNumber__ReprPrototype
 	LotusActors       _LotusActors__Prototype
@@ -415,8 +415,6 @@ type typeSlab struct {
 	PowerV2State__Repr _PowerV2State__ReprPrototype
 	RawAddress       _RawAddress__Prototype
 	RawAddress__Repr _RawAddress__ReprPrototype
-	RegisteredPoStProof       _RegisteredPoStProof__Prototype
-	RegisteredPoStProof__Repr _RegisteredPoStProof__ReprPrototype
 	RegisteredSealProof       _RegisteredSealProof__Prototype
 	RegisteredSealProof__Repr _RegisteredSealProof__ReprPrototype
 	RewardV0State       _RewardV0State__Prototype

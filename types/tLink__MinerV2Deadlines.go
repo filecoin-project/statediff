@@ -205,6 +205,9 @@ func (_Link__MinerV2Deadlines__Assembler) Prototype() ipld.NodePrototype {
 func (Link__MinerV2Deadlines) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__MinerV2Deadlines) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__MinerV2Deadlines__Repr
+}
 func (n Link__MinerV2Deadlines) Representation() ipld.Node {
 	return (*_Link__MinerV2Deadlines__Repr)(n)
 }

@@ -205,6 +205,9 @@ func (_Link__AccountV0State__Assembler) Prototype() ipld.NodePrototype {
 func (Link__AccountV0State) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__AccountV0State) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__AccountV0State__Repr
+}
 func (n Link__AccountV0State) Representation() ipld.Node {
 	return (*_Link__AccountV0State__Repr)(n)
 }

@@ -205,6 +205,9 @@ func (_Link__LotusActors__Assembler) Prototype() ipld.NodePrototype {
 func (Link__LotusActors) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__LotusActors) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__LotusActors__Repr
+}
 func (n Link__LotusActors) Representation() ipld.Node {
 	return (*_Link__LotusActors__Repr)(n)
 }

@@ -205,6 +205,9 @@ func (_Link__MultimapDealID__Assembler) Prototype() ipld.NodePrototype {
 func (Link__MultimapDealID) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__MultimapDealID) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__MultimapDealID__Repr
+}
 func (n Link__MultimapDealID) Representation() ipld.Node {
 	return (*_Link__MultimapDealID__Repr)(n)
 }

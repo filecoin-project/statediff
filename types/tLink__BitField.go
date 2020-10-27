@@ -205,6 +205,9 @@ func (_Link__BitField__Assembler) Prototype() ipld.NodePrototype {
 func (Link__BitField) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__BitField) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__BitField__Repr
+}
 func (n Link__BitField) Representation() ipld.Node {
 	return (*_Link__BitField__Repr)(n)
 }

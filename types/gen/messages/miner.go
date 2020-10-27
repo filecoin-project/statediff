@@ -30,7 +30,7 @@ func accumulateMiner(ts schema.TypeSystem) {
 		[]schema.StructField{
 			schema.SpawnStructField("Deadline", "Int", false, false),
 			schema.SpawnStructField("Partitions", "List__MinerPostPartition", false, false),
-			schema.SpawnStructField("Proofs", "List__RegisteredPoStProof", false, false),
+			schema.SpawnStructField("Proofs", "List__MinerPoStProof", false, false),
 			schema.SpawnStructField("ChainCommitEpoch", "ChainEpoch", false, false),
 			schema.SpawnStructField("ChainCommitRand", "Bytes", false, false),
 		}, schema.StructRepresentation_Tuple{}))
@@ -45,8 +45,7 @@ func accumulateMiner(ts schema.TypeSystem) {
 			schema.SpawnStructField("PoStProof", "Int", false, false),
 			schema.SpawnStructField("ProofBytes", "Bytes", false, false),
 		}, schema.StructRepresentation_Tuple{}))
-	ts.Accumulate(schema.SpawnInt("RegisteredPoStProof"))
-	ts.Accumulate(schema.SpawnList("List__RegisteredPoStProof", "RegisteredPoStProof", false))
+	ts.Accumulate(schema.SpawnList("List__MinerPoStProof", "MinerPostProof", false))
 
 	ts.Accumulate(schema.SpawnStruct("MessageParamsMinerProveCommitSector",
 		[]schema.StructField{

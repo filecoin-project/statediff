@@ -205,6 +205,9 @@ func (_Link__MinerV0VestingFunds__Assembler) Prototype() ipld.NodePrototype {
 func (Link__MinerV0VestingFunds) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__MinerV0VestingFunds) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__MinerV0VestingFunds__Repr
+}
 func (n Link__MinerV0VestingFunds) Representation() ipld.Node {
 	return (*_Link__MinerV0VestingFunds__Repr)(n)
 }

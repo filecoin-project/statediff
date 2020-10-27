@@ -205,6 +205,9 @@ func (_Link__DataCap__Assembler) Prototype() ipld.NodePrototype {
 func (Link__DataCap) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__DataCap) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__DataCap__Repr
+}
 func (n Link__DataCap) Representation() ipld.Node {
 	return (*_Link__DataCap__Repr)(n)
 }

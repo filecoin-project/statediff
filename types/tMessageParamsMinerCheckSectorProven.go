@@ -682,7 +682,7 @@ func (la *_MessageParamsMinerCheckSectorProven__ReprAssembler) AssembleValue() i
 		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
 	}
 	if la.f >= 1 {
-		return nil // schema.ErrNoSuchField{Type: nil /*TODO*/, Field: ipld.PathSegmentOfInt(1)} // FIXME: need an error thunking assembler!  it has returned.  sigh.
+		return _ErrorThunkAssembler{schema.ErrNoSuchField{Type: nil /*TODO*/, Field: ipld.PathSegmentOfInt(1)}}
 	}
 	la.state = laState_midValue
 	switch la.f {

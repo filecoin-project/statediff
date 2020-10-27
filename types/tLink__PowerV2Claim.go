@@ -205,6 +205,9 @@ func (_Link__PowerV2Claim__Assembler) Prototype() ipld.NodePrototype {
 func (Link__PowerV2Claim) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__PowerV2Claim) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__PowerV2Claim__Repr
+}
 func (n Link__PowerV2Claim) Representation() ipld.Node {
 	return (*_Link__PowerV2Claim__Repr)(n)
 }

@@ -205,6 +205,9 @@ func (_Link__MarketV2RawDealProposal__Assembler) Prototype() ipld.NodePrototype 
 func (Link__MarketV2RawDealProposal) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__MarketV2RawDealProposal) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__MarketV2RawDealProposal__Repr
+}
 func (n Link__MarketV2RawDealProposal) Representation() ipld.Node {
 	return (*_Link__MarketV2RawDealProposal__Repr)(n)
 }

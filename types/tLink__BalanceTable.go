@@ -205,6 +205,9 @@ func (_Link__BalanceTable__Assembler) Prototype() ipld.NodePrototype {
 func (Link__BalanceTable) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__BalanceTable) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__BalanceTable__Repr
+}
 func (n Link__BalanceTable) Representation() ipld.Node {
 	return (*_Link__BalanceTable__Repr)(n)
 }

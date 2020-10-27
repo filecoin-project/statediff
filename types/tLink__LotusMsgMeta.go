@@ -205,6 +205,9 @@ func (_Link__LotusMsgMeta__Assembler) Prototype() ipld.NodePrototype {
 func (Link__LotusMsgMeta) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__LotusMsgMeta) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__LotusMsgMeta__Repr
+}
 func (n Link__LotusMsgMeta) Representation() ipld.Node {
 	return (*_Link__LotusMsgMeta__Repr)(n)
 }

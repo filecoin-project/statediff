@@ -205,6 +205,9 @@ func (_Link__PowerV0CronEvent__Assembler) Prototype() ipld.NodePrototype {
 func (Link__PowerV0CronEvent) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__PowerV0CronEvent) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__PowerV0CronEvent__Repr
+}
 func (n Link__PowerV0CronEvent) Representation() ipld.Node {
 	return (*_Link__PowerV0CronEvent__Repr)(n)
 }

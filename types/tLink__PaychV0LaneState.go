@@ -205,6 +205,9 @@ func (_Link__PaychV0LaneState__Assembler) Prototype() ipld.NodePrototype {
 func (Link__PaychV0LaneState) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
+func (Link__PaychV0LaneState) LinkTargetNodePrototype() ipld.NodePrototype {
+	return Type.Link__PaychV0LaneState__Repr
+}
 func (n Link__PaychV0LaneState) Representation() ipld.Node {
 	return (*_Link__PaychV0LaneState__Repr)(n)
 }

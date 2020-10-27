@@ -11,7 +11,7 @@ import (
 type _MessageParamsMinerSubmitWindowedPoSt struct {
 	Deadline _Int
 	Partitions _List__MinerPostPartition
-	Proofs _List__RegisteredPoStProof
+	Proofs _List__MinerPoStProof
 	ChainCommitEpoch _ChainEpoch
 	ChainCommitRand _Bytes
 }
@@ -23,7 +23,7 @@ func (n _MessageParamsMinerSubmitWindowedPoSt) FieldDeadline()	Int {
 func (n _MessageParamsMinerSubmitWindowedPoSt) FieldPartitions()	List__MinerPostPartition {
 	return &n.Partitions
 }
-func (n _MessageParamsMinerSubmitWindowedPoSt) FieldProofs()	List__RegisteredPoStProof {
+func (n _MessageParamsMinerSubmitWindowedPoSt) FieldProofs()	List__MinerPoStProof {
 	return &n.Proofs
 }
 func (n _MessageParamsMinerSubmitWindowedPoSt) FieldChainCommitEpoch()	ChainEpoch {
@@ -209,7 +209,7 @@ type _MessageParamsMinerSubmitWindowedPoSt__Assembler struct {
 	cm schema.Maybe
 	ca_Deadline _Int__Assembler
 	ca_Partitions _List__MinerPostPartition__Assembler
-	ca_Proofs _List__RegisteredPoStProof__Assembler
+	ca_Proofs _List__MinerPoStProof__Assembler
 	ca_ChainCommitEpoch _ChainEpoch__Assembler
 	ca_ChainCommitRand _Bytes__Assembler
 	}
@@ -758,7 +758,7 @@ type _MessageParamsMinerSubmitWindowedPoSt__ReprAssembler struct {
 	cm schema.Maybe
 	ca_Deadline _Int__ReprAssembler
 	ca_Partitions _List__MinerPostPartition__ReprAssembler
-	ca_Proofs _List__RegisteredPoStProof__ReprAssembler
+	ca_Proofs _List__MinerPoStProof__ReprAssembler
 	ca_ChainCommitEpoch _ChainEpoch__ReprAssembler
 	ca_ChainCommitRand _Bytes__ReprAssembler
 	}
@@ -926,7 +926,7 @@ func (la *_MessageParamsMinerSubmitWindowedPoSt__ReprAssembler) AssembleValue() 
 		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
 	}
 	if la.f >= 5 {
-		return nil // schema.ErrNoSuchField{Type: nil /*TODO*/, Field: ipld.PathSegmentOfInt(5)} // FIXME: need an error thunking assembler!  it has returned.  sigh.
+		return _ErrorThunkAssembler{schema.ErrNoSuchField{Type: nil /*TODO*/, Field: ipld.PathSegmentOfInt(5)}}
 	}
 	la.state = laState_midValue
 	switch la.f {
