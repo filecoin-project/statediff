@@ -113,6 +113,8 @@ type typeSlab struct {
 	Link__MinerV2Info__Repr _Link__MinerV2Info__ReprPrototype
 	Link__MinerV2Partition       _Link__MinerV2Partition__Prototype
 	Link__MinerV2Partition__Repr _Link__MinerV2Partition__ReprPrototype
+	Link__MinerV2SectorInfo       _Link__MinerV2SectorInfo__Prototype
+	Link__MinerV2SectorInfo__Repr _Link__MinerV2SectorInfo__ReprPrototype
 	Link__MinerV2State       _Link__MinerV2State__Prototype
 	Link__MinerV2State__Repr _Link__MinerV2State__ReprPrototype
 	Link__MultimapDealID       _Link__MultimapDealID__Prototype
@@ -241,6 +243,8 @@ type typeSlab struct {
 	Map__SectorOnChainInfo__Repr _Map__SectorOnChainInfo__ReprPrototype
 	Map__SectorPreCommitOnChainInfo       _Map__SectorPreCommitOnChainInfo__Prototype
 	Map__SectorPreCommitOnChainInfo__Repr _Map__SectorPreCommitOnChainInfo__ReprPrototype
+	Map__SectorV2OnChainInfo       _Map__SectorV2OnChainInfo__Prototype
+	Map__SectorV2OnChainInfo__Repr _Map__SectorV2OnChainInfo__ReprPrototype
 	MarketClientDealProposal       _MarketClientDealProposal__Prototype
 	MarketClientDealProposal__Repr _MarketClientDealProposal__ReprPrototype
 	MarketV0DealProposal       _MarketV0DealProposal__Prototype
@@ -381,6 +385,8 @@ type typeSlab struct {
 	MinerV2Info__Repr _MinerV2Info__ReprPrototype
 	MinerV2Partition       _MinerV2Partition__Prototype
 	MinerV2Partition__Repr _MinerV2Partition__ReprPrototype
+	MinerV2SectorOnChainInfo       _MinerV2SectorOnChainInfo__Prototype
+	MinerV2SectorOnChainInfo__Repr _MinerV2SectorOnChainInfo__ReprPrototype
 	MinerV2State       _MinerV2State__Prototype
 	MinerV2State__Repr _MinerV2State__ReprPrototype
 	ModVerifyParams       _ModVerifyParams__Prototype

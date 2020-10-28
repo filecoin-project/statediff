@@ -16,7 +16,7 @@ func accumulateMiner(ts schema.TypeSystem) {
 			schema.SpawnStructField("PreCommittedSectors", "Link__MinerV0SectorPreCommits", false, false), // Map, HAMT[SectorNumber]SectorPreCommitOnChainInfo
 			schema.SpawnStructField("PreCommittedSectorsExpiry", "Link", false, false),                    // BitFieldQueue (AMT[Epoch]*BitField)
 			schema.SpawnStructField("AllocatedSectors", "Link__BitField", false, false),
-			schema.SpawnStructField("Sectors", "Link__MinerV0SectorInfo", false, false), // Array, AMT[SectorNumber]SectorOnChainInfo (sparse)
+			schema.SpawnStructField("Sectors", "Link__MinerV2SectorInfo", false, false), // Array, AMT[SectorNumber]SectorOnChainInfo (sparse)
 			schema.SpawnStructField("ProvingPeriodStart", "ChainEpoch", false, false),
 			schema.SpawnStructField("CurrentDeadline", "Int", false, false),
 			schema.SpawnStructField("Deadlines", "Link__MinerV2Deadlines", false, false),
@@ -90,5 +90,26 @@ func accumulateMiner(ts schema.TypeSystem) {
 	))
 	ts.Accumulate(schema.SpawnMap("Map__MinerV2Partition", "String", "MinerV2Partition", true)) // Key=PartitionNumber
 	ts.Accumulate(schema.SpawnLinkReference("Link__MinerV2Partition", "Map__MinerV2Partition"))
+
+	ts.Accumulate(schema.SpawnStruct("MinerV2SectorOnChainInfo",
+		[]schema.StructField{
+			schema.SpawnStructField("SectorNumber", "SectorNumber", false, false),
+			schema.SpawnStructField("SealProof", "Int", false, false), //RegisteredSealProof
+			schema.SpawnStructField("SealedCID", "Link", false, false),
+			schema.SpawnStructField("DealIDs", "List__DealID", false, false),
+			schema.SpawnStructField("Activation", "ChainEpoch", false, false),
+			schema.SpawnStructField("Expiration", "ChainEpoch", false, false),
+			schema.SpawnStructField("DealWeight", "BigInt", false, false),            //DealWeight
+			schema.SpawnStructField("VerifiedDealWeight", "BigInt", false, false),    //DealWeight
+			schema.SpawnStructField("InitialPledge", "BigInt", false, false),         //TokenAmount
+			schema.SpawnStructField("ExpectedDayReward", "BigInt", false, false),     //TokenAmount
+			schema.SpawnStructField("ExpectedStorageReward", "BigInt", false, false), //TokenAmount
+			schema.SpawnStructField("ReplacedSectorAge", "ChainEpoch", false, false),
+			schema.SpawnStructField("ReplacedDayReward", "BigInt", false, false), //TokenAmount
+		},
+		schema.StructRepresentation_Tuple{},
+	))
+	ts.Accumulate(schema.SpawnMap("Map__SectorV2OnChainInfo", "String", "MinerV2SectorOnChainInfo", true)) // Key=SectorNumber
+	ts.Accumulate(schema.SpawnLinkReference("Link__MinerV2SectorInfo", "Map__SectorV2OnChainInfo"))
 
 }

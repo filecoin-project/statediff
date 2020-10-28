@@ -20,8 +20,6 @@ type _MinerV0SectorOnChainInfo struct {
 	InitialPledge _BigInt
 	ExpectedDayReward _BigInt
 	ExpectedStorageReward _BigInt
-	ReplacedSectorAge _ChainEpoch
-	ReplacedDayReward _BigInt
 }
 type MinerV0SectorOnChainInfo = *_MinerV0SectorOnChainInfo
 
@@ -57,12 +55,6 @@ func (n _MinerV0SectorOnChainInfo) FieldExpectedDayReward()	BigInt {
 }
 func (n _MinerV0SectorOnChainInfo) FieldExpectedStorageReward()	BigInt {
 	return &n.ExpectedStorageReward
-}
-func (n _MinerV0SectorOnChainInfo) FieldReplacedSectorAge()	ChainEpoch {
-	return &n.ReplacedSectorAge
-}
-func (n _MinerV0SectorOnChainInfo) FieldReplacedDayReward()	BigInt {
-	return &n.ReplacedDayReward
 }
 type _MinerV0SectorOnChainInfo__Maybe struct {
 	m schema.Maybe
@@ -109,8 +101,6 @@ var (
 	fieldName__MinerV0SectorOnChainInfo_InitialPledge = _String{"InitialPledge"}
 	fieldName__MinerV0SectorOnChainInfo_ExpectedDayReward = _String{"ExpectedDayReward"}
 	fieldName__MinerV0SectorOnChainInfo_ExpectedStorageReward = _String{"ExpectedStorageReward"}
-	fieldName__MinerV0SectorOnChainInfo_ReplacedSectorAge = _String{"ReplacedSectorAge"}
-	fieldName__MinerV0SectorOnChainInfo_ReplacedDayReward = _String{"ReplacedDayReward"}
 )
 var _ ipld.Node = (MinerV0SectorOnChainInfo)(&_MinerV0SectorOnChainInfo{})
 var _ schema.TypedNode = (MinerV0SectorOnChainInfo)(&_MinerV0SectorOnChainInfo{})
@@ -141,10 +131,6 @@ func (n MinerV0SectorOnChainInfo) LookupByString(key string) (ipld.Node, error) 
 		return &n.ExpectedDayReward, nil
 	case "ExpectedStorageReward":
 		return &n.ExpectedStorageReward, nil
-	case "ReplacedSectorAge":
-		return &n.ReplacedSectorAge, nil
-	case "ReplacedDayReward":
-		return &n.ReplacedDayReward, nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: ipld.PathSegmentOfString(key)}
 	}
@@ -172,7 +158,7 @@ type _MinerV0SectorOnChainInfo__MapItr struct {
 }
 
 func (itr *_MinerV0SectorOnChainInfo__MapItr) Next() (k ipld.Node, v ipld.Node, _ error) {
-	if itr.idx >= 13 {
+	if itr.idx >= 11 {
 		return nil, nil, ipld.ErrIteratorOverread{}
 	}
 	switch itr.idx {
@@ -209,12 +195,6 @@ func (itr *_MinerV0SectorOnChainInfo__MapItr) Next() (k ipld.Node, v ipld.Node, 
 	case 10:
 		k = &fieldName__MinerV0SectorOnChainInfo_ExpectedStorageReward
 		v = &itr.n.ExpectedStorageReward
-	case 11:
-		k = &fieldName__MinerV0SectorOnChainInfo_ReplacedSectorAge
-		v = &itr.n.ReplacedSectorAge
-	case 12:
-		k = &fieldName__MinerV0SectorOnChainInfo_ReplacedDayReward
-		v = &itr.n.ReplacedDayReward
 	default:
 		panic("unreachable")
 	}
@@ -222,14 +202,14 @@ func (itr *_MinerV0SectorOnChainInfo__MapItr) Next() (k ipld.Node, v ipld.Node, 
 	return
 }
 func (itr *_MinerV0SectorOnChainInfo__MapItr) Done() bool {
-	return itr.idx >= 13
+	return itr.idx >= 11
 }
 
 func (MinerV0SectorOnChainInfo) ListIterator() ipld.ListIterator {
 	return nil
 }
 func (MinerV0SectorOnChainInfo) Length() int {
-	return 13
+	return 11
 }
 func (MinerV0SectorOnChainInfo) IsAbsent() bool {
 	return false
@@ -298,8 +278,6 @@ type _MinerV0SectorOnChainInfo__Assembler struct {
 	ca_InitialPledge _BigInt__Assembler
 	ca_ExpectedDayReward _BigInt__Assembler
 	ca_ExpectedStorageReward _BigInt__Assembler
-	ca_ReplacedSectorAge _ChainEpoch__Assembler
-	ca_ReplacedDayReward _BigInt__Assembler
 	}
 
 func (na *_MinerV0SectorOnChainInfo__Assembler) reset() {
@@ -316,8 +294,6 @@ func (na *_MinerV0SectorOnChainInfo__Assembler) reset() {
 	na.ca_InitialPledge.reset()
 	na.ca_ExpectedDayReward.reset()
 	na.ca_ExpectedStorageReward.reset()
-	na.ca_ReplacedSectorAge.reset()
-	na.ca_ReplacedDayReward.reset()
 }
 
 var (
@@ -332,9 +308,7 @@ var (
 	fieldBit__MinerV0SectorOnChainInfo_InitialPledge = 1 << 8
 	fieldBit__MinerV0SectorOnChainInfo_ExpectedDayReward = 1 << 9
 	fieldBit__MinerV0SectorOnChainInfo_ExpectedStorageReward = 1 << 10
-	fieldBit__MinerV0SectorOnChainInfo_ReplacedSectorAge = 1 << 11
-	fieldBit__MinerV0SectorOnChainInfo_ReplacedDayReward = 1 << 12
-	fieldBits__MinerV0SectorOnChainInfo_sufficient = 0 + 1 << 0 + 1 << 1 + 1 << 2 + 1 << 3 + 1 << 4 + 1 << 5 + 1 << 6 + 1 << 7 + 1 << 8 + 1 << 9 + 1 << 10 + 1 << 11 + 1 << 12
+	fieldBits__MinerV0SectorOnChainInfo_sufficient = 0 + 1 << 0 + 1 << 1 + 1 << 2 + 1 << 3 + 1 << 4 + 1 << 5 + 1 << 6 + 1 << 7 + 1 << 8 + 1 << 9 + 1 << 10
 )
 func (na *_MinerV0SectorOnChainInfo__Assembler) BeginMap(int) (ipld.MapAssembler, error) {
 	switch *na.m {
@@ -537,26 +511,6 @@ func (ma *_MinerV0SectorOnChainInfo__Assembler) valueFinishTidy() bool {
 		default:
 			return false
 		}
-	case 11:
-		switch ma.cm {
-		case schema.Maybe_Value:
-			ma.ca_ReplacedSectorAge.w = nil
-			ma.cm = schema.Maybe_Absent
-			ma.state = maState_initial
-			return true
-		default:
-			return false
-		}
-	case 12:
-		switch ma.cm {
-		case schema.Maybe_Value:
-			ma.ca_ReplacedDayReward.w = nil
-			ma.cm = schema.Maybe_Absent
-			ma.state = maState_initial
-			return true
-		default:
-			return false
-		}
 	default:
 		panic("unreachable")
 	}
@@ -687,26 +641,6 @@ func (ma *_MinerV0SectorOnChainInfo__Assembler) AssembleEntry(k string) (ipld.No
 		ma.ca_ExpectedStorageReward.w = &ma.w.ExpectedStorageReward
 		ma.ca_ExpectedStorageReward.m = &ma.cm
 		return &ma.ca_ExpectedStorageReward, nil
-	case "ReplacedSectorAge":
-		if ma.s & fieldBit__MinerV0SectorOnChainInfo_ReplacedSectorAge != 0 {
-			return nil, ipld.ErrRepeatedMapKey{&fieldName__MinerV0SectorOnChainInfo_ReplacedSectorAge}
-		}
-		ma.s += fieldBit__MinerV0SectorOnChainInfo_ReplacedSectorAge
-		ma.state = maState_midValue
-		ma.f = 11
-		ma.ca_ReplacedSectorAge.w = &ma.w.ReplacedSectorAge
-		ma.ca_ReplacedSectorAge.m = &ma.cm
-		return &ma.ca_ReplacedSectorAge, nil
-	case "ReplacedDayReward":
-		if ma.s & fieldBit__MinerV0SectorOnChainInfo_ReplacedDayReward != 0 {
-			return nil, ipld.ErrRepeatedMapKey{&fieldName__MinerV0SectorOnChainInfo_ReplacedDayReward}
-		}
-		ma.s += fieldBit__MinerV0SectorOnChainInfo_ReplacedDayReward
-		ma.state = maState_midValue
-		ma.f = 12
-		ma.ca_ReplacedDayReward.w = &ma.w.ReplacedDayReward
-		ma.ca_ReplacedDayReward.m = &ma.cm
-		return &ma.ca_ReplacedDayReward, nil
 	default:
 		return nil, ipld.ErrInvalidKey{TypeName:"types.MinerV0SectorOnChainInfo", Key:&_String{k}}
 	}
@@ -788,14 +722,6 @@ func (ma *_MinerV0SectorOnChainInfo__Assembler) AssembleValue() ipld.NodeAssembl
 		ma.ca_ExpectedStorageReward.w = &ma.w.ExpectedStorageReward
 		ma.ca_ExpectedStorageReward.m = &ma.cm
 		return &ma.ca_ExpectedStorageReward
-	case 11:
-		ma.ca_ReplacedSectorAge.w = &ma.w.ReplacedSectorAge
-		ma.ca_ReplacedSectorAge.m = &ma.cm
-		return &ma.ca_ReplacedSectorAge
-	case 12:
-		ma.ca_ReplacedDayReward.w = &ma.w.ReplacedDayReward
-		ma.ca_ReplacedDayReward.m = &ma.cm
-		return &ma.ca_ReplacedDayReward
 	default:
 		panic("unreachable")
 	}
@@ -927,20 +853,6 @@ func (ka *_MinerV0SectorOnChainInfo__KeyAssembler) AssignString(k string) error 
 		ka.s += fieldBit__MinerV0SectorOnChainInfo_ExpectedStorageReward
 		ka.state = maState_expectValue
 		ka.f = 10
-	case "ReplacedSectorAge":
-		if ka.s & fieldBit__MinerV0SectorOnChainInfo_ReplacedSectorAge != 0 {
-			return ipld.ErrRepeatedMapKey{&fieldName__MinerV0SectorOnChainInfo_ReplacedSectorAge}
-		}
-		ka.s += fieldBit__MinerV0SectorOnChainInfo_ReplacedSectorAge
-		ka.state = maState_expectValue
-		ka.f = 11
-	case "ReplacedDayReward":
-		if ka.s & fieldBit__MinerV0SectorOnChainInfo_ReplacedDayReward != 0 {
-			return ipld.ErrRepeatedMapKey{&fieldName__MinerV0SectorOnChainInfo_ReplacedDayReward}
-		}
-		ka.s += fieldBit__MinerV0SectorOnChainInfo_ReplacedDayReward
-		ka.state = maState_expectValue
-		ka.f = 12
 	default:
 		return ipld.ErrInvalidKey{TypeName:"types.MinerV0SectorOnChainInfo", Key:&_String{k}}
 	}
@@ -1007,10 +919,6 @@ func (n *_MinerV0SectorOnChainInfo__Repr) LookupByIndex(idx int) (ipld.Node, err
 		return n.ExpectedDayReward.Representation(), nil
 	case 10:
 		return n.ExpectedStorageReward.Representation(), nil
-	case 11:
-		return n.ReplacedSectorAge.Representation(), nil
-	case 12:
-		return n.ReplacedDayReward.Representation(), nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: ipld.PathSegmentOfInt(idx)}
 	}
@@ -1036,7 +944,7 @@ type _MinerV0SectorOnChainInfo__ReprListItr struct {
 }
 
 func (itr *_MinerV0SectorOnChainInfo__ReprListItr) Next() (idx int, v ipld.Node, err error) {
-	if itr.idx >= 13 {
+	if itr.idx >= 11 {
 		return -1, nil, ipld.ErrIteratorOverread{}
 	}
 	switch itr.idx {
@@ -1073,12 +981,6 @@ func (itr *_MinerV0SectorOnChainInfo__ReprListItr) Next() (idx int, v ipld.Node,
 	case 10:
 		idx = itr.idx
 		v = itr.n.ExpectedStorageReward.Representation()
-	case 11:
-		idx = itr.idx
-		v = itr.n.ReplacedSectorAge.Representation()
-	case 12:
-		idx = itr.idx
-		v = itr.n.ReplacedDayReward.Representation()
 	default:
 		panic("unreachable")
 	}
@@ -1086,11 +988,11 @@ func (itr *_MinerV0SectorOnChainInfo__ReprListItr) Next() (idx int, v ipld.Node,
 	return
 }
 func (itr *_MinerV0SectorOnChainInfo__ReprListItr) Done() bool {
-	return itr.idx >= 13
+	return itr.idx >= 11
 }
 
 func (rn *_MinerV0SectorOnChainInfo__Repr) Length() int {
-	l := 13
+	l := 11
 	return l
 }
 func (_MinerV0SectorOnChainInfo__Repr) IsAbsent() bool {
@@ -1159,8 +1061,6 @@ type _MinerV0SectorOnChainInfo__ReprAssembler struct {
 	ca_InitialPledge _BigInt__ReprAssembler
 	ca_ExpectedDayReward _BigInt__ReprAssembler
 	ca_ExpectedStorageReward _BigInt__ReprAssembler
-	ca_ReplacedSectorAge _ChainEpoch__ReprAssembler
-	ca_ReplacedDayReward _BigInt__ReprAssembler
 	}
 
 func (na *_MinerV0SectorOnChainInfo__ReprAssembler) reset() {
@@ -1177,8 +1077,6 @@ func (na *_MinerV0SectorOnChainInfo__ReprAssembler) reset() {
 	na.ca_InitialPledge.reset()
 	na.ca_ExpectedDayReward.reset()
 	na.ca_ExpectedStorageReward.reset()
-	na.ca_ReplacedSectorAge.reset()
-	na.ca_ReplacedDayReward.reset()
 }
 func (_MinerV0SectorOnChainInfo__ReprAssembler) BeginMap(sizeHint int) (ipld.MapAssembler, error) {
 	return mixins.ListAssembler{"types.MinerV0SectorOnChainInfo.Repr"}.BeginMap(0)
@@ -1378,26 +1276,6 @@ func (la *_MinerV0SectorOnChainInfo__ReprAssembler) valueFinishTidy() bool {
 		default:
 			return false
 		}
-	case 11:
-		switch la.cm {
-		case schema.Maybe_Value:
-			la.cm = schema.Maybe_Absent
-			la.state = laState_initial
-			la.f++
-			return true
-		default:
-			return false
-		}
-	case 12:
-		switch la.cm {
-		case schema.Maybe_Value:
-			la.cm = schema.Maybe_Absent
-			la.state = laState_initial
-			la.f++
-			return true
-		default:
-			return false
-		}
 	default:
 		panic("unreachable")
 	}
@@ -1413,8 +1291,8 @@ func (la *_MinerV0SectorOnChainInfo__ReprAssembler) AssembleValue() ipld.NodeAss
 	case laState_finished:
 		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
 	}
-	if la.f >= 13 {
-		return _ErrorThunkAssembler{schema.ErrNoSuchField{Type: nil /*TODO*/, Field: ipld.PathSegmentOfInt(13)}}
+	if la.f >= 11 {
+		return _ErrorThunkAssembler{schema.ErrNoSuchField{Type: nil /*TODO*/, Field: ipld.PathSegmentOfInt(11)}}
 	}
 	la.state = laState_midValue
 	switch la.f {
@@ -1462,14 +1340,6 @@ func (la *_MinerV0SectorOnChainInfo__ReprAssembler) AssembleValue() ipld.NodeAss
 		la.ca_ExpectedStorageReward.w = &la.w.ExpectedStorageReward
 		la.ca_ExpectedStorageReward.m = &la.cm
 		return &la.ca_ExpectedStorageReward
-	case 11:
-		la.ca_ReplacedSectorAge.w = &la.w.ReplacedSectorAge
-		la.ca_ReplacedSectorAge.m = &la.cm
-		return &la.ca_ReplacedSectorAge
-	case 12:
-		la.ca_ReplacedDayReward.w = &la.w.ReplacedDayReward
-		la.ca_ReplacedDayReward.m = &la.cm
-		return &la.ca_ReplacedDayReward
 	default:
 		panic("unreachable")
 	}

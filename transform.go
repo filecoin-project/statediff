@@ -64,6 +64,7 @@ const (
 	StorageMinerActorPreCommittedSectorsExpiry LotusType = "storageMinerActor.PreCommittedSectorsExpiry"
 	StorageMinerActorAllocatedSectors          LotusType = "storageMinerActor.AllocatedSectors"
 	StorageMinerActorSectors                   LotusType = "storageMinerActor.Sectors"
+	StorageMinerActorV2Sectors                 LotusType = "storageMinerActorV2.Sectors"
 	StorageMinerActorDeadlines                 LotusType = "storageMinerActor.Deadlines"
 	StorageMinerActorDeadline                  LotusType = "storageMinerActor.Deadlines.Due[]"
 	StorageMinerActorDeadlinePartitions        LotusType = "storageMinerActor.Deadlines.Due.Partitions"
@@ -106,7 +107,6 @@ var LotusTypeAliases = map[string]LotusType{
 	"storageMinerActorV2.PreCommittedSectors":                        StorageMinerActorPreCommittedSectors,
 	"storageMinerActorV2.PreCommittedSectorsExpiry":                  StorageMinerActorPreCommittedSectorsExpiry,
 	"storageMinerActorV2.AllocatedSectors":                           StorageMinerActorAllocatedSectors,
-	"storageMinerActorV2.Sectors":                                    StorageMinerActorSectors,
 	"storageMinerActorV2.VestingFunds":                               StorageMinerActorVestingFunds,
 	"storageMinerActorV2.Deadlines.Due.ExpirationEpochs":             StorageMinerActorDeadlineExpiry,
 	"storageMinerActorV2.Deadlines.Due.Partitions.ExpirationsEpochs": StorageMinerActorDeadlinePartitionExpiry,
@@ -181,6 +181,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	StorageMinerActorDeadlinePartitionEarly:    types.Type.Map__BitField__Repr,
 	StorageMinerActorPreCommittedSectorsExpiry: types.Type.Map__BitField__Repr,
 	StorageMinerActorSectors:                   types.Type.Map__SectorOnChainInfo__Repr,
+	StorageMinerActorV2Sectors:                 types.Type.Map__SectorV2OnChainInfo__Repr,
 	StorageMinerActorDeadlinePartitions:        types.Type.Map__MinerV0Partition__Repr,
 	StorageMinerActorV2DeadlinePartitions:      types.Type.Map__MinerV2Partition__Repr,
 	StorageMinerActorDeadlinePartitionExpiry:   types.Type.Map__MinerV0ExpirationSet__Repr,
@@ -212,6 +213,7 @@ var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.Map__SectorPreCommitOnChainInfo__Repr: transformMinerActorPreCommittedSectors,
 	types.Type.Map__BitField__Repr:                   loadListAsMap,
 	types.Type.Map__SectorOnChainInfo__Repr:          loadListAsMap,
+	types.Type.Map__SectorV2OnChainInfo__Repr:        loadListAsMap,
 	types.Type.Map__MinerV0Partition__Repr:           loadListAsMap,
 	types.Type.Map__MinerV2Partition__Repr:           loadListAsMap,
 	types.Type.Map__MinerV0ExpirationSet__Repr:       loadListAsMap,
@@ -252,6 +254,7 @@ var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
 	types.Type.Link__MinerV0Info:             types.Type.MinerV0Info__Repr,
 	types.Type.Link__MinerV0Partition:        types.Type.Map__MinerV0Partition__Repr,
 	types.Type.Link__MinerV0SectorInfo:       types.Type.Map__SectorOnChainInfo__Repr,
+	types.Type.Link__MinerV2SectorInfo:       types.Type.Map__SectorV2OnChainInfo__Repr,
 	types.Type.Link__MinerV0SectorPreCommits: types.Type.Map__SectorPreCommitOnChainInfo__Repr,
 	types.Type.Link__MinerV0VestingFunds:     types.Type.MinerV0VestingFunds__Repr,
 	types.Type.Link__MinerV2Deadlines:        types.Type.List__MinerV2DeadlineLink__Repr,

@@ -18,7 +18,7 @@ type _MinerV2State struct {
 	PreCommittedSectors _Link__MinerV0SectorPreCommits
 	PreCommittedSectorsExpiry _Link
 	AllocatedSectors _Link__BitField
-	Sectors _Link__MinerV0SectorInfo
+	Sectors _Link__MinerV2SectorInfo
 	ProvingPeriodStart _ChainEpoch
 	CurrentDeadline _Int
 	Deadlines _Link__MinerV2Deadlines
@@ -53,7 +53,7 @@ func (n _MinerV2State) FieldPreCommittedSectorsExpiry()	Link {
 func (n _MinerV2State) FieldAllocatedSectors()	Link__BitField {
 	return &n.AllocatedSectors
 }
-func (n _MinerV2State) FieldSectors()	Link__MinerV0SectorInfo {
+func (n _MinerV2State) FieldSectors()	Link__MinerV2SectorInfo {
 	return &n.Sectors
 }
 func (n _MinerV2State) FieldProvingPeriodStart()	ChainEpoch {
@@ -306,7 +306,7 @@ type _MinerV2State__Assembler struct {
 	ca_PreCommittedSectors _Link__MinerV0SectorPreCommits__Assembler
 	ca_PreCommittedSectorsExpiry _Link__Assembler
 	ca_AllocatedSectors _Link__BitField__Assembler
-	ca_Sectors _Link__MinerV0SectorInfo__Assembler
+	ca_Sectors _Link__MinerV2SectorInfo__Assembler
 	ca_ProvingPeriodStart _ChainEpoch__Assembler
 	ca_CurrentDeadline _Int__Assembler
 	ca_Deadlines _Link__MinerV2Deadlines__Assembler
@@ -1206,7 +1206,7 @@ type _MinerV2State__ReprAssembler struct {
 	ca_PreCommittedSectors _Link__MinerV0SectorPreCommits__ReprAssembler
 	ca_PreCommittedSectorsExpiry _Link__ReprAssembler
 	ca_AllocatedSectors _Link__BitField__ReprAssembler
-	ca_Sectors _Link__MinerV0SectorInfo__ReprAssembler
+	ca_Sectors _Link__MinerV2SectorInfo__ReprAssembler
 	ca_ProvingPeriodStart _ChainEpoch__ReprAssembler
 	ca_CurrentDeadline _Int__ReprAssembler
 	ca_Deadlines _Link__MinerV2Deadlines__ReprAssembler

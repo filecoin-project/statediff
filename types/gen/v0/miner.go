@@ -179,8 +179,6 @@ func accumulateMiner(ts schema.TypeSystem) {
 			schema.SpawnStructField("InitialPledge", "BigInt", false, false),         //TokenAmount
 			schema.SpawnStructField("ExpectedDayReward", "BigInt", false, false),     //TokenAmount
 			schema.SpawnStructField("ExpectedStorageReward", "BigInt", false, false), //TokenAmount
-			schema.SpawnStructField("ReplacedSectorAge", "ChainEpoch", false, false),
-			schema.SpawnStructField("ReplacedDayReward", "BigInt", false, false), //TokenAmount
 		},
 		schema.StructRepresentation_Tuple{},
 	))
