@@ -81,3 +81,7 @@ func VerifyWindowPoSt(proof.WindowPoStVerifyInfo) (bool, error) {
 func GenerateWinningPoStSectorChallenge(abi.RegisteredPoStProof, abi.ActorID, abi.PoStRandomness, uint64) ([]uint64, error) {
 	return nil, nil
 }
+
+func FauxRep(abi.RegisteredSealProof, string, string) (cid.Cid, error) {
+	return cid.Undef, nil
+}
