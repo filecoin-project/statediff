@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c // indirect
-	github.com/evanw/esbuild v0.7.18
+	github.com/evanw/esbuild v0.8.5
 	github.com/filecoin-project/go-address v0.0.4
 	github.com/filecoin-project/go-bitfield v0.2.1
 	github.com/filecoin-project/go-state-types v0.0.0-20201013222834-41ea465f274f
@@ -20,7 +20,6 @@ require (
 	github.com/ipfs/go-ipld-cbor v0.0.5-0.20200428170625-a0bd04d3cbdf
 	github.com/ipld/go-car v0.1.1-0.20200923150018-8cdef32e2da4
 	github.com/ipld/go-ipld-prime v0.5.1-0.20200910124733-350032422383
-	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/multiformats/go-multiaddr v0.3.1
 	github.com/multiformats/go-multiaddr-net v0.2.0
