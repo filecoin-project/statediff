@@ -25,6 +25,7 @@ import (
 	"github.com/multiformats/go-multiaddr"
 	manet "github.com/multiformats/go-multiaddr-net"
 	"github.com/urfave/cli/v2"
+	"github.com/willscott/carbs"
 )
 
 var ApiFlag = cli.StringFlag{
@@ -67,6 +68,9 @@ func tryGetAPIFromHomeDir() ([]string, error) {
 
 func GetAPI(c *cli.Context) (api.FullNode, error) {
 	var err error
+	if c.IsSet(CarFlag.Name) {
+		return NewCarOpener(c)
+	}
 	api := c.String(ApiFlag.Name)
 	sp := strings.SplitN(api, ":", 2)
 	if len(sp) != 2 {
@@ -111,17 +115,12 @@ func GetHead(client api.FullNode) statediff.StateRootFunc {
 }
 
 func GetCar(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
-	file, err := os.Open(c.String(CarFlag.Name))
+	db, err := carbs.Load(c.String(CarFlag.Name), false)
 	if err != nil {
 		return nil, nil, err
 	}
-
-	store := blockstore.NewTemporary()
-	root, err := car.LoadCar(store, file)
-	if err != nil {
-		return nil, nil, err
-	}
-	return func(_ context.Context) []cid.Cid { return root.Roots }, store, nil
+	cacheDB := NewCachingStore(db)
+	return func(_ context.Context) []cid.Cid { r, _ := db.Roots(); return r }, cacheDB, nil
 }
 
 func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {

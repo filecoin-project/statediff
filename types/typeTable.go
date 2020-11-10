@@ -63,6 +63,8 @@ type typeSlab struct {
 	Link__InitV0State__Repr _Link__InitV0State__ReprPrototype
 	Link__ListLotusMessage       _Link__ListLotusMessage__Prototype
 	Link__ListLotusMessage__Repr _Link__ListLotusMessage__ReprPrototype
+	Link__LotusActorV2Head       _Link__LotusActorV2Head__Prototype
+	Link__LotusActorV2Head__Repr _Link__LotusActorV2Head__ReprPrototype
 	Link__LotusActors       _Link__LotusActors__Prototype
 	Link__LotusActors__Repr _Link__LotusActors__ReprPrototype
 	Link__LotusMessage       _Link__LotusMessage__Prototype
@@ -181,6 +183,8 @@ type typeSlab struct {
 	List__PoStProof__Repr _List__PoStProof__ReprPrototype
 	List__SectorNumber       _List__SectorNumber__Prototype
 	List__SectorNumber__Repr _List__SectorNumber__ReprPrototype
+	LotusActorV2Head       _LotusActorV2Head__Prototype
+	LotusActorV2Head__Repr _LotusActorV2Head__ReprPrototype
 	LotusActors       _LotusActors__Prototype
 	LotusActors__Repr _LotusActors__ReprPrototype
 	LotusBeaconEntry       _LotusBeaconEntry__Prototype
