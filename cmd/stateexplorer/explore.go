@@ -166,6 +166,7 @@ func runExploreCmd(c *cli.Context) error {
 		}
 		gqMux := gqlib.GetGraphQL(c, ds)
 		mux.Handle("/graphql", gqMux)
+		mux.Handle("/graphql.html", gqMux)
 	}
 
 	lis, err := net.Listen("tcp", c.String(bindFlag.Name))

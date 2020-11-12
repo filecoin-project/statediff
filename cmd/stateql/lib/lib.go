@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/filecoin-project/statediff"
 	sdlib "github.com/filecoin-project/statediff/lib"
@@ -187,5 +188,13 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 		json.NewEncoder(w).Encode(result)
 	}))
 	mux.Handle("/", http.FileServer(AssetFile()))
+	mux.HandleFunc("/graphql.html", func(w http.ResponseWriter, r *http.Request) {
+		fs := AssetFile()
+		f, err := fs.Open("index.html")
+		if err != nil {
+			return
+		}
+		http.ServeContent(w, r, "graphql.html", time.Unix(0, 0), f)
+	})
 	return mux
 }
