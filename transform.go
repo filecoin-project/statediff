@@ -1,6 +1,6 @@
 package statediff
 
-//go:generate go run ./types/gen ./types
+//go:generate go run ./types/gen ./types ./cmd/stateql/lib
 
 import (
 	"bytes"
@@ -18,6 +18,7 @@ import (
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
 	basicnode "github.com/ipld/go-ipld-prime/node/basic"
+	"github.com/multiformats/go-multihash"
 	cbg "github.com/whyrusleeping/cbor-gen"
 
 	"github.com/filecoin-project/statediff/types"
@@ -207,6 +208,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 type Loader func(context.Context, cid.Cid, blockstore.Blockstore, ipld.NodeAssembler) error
 
 var complexLoaders = map[ipld.NodePrototype]Loader{
+	types.Type.LotusStateRoot__Repr:                  maybeLoadUnversionedStateRoot,
 	types.Type.Map__LotusActors__Repr:                loadMap,
 	types.Type.List__LinkLotusMessage__Repr:          loadList,
 	types.Type.Map__ActorID__Repr:                    transformInitActor,
@@ -399,6 +401,34 @@ func TypeActorHead(actor ipld.Node) (ipld.Node, error) {
 		}
 	}
 	return nil, fmt.Errorf("unknown type of actor: %s", t)
+}
+
+// Try directly loading a 'ParentStateRoot' as versioned state root. If that fails, fall back to a v0 sythetic one.
+func maybeLoadUnversionedStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipld.NodeAssembler) error {
+	block, err := store.Get(c)
+	if err != nil {
+		return err
+	}
+	data := block.RawData()
+
+	tmpAs := as.Prototype().NewBuilder()
+	if err := dagcbor.Decoder(tmpAs, bytes.NewBuffer(data)); err != nil {
+		list, err := as.BeginList(3)
+		if err != nil {
+			return err
+		}
+		if err := list.AssembleValue().AssignInt(0); err != nil {
+			return err
+		}
+		if err := list.AssembleValue().AssignLink(cidlink.Link{Cid: c}); err != nil {
+			return err
+		}
+		if err := list.AssembleValue().AssignLink(cidlink.Link{cid.NewCidV1(cid.Raw, multihash.Multihash([]byte("Synthetic")))}); err != nil {
+			return err
+		}
+		return list.Finish()
+	}
+	return as.AssignNode(tmpAs.Build())
 }
 
 // AllowDegradedADLNodes uses adl walks that ignore store.Get fails

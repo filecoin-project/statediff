@@ -14,15 +14,12 @@ import (
 
 	"github.com/filecoin-project/statediff/codec/fcjson"
 
-	"github.com/filecoin-project/go-state-types/abi"
-	"github.com/filecoin-project/lotus/api"
-	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/build"
+	gqlib "github.com/filecoin-project/statediff/cmd/stateql/lib"
 	"github.com/filecoin-project/statediff/lib"
 	"github.com/gorilla/handlers"
 	"github.com/ipfs/go-cid"
-	blockstore "github.com/ipfs/go-ipfs-blockstore"
 	"github.com/urfave/cli/v2"
 )
 
@@ -38,6 +35,12 @@ var bindFlag = cli.StringFlag{
 	Value: ":0",
 }
 
+var qlFlag = cli.BoolFlag{
+	Name:  "graphql",
+	Usage: "enable graphql endpoint",
+	Value: true,
+}
+
 var exploreCmd = &cli.Command{
 	Name:        "explore",
 	Description: "Examine a state tree in a browser",
@@ -48,23 +51,8 @@ var exploreCmd = &cli.Command{
 		&lib.VectorFlag,
 		&assetsFlag,
 		&bindFlag,
+		&qlFlag,
 	},
-}
-
-var client api.FullNode
-var head statediff.StateRootFunc
-var store blockstore.Blockstore
-
-func lazy(c *cli.Context) error {
-	if client != nil {
-		return nil
-	}
-	var err error
-	client, head, store, err = lib.GetBlockstore(c)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func runExploreCmd(c *cli.Context) error {
@@ -93,17 +81,15 @@ func runExploreCmd(c *cli.Context) error {
 			return
 		}
 
-		if err := lazy(c); err != nil {
+		ds, err := lib.Lazy(c)
+		if err != nil {
 			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
-		txCtx := context.WithValue(r.Context(), statediff.StateRootKey, head)
-		transformed, err := statediff.Transform(txCtx, parsed, store, as[0])
+		txCtx := context.WithValue(r.Context(), statediff.StateRootKey, ds.Head(r.Context()))
+		transformed, err := statediff.Transform(txCtx, parsed, ds.Store(), as[0])
 		if err != nil {
-			if head(c.Context) == nil {
-				client = nil
-			}
 			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
@@ -117,15 +103,13 @@ func runExploreCmd(c *cli.Context) error {
 
 	headResolver := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		if err := lazy(c); err != nil {
+		ds, err := lib.Lazy(c)
+		if err != nil {
 			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
-		cid := head(r.Context())
-		if len(cid) == 0 {
-			client = nil
-		}
+		cid := ds.Head(r.Context())
 		cidBytes, _ := json.Marshal(cid)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(cidBytes)
@@ -134,13 +118,14 @@ func runExploreCmd(c *cli.Context) error {
 	heightResolver := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		h, ok := r.URL.Query()["h"]
-		if err := lazy(c); err != nil {
+		ds, err := lib.Lazy(c)
+		if err != nil {
 			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
 		w.Header().Set("Content-Type", "text/plain")
-		if !ok || len(h[0]) < 1 || client == nil {
+		if !ok || len(h[0]) < 1 || ds.Store() == nil {
 			w.Write([]byte(fmt.Sprintf("error: no height")))
 			return
 		}
@@ -150,12 +135,12 @@ func runExploreCmd(c *cli.Context) error {
 			w.Write([]byte(fmt.Sprintf("error: invalid height")))
 			return
 		}
-		tipset, err := client.ChainGetTipSetByHeight(r.Context(), abi.ChainEpoch(asNumber), types.EmptyTSK)
+		tipset, err := ds.CidAtHeight(r.Context(), asNumber)
 		if err != nil {
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
-		w.Write([]byte(tipset.Key().String()))
+		w.Write([]byte(tipset.String()))
 	}
 
 	mux := http.NewServeMux()
@@ -172,6 +157,15 @@ func runExploreCmd(c *cli.Context) error {
 		mux.Handle("/", http.FileServer(http.Dir(path.Join(c.String(assetsFlag.Name), "cmd", "stateexplorer", "static"))))
 	} else {
 		mux.Handle("/", http.FileServer(AssetFile()))
+	}
+
+	if c.Bool(qlFlag.Name) {
+		ds, err := lib.Lazy(c)
+		if err != nil {
+			return err
+		}
+		gqMux := gqlib.GetGraphQL(c, ds)
+		mux.Handle("/graphql", gqMux)
 	}
 
 	lis, err := net.Listen("tcp", c.String(bindFlag.Name))

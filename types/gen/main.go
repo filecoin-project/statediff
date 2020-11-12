@@ -11,6 +11,8 @@ import (
 	ipld "github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/schema"
 	gengo "github.com/ipld/go-ipld-prime/schema/gen/go"
+	gengraphql "github.com/ipld/go-ipld-prime/schema/gen/graphql"
+	gengraphqlserver "github.com/ipld/go-ipld-prime/schema/gen/graphql/server"
 )
 
 func main() {
@@ -23,7 +25,8 @@ func main() {
 	ts.Init()
 	adjCfg := &gengo.AdjunctCfg{
 		CfgUnionMemlayout: map[schema.TypeName]string{
-			"Any": "interface",
+			"Any":            "interface",
+			"LotusActorHead": "interface",
 		},
 	}
 
@@ -84,4 +87,8 @@ func main() {
 	}
 
 	gengo.Generate(os.Args[1], "types", ts, adjCfg)
+	if len(os.Args) > 2 {
+		gengraphql.Generate(os.Args[2], ts)
+		gengraphqlserver.Generate(os.Args[2], "lib", ts, "types", "github.com/filecoin-project/statediff/types")
+	}
 }

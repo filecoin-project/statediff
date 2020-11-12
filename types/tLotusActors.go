@@ -10,7 +10,7 @@ import (
 
 type _LotusActors struct {
 	Code _Link
-	Head _Link
+	Head _Link__LotusActorV2Head
 	Nonce _Int
 	Balance _BigInt
 }
@@ -19,7 +19,7 @@ type LotusActors = *_LotusActors
 func (n _LotusActors) FieldCode()	Link {
 	return &n.Code
 }
-func (n _LotusActors) FieldHead()	Link {
+func (n _LotusActors) FieldHead()	Link__LotusActorV2Head {
 	return &n.Head
 }
 func (n _LotusActors) FieldNonce()	Int {
@@ -198,7 +198,7 @@ type _LotusActors__Assembler struct {
 
 	cm schema.Maybe
 	ca_Code _Link__Assembler
-	ca_Head _Link__Assembler
+	ca_Head _Link__LotusActorV2Head__Assembler
 	ca_Nonce _Int__Assembler
 	ca_Balance _BigInt__Assembler
 	}
@@ -708,7 +708,7 @@ type _LotusActors__ReprAssembler struct {
 
 	cm schema.Maybe
 	ca_Code _Link__ReprAssembler
-	ca_Head _Link__ReprAssembler
+	ca_Head _Link__LotusActorV2Head__ReprAssembler
 	ca_Nonce _Int__ReprAssembler
 	ca_Balance _BigInt__ReprAssembler
 	}
