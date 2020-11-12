@@ -14,6 +14,25 @@ import (
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
 )
 
+func AddFields() {
+	LotusMessage__type.AddFieldConfig("InterpretedParams", &graphql.Field{
+		Name: "InterpretParams",
+		Args: graphql.FieldConfigArgument{
+			"actorType": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Type: LotusMessageV2Params__type,
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			ts := p.Source.(types.LotusMessage)
+			t := (p.Args["actorType"]).(string)
+			at := statediff.LotusType(t)
+			paramNode, _, err := statediff.ParseParams(ts.Params.Bytes(), ts.Method.Int(), at)
+			return paramNode, err
+		},
+	})
+}
+
 // RawAddress__type__parse - massage incoming strings into their "bytes-in-string" on disk form
 func RawAddress__type__parse(value interface{}) interface{} {
 	builder := types.Type.RawAddress__Repr.NewBuilder()

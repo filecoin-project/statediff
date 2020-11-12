@@ -9,12 +9,13 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/api"
+	abitypes "github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/lib"
 	"github.com/filecoin-project/statediff/types"
 
-	//"github.com/filecoin-project/statediff/types"
 	"github.com/gorilla/handlers"
 	"github.com/graphql-go/graphql"
 	"github.com/ipfs/go-cid"
@@ -80,6 +81,19 @@ func index(ctx context.Context, store blockstore.Blockstore, head statediff.Stat
 	}
 }
 
+func cidAtHeight(ctx context.Context, h int) (cid.Cid, error) {
+	if tipsetMap == nil && client != nil {
+		ts, err := client.ChainGetTipSetByHeight(ctx, abi.ChainEpoch(h), abitypes.TipSetKey{})
+		if err != nil {
+			return cid.Undef, err
+		}
+		return ts.Cids()[0], nil
+	} else if tipsetMap != nil {
+		return tipsetMap[h], nil
+	}
+	return cid.Undef, nil
+}
+
 func lazy(c *cli.Context) error {
 	if client != nil {
 		return nil
@@ -130,6 +144,8 @@ type postData struct {
 }
 
 func runGraphCmd(c *cli.Context) error {
+	AddFields()
+
 	schema, err := graphql.NewSchema(graphql.SchemaConfig{
 		Query: graphql.NewObject(graphql.ObjectConfig{
 			Name: "Query",
@@ -154,6 +170,33 @@ func runGraphCmd(c *cli.Context) error {
 						return statediff.Transform(p.Context, idCid, s, string(statediff.LotusTypeTipset))
 					},
 				},
+				"Height": &graphql.Field{
+					Type: LotusBlockHeader__type,
+					Args: graphql.FieldConfigArgument{
+						"at": &graphql.ArgumentConfig{
+							Type: graphql.NewNonNull(graphql.Int),
+						},
+					},
+					Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+						s, ok := p.Context.Value(storeCtx).(blockstore.Blockstore)
+						if !ok {
+							return nil, fmt.Errorf("no datastore provided")
+						}
+						at, ok := p.Args["at"].(int)
+						if !ok {
+							return nil, fmt.Errorf("invalid height %d", at)
+						}
+						if at == -1 {
+							ch := head(p.Context)
+							return statediff.Transform(p.Context, ch[0], s, string(statediff.LotusTypeTipset))
+						}
+						ch, err := cidAtHeight(p.Context, at)
+						if err != nil {
+							return nil, fmt.Errorf("Have not indexed a block at height %d", at)
+						}
+						return statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
+					},
+				},
 				"Heights": &graphql.Field{
 					Type: graphql.NewList(LotusBlockHeader__type),
 					Args: graphql.FieldConfigArgument{
@@ -174,7 +217,10 @@ func runGraphCmd(c *cli.Context) error {
 
 						out := make([]ipld.Node, 0, to-from)
 						for i := from; i < to; i++ {
-							ch := tipsetMap[i]
+							ch, err := cidAtHeight(p.Context, i)
+							if err != nil {
+								return nil, fmt.Errorf("Have not indexed a block at height %d", i)
+							}
 							n, err := statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
 							if err != nil {
 								return nil, err

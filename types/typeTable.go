@@ -195,6 +195,8 @@ type typeSlab struct {
 	LotusElectionProof__Repr _LotusElectionProof__ReprPrototype
 	LotusMessage       _LotusMessage__Prototype
 	LotusMessage__Repr _LotusMessage__ReprPrototype
+	LotusMessageV2Params       _LotusMessageV2Params__Prototype
+	LotusMessageV2Params__Repr _LotusMessageV2Params__ReprPrototype
 	LotusMsgMeta       _LotusMsgMeta__Prototype
 	LotusMsgMeta__Repr _LotusMsgMeta__ReprPrototype
 	LotusSignedMessage       _LotusSignedMessage__Prototype
