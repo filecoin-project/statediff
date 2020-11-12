@@ -1,60 +1,30 @@
-package ledgerwallet
+package ledger_filecoin_go
 
 import (
-	"context"
 	"fmt"
-
-	"github.com/filecoin-project/go-address"
-	"github.com/filecoin-project/go-state-types/crypto"
-	"github.com/filecoin-project/lotus/api"
-	"github.com/filecoin-project/lotus/chain/types"
-	"github.com/filecoin-project/lotus/node/modules/dtypes"
 )
 
-var errBad = fmt.Errorf("stubbed out.")
+type FL struct{}
 
-type LedgerWallet struct {
+func FindLedgerFilecoinApp() (*FL, error) {
+	return nil, fmt.Errorf("Stubbed out")
 }
 
-func NewWallet(ds dtypes.MetadataDS) *LedgerWallet {
-	return &LedgerWallet{}
+func (f *FL) Close() {
 }
 
-type LedgerKeyInfo struct {
-	Address address.Address
-	Path    []uint32
+func (f *FL) GetAddressPubKeySECP256K1(bip44Path []uint32) (pubkey []byte, addrByte []byte, addrString string, err error) {
+	return nil, nil, "", nil
 }
 
-var _ api.WalletAPI = (*LedgerWallet)(nil)
-
-func (lw LedgerWallet) WalletSign(ctx context.Context, signer address.Address, toSign []byte, meta api.MsgMeta) (*crypto.Signature, error) {
-	return nil, errBad
+func (f *FL) ShowAddressPubKeySECP256K1(bip44Path []uint32) (pubkey []byte, addrByte []byte, addrString string, err error) {
+	return nil, nil, "", nil
 }
 
-func (lw LedgerWallet) WalletDelete(ctx context.Context, k address.Address) error {
-	return errBad
+func (f *FL) SignSECP256K1(bip44Path []uint32, transaction []byte) (*SignatureAnswer, error) {
+	return nil, nil
 }
 
-func (lw LedgerWallet) WalletExport(ctx context.Context, k address.Address) (*types.KeyInfo, error) {
-	return nil, errBad
-}
+type SignatureAnswer struct{}
 
-func (lw LedgerWallet) WalletHas(ctx context.Context, k address.Address) (bool, error) {
-	return false, errBad
-}
-
-func (lw LedgerWallet) WalletImport(ctx context.Context, kinfo *types.KeyInfo) (address.Address, error) {
-	return address.Undef, errBad
-}
-
-func (lw LedgerWallet) WalletList(ctx context.Context) ([]address.Address, error) {
-	return nil, errBad
-}
-
-func (lw LedgerWallet) WalletNew(ctx context.Context, t types.KeyType) (address.Address, error) {
-	return address.Undef, errBad
-}
-
-func (lw *LedgerWallet) Get() api.WalletAPI {
-	return nil
-}
+func (sa *SignatureAnswer) SignatureBytes() []byte { return nil }
