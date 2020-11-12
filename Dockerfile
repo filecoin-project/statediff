@@ -4,6 +4,10 @@ COPY ./npm/app .
 RUN npm install
 
 FROM golang:alpine AS builder
+RUN apk update
+RUN apk upgrade
+RUN apk add --update gcc=9.3.0-r0 g++=9.3.0-r0
+
 WORKDIR /go/src/app/
 
 COPY . .

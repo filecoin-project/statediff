@@ -282,6 +282,8 @@ github.com/filecoin-project/specs-storage v0.1.1-0.20200907031224-ed2e5cd13796 h
 github.com/filecoin-project/specs-storage v0.1.1-0.20200907031224-ed2e5cd13796/go.mod h1:nJRRM7Aa9XVvygr3W9k6xGF46RWzr2zxF/iGoAIfA/g=
 github.com/filecoin-project/statediff/extern/fil-blst v0.0.0-20201112005514-7550fe42bb9a h1:b41miJ1oQ2z7zaOw13UQLwrAUCaX+1ti8LUUto9a2hg=
 github.com/filecoin-project/statediff/extern/fil-blst v0.0.0-20201112005514-7550fe42bb9a/go.mod h1:2pZ6JH839F5P3wyVpGmHVMcT7w8VY2B6TWiJObmLcZQ=
+github.com/filecoin-project/statediff/extern/fil-ledger v0.0.0-20201112214200-3592b9922dcc h1:NR4IJMgJp91czhNAqTmyugBnoBRuLQbRyd9CgEGgAeQ=
+github.com/filecoin-project/statediff/extern/fil-ledger v0.0.0-20201112214200-3592b9922dcc/go.mod h1:AwP0rZwdOpIA5krQuNuoY1gp1RN6MAmSI0SI2un2R98=
 github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201112005514-7550fe42bb9a h1:mLD7ET2/1Q5ow4DHVw5iIK48eGrgnR0Wucb1W98tYXI=
 github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201112005514-7550fe42bb9a/go.mod h1:RlO3J/uvzxUgZjCX8F4LHVo43bovjY2h7r+39h1yjf8=
 github.com/filecoin-project/test-vectors/schema v0.0.5/go.mod h1:iQ9QXLpYWL3m7warwvK1JC/pTri8mnfEmKygNDqqY6E=
