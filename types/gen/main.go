@@ -89,6 +89,6 @@ func main() {
 	gengo.Generate(os.Args[1], "types", ts, adjCfg)
 	if len(os.Args) > 2 {
 		gengraphql.Generate(os.Args[2], ts)
-		gengraphqlserver.Generate(os.Args[2], "main", ts, "types", "github.com/filecoin-project/statediff/types")
+		gengraphqlserver.Generate(os.Args[2], "lib", ts, "types", "github.com/filecoin-project/statediff/types")
 	}
 }

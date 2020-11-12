@@ -37,11 +37,8 @@ require (
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
 )
 
-//replace github.com/filecoin-project/filecoin-ffi => ./extern/filecoin-ffi
-replace github.com/supranational/blst => ./extern/fil-blst
+replace github.com/supranational/blst => github.com/filecoin-project/statediff/extern/fil-blst v0.0.0-20201112005514-7550fe42bb9a
 
-replace github.com/filecoin-project/filecoin-ffi => github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201028183730-8e6631500d49
+replace github.com/filecoin-project/filecoin-ffi => github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201112005514-7550fe42bb9a
 
-//replace github.com/ipld/go-ipld-prime => ../go-ipld-prime
-
-//replace github.com/graphql-go/graphql => ./graphql
+replace github.com/ipld/go-ipld-prime => ../go-ipld-prime

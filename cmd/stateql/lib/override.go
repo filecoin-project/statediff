@@ -1,4 +1,4 @@
-package main
+package lib
 
 import (
 	"context"
@@ -28,6 +28,14 @@ func AddFields() {
 			t := (p.Args["actorType"]).(string)
 			at := statediff.LotusType(t)
 			paramNode, _, err := statediff.ParseParams(ts.Params.Bytes(), ts.Method.Int(), at)
+			if err != nil {
+				// Check if it's in the union.
+				// We return 'Any' on unkown but they aren't part of the union.
+				// In these cases. we'll return instead an empty option to prevent errors.
+				if LotusMessageV2Params__type.ResolveType(graphql.ResolveTypeParams{Value: paramNode}) == nil {
+					paramNode = types.Type.MessageParamsMinerConstructor__Repr.NewBuilder().Build()
+				}
+			}
 			return paramNode, err
 		},
 	})

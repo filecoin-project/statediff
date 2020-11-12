@@ -1,6 +1,6 @@
 package statediff
 
-//go:generate go run ./types/gen ./types
+//go:generate go run ./types/gen ./types ./cmd/stateql/lib
 
 import (
 	"bytes"

@@ -220,8 +220,6 @@ github.com/fatih/color v1.9.0/go.mod h1:eQcE1qtQxscV5RaZvpXrrb8Drkc3/DdQ+uUYCNjL
 github.com/fd/go-nat v1.0.0/go.mod h1:BTBu/CKvMmOMUPkKVef1pngt2WFH/lg7E6yQnulfp6E=
 github.com/felixge/httpsnoop v1.0.1 h1:lvB5Jl89CsZtGIWuTcDM1E/vkVs49/Ml7JJe07l8SPQ=
 github.com/felixge/httpsnoop v1.0.1/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
-github.com/filecoin-project/fil-blst v0.0.0-20200923113518-8609119cf459 h1:Rn6Bqzz3rL0eeHAH9iM8HFsWiJ86th2p5fOFL6Jend8=
-github.com/filecoin-project/fil-blst v0.0.0-20200923113518-8609119cf459/go.mod h1:wmn8jThyj0IYj5vNpVTfjyxNKDfcGlhoWHKMLWAtKJ4=
 github.com/filecoin-project/go-address v0.0.3 h1:eVfbdjEbpbzIrbiSa+PiGUY+oDK9HnUn+M1R/ggoHf8=
 github.com/filecoin-project/go-address v0.0.3/go.mod h1:jr8JxKsYx+lQlQZmF5i2U0Z+cGQ59wMIps/8YW/lDj8=
 github.com/filecoin-project/go-address v0.0.4 h1:gSNMv0qWwH16fGQs7ycOUrDjY6YCSsgLUl0I0KLjo8w=
@@ -263,8 +261,6 @@ github.com/filecoin-project/go-state-types v0.0.0-20200928172055-2df22083d8ab h1
 github.com/filecoin-project/go-state-types v0.0.0-20200928172055-2df22083d8ab/go.mod h1:ezYnPf0bNkTsDibL/psSz5dy4B5awOJ/E7P2Saeep8g=
 github.com/filecoin-project/go-state-types v0.0.0-20201013222834-41ea465f274f h1:TZDTu4MtBKSFLXWGKLy+cvC3nHfMFIrVgWLAz/+GgZQ=
 github.com/filecoin-project/go-state-types v0.0.0-20201013222834-41ea465f274f/go.mod h1:ezYnPf0bNkTsDibL/psSz5dy4B5awOJ/E7P2Saeep8g=
-github.com/filecoin-project/go-state-types v0.0.0-20201102161440-c8033295a1fc h1:+hbMY4Pcx2oizrfH08VWXwrj5mU8aJT6g0UNxGHFCGU=
-github.com/filecoin-project/go-state-types v0.0.0-20201102161440-c8033295a1fc/go.mod h1:ezYnPf0bNkTsDibL/psSz5dy4B5awOJ/E7P2Saeep8g=
 github.com/filecoin-project/go-statemachine v0.0.0-20200925024713-05bd7c71fbfe h1:dF8u+LEWeIcTcfUcCf3WFVlc81Fr2JKg8zPzIbBDKDw=
 github.com/filecoin-project/go-statemachine v0.0.0-20200925024713-05bd7c71fbfe/go.mod h1:FGwQgZAt2Gh5mjlwJUlVB62JeYdo+if0xWxSEfBD9ig=
 github.com/filecoin-project/go-statestore v0.1.0 h1:t56reH59843TwXHkMcwyuayStBIiWBRilQjQ+5IiwdQ=
@@ -284,10 +280,10 @@ github.com/filecoin-project/specs-actors/v2 v2.2.0 h1:IyCICb0NHYeD0sdSqjVGwWydn/
 github.com/filecoin-project/specs-actors/v2 v2.2.0/go.mod h1:rlv5Mx9wUhV8Qsz+vUezZNm+zL4tK08O0HreKKPB2Wc=
 github.com/filecoin-project/specs-storage v0.1.1-0.20200907031224-ed2e5cd13796 h1:dJsTPWpG2pcTeojO2pyn0c6l+x/3MZYCBgo/9d11JEk=
 github.com/filecoin-project/specs-storage v0.1.1-0.20200907031224-ed2e5cd13796/go.mod h1:nJRRM7Aa9XVvygr3W9k6xGF46RWzr2zxF/iGoAIfA/g=
-github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201008211259-9fe031c6c661 h1:L/+7nLh5+bIZ0Iso660GE03Ie/BkNlMpLsS17fcNzgQ=
-github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201008211259-9fe031c6c661/go.mod h1:RlO3J/uvzxUgZjCX8F4LHVo43bovjY2h7r+39h1yjf8=
-github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201028183730-8e6631500d49 h1:iLPe4AyHw+1bKDV+EzgwhELSXmYB8RrQLremPM9xkCw=
-github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201028183730-8e6631500d49/go.mod h1:RlO3J/uvzxUgZjCX8F4LHVo43bovjY2h7r+39h1yjf8=
+github.com/filecoin-project/statediff/extern/fil-blst v0.0.0-20201112005514-7550fe42bb9a h1:b41miJ1oQ2z7zaOw13UQLwrAUCaX+1ti8LUUto9a2hg=
+github.com/filecoin-project/statediff/extern/fil-blst v0.0.0-20201112005514-7550fe42bb9a/go.mod h1:2pZ6JH839F5P3wyVpGmHVMcT7w8VY2B6TWiJObmLcZQ=
+github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201112005514-7550fe42bb9a h1:mLD7ET2/1Q5ow4DHVw5iIK48eGrgnR0Wucb1W98tYXI=
+github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201112005514-7550fe42bb9a/go.mod h1:RlO3J/uvzxUgZjCX8F4LHVo43bovjY2h7r+39h1yjf8=
 github.com/filecoin-project/test-vectors/schema v0.0.5/go.mod h1:iQ9QXLpYWL3m7warwvK1JC/pTri8mnfEmKygNDqqY6E=
 github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568/go.mod h1:xEzjJPgXI435gkrCt3MPfRiAkVrwSbHsst4LCFVfpJc=
 github.com/flynn/noise v0.0.0-20180327030543-2492fe189ae6 h1:u/UEqS66A5ckRmS4yNpjmVH56sVtS/RfclBAYocb4as=
@@ -1375,8 +1371,6 @@ github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5
 github.com/stretchr/testify v1.6.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd0=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/supranational/blst v0.1.1 h1:GsK4oq7QZ7yfHI6dCh2NQsUe4imjlFwm5NXF5PWAWoo=
-github.com/supranational/blst v0.1.1/go.mod h1:jZJtfjgudtNl4en1tzwPIV3KjUnQUvG3/j+w+fVonLw=
 github.com/syndtr/goleveldb v1.0.0 h1:fBdIW9lB4Iz0n9khmH8w27SJ3QEJ7+IgjPEwGSZiFdE=
 github.com/syndtr/goleveldb v1.0.0/go.mod h1:ZVVdQEZoIme9iO1Ch2Jdy24qqXrMMOU6lpPAyBWyWuQ=
 github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07/go.mod h1:kDXzergiv9cbyO7IOYJZWg1U88JhDg3PB6klq9Hg2pA=
