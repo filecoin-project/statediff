@@ -20,18 +20,18 @@ var errNotNode = fmt.Errorf("Not IPLD Node")
 var errInvalidLoader = fmt.Errorf("Invalid Loader Provided")
 var errInvalidLink = fmt.Errorf("Invalid link")
 
-var List__SectorNumber__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__SectorNumber",
+var List__Link__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__Link",
 	Fields: graphql.Fields{
 		"At": &graphql.Field{
-			Type: SectorNumber__type,
+			Type: graphql.ID,
 			Args: graphql.FieldConfigArgument{
 				"key": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(graphql.Int),
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__SectorNumber)
+				ts, ok := p.Source.(types.List__Link)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -53,9 +53,9 @@ var List__SectorNumber__type = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"All": &graphql.Field{
-			Type: graphql.NewList(SectorNumber__type),
+			Type: graphql.NewList(graphql.ID),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__SectorNumber)
+				ts, ok := p.Source.(types.List__Link)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -73,7 +73,7 @@ var List__SectorNumber__type = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"Range": &graphql.Field{
-			Type: graphql.NewList(SectorNumber__type),
+			Type: graphql.NewList(graphql.ID),
 			Args: graphql.FieldConfigArgument{
 				"skip": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(graphql.Int),
@@ -83,7 +83,7 @@ var List__SectorNumber__type = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__SectorNumber)
+				ts, ok := p.Source.(types.List__Link)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -104,7 +104,7 @@ var List__SectorNumber__type = graphql.NewObject(graphql.ObjectConfig{
 		"Count": &graphql.Field{
 			Type: graphql.NewNonNull(graphql.Int),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__SectorNumber)
+				ts, ok := p.Source.(types.List__Link)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -113,26 +113,661 @@ var List__SectorNumber__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })	
-func MinerExpirationExtend__Deadline__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerExpirationExtend)
+func V0FilterEstimate__PositionEstimate__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.V0FilterEstimate)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldDeadline().AsInt()
+	return ts.FieldPositionEstimate(), nil
 	
 }
-func MinerExpirationExtend__Partition__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerExpirationExtend)
+func V0FilterEstimate__VelocityEstimate__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.V0FilterEstimate)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldPartition().AsInt()
+	return ts.FieldVelocityEstimate(), nil
 	
 }
-func MinerExpirationExtend__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerExpirationExtend)
+var V0FilterEstimate__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "V0FilterEstimate",
+	Fields: graphql.Fields{
+		"PositionEstimate": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: V0FilterEstimate__PositionEstimate__resolve,
+		},
+		"VelocityEstimate": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: V0FilterEstimate__VelocityEstimate__resolve,
+		},
+	},
+})
+func MessageParamsMarketTerminateDeals__Epoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketTerminateDeals)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEpoch(), nil
+	
+}
+func MessageParamsMarketTerminateDeals__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketTerminateDeals)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDealIDs(), nil
+	
+}
+var MessageParamsMarketTerminateDeals__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMarketTerminateDeals",
+	Fields: graphql.Fields{
+		"Epoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsMarketTerminateDeals__Epoch__resolve,
+		},
+		"DealIDs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__DealID__type),
+			
+			Resolve: MessageParamsMarketTerminateDeals__DealIDs__resolve,
+		},
+	},
+})
+func MessageParamsMinerReportFault__BlockHeader1__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerReportFault)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldBlockHeader1(), nil
+	
+}
+func MessageParamsMinerReportFault__BlockHeader2__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerReportFault)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldBlockHeader2(), nil
+	
+}
+func MessageParamsMinerReportFault__BlockHeaderExtra__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerReportFault)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldBlockHeaderExtra(), nil
+	
+}
+var MessageParamsMinerReportFault__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerReportFault",
+	Fields: graphql.Fields{
+		"BlockHeader1": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsMinerReportFault__BlockHeader1__resolve,
+		},
+		"BlockHeader2": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsMinerReportFault__BlockHeader2__resolve,
+		},
+		"BlockHeaderExtra": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsMinerReportFault__BlockHeaderExtra__resolve,
+		},
+	},
+})
+func LotusBeaconEntry__Round__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBeaconEntry)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRound().AsInt()
+	
+}
+func LotusBeaconEntry__Data__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBeaconEntry)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldData(), nil
+	
+}
+var LotusBeaconEntry__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "LotusBeaconEntry",
+	Fields: graphql.Fields{
+		"Round": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: LotusBeaconEntry__Round__resolve,
+		},
+		"Data": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: LotusBeaconEntry__Data__resolve,
+		},
+	},
+})
+var List__PoStProof__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__PoStProof",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: PoStProof__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__PoStProof)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(PoStProof__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__PoStProof)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(PoStProof__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__PoStProof)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__PoStProof)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+var Map__BalanceTable__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__BalanceTable",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: BigInt__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(RawAddress__type),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__BalanceTable)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(RawAddress__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__BalanceTable)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(BigInt__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__BalanceTable)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MinerPostProof__PoStProof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerPostProof)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPoStProof().AsInt()
+	
+}
+func MinerPostProof__ProofBytes__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerPostProof)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProofBytes(), nil
+	
+}
+var MinerPostProof__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerPostProof",
+	Fields: graphql.Fields{
+		"PoStProof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerPostProof__PoStProof__resolve,
+		},
+		"ProofBytes": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MinerPostProof__ProofBytes__resolve,
+		},
+	},
+})
+func LotusStateRoot__Version__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusStateRoot)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldVersion().AsInt()
+	
+}
+func LotusStateRoot__Actors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusStateRoot)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldActors().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__LotusActors__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func LotusStateRoot__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusStateRoot)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldInfo(), nil
+	
+}
+var LotusStateRoot__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "LotusStateRoot",
+	Fields: graphql.Fields{
+		"Version": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: LotusStateRoot__Version__resolve,
+		},
+		"Actors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__LotusActors__type),
+			
+			Resolve: LotusStateRoot__Actors__resolve,
+		},
+		"Info": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: LotusStateRoot__Info__resolve,
+		},
+	},
+})
+func LotusActors__Code__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusActors)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldCode(), nil
+	
+}
+func LotusActors__Nonce__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusActors)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNonce().AsInt()
+	
+}
+func LotusActors__Balance__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusActors)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldBalance(), nil
+	
+}
+var LotusActors__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "LotusActors",
+	Fields: graphql.Fields{
+		"Code": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: LotusActors__Code__resolve,
+		},
+		"Head": &graphql.Field{
+			
+			Type: graphql.NewNonNull(LotusActorV2Head__type),
+			
+			Resolve: LotusActors__Head__resolve,
+		},
+		"Nonce": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: LotusActors__Nonce__resolve,
+		},
+		"Balance": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: LotusActors__Balance__resolve,
+		},
+	},
+})
+func MarketV2DealProposal__PieceCID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPieceCID(), nil
+	
+}
+func MarketV2DealProposal__PieceSize__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPieceSize(), nil
+	
+}
+func MarketV2DealProposal__VerifiedDeal__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldVerifiedDeal().AsBool()
+	
+}
+func MarketV2DealProposal__Client__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldClient(), nil
+	
+}
+func MarketV2DealProposal__Provider__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProvider(), nil
+	
+}
+func MarketV2DealProposal__Label__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLabel().AsString()
+	
+}
+func MarketV2DealProposal__StartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldStartEpoch(), nil
+	
+}
+func MarketV2DealProposal__EndEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEndEpoch(), nil
+	
+}
+func MarketV2DealProposal__StoragePricePerEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldStoragePricePerEpoch(), nil
+	
+}
+func MarketV2DealProposal__ProviderCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProviderCollateral(), nil
+	
+}
+func MarketV2DealProposal__ClientCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV2DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldClientCollateral(), nil
+	
+}
+var MarketV2DealProposal__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MarketV2DealProposal",
+	Fields: graphql.Fields{
+		"PieceCID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MarketV2DealProposal__PieceCID__resolve,
+		},
+		"PieceSize": &graphql.Field{
+			
+			Type: graphql.NewNonNull(PaddedPieceSize__type),
+			
+			Resolve: MarketV2DealProposal__PieceSize__resolve,
+		},
+		"VerifiedDeal": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Boolean),
+			
+			Resolve: MarketV2DealProposal__VerifiedDeal__resolve,
+		},
+		"Client": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MarketV2DealProposal__Client__resolve,
+		},
+		"Provider": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MarketV2DealProposal__Provider__resolve,
+		},
+		"Label": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.String),
+			
+			Resolve: MarketV2DealProposal__Label__resolve,
+		},
+		"StartEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MarketV2DealProposal__StartEpoch__resolve,
+		},
+		"EndEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MarketV2DealProposal__EndEpoch__resolve,
+		},
+		"StoragePricePerEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MarketV2DealProposal__StoragePricePerEpoch__resolve,
+		},
+		"ProviderCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MarketV2DealProposal__ProviderCollateral__resolve,
+		},
+		"ClientCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MarketV2DealProposal__ClientCollateral__resolve,
+		},
+	},
+})
+func MessageParamsMinerConfirmSectorProofs__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerConfirmSectorProofs)
 	if !ok {
 		return nil, errNotNode
 	}
@@ -140,136 +775,202 @@ func MinerExpirationExtend__Sectors__resolve(p graphql.ResolveParams) (interface
 	return ts.FieldSectors(), nil
 	
 }
-func MinerExpirationExtend__NewExpiration__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerExpirationExtend)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNewExpiration(), nil
-	
-}
-var MinerExpirationExtend__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerExpirationExtend",
+var MessageParamsMinerConfirmSectorProofs__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerConfirmSectorProofs",
 	Fields: graphql.Fields{
-		"Deadline": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerExpirationExtend__Deadline__resolve,
-		},
-		"Partition": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerExpirationExtend__Partition__resolve,
-		},
 		"Sectors": &graphql.Field{
 			
-			Type: graphql.NewNonNull(BitField__type),
+			Type: graphql.NewNonNull(List__SectorNumber__type),
 			
-			Resolve: MinerExpirationExtend__Sectors__resolve,
-		},
-		"NewExpiration": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerExpirationExtend__NewExpiration__resolve,
+			Resolve: MessageParamsMinerConfirmSectorProofs__Sectors__resolve,
 		},
 	},
 })
-func MessageParamsPowerCreateMiner__Owner__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldOwner(), nil
-	
-}
-func MessageParamsPowerCreateMiner__Worker__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldWorker(), nil
-	
-}
-func MessageParamsPowerCreateMiner__SealProofType__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealProofType().AsInt()
-	
-}
-func MessageParamsPowerCreateMiner__Peer__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPeer(), nil
-	
-}
-func MessageParamsPowerCreateMiner__Multiaddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMultiaddrs(), nil
-	
-}
-var MessageParamsPowerCreateMiner__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsPowerCreateMiner",
-	Fields: graphql.Fields{
-		"Owner": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsPowerCreateMiner__Owner__resolve,
-		},
-		"Worker": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsPowerCreateMiner__Worker__resolve,
-		},
-		"SealProofType": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MessageParamsPowerCreateMiner__SealProofType__resolve,
-		},
-		"Peer": &graphql.Field{
-			
-			Type: graphql.NewNonNull(PeerID__type),
-			
-			Resolve: MessageParamsPowerCreateMiner__Peer__resolve,
-		},
-		"Multiaddrs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__Multiaddrs__type),
-			
-			Resolve: MessageParamsPowerCreateMiner__Multiaddrs__resolve,
-		},
-	},
-})
-var List__DealID__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__DealID",
+var List__LinkLotusMessage__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__LinkLotusMessage",
 	Fields: graphql.Fields{
 		"At": &graphql.Field{
-			Type: DealID__type,
+			Type: LotusMessage__type,
 			Args: graphql.FieldConfigArgument{
 				"key": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(graphql.Int),
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__DealID)
+				ts, ok := p.Source.(types.List__LinkLotusMessage)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				if err != nil {
+					return nil, err
+				}
+				targetCid, err := out.AsLink()
+				if err != nil {
+					return nil, err
+				}
+				
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusMessage__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(LotusMessage__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__LinkLotusMessage)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					targetCid, err := node.AsLink()
+					if err != nil {
+						return nil, err
+					}
+					
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusMessage__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(LotusMessage__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__LinkLotusMessage)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					targetCid, err := node.AsLink()
+					if err != nil {
+						return nil, err
+					}
+					
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusMessage__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__LinkLotusMessage)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+var List__MinerPoStProof__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__MinerPoStProof",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerPostProof__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerPoStProof)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -291,9 +992,9 @@ var List__DealID__type = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"All": &graphql.Field{
-			Type: graphql.NewList(DealID__type),
+			Type: graphql.NewList(MinerPostProof__type),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__DealID)
+				ts, ok := p.Source.(types.List__MinerPoStProof)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -311,7 +1012,7 @@ var List__DealID__type = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"Range": &graphql.Field{
-			Type: graphql.NewList(DealID__type),
+			Type: graphql.NewList(MinerPostProof__type),
 			Args: graphql.FieldConfigArgument{
 				"skip": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(graphql.Int),
@@ -321,7 +1022,7 @@ var List__DealID__type = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__DealID)
+				ts, ok := p.Source.(types.List__MinerPoStProof)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -342,7 +1043,7 @@ var List__DealID__type = graphql.NewObject(graphql.ObjectConfig{
 		"Count": &graphql.Field{
 			Type: graphql.NewNonNull(graphql.Int),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__DealID)
+				ts, ok := p.Source.(types.List__MinerPoStProof)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -351,23 +1052,1690 @@ var List__DealID__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })	
-func MinerV2Deadlines__Due__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Deadlines)
+func ModVerifyParams__Method__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.ModVerifyParams)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldDue(), nil
+	return ts.FieldMethod(), nil
 	
 }
-var MinerV2Deadlines__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV2Deadlines",
+func ModVerifyParams__Params__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.ModVerifyParams)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldParams(), nil
+	
+}
+var ModVerifyParams__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "ModVerifyParams",
 	Fields: graphql.Fields{
-		"Due": &graphql.Field{
+		"Method": &graphql.Field{
 			
-			Type: graphql.NewNonNull(List__MinerV2DeadlineLink__type),
+			Type: graphql.NewNonNull(MethodNum__type),
 			
-			Resolve: MinerV2Deadlines__Due__resolve,
+			Resolve: ModVerifyParams__Method__resolve,
+		},
+		"Params": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: ModVerifyParams__Params__resolve,
+		},
+	},
+})
+func Merge__Lane__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.Merge)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLane().AsInt()
+	
+}
+func Merge__Nonce__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.Merge)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNonce().AsInt()
+	
+}
+var Merge__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Merge",
+	Fields: graphql.Fields{
+		"Lane": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: Merge__Lane__resolve,
+		},
+		"Nonce": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: Merge__Nonce__resolve,
+		},
+	},
+})
+var List__CronV0Entry__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__CronV0Entry",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: CronV0Entry__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__CronV0Entry)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(CronV0Entry__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__CronV0Entry)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(CronV0Entry__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__CronV0Entry)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__CronV0Entry)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+var Map__ActorID__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__ActorID",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: ActorID__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(RawAddress__type),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__ActorID)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(RawAddress__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__ActorID)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(ActorID__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__ActorID)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	var LotusActorV2Head__type = graphql.NewUnion(graphql.UnionConfig{
+	Name: "LotusActorV2Head",
+	Types: []*graphql.Object{
+		
+		MarketV2State__type,
+		
+		
+		MinerV2State__type,
+		
+		
+		PowerV2State__type,
+		
+		
+		RewardV2State__type,
+		
+		
+		AccountV0State__type,
+		
+		
+		CronV0State__type,
+		
+		
+		InitV0State__type,
+		
+		
+		MarketV0State__type,
+		
+		
+		MinerV0State__type,
+		
+		
+		MultisigV0State__type,
+		
+		
+		PaychV0State__type,
+		
+		
+		PowerV0State__type,
+		
+		
+		RewardV0State__type,
+		
+		
+		VerifregV0State__type,
+		
+	},
+	ResolveType: func(p graphql.ResolveTypeParams) *graphql.Object {
+		if node, ok := p.Value.(ipld.Node); ok {
+			switch node.Prototype() {
+			
+			case types.Type.MarketV2State:
+				fallthrough
+			case types.Type.MarketV2State__Repr:
+				return MarketV2State__type
+			
+			
+			case types.Type.MinerV2State:
+				fallthrough
+			case types.Type.MinerV2State__Repr:
+				return MinerV2State__type
+			
+			
+			case types.Type.PowerV2State:
+				fallthrough
+			case types.Type.PowerV2State__Repr:
+				return PowerV2State__type
+			
+			
+			case types.Type.RewardV2State:
+				fallthrough
+			case types.Type.RewardV2State__Repr:
+				return RewardV2State__type
+			
+			
+			case types.Type.AccountV0State:
+				fallthrough
+			case types.Type.AccountV0State__Repr:
+				return AccountV0State__type
+			
+			
+			case types.Type.CronV0State:
+				fallthrough
+			case types.Type.CronV0State__Repr:
+				return CronV0State__type
+			
+			
+			case types.Type.InitV0State:
+				fallthrough
+			case types.Type.InitV0State__Repr:
+				return InitV0State__type
+			
+			
+			case types.Type.MarketV0State:
+				fallthrough
+			case types.Type.MarketV0State__Repr:
+				return MarketV0State__type
+			
+			
+			case types.Type.MinerV0State:
+				fallthrough
+			case types.Type.MinerV0State__Repr:
+				return MinerV0State__type
+			
+			
+			case types.Type.MultisigV0State:
+				fallthrough
+			case types.Type.MultisigV0State__Repr:
+				return MultisigV0State__type
+			
+			
+			case types.Type.PaychV0State:
+				fallthrough
+			case types.Type.PaychV0State__Repr:
+				return PaychV0State__type
+			
+			
+			case types.Type.PowerV0State:
+				fallthrough
+			case types.Type.PowerV0State__Repr:
+				return PowerV0State__type
+			
+			
+			case types.Type.RewardV0State:
+				fallthrough
+			case types.Type.RewardV0State__Repr:
+				return RewardV0State__type
+			
+			
+			case types.Type.VerifregV0State:
+				fallthrough
+			case types.Type.VerifregV0State__Repr:
+				return VerifregV0State__type
+			
+			}				
+		}
+		fmt.Printf("Actual type %T: %v not in union\n", p.Value, p.Value)
+		return nil
+	},
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+func Bytes__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		b, err := value.AsBytes()
+		if err != nil {
+			return err
+		}
+		return b
+		
+	default:
+		return nil
+	}
+}
+func Bytes__type__parse(value interface{}) interface{} {
+	builder := types.Type.Bytes__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func Bytes__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.Bytes__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var Bytes__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "Bytes",
+	Description: "Bytes",
+	Serialize: Bytes__type__serialize,
+	ParseValue: Bytes__type__parse,
+	ParseLiteral: Bytes__type__parseLiteral,
+})
+func RawAddress__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		s, err := value.AsString()
+		if err != nil {
+			return err
+		}
+		return s
+		
+	default:
+		return nil
+	}
+}
+var RawAddress__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "RawAddress",
+	Description: "RawAddress",
+	Serialize: RawAddress__type__serialize,
+	ParseValue: RawAddress__type__parse,
+	ParseLiteral: RawAddress__type__parseLiteral,
+})
+func LotusBlockHeader__Miner__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMiner(), nil
+	
+}
+func LotusBlockHeader__Ticket__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldTicket()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func LotusBlockHeader__ElectionProof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldElectionProof()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func LotusBlockHeader__BeaconEntries__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldBeaconEntries(), nil
+	
+}
+func LotusBlockHeader__WinPoStProof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldWinPoStProof(), nil
+	
+}
+func LotusBlockHeader__Parents__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldParents(), nil
+	
+}
+func LotusBlockHeader__ParentWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldParentWeight(), nil
+	
+}
+func LotusBlockHeader__Height__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldHeight(), nil
+	
+}
+func LotusBlockHeader__ParentStateRoot__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldParentStateRoot().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusStateRoot__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func LotusBlockHeader__ParentMessageReceipts__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldParentMessageReceipts(), nil
+	
+}
+func LotusBlockHeader__Messages__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldMessages().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusMsgMeta__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func LotusBlockHeader__BLSAggregate__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldBLSAggregate()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func LotusBlockHeader__Timestamp__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTimestamp().AsInt()
+	
+}
+func LotusBlockHeader__BlockSig__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldBlockSig()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func LotusBlockHeader__ForkSignaling__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldForkSignaling().AsInt()
+	
+}
+func LotusBlockHeader__ParentBaseFee__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusBlockHeader)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldParentBaseFee(), nil
+	
+}
+var LotusBlockHeader__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "LotusBlockHeader",
+	Fields: graphql.Fields{
+		"Miner": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: LotusBlockHeader__Miner__resolve,
+		},
+		"Ticket": &graphql.Field{
+			
+			Type: LotusTicket__type,
+			
+			Resolve: LotusBlockHeader__Ticket__resolve,
+		},
+		"ElectionProof": &graphql.Field{
+			
+			Type: LotusElectionProof__type,
+			
+			Resolve: LotusBlockHeader__ElectionProof__resolve,
+		},
+		"BeaconEntries": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__LotusBeaconEntry__type),
+			
+			Resolve: LotusBlockHeader__BeaconEntries__resolve,
+		},
+		"WinPoStProof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__PoStProof__type),
+			
+			Resolve: LotusBlockHeader__WinPoStProof__resolve,
+		},
+		"Parents": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__Link__type),
+			
+			Resolve: LotusBlockHeader__Parents__resolve,
+		},
+		"ParentWeight": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: LotusBlockHeader__ParentWeight__resolve,
+		},
+		"Height": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: LotusBlockHeader__Height__resolve,
+		},
+		"ParentStateRoot": &graphql.Field{
+			
+			Type: graphql.NewNonNull(LotusStateRoot__type),
+			
+			Resolve: LotusBlockHeader__ParentStateRoot__resolve,
+		},
+		"ParentMessageReceipts": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: LotusBlockHeader__ParentMessageReceipts__resolve,
+		},
+		"Messages": &graphql.Field{
+			
+			Type: graphql.NewNonNull(LotusMsgMeta__type),
+			
+			Resolve: LotusBlockHeader__Messages__resolve,
+		},
+		"BLSAggregate": &graphql.Field{
+			
+			Type: Signature__type,
+			
+			Resolve: LotusBlockHeader__BLSAggregate__resolve,
+		},
+		"Timestamp": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: LotusBlockHeader__Timestamp__resolve,
+		},
+		"BlockSig": &graphql.Field{
+			
+			Type: Signature__type,
+			
+			Resolve: LotusBlockHeader__BlockSig__resolve,
+		},
+		"ForkSignaling": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: LotusBlockHeader__ForkSignaling__resolve,
+		},
+		"ParentBaseFee": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: LotusBlockHeader__ParentBaseFee__resolve,
+		},
+	},
+})
+func MessageParamsMultisigTxnID__ID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigTxnID)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldID().AsInt()
+	
+}
+func MessageParamsMultisigTxnID__ProposeHash__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigTxnID)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProposeHash(), nil
+	
+}
+var MessageParamsMultisigTxnID__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMultisigTxnID",
+	Fields: graphql.Fields{
+		"ID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MessageParamsMultisigTxnID__ID__resolve,
+		},
+		"ProposeHash": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsMultisigTxnID__ProposeHash__resolve,
+		},
+	},
+})
+var Map__PowerV2Claim__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__PowerV2Claim",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: PowerV2Claim__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(RawAddress__type),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__PowerV2Claim)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(RawAddress__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__PowerV2Claim)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(PowerV2Claim__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__PowerV2Claim)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MinerV0SectorPreCommitInfo__SealProof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealProof().AsInt()
+	
+}
+func MinerV0SectorPreCommitInfo__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorNumber(), nil
+	
+}
+func MinerV0SectorPreCommitInfo__SealedCID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealedCID(), nil
+	
+}
+func MinerV0SectorPreCommitInfo__SealRandEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealRandEpoch(), nil
+	
+}
+func MinerV0SectorPreCommitInfo__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldDealIDs()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func MinerV0SectorPreCommitInfo__Expiration__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldExpiration(), nil
+	
+}
+func MinerV0SectorPreCommitInfo__ReplaceCapacity__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldReplaceCapacity().AsBool()
+	
+}
+func MinerV0SectorPreCommitInfo__ReplaceSectorDeadline__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldReplaceSectorDeadline().AsInt()
+	
+}
+func MinerV0SectorPreCommitInfo__ReplaceSectorPartition__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldReplaceSectorPartition().AsInt()
+	
+}
+func MinerV0SectorPreCommitInfo__ReplaceSectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldReplaceSectorNumber(), nil
+	
+}
+var MinerV0SectorPreCommitInfo__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0SectorPreCommitInfo",
+	Fields: graphql.Fields{
+		"SealProof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV0SectorPreCommitInfo__SealProof__resolve,
+		},
+		"SectorNumber": &graphql.Field{
+			
+			Type: graphql.NewNonNull(SectorNumber__type),
+			
+			Resolve: MinerV0SectorPreCommitInfo__SectorNumber__resolve,
+		},
+		"SealedCID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MinerV0SectorPreCommitInfo__SealedCID__resolve,
+		},
+		"SealRandEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerV0SectorPreCommitInfo__SealRandEpoch__resolve,
+		},
+		"DealIDs": &graphql.Field{
+			
+			Type: List__DealID__type,
+			
+			Resolve: MinerV0SectorPreCommitInfo__DealIDs__resolve,
+		},
+		"Expiration": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerV0SectorPreCommitInfo__Expiration__resolve,
+		},
+		"ReplaceCapacity": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Boolean),
+			
+			Resolve: MinerV0SectorPreCommitInfo__ReplaceCapacity__resolve,
+		},
+		"ReplaceSectorDeadline": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV0SectorPreCommitInfo__ReplaceSectorDeadline__resolve,
+		},
+		"ReplaceSectorPartition": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV0SectorPreCommitInfo__ReplaceSectorPartition__resolve,
+		},
+		"ReplaceSectorNumber": &graphql.Field{
+			
+			Type: graphql.NewNonNull(SectorNumber__type),
+			
+			Resolve: MinerV0SectorPreCommitInfo__ReplaceSectorNumber__resolve,
+		},
+	},
+})
+func CronV0Entry__Receiver__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.CronV0Entry)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldReceiver(), nil
+	
+}
+func CronV0Entry__MethodNum__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.CronV0Entry)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMethodNum(), nil
+	
+}
+var CronV0Entry__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CronV0Entry",
+	Fields: graphql.Fields{
+		"Receiver": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: CronV0Entry__Receiver__resolve,
+		},
+		"MethodNum": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MethodNum__type),
+			
+			Resolve: CronV0Entry__MethodNum__resolve,
+		},
+	},
+})
+func MinerV0VestingFunds__Funds__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0VestingFunds)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFunds(), nil
+	
+}
+var MinerV0VestingFunds__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0VestingFunds",
+	Fields: graphql.Fields{
+		"Funds": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__MinerV0VestingFund__type),
+			
+			Resolve: MinerV0VestingFunds__Funds__resolve,
+		},
+	},
+})
+func MessageParamsMinerDeferredCron__EventType__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerDeferredCron)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEventType().AsInt()
+	
+}
+var MessageParamsMinerDeferredCron__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerDeferredCron",
+	Fields: graphql.Fields{
+		"EventType": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MessageParamsMinerDeferredCron__EventType__resolve,
+		},
+	},
+})
+var Map__SectorV2OnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__SectorV2OnChainInfo",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerV2SectorOnChainInfo__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__SectorV2OnChainInfo)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__SectorV2OnChainInfo)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MinerV2SectorOnChainInfo__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__SectorV2OnChainInfo)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func Signature__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		b, err := value.AsBytes()
+		if err != nil {
+			return err
+		}
+		return b
+		
+	default:
+		return nil
+	}
+}
+func Signature__type__parse(value interface{}) interface{} {
+	builder := types.Type.Signature__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func Signature__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.Signature__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var Signature__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "Signature",
+	Description: "Signature",
+	Serialize: Signature__type__serialize,
+	ParseValue: Signature__type__parse,
+	ParseLiteral: Signature__type__parseLiteral,
+})
+func MessageParamsMinerWithdrawBalance__AmountRequested__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerWithdrawBalance)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldAmountRequested(), nil
+	
+}
+var MessageParamsMinerWithdrawBalance__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerWithdrawBalance",
+	Fields: graphql.Fields{
+		"AmountRequested": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsMinerWithdrawBalance__AmountRequested__resolve,
+		},
+	},
+})
+func PoStProof__PoStProof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PoStProof)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPoStProof().AsInt()
+	
+}
+func PoStProof__ProofBytes__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PoStProof)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProofBytes(), nil
+	
+}
+var PoStProof__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "PoStProof",
+	Fields: graphql.Fields{
+		"PoStProof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: PoStProof__PoStProof__resolve,
+		},
+		"ProofBytes": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: PoStProof__ProofBytes__resolve,
+		},
+	},
+})
+func MinerV2Partition__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectors(), nil
+	
+}
+func MinerV2Partition__Unproven__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldUnproven(), nil
+	
+}
+func MinerV2Partition__Faults__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFaults(), nil
+	
+}
+func MinerV2Partition__Recoveries__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRecoveries(), nil
+	
+}
+func MinerV2Partition__Terminated__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTerminated(), nil
+	
+}
+func MinerV2Partition__ExpirationsEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldExpirationsEpochs().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV0ExpirationSet__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV2Partition__EarlyTerminated__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEarlyTerminated(), nil
+	
+}
+func MinerV2Partition__LivePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLivePower(), nil
+	
+}
+func MinerV2Partition__UnprovenPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldUnprovenPower(), nil
+	
+}
+func MinerV2Partition__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFaultyPower(), nil
+	
+}
+func MinerV2Partition__RecoveringPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRecoveringPower(), nil
+	
+}
+var MinerV2Partition__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV2Partition",
+	Fields: graphql.Fields{
+		"Sectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV2Partition__Sectors__resolve,
+		},
+		"Unproven": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV2Partition__Unproven__resolve,
+		},
+		"Faults": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV2Partition__Faults__resolve,
+		},
+		"Recoveries": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV2Partition__Recoveries__resolve,
+		},
+		"Terminated": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV2Partition__Terminated__resolve,
+		},
+		"ExpirationsEpochs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__MinerV0ExpirationSet__type),
+			
+			Resolve: MinerV2Partition__ExpirationsEpochs__resolve,
+		},
+		"EarlyTerminated": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MinerV2Partition__EarlyTerminated__resolve,
+		},
+		"LivePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV2Partition__LivePower__resolve,
+		},
+		"UnprovenPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV2Partition__UnprovenPower__resolve,
+		},
+		"FaultyPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV2Partition__FaultyPower__resolve,
+		},
+		"RecoveringPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV2Partition__RecoveringPower__resolve,
+		},
+	},
+})
+func MinerV2Info__Owner__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldOwner(), nil
+	
+}
+func MinerV2Info__Worker__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldWorker(), nil
+	
+}
+func MinerV2Info__ControlAddresses__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldControlAddresses()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func MinerV2Info__PendingWorkerKey__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldPendingWorkerKey()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func MinerV2Info__PeerId__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPeerId(), nil
+	
+}
+func MinerV2Info__Multiaddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldMultiaddrs()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func MinerV2Info__SealProofType__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealProofType().AsInt()
+	
+}
+func MinerV2Info__SectorSize__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorSize(), nil
+	
+}
+func MinerV2Info__WindowPoStPartitionSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldWindowPoStPartitionSectors().AsInt()
+	
+}
+func MinerV2Info__ConsensusFaultElapsed__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldConsensusFaultElapsed(), nil
+	
+}
+func MinerV2Info__PendingOwnerAddress__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldPendingOwnerAddress()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+var MinerV2Info__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV2Info",
+	Fields: graphql.Fields{
+		"Owner": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MinerV2Info__Owner__resolve,
+		},
+		"Worker": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MinerV2Info__Worker__resolve,
+		},
+		"ControlAddresses": &graphql.Field{
+			
+			Type: List__Address__type,
+			
+			Resolve: MinerV2Info__ControlAddresses__resolve,
+		},
+		"PendingWorkerKey": &graphql.Field{
+			
+			Type: MinerV0WorkerChangeKey__type,
+			
+			Resolve: MinerV2Info__PendingWorkerKey__resolve,
+		},
+		"PeerId": &graphql.Field{
+			
+			Type: graphql.NewNonNull(PeerID__type),
+			
+			Resolve: MinerV2Info__PeerId__resolve,
+		},
+		"Multiaddrs": &graphql.Field{
+			
+			Type: List__Multiaddrs__type,
+			
+			Resolve: MinerV2Info__Multiaddrs__resolve,
+		},
+		"SealProofType": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV2Info__SealProofType__resolve,
+		},
+		"SectorSize": &graphql.Field{
+			
+			Type: graphql.NewNonNull(SectorSize__type),
+			
+			Resolve: MinerV2Info__SectorSize__resolve,
+		},
+		"WindowPoStPartitionSectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV2Info__WindowPoStPartitionSectors__resolve,
+		},
+		"ConsensusFaultElapsed": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerV2Info__ConsensusFaultElapsed__resolve,
+		},
+		"PendingOwnerAddress": &graphql.Field{
+			
+			Type: Address__type,
+			
+			Resolve: MinerV2Info__PendingOwnerAddress__resolve,
 		},
 	},
 })
@@ -685,4689 +3053,6 @@ var MarketV2State__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
-func MinerV0Deadline__Partitions__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldPartitions().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__MinerV0Partition__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV0Deadline__ExpirationEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldExpirationEpochs(), nil
-	
-}
-func MinerV0Deadline__PostSubmissions__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPostSubmissions(), nil
-	
-}
-func MinerV0Deadline__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEarlyTerminations(), nil
-	
-}
-func MinerV0Deadline__LiveSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLiveSectors().AsInt()
-	
-}
-func MinerV0Deadline__TotalSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalSectors().AsInt()
-	
-}
-func MinerV0Deadline__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFaultyPower(), nil
-	
-}
-var MinerV0Deadline__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0Deadline",
-	Fields: graphql.Fields{
-		"Partitions": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__MinerV0Partition__type),
-			
-			Resolve: MinerV0Deadline__Partitions__resolve,
-		},
-		"ExpirationEpochs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MinerV0Deadline__ExpirationEpochs__resolve,
-		},
-		"PostSubmissions": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV0Deadline__PostSubmissions__resolve,
-		},
-		"EarlyTerminations": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV0Deadline__EarlyTerminations__resolve,
-		},
-		"LiveSectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV0Deadline__LiveSectors__resolve,
-		},
-		"TotalSectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV0Deadline__TotalSectors__resolve,
-		},
-		"FaultyPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV0Deadline__FaultyPower__resolve,
-		},
-	},
-})
-var List__Merge__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__Merge",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: Merge__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Merge)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(Merge__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Merge)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(Merge__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Merge)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Merge)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-func SectorNumber__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		i, err := value.AsInt()
-		if err != nil {
-			return err
-		}
-		return i
-		
-	default:
-		return nil
-	}
-}
-func SectorNumber__type__parse(value interface{}) interface{} {
-	builder := types.Type.SectorNumber__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func SectorNumber__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.SectorNumber__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var SectorNumber__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "SectorNumber",
-	Description: "SectorNumber",
-	Serialize: SectorNumber__type__serialize,
-	ParseValue: SectorNumber__type__parse,
-	ParseLiteral: SectorNumber__type__parseLiteral,
-})
-func BigInt__type__parse(value interface{}) interface{} {
-	builder := types.Type.BigInt__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func BigInt__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.BigInt__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var BigInt__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "BigInt",
-	Description: "BigInt",
-	Serialize: BigInt__type__serialize,
-	ParseValue: BigInt__type__parse,
-	ParseLiteral: BigInt__type__parseLiteral,
-})
-func LotusMsgMeta__BlsMessages__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMsgMeta)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldBlsMessages().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.List__LinkLotusMessage__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func LotusMsgMeta__SecpkMessages__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMsgMeta)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSecpkMessages(), nil
-	
-}
-var LotusMsgMeta__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "LotusMsgMeta",
-	Fields: graphql.Fields{
-		"BlsMessages": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__LinkLotusMessage__type),
-			
-			Resolve: LotusMsgMeta__BlsMessages__resolve,
-		},
-		"SecpkMessages": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: LotusMsgMeta__SecpkMessages__resolve,
-		},
-	},
-})
-func PowerV0State__TotalRawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalRawBytePower(), nil
-	
-}
-func PowerV0State__TotalBytesCommitted__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalBytesCommitted(), nil
-	
-}
-func PowerV0State__TotalQualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalQualityAdjPower(), nil
-	
-}
-func PowerV0State__TotalQABytesCommitted__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalQABytesCommitted(), nil
-	
-}
-func PowerV0State__TotalPledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalPledgeCollateral(), nil
-	
-}
-func PowerV0State__ThisEpochRawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochRawBytePower(), nil
-	
-}
-func PowerV0State__ThisEpochQualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochQualityAdjPower(), nil
-	
-}
-func PowerV0State__ThisEpochPledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochPledgeCollateral(), nil
-	
-}
-func PowerV0State__ThisEpochQAPowerSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldThisEpochQAPowerSmoothed()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func PowerV0State__MinerCount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMinerCount().AsInt()
-	
-}
-func PowerV0State__MinerAboveMinPowerCount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMinerAboveMinPowerCount().AsInt()
-	
-}
-func PowerV0State__CronEventQueue__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldCronEventQueue().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Multimap__PowerV0CronEvent__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func PowerV0State__FirstCronEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFirstCronEpoch(), nil
-	
-}
-func PowerV0State__LastProcessedCronEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLastProcessedCronEpoch(), nil
-	
-}
-func PowerV0State__Claims__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldClaims().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__PowerV0Claim__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func PowerV0State__ProofValidationBatch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldProofValidationBatch()
-	if f.Exists() {
-		
-		return "IS a link", nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-var PowerV0State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "PowerV0State",
-	Fields: graphql.Fields{
-		"TotalRawBytePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV0State__TotalRawBytePower__resolve,
-		},
-		"TotalBytesCommitted": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV0State__TotalBytesCommitted__resolve,
-		},
-		"TotalQualityAdjPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV0State__TotalQualityAdjPower__resolve,
-		},
-		"TotalQABytesCommitted": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV0State__TotalQABytesCommitted__resolve,
-		},
-		"TotalPledgeCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV0State__TotalPledgeCollateral__resolve,
-		},
-		"ThisEpochRawBytePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV0State__ThisEpochRawBytePower__resolve,
-		},
-		"ThisEpochQualityAdjPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV0State__ThisEpochQualityAdjPower__resolve,
-		},
-		"ThisEpochPledgeCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV0State__ThisEpochPledgeCollateral__resolve,
-		},
-		"ThisEpochQAPowerSmoothed": &graphql.Field{
-			
-			Type: V0FilterEstimate__type,
-			
-			Resolve: PowerV0State__ThisEpochQAPowerSmoothed__resolve,
-		},
-		"MinerCount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: PowerV0State__MinerCount__resolve,
-		},
-		"MinerAboveMinPowerCount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: PowerV0State__MinerAboveMinPowerCount__resolve,
-		},
-		"CronEventQueue": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Multimap__PowerV0CronEvent__type),
-			
-			Resolve: PowerV0State__CronEventQueue__resolve,
-		},
-		"FirstCronEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: PowerV0State__FirstCronEpoch__resolve,
-		},
-		"LastProcessedCronEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: PowerV0State__LastProcessedCronEpoch__resolve,
-		},
-		"Claims": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__PowerV0Claim__type),
-			
-			Resolve: PowerV0State__Claims__resolve,
-		},
-		"ProofValidationBatch": &graphql.Field{
-			
-			Type: graphql.ID,
-			
-			Resolve: PowerV0State__ProofValidationBatch__resolve,
-		},
-	},
-})
-var Map__PowerV0CronEvent__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__PowerV0CronEvent",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: PowerV0CronEvent__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PowerV0CronEvent)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PowerV0CronEvent)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(PowerV0CronEvent__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PowerV0CronEvent)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MinerV2State__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldInfo().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.MinerV2Info__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV2State__PreCommitDeposits__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPreCommitDeposits(), nil
-	
-}
-func MinerV2State__LockedFunds__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLockedFunds(), nil
-	
-}
-func MinerV2State__VestingFunds__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldVestingFunds().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.MinerV0VestingFunds__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV2State__FeeDebt__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFeeDebt(), nil
-	
-}
-func MinerV2State__InitialPledge__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldInitialPledge(), nil
-	
-}
-func MinerV2State__PreCommittedSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldPreCommittedSectors().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__SectorPreCommitOnChainInfo__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV2State__PreCommittedSectorsExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPreCommittedSectorsExpiry(), nil
-	
-}
-func MinerV2State__AllocatedSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldAllocatedSectors().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.BitField__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV2State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldSectors().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__SectorV2OnChainInfo__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV2State__ProvingPeriodStart__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProvingPeriodStart(), nil
-	
-}
-func MinerV2State__CurrentDeadline__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldCurrentDeadline().AsInt()
-	
-}
-func MinerV2State__Deadlines__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldDeadlines().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.MinerV2Deadlines__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV2State__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEarlyTerminations(), nil
-	
-}
-var MinerV2State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV2State",
-	Fields: graphql.Fields{
-		"Info": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV2Info__type),
-			
-			Resolve: MinerV2State__Info__resolve,
-		},
-		"PreCommitDeposits": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2State__PreCommitDeposits__resolve,
-		},
-		"LockedFunds": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2State__LockedFunds__resolve,
-		},
-		"VestingFunds": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0VestingFunds__type),
-			
-			Resolve: MinerV2State__VestingFunds__resolve,
-		},
-		"FeeDebt": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2State__FeeDebt__resolve,
-		},
-		"InitialPledge": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2State__InitialPledge__resolve,
-		},
-		"PreCommittedSectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__SectorPreCommitOnChainInfo__type),
-			
-			Resolve: MinerV2State__PreCommittedSectors__resolve,
-		},
-		"PreCommittedSectorsExpiry": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MinerV2State__PreCommittedSectorsExpiry__resolve,
-		},
-		"AllocatedSectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV2State__AllocatedSectors__resolve,
-		},
-		"Sectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__SectorV2OnChainInfo__type),
-			
-			Resolve: MinerV2State__Sectors__resolve,
-		},
-		"ProvingPeriodStart": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV2State__ProvingPeriodStart__resolve,
-		},
-		"CurrentDeadline": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV2State__CurrentDeadline__resolve,
-		},
-		"Deadlines": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV2Deadlines__type),
-			
-			Resolve: MinerV2State__Deadlines__resolve,
-		},
-		"EarlyTerminations": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV2State__EarlyTerminations__resolve,
-		},
-	},
-})
-func DealID__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		i, err := value.AsInt()
-		if err != nil {
-			return err
-		}
-		return i
-		
-	default:
-		return nil
-	}
-}
-func DealID__type__parse(value interface{}) interface{} {
-	builder := types.Type.DealID__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func DealID__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.DealID__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var DealID__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "DealID",
-	Description: "DealID",
-	Serialize: DealID__type__serialize,
-	ParseValue: DealID__type__parse,
-	ParseLiteral: DealID__type__parseLiteral,
-})
-var Map__MinerV0ExpirationSet__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__MinerV0ExpirationSet",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerV0ExpirationSet__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MinerV0ExpirationSet)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MinerV0ExpirationSet)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MinerV0ExpirationSet__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MinerV0ExpirationSet)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	var Map__SectorOnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__SectorOnChainInfo",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerV0SectorOnChainInfo__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__SectorOnChainInfo)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__SectorOnChainInfo)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MinerV0SectorOnChainInfo__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__SectorOnChainInfo)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	var Map__PowerV0Claim__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__PowerV0Claim",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: PowerV0Claim__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(RawAddress__type),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PowerV0Claim)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(RawAddress__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PowerV0Claim)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(PowerV0Claim__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PowerV0Claim)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MessageParamsMarketWithdrawBalance__ProviderOrClientAmount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketWithdrawBalance)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProviderOrClientAmount(), nil
-	
-}
-func MessageParamsMarketWithdrawBalance__Amount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketWithdrawBalance)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldAmount(), nil
-	
-}
-var MessageParamsMarketWithdrawBalance__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMarketWithdrawBalance",
-	Fields: graphql.Fields{
-		"ProviderOrClientAmount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsMarketWithdrawBalance__ProviderOrClientAmount__resolve,
-		},
-		"Amount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsMarketWithdrawBalance__Amount__resolve,
-		},
-	},
-})
-var Map__ActorID__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__ActorID",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: ActorID__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(RawAddress__type),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__ActorID)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(RawAddress__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__ActorID)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(ActorID__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__ActorID)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	var Map__MarketV2RawDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__MarketV2RawDealProposal",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MarketV2DealProposal__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV2RawDealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV2RawDealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MarketV2DealProposal__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV2RawDealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	var List__MinerExpirationExtend__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__MinerExpirationExtend",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerExpirationExtend__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerExpirationExtend)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(MinerExpirationExtend__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerExpirationExtend)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(MinerExpirationExtend__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerExpirationExtend)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerExpirationExtend)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-var Map__BalanceTable__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__BalanceTable",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: BigInt__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(RawAddress__type),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__BalanceTable)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(RawAddress__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__BalanceTable)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(BigInt__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__BalanceTable)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func ApplyRewardParams__Reward__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.ApplyRewardParams)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldReward(), nil
-	
-}
-func ApplyRewardParams__Penalty__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.ApplyRewardParams)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPenalty(), nil
-	
-}
-var ApplyRewardParams__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "ApplyRewardParams",
-	Fields: graphql.Fields{
-		"Reward": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: ApplyRewardParams__Reward__resolve,
-		},
-		"Penalty": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: ApplyRewardParams__Penalty__resolve,
-		},
-	},
-})
-func MessageParamsMultisigAddSigner__Signer__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigAddSigner)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSigner(), nil
-	
-}
-func MessageParamsMultisigAddSigner__Increase__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigAddSigner)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldIncrease().AsBool()
-	
-}
-var MessageParamsMultisigAddSigner__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMultisigAddSigner",
-	Fields: graphql.Fields{
-		"Signer": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsMultisigAddSigner__Signer__resolve,
-		},
-		"Increase": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Boolean),
-			
-			Resolve: MessageParamsMultisigAddSigner__Increase__resolve,
-		},
-	},
-})
-func MessageParamsPaychUpdateChannelState__Sv__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPaychUpdateChannelState)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSv(), nil
-	
-}
-func MessageParamsPaychUpdateChannelState__Secret__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPaychUpdateChannelState)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSecret(), nil
-	
-}
-var MessageParamsPaychUpdateChannelState__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsPaychUpdateChannelState",
-	Fields: graphql.Fields{
-		"Sv": &graphql.Field{
-			
-			Type: graphql.NewNonNull(SignedVoucher__type),
-			
-			Resolve: MessageParamsPaychUpdateChannelState__Sv__resolve,
-		},
-		"Secret": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MessageParamsPaychUpdateChannelState__Secret__resolve,
-		},
-	},
-})
-var Map__MarketV2DealProposal__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__MarketV2DealProposal",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MarketV2DealProposal__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(CidString__type),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV2DealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(CidString__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV2DealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MarketV2DealProposal__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV2DealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func SignedVoucher__ChannelAddr__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldChannelAddr(), nil
-	
-}
-func SignedVoucher__TimeLockMin__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTimeLockMin(), nil
-	
-}
-func SignedVoucher__TimeLockMax__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTimeLockMax(), nil
-	
-}
-func SignedVoucher__SecretPreimage__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldSecretPreimage()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func SignedVoucher__Extra__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldExtra()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func SignedVoucher__Lane__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLane().AsInt()
-	
-}
-func SignedVoucher__Nonce__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNonce().AsInt()
-	
-}
-func SignedVoucher__Amount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldAmount(), nil
-	
-}
-func SignedVoucher__MinSettleHeight__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldMinSettleHeight()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func SignedVoucher__Merges__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldMerges()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func SignedVoucher__Signature__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SignedVoucher)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldSignature()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-var SignedVoucher__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "SignedVoucher",
-	Fields: graphql.Fields{
-		"ChannelAddr": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: SignedVoucher__ChannelAddr__resolve,
-		},
-		"TimeLockMin": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: SignedVoucher__TimeLockMin__resolve,
-		},
-		"TimeLockMax": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: SignedVoucher__TimeLockMax__resolve,
-		},
-		"SecretPreimage": &graphql.Field{
-			
-			Type: Bytes__type,
-			
-			Resolve: SignedVoucher__SecretPreimage__resolve,
-		},
-		"Extra": &graphql.Field{
-			
-			Type: ModVerifyParams__type,
-			
-			Resolve: SignedVoucher__Extra__resolve,
-		},
-		"Lane": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: SignedVoucher__Lane__resolve,
-		},
-		"Nonce": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: SignedVoucher__Nonce__resolve,
-		},
-		"Amount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: SignedVoucher__Amount__resolve,
-		},
-		"MinSettleHeight": &graphql.Field{
-			
-			Type: ChainEpoch__type,
-			
-			Resolve: SignedVoucher__MinSettleHeight__resolve,
-		},
-		"Merges": &graphql.Field{
-			
-			Type: List__Merge__type,
-			
-			Resolve: SignedVoucher__Merges__resolve,
-		},
-		"Signature": &graphql.Field{
-			
-			Type: Signature__type,
-			
-			Resolve: SignedVoucher__Signature__resolve,
-		},
-	},
-})
-func MarketV2DealProposal__PieceCID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPieceCID(), nil
-	
-}
-func MarketV2DealProposal__PieceSize__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPieceSize(), nil
-	
-}
-func MarketV2DealProposal__VerifiedDeal__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldVerifiedDeal().AsBool()
-	
-}
-func MarketV2DealProposal__Client__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldClient(), nil
-	
-}
-func MarketV2DealProposal__Provider__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProvider(), nil
-	
-}
-func MarketV2DealProposal__Label__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLabel().AsString()
-	
-}
-func MarketV2DealProposal__StartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldStartEpoch(), nil
-	
-}
-func MarketV2DealProposal__EndEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEndEpoch(), nil
-	
-}
-func MarketV2DealProposal__StoragePricePerEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldStoragePricePerEpoch(), nil
-	
-}
-func MarketV2DealProposal__ProviderCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProviderCollateral(), nil
-	
-}
-func MarketV2DealProposal__ClientCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV2DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldClientCollateral(), nil
-	
-}
-var MarketV2DealProposal__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MarketV2DealProposal",
-	Fields: graphql.Fields{
-		"PieceCID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MarketV2DealProposal__PieceCID__resolve,
-		},
-		"PieceSize": &graphql.Field{
-			
-			Type: graphql.NewNonNull(PaddedPieceSize__type),
-			
-			Resolve: MarketV2DealProposal__PieceSize__resolve,
-		},
-		"VerifiedDeal": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Boolean),
-			
-			Resolve: MarketV2DealProposal__VerifiedDeal__resolve,
-		},
-		"Client": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MarketV2DealProposal__Client__resolve,
-		},
-		"Provider": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MarketV2DealProposal__Provider__resolve,
-		},
-		"Label": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.String),
-			
-			Resolve: MarketV2DealProposal__Label__resolve,
-		},
-		"StartEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MarketV2DealProposal__StartEpoch__resolve,
-		},
-		"EndEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MarketV2DealProposal__EndEpoch__resolve,
-		},
-		"StoragePricePerEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MarketV2DealProposal__StoragePricePerEpoch__resolve,
-		},
-		"ProviderCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MarketV2DealProposal__ProviderCollateral__resolve,
-		},
-		"ClientCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MarketV2DealProposal__ClientCollateral__resolve,
-		},
-	},
-})
-var LotusActorV2Head__type = graphql.NewUnion(graphql.UnionConfig{
-	Name: "LotusActorV2Head",
-	Types: []*graphql.Object{
-		
-		MarketV2State__type,
-		
-		
-		MinerV2State__type,
-		
-		
-		PowerV2State__type,
-		
-		
-		RewardV2State__type,
-		
-		
-		AccountV0State__type,
-		
-		
-		CronV0State__type,
-		
-		
-		InitV0State__type,
-		
-		
-		MarketV0State__type,
-		
-		
-		MinerV0State__type,
-		
-		
-		MultisigV0State__type,
-		
-		
-		PaychV0State__type,
-		
-		
-		PowerV0State__type,
-		
-		
-		RewardV0State__type,
-		
-		
-		VerifregV0State__type,
-		
-	},
-	ResolveType: func(p graphql.ResolveTypeParams) *graphql.Object {
-		if node, ok := p.Value.(ipld.Node); ok {
-			switch node.Prototype() {
-			
-			case types.Type.MarketV2State:
-				fallthrough
-			case types.Type.MarketV2State__Repr:
-				return MarketV2State__type
-			
-			
-			case types.Type.MinerV2State:
-				fallthrough
-			case types.Type.MinerV2State__Repr:
-				return MinerV2State__type
-			
-			
-			case types.Type.PowerV2State:
-				fallthrough
-			case types.Type.PowerV2State__Repr:
-				return PowerV2State__type
-			
-			
-			case types.Type.RewardV2State:
-				fallthrough
-			case types.Type.RewardV2State__Repr:
-				return RewardV2State__type
-			
-			
-			case types.Type.AccountV0State:
-				fallthrough
-			case types.Type.AccountV0State__Repr:
-				return AccountV0State__type
-			
-			
-			case types.Type.CronV0State:
-				fallthrough
-			case types.Type.CronV0State__Repr:
-				return CronV0State__type
-			
-			
-			case types.Type.InitV0State:
-				fallthrough
-			case types.Type.InitV0State__Repr:
-				return InitV0State__type
-			
-			
-			case types.Type.MarketV0State:
-				fallthrough
-			case types.Type.MarketV0State__Repr:
-				return MarketV0State__type
-			
-			
-			case types.Type.MinerV0State:
-				fallthrough
-			case types.Type.MinerV0State__Repr:
-				return MinerV0State__type
-			
-			
-			case types.Type.MultisigV0State:
-				fallthrough
-			case types.Type.MultisigV0State__Repr:
-				return MultisigV0State__type
-			
-			
-			case types.Type.PaychV0State:
-				fallthrough
-			case types.Type.PaychV0State__Repr:
-				return PaychV0State__type
-			
-			
-			case types.Type.PowerV0State:
-				fallthrough
-			case types.Type.PowerV0State__Repr:
-				return PowerV0State__type
-			
-			
-			case types.Type.RewardV0State:
-				fallthrough
-			case types.Type.RewardV0State__Repr:
-				return RewardV0State__type
-			
-			
-			case types.Type.VerifregV0State:
-				fallthrough
-			case types.Type.VerifregV0State__Repr:
-				return VerifregV0State__type
-			
-			}				
-		}
-		fmt.Printf("Actual type %T: %v not in union\n", p.Value, p.Value)
-		return nil
-	},
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var Map__MarketV0DealState__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__MarketV0DealState",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MarketV0DealState__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV0DealState)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV0DealState)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MarketV0DealState__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV0DealState)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	var Map__MultisigV0Transaction__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__MultisigV0Transaction",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MultisigV0Transaction__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MultisigV0Transaction)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MultisigV0Transaction)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MultisigV0Transaction__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MultisigV0Transaction)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	var MessageParamsMinerConstructor__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerConstructor",
-	Fields: graphql.Fields{
-		"__Exists": &graphql.Field{
-			Type: graphql.Boolean,
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				return true, nil
-			},
-		},
-	},
-})
-func MinerV2Info__Owner__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldOwner(), nil
-	
-}
-func MinerV2Info__Worker__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldWorker(), nil
-	
-}
-func MinerV2Info__ControlAddresses__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldControlAddresses()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func MinerV2Info__PendingWorkerKey__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldPendingWorkerKey()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func MinerV2Info__PeerId__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPeerId(), nil
-	
-}
-func MinerV2Info__Multiaddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldMultiaddrs()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func MinerV2Info__SealProofType__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealProofType().AsInt()
-	
-}
-func MinerV2Info__SectorSize__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorSize(), nil
-	
-}
-func MinerV2Info__WindowPoStPartitionSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldWindowPoStPartitionSectors().AsInt()
-	
-}
-func MinerV2Info__ConsensusFaultElapsed__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldConsensusFaultElapsed(), nil
-	
-}
-func MinerV2Info__PendingOwnerAddress__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldPendingOwnerAddress()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-var MinerV2Info__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV2Info",
-	Fields: graphql.Fields{
-		"Owner": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MinerV2Info__Owner__resolve,
-		},
-		"Worker": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MinerV2Info__Worker__resolve,
-		},
-		"ControlAddresses": &graphql.Field{
-			
-			Type: List__Address__type,
-			
-			Resolve: MinerV2Info__ControlAddresses__resolve,
-		},
-		"PendingWorkerKey": &graphql.Field{
-			
-			Type: MinerV0WorkerChangeKey__type,
-			
-			Resolve: MinerV2Info__PendingWorkerKey__resolve,
-		},
-		"PeerId": &graphql.Field{
-			
-			Type: graphql.NewNonNull(PeerID__type),
-			
-			Resolve: MinerV2Info__PeerId__resolve,
-		},
-		"Multiaddrs": &graphql.Field{
-			
-			Type: List__Multiaddrs__type,
-			
-			Resolve: MinerV2Info__Multiaddrs__resolve,
-		},
-		"SealProofType": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV2Info__SealProofType__resolve,
-		},
-		"SectorSize": &graphql.Field{
-			
-			Type: graphql.NewNonNull(SectorSize__type),
-			
-			Resolve: MinerV2Info__SectorSize__resolve,
-		},
-		"WindowPoStPartitionSectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV2Info__WindowPoStPartitionSectors__resolve,
-		},
-		"ConsensusFaultElapsed": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV2Info__ConsensusFaultElapsed__resolve,
-		},
-		"PendingOwnerAddress": &graphql.Field{
-			
-			Type: Address__type,
-			
-			Resolve: MinerV2Info__PendingOwnerAddress__resolve,
-		},
-	},
-})
-var List__ClientDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__ClientDealProposal",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MarketClientDealProposal__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__ClientDealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(MarketClientDealProposal__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__ClientDealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(MarketClientDealProposal__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__ClientDealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__ClientDealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-func Bytes__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		b, err := value.AsBytes()
-		if err != nil {
-			return err
-		}
-		return b
-		
-	default:
-		return nil
-	}
-}
-func Bytes__type__parse(value interface{}) interface{} {
-	builder := types.Type.Bytes__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func Bytes__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.Bytes__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var Bytes__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "Bytes",
-	Description: "Bytes",
-	Serialize: Bytes__type__serialize,
-	ParseValue: Bytes__type__parse,
-	ParseLiteral: Bytes__type__parseLiteral,
-})
-func RewardV0State__CumsumBaseline__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldCumsumBaseline(), nil
-	
-}
-func RewardV0State__CumsumRealized__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldCumsumRealized(), nil
-	
-}
-func RewardV0State__EffectiveNetworkTime__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEffectiveNetworkTime(), nil
-	
-}
-func RewardV0State__EffectiveBaselinePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEffectiveBaselinePower(), nil
-	
-}
-func RewardV0State__ThisEpochReward__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochReward(), nil
-	
-}
-func RewardV0State__ThisEpochRewardSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldThisEpochRewardSmoothed()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func RewardV0State__ThisEpochBaselinePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochBaselinePower(), nil
-	
-}
-func RewardV0State__Epoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEpoch(), nil
-	
-}
-func RewardV0State__TotalMined__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalMined(), nil
-	
-}
-var RewardV0State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "RewardV0State",
-	Fields: graphql.Fields{
-		"CumsumBaseline": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV0State__CumsumBaseline__resolve,
-		},
-		"CumsumRealized": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV0State__CumsumRealized__resolve,
-		},
-		"EffectiveNetworkTime": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: RewardV0State__EffectiveNetworkTime__resolve,
-		},
-		"EffectiveBaselinePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV0State__EffectiveBaselinePower__resolve,
-		},
-		"ThisEpochReward": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV0State__ThisEpochReward__resolve,
-		},
-		"ThisEpochRewardSmoothed": &graphql.Field{
-			
-			Type: V0FilterEstimate__type,
-			
-			Resolve: RewardV0State__ThisEpochRewardSmoothed__resolve,
-		},
-		"ThisEpochBaselinePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV0State__ThisEpochBaselinePower__resolve,
-		},
-		"Epoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: RewardV0State__Epoch__resolve,
-		},
-		"TotalMined": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV0State__TotalMined__resolve,
-		},
-	},
-})
-func PaddedPieceSize__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		i, err := value.AsInt()
-		if err != nil {
-			return err
-		}
-		return i
-		
-	default:
-		return nil
-	}
-}
-func PaddedPieceSize__type__parse(value interface{}) interface{} {
-	builder := types.Type.PaddedPieceSize__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func PaddedPieceSize__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.PaddedPieceSize__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var PaddedPieceSize__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "PaddedPieceSize",
-	Description: "PaddedPieceSize",
-	Serialize: PaddedPieceSize__type__serialize,
-	ParseValue: PaddedPieceSize__type__parse,
-	ParseLiteral: PaddedPieceSize__type__parseLiteral,
-})
-func SealVerifyInfo__SealProof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SealVerifyInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealProof(), nil
-	
-}
-func SealVerifyInfo__SectorID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SealVerifyInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorID().AsInt()
-	
-}
-func SealVerifyInfo__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SealVerifyInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDealIDs(), nil
-	
-}
-func SealVerifyInfo__Randomness__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SealVerifyInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRandomness(), nil
-	
-}
-func SealVerifyInfo__InteractiveRandomness__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SealVerifyInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldInteractiveRandomness(), nil
-	
-}
-func SealVerifyInfo__Proof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SealVerifyInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProof(), nil
-	
-}
-func SealVerifyInfo__SealedCID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SealVerifyInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealedCID(), nil
-	
-}
-func SealVerifyInfo__UnsealedCID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.SealVerifyInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldUnsealedCID(), nil
-	
-}
-var SealVerifyInfo__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "SealVerifyInfo",
-	Fields: graphql.Fields{
-		"SealProof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: SealVerifyInfo__SealProof__resolve,
-		},
-		"SectorID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: SealVerifyInfo__SectorID__resolve,
-		},
-		"DealIDs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__DealID__type),
-			
-			Resolve: SealVerifyInfo__DealIDs__resolve,
-		},
-		"Randomness": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: SealVerifyInfo__Randomness__resolve,
-		},
-		"InteractiveRandomness": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: SealVerifyInfo__InteractiveRandomness__resolve,
-		},
-		"Proof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: SealVerifyInfo__Proof__resolve,
-		},
-		"SealedCID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: SealVerifyInfo__SealedCID__resolve,
-		},
-		"UnsealedCID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: SealVerifyInfo__UnsealedCID__resolve,
-		},
-	},
-})
-var List__PoStProof__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__PoStProof",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: PoStProof__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__PoStProof)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(PoStProof__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__PoStProof)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(PoStProof__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__PoStProof)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__PoStProof)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-func InitV0State__AddressMap__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.InitV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldAddressMap().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__ActorID__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func InitV0State__NextID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.InitV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNextID(), nil
-	
-}
-func InitV0State__NetworkName__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.InitV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNetworkName().AsString()
-	
-}
-var InitV0State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "InitV0State",
-	Fields: graphql.Fields{
-		"AddressMap": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__ActorID__type),
-			
-			Resolve: InitV0State__AddressMap__resolve,
-		},
-		"NextID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ActorID__type),
-			
-			Resolve: InitV0State__NextID__resolve,
-		},
-		"NetworkName": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.String),
-			
-			Resolve: InitV0State__NetworkName__resolve,
-		},
-	},
-})
-func MinerV0Deadlines__Due__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Deadlines)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDue(), nil
-	
-}
-var MinerV0Deadlines__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0Deadlines",
-	Fields: graphql.Fields{
-		"Due": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__MinerV0DeadlineLink__type),
-			
-			Resolve: MinerV0Deadlines__Due__resolve,
-		},
-	},
-})
-func MessageParamsMarketPublishDeals__Deals__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketPublishDeals)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDeals(), nil
-	
-}
-var MessageParamsMarketPublishDeals__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMarketPublishDeals",
-	Fields: graphql.Fields{
-		"Deals": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__ClientDealProposal__type),
-			
-			Resolve: MessageParamsMarketPublishDeals__Deals__resolve,
-		},
-	},
-})
-func MinerPostProof__PoStProof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerPostProof)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPoStProof().AsInt()
-	
-}
-func MinerPostProof__ProofBytes__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerPostProof)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProofBytes(), nil
-	
-}
-var MinerPostProof__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerPostProof",
-	Fields: graphql.Fields{
-		"PoStProof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerPostProof__PoStProof__resolve,
-		},
-		"ProofBytes": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MinerPostProof__ProofBytes__resolve,
-		},
-	},
-})
-var List__CronV0Entry__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__CronV0Entry",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: CronV0Entry__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__CronV0Entry)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(CronV0Entry__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__CronV0Entry)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(CronV0Entry__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__CronV0Entry)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__CronV0Entry)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-var Map__List__DealID__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__List__DealID",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: List__DealID__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__List__DealID)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__List__DealID)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(List__DealID__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__List__DealID)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	var List__Multiaddrs__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__Multiaddrs",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: Multiaddr__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Multiaddrs)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(Multiaddr__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Multiaddrs)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(Multiaddr__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Multiaddrs)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Multiaddrs)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-var List__Address__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__Address",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: Address__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Address)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(Address__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Address)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(Address__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Address)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Address)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-var Map__LotusActors__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__LotusActors",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: LotusActors__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(RawAddress__type),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__LotusActors)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(RawAddress__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__LotusActors)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(LotusActors__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__LotusActors)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func AccountV0State__Address__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.AccountV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldAddress(), nil
-	
-}
-var AccountV0State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "AccountV0State",
-	Fields: graphql.Fields{
-		"Address": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: AccountV0State__Address__resolve,
-		},
-	},
-})
-func MinerV2Partition__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectors(), nil
-	
-}
-func MinerV2Partition__Unproven__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldUnproven(), nil
-	
-}
-func MinerV2Partition__Faults__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFaults(), nil
-	
-}
-func MinerV2Partition__Recoveries__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRecoveries(), nil
-	
-}
-func MinerV2Partition__Terminated__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTerminated(), nil
-	
-}
-func MinerV2Partition__ExpirationsEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldExpirationsEpochs().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__MinerV0ExpirationSet__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV2Partition__EarlyTerminated__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEarlyTerminated(), nil
-	
-}
-func MinerV2Partition__LivePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLivePower(), nil
-	
-}
-func MinerV2Partition__UnprovenPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldUnprovenPower(), nil
-	
-}
-func MinerV2Partition__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFaultyPower(), nil
-	
-}
-func MinerV2Partition__RecoveringPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRecoveringPower(), nil
-	
-}
-var MinerV2Partition__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV2Partition",
-	Fields: graphql.Fields{
-		"Sectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV2Partition__Sectors__resolve,
-		},
-		"Unproven": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV2Partition__Unproven__resolve,
-		},
-		"Faults": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV2Partition__Faults__resolve,
-		},
-		"Recoveries": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV2Partition__Recoveries__resolve,
-		},
-		"Terminated": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV2Partition__Terminated__resolve,
-		},
-		"ExpirationsEpochs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__MinerV0ExpirationSet__type),
-			
-			Resolve: MinerV2Partition__ExpirationsEpochs__resolve,
-		},
-		"EarlyTerminated": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MinerV2Partition__EarlyTerminated__resolve,
-		},
-		"LivePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV2Partition__LivePower__resolve,
-		},
-		"UnprovenPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV2Partition__UnprovenPower__resolve,
-		},
-		"FaultyPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV2Partition__FaultyPower__resolve,
-		},
-		"RecoveringPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV2Partition__RecoveringPower__resolve,
-		},
-	},
-})
-func MinerTerminationDecl__Deadline__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerTerminationDecl)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDeadline().AsInt()
-	
-}
-func MinerTerminationDecl__Partition__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerTerminationDecl)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPartition().AsInt()
-	
-}
-func MinerTerminationDecl__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerTerminationDecl)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectors(), nil
-	
-}
-var MinerTerminationDecl__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerTerminationDecl",
-	Fields: graphql.Fields{
-		"Deadline": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerTerminationDecl__Deadline__resolve,
-		},
-		"Partition": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerTerminationDecl__Partition__resolve,
-		},
-		"Sectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerTerminationDecl__Sectors__resolve,
-		},
-	},
-})
-func Merge__Lane__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.Merge)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLane().AsInt()
-	
-}
-func Merge__Nonce__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.Merge)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNonce().AsInt()
-	
-}
-var Merge__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Merge",
-	Fields: graphql.Fields{
-		"Lane": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: Merge__Lane__resolve,
-		},
-		"Nonce": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: Merge__Nonce__resolve,
-		},
-	},
-})
-var Map__PowerV2Claim__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__PowerV2Claim",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: PowerV2Claim__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(RawAddress__type),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PowerV2Claim)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(RawAddress__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PowerV2Claim)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(PowerV2Claim__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PowerV2Claim)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MessageParamsMarketVerifyDeals__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketVerifyDeals)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDealIDs(), nil
-	
-}
-func MessageParamsMarketVerifyDeals__SectorExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketVerifyDeals)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorExpiry(), nil
-	
-}
-func MessageParamsMarketVerifyDeals__SectorStart__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketVerifyDeals)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorStart(), nil
-	
-}
-var MessageParamsMarketVerifyDeals__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMarketVerifyDeals",
-	Fields: graphql.Fields{
-		"DealIDs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__DealID__type),
-			
-			Resolve: MessageParamsMarketVerifyDeals__DealIDs__resolve,
-		},
-		"SectorExpiry": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MessageParamsMarketVerifyDeals__SectorExpiry__resolve,
-		},
-		"SectorStart": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MessageParamsMarketVerifyDeals__SectorStart__resolve,
-		},
-	},
-})
-func MessageParamsMarketActivateDeals__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketActivateDeals)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDealIDs(), nil
-	
-}
-func MessageParamsMarketActivateDeals__SectorExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketActivateDeals)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorExpiry(), nil
-	
-}
-var MessageParamsMarketActivateDeals__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMarketActivateDeals",
-	Fields: graphql.Fields{
-		"DealIDs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__DealID__type),
-			
-			Resolve: MessageParamsMarketActivateDeals__DealIDs__resolve,
-		},
-		"SectorExpiry": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MessageParamsMarketActivateDeals__SectorExpiry__resolve,
-		},
-	},
-})
-var List__MinerV0VestingFund__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__MinerV0VestingFund",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerV0VestingFund__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV0VestingFund)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(MinerV0VestingFund__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV0VestingFund)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(MinerV0VestingFund__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV0VestingFund)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV0VestingFund)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-func MessageParamsPaychConstructor__From__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPaychConstructor)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFrom(), nil
-	
-}
-func MessageParamsPaychConstructor__To__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPaychConstructor)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTo(), nil
-	
-}
-var MessageParamsPaychConstructor__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsPaychConstructor",
-	Fields: graphql.Fields{
-		"From": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsPaychConstructor__From__resolve,
-		},
-		"To": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsPaychConstructor__To__resolve,
-		},
-	},
-})
-func MessageParamsRewardAwardBlock__Miner__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsRewardAwardBlock)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMiner(), nil
-	
-}
-func MessageParamsRewardAwardBlock__Penalty__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsRewardAwardBlock)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPenalty(), nil
-	
-}
-func MessageParamsRewardAwardBlock__GasReward__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsRewardAwardBlock)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldGasReward(), nil
-	
-}
-func MessageParamsRewardAwardBlock__WinCount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsRewardAwardBlock)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldWinCount().AsInt()
-	
-}
-var MessageParamsRewardAwardBlock__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsRewardAwardBlock",
-	Fields: graphql.Fields{
-		"Miner": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsRewardAwardBlock__Miner__resolve,
-		},
-		"Penalty": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsRewardAwardBlock__Penalty__resolve,
-		},
-		"GasReward": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsRewardAwardBlock__GasReward__resolve,
-		},
-		"WinCount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MessageParamsRewardAwardBlock__WinCount__resolve,
-		},
-	},
-})
-var List__MinerV0DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__MinerV0DeadlineLink",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerV0Deadline__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV0DeadlineLink)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				if err != nil {
-					return nil, err
-				}
-				targetCid, err := out.AsLink()
-				if err != nil {
-					return nil, err
-				}
-				
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.MinerV0Deadline__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(MinerV0Deadline__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV0DeadlineLink)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					targetCid, err := node.AsLink()
-					if err != nil {
-						return nil, err
-					}
-					
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.MinerV0Deadline__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(MinerV0Deadline__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV0DeadlineLink)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					targetCid, err := node.AsLink()
-					if err != nil {
-						return nil, err
-					}
-					
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.MinerV0Deadline__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV0DeadlineLink)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
 var LotusMessageV2Params__type = graphql.NewUnion(graphql.UnionConfig{
 	Name: "LotusMessageV2Params",
 	Types: []*graphql.Object{
@@ -5854,4032 +3539,6 @@ var LotusMessageV2Params__type = graphql.NewUnion(graphql.UnionConfig{
 
 
 
-func RawAddress__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		s, err := value.AsString()
-		if err != nil {
-			return err
-		}
-		return s
-		
-	default:
-		return nil
-	}
-}
-var RawAddress__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "RawAddress",
-	Description: "RawAddress",
-	Serialize: RawAddress__type__serialize,
-	ParseValue: RawAddress__type__parse,
-	ParseLiteral: RawAddress__type__parseLiteral,
-})
-func LotusStateRoot__Version__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusStateRoot)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldVersion().AsInt()
-	
-}
-func LotusStateRoot__Actors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusStateRoot)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldActors().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__LotusActors__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func LotusStateRoot__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusStateRoot)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldInfo(), nil
-	
-}
-var LotusStateRoot__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "LotusStateRoot",
-	Fields: graphql.Fields{
-		"Version": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: LotusStateRoot__Version__resolve,
-		},
-		"Actors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__LotusActors__type),
-			
-			Resolve: LotusStateRoot__Actors__resolve,
-		},
-		"Info": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: LotusStateRoot__Info__resolve,
-		},
-	},
-})
-var List__MinerPoStProof__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__MinerPoStProof",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerPostProof__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerPoStProof)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(MinerPostProof__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerPoStProof)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(MinerPostProof__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerPoStProof)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerPoStProof)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-func MessageParamsPowerEnrollCron__EventEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerEnrollCron)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEventEpoch(), nil
-	
-}
-func MessageParamsPowerEnrollCron__Payload__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerEnrollCron)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPayload(), nil
-	
-}
-var MessageParamsPowerEnrollCron__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsPowerEnrollCron",
-	Fields: graphql.Fields{
-		"EventEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MessageParamsPowerEnrollCron__EventEpoch__resolve,
-		},
-		"Payload": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MessageParamsPowerEnrollCron__Payload__resolve,
-		},
-	},
-})
-func VerifregV0State__RootKey__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.VerifregV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRootKey(), nil
-	
-}
-func VerifregV0State__Verifiers__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.VerifregV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldVerifiers().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__DataCap__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func VerifregV0State__VerifiedClients__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.VerifregV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldVerifiedClients().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__DataCap__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-var VerifregV0State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "VerifregV0State",
-	Fields: graphql.Fields{
-		"RootKey": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: VerifregV0State__RootKey__resolve,
-		},
-		"Verifiers": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__DataCap__type),
-			
-			Resolve: VerifregV0State__Verifiers__resolve,
-		},
-		"VerifiedClients": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__DataCap__type),
-			
-			Resolve: VerifregV0State__VerifiedClients__resolve,
-		},
-	},
-})
-func MessageParamsMarketComputeCommitment__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketComputeCommitment)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDealIDs(), nil
-	
-}
-func MessageParamsMarketComputeCommitment__SectorType__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketComputeCommitment)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorType(), nil
-	
-}
-var MessageParamsMarketComputeCommitment__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMarketComputeCommitment",
-	Fields: graphql.Fields{
-		"DealIDs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__DealID__type),
-			
-			Resolve: MessageParamsMarketComputeCommitment__DealIDs__resolve,
-		},
-		"SectorType": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MessageParamsMarketComputeCommitment__SectorType__resolve,
-		},
-	},
-})
-func MessageParamsInitExecParams__CodeCID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsInitExecParams)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldCodeCID(), nil
-	
-}
-func MessageParamsInitExecParams__ConstructorParams__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsInitExecParams)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldConstructorParams(), nil
-	
-}
-var MessageParamsInitExecParams__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsInitExecParams",
-	Fields: graphql.Fields{
-		"CodeCID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MessageParamsInitExecParams__CodeCID__resolve,
-		},
-		"ConstructorParams": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MessageParamsInitExecParams__ConstructorParams__resolve,
-		},
-	},
-})
-func MessageParamsPowerUpdateClaimed__RawByteDelta__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerUpdateClaimed)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRawByteDelta(), nil
-	
-}
-func MessageParamsPowerUpdateClaimed__QualityAdjustedDelta__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerUpdateClaimed)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldQualityAdjustedDelta(), nil
-	
-}
-var MessageParamsPowerUpdateClaimed__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsPowerUpdateClaimed",
-	Fields: graphql.Fields{
-		"RawByteDelta": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsPowerUpdateClaimed__RawByteDelta__resolve,
-		},
-		"QualityAdjustedDelta": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsPowerUpdateClaimed__QualityAdjustedDelta__resolve,
-		},
-	},
-})
-func PeerID__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		b, err := value.AsBytes()
-		if err != nil {
-			return err
-		}
-		return b
-		
-	default:
-		return nil
-	}
-}
-func PeerID__type__parse(value interface{}) interface{} {
-	builder := types.Type.PeerID__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func PeerID__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.PeerID__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var PeerID__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "PeerID",
-	Description: "PeerID",
-	Serialize: PeerID__type__serialize,
-	ParseValue: PeerID__type__parse,
-	ParseLiteral: PeerID__type__parseLiteral,
-})
-func MarketV0State__Proposals__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldProposals().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__MarketV0RawDealProposal__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MarketV0State__States__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldStates().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__MarketV0DealState__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MarketV0State__PendingProposals__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldPendingProposals().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__MarketV0DealProposal__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MarketV0State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldEscrowTable().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__BalanceTable__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MarketV0State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldLockedTable().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__BalanceTable__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MarketV0State__NextID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNextID(), nil
-	
-}
-func MarketV0State__DealOpsByEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldDealOpsByEpoch().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__List__DealID__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MarketV0State__LastCron__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLastCron(), nil
-	
-}
-func MarketV0State__TotalClientLockedCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalClientLockedCollateral(), nil
-	
-}
-func MarketV0State__TotalProviderLockedCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalProviderLockedCollateral(), nil
-	
-}
-func MarketV0State__TotalClientStorageFee__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalClientStorageFee(), nil
-	
-}
-var MarketV0State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MarketV0State",
-	Fields: graphql.Fields{
-		"Proposals": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__MarketV0RawDealProposal__type),
-			
-			Resolve: MarketV0State__Proposals__resolve,
-		},
-		"States": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__MarketV0DealState__type),
-			
-			Resolve: MarketV0State__States__resolve,
-		},
-		"PendingProposals": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__MarketV0DealProposal__type),
-			
-			Resolve: MarketV0State__PendingProposals__resolve,
-		},
-		"EscrowTable": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__BalanceTable__type),
-			
-			Resolve: MarketV0State__EscrowTable__resolve,
-		},
-		"LockedTable": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__BalanceTable__type),
-			
-			Resolve: MarketV0State__LockedTable__resolve,
-		},
-		"NextID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(DealID__type),
-			
-			Resolve: MarketV0State__NextID__resolve,
-		},
-		"DealOpsByEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__List__DealID__type),
-			
-			Resolve: MarketV0State__DealOpsByEpoch__resolve,
-		},
-		"LastCron": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MarketV0State__LastCron__resolve,
-		},
-		"TotalClientLockedCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MarketV0State__TotalClientLockedCollateral__resolve,
-		},
-		"TotalProviderLockedCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MarketV0State__TotalProviderLockedCollateral__resolve,
-		},
-		"TotalClientStorageFee": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MarketV0State__TotalClientStorageFee__resolve,
-		},
-	},
-})
-var Map__MarketV0DealProposal__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__MarketV0DealProposal",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MarketV0DealProposal__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(CidString__type),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV0DealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(CidString__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV0DealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MarketV0DealProposal__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV0DealProposal)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MarketClientDealProposal__Proposal__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketClientDealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProposal(), nil
-	
-}
-func MarketClientDealProposal__ClientSignature__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketClientDealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldClientSignature(), nil
-	
-}
-var MarketClientDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MarketClientDealProposal",
-	Fields: graphql.Fields{
-		"Proposal": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MarketV2DealProposal__type),
-			
-			Resolve: MarketClientDealProposal__Proposal__resolve,
-		},
-		"ClientSignature": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Signature__type),
-			
-			Resolve: MarketClientDealProposal__ClientSignature__resolve,
-		},
-	},
-})
-var Map__SectorV2OnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__SectorV2OnChainInfo",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerV2SectorOnChainInfo__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__SectorV2OnChainInfo)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__SectorV2OnChainInfo)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MinerV2SectorOnChainInfo__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__SectorV2OnChainInfo)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MessageParamsMinerExtendSectorExpiration__Extension__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerExtendSectorExpiration)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldExtension(), nil
-	
-}
-var MessageParamsMinerExtendSectorExpiration__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerExtendSectorExpiration",
-	Fields: graphql.Fields{
-		"Extension": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__MinerExpirationExtend__type),
-			
-			Resolve: MessageParamsMinerExtendSectorExpiration__Extension__resolve,
-		},
-	},
-})
-func MessageParamsMinerWithdrawBalance__AmountRequested__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerWithdrawBalance)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldAmountRequested(), nil
-	
-}
-var MessageParamsMinerWithdrawBalance__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerWithdrawBalance",
-	Fields: graphql.Fields{
-		"AmountRequested": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsMinerWithdrawBalance__AmountRequested__resolve,
-		},
-	},
-})
-func MessageParamsPowerCurrentTotal__RawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerCurrentTotal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRawBytePower(), nil
-	
-}
-func MessageParamsPowerCurrentTotal__QualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerCurrentTotal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldQualityAdjPower(), nil
-	
-}
-func MessageParamsPowerCurrentTotal__PledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerCurrentTotal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPledgeCollateral(), nil
-	
-}
-func MessageParamsPowerCurrentTotal__QualityAdjPowerSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsPowerCurrentTotal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldQualityAdjPowerSmoothed(), nil
-	
-}
-var MessageParamsPowerCurrentTotal__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsPowerCurrentTotal",
-	Fields: graphql.Fields{
-		"RawBytePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsPowerCurrentTotal__RawBytePower__resolve,
-		},
-		"QualityAdjPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsPowerCurrentTotal__QualityAdjPower__resolve,
-		},
-		"PledgeCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsPowerCurrentTotal__PledgeCollateral__resolve,
-		},
-		"QualityAdjPowerSmoothed": &graphql.Field{
-			
-			Type: graphql.NewNonNull(V0FilterEstimate__type),
-			
-			Resolve: MessageParamsPowerCurrentTotal__QualityAdjPowerSmoothed__resolve,
-		},
-	},
-})
-func UnpaddedPieceSize__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		i, err := value.AsInt()
-		if err != nil {
-			return err
-		}
-		return i
-		
-	default:
-		return nil
-	}
-}
-func UnpaddedPieceSize__type__parse(value interface{}) interface{} {
-	builder := types.Type.UnpaddedPieceSize__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func UnpaddedPieceSize__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.UnpaddedPieceSize__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var UnpaddedPieceSize__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "UnpaddedPieceSize",
-	Description: "UnpaddedPieceSize",
-	Serialize: UnpaddedPieceSize__type__serialize,
-	ParseValue: UnpaddedPieceSize__type__parse,
-	ParseLiteral: UnpaddedPieceSize__type__parseLiteral,
-})
-var List__LotusBeaconEntry__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__LotusBeaconEntry",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: LotusBeaconEntry__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__LotusBeaconEntry)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(LotusBeaconEntry__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__LotusBeaconEntry)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(LotusBeaconEntry__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__LotusBeaconEntry)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__LotusBeaconEntry)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-var List__MinerTerminationDecl__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__MinerTerminationDecl",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerTerminationDecl__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerTerminationDecl)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(MinerTerminationDecl__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerTerminationDecl)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(MinerTerminationDecl__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerTerminationDecl)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerTerminationDecl)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-var Map__PaychV0LaneState__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__PaychV0LaneState",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: PaychV0LaneState__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PaychV0LaneState)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PaychV0LaneState)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(PaychV0LaneState__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__PaychV0LaneState)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	var List__Link__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__Link",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: graphql.ID,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Link)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(graphql.ID),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Link)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(graphql.ID),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Link)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__Link)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-func MinerV0VestingFund__Epoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0VestingFund)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEpoch(), nil
-	
-}
-func MinerV0VestingFund__Amount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0VestingFund)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldAmount(), nil
-	
-}
-var MinerV0VestingFund__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0VestingFund",
-	Fields: graphql.Fields{
-		"Epoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV0VestingFund__Epoch__resolve,
-		},
-		"Amount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV0VestingFund__Amount__resolve,
-		},
-	},
-})
-func MinerPostPartition__Index__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerPostPartition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldIndex().AsInt()
-	
-}
-func MinerPostPartition__Skipped__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerPostPartition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSkipped(), nil
-	
-}
-var MinerPostPartition__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerPostPartition",
-	Fields: graphql.Fields{
-		"Index": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerPostPartition__Index__resolve,
-		},
-		"Skipped": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerPostPartition__Skipped__resolve,
-		},
-	},
-})
-func ActorID__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		i, err := value.AsInt()
-		if err != nil {
-			return err
-		}
-		return i
-		
-	default:
-		return nil
-	}
-}
-func ActorID__type__parse(value interface{}) interface{} {
-	builder := types.Type.ActorID__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func ActorID__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.ActorID__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var ActorID__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "ActorID",
-	Description: "ActorID",
-	Serialize: ActorID__type__serialize,
-	ParseValue: ActorID__type__parse,
-	ParseLiteral: ActorID__type__parseLiteral,
-})
-func LotusElectionProof__WinCount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusElectionProof)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldWinCount().AsInt()
-	
-}
-func LotusElectionProof__VRFProof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusElectionProof)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldVRFProof(), nil
-	
-}
-var LotusElectionProof__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "LotusElectionProof",
-	Fields: graphql.Fields{
-		"WinCount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: LotusElectionProof__WinCount__resolve,
-		},
-		"VRFProof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: LotusElectionProof__VRFProof__resolve,
-		},
-	},
-})
-func MinerV0VestingFunds__Funds__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0VestingFunds)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFunds(), nil
-	
-}
-var MinerV0VestingFunds__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0VestingFunds",
-	Fields: graphql.Fields{
-		"Funds": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__MinerV0VestingFund__type),
-			
-			Resolve: MinerV0VestingFunds__Funds__resolve,
-		},
-	},
-})
-func MinerV0Partition__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectors(), nil
-	
-}
-func MinerV0Partition__Faults__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFaults(), nil
-	
-}
-func MinerV0Partition__Recoveries__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRecoveries(), nil
-	
-}
-func MinerV0Partition__Terminated__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTerminated(), nil
-	
-}
-func MinerV0Partition__ExpirationsEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldExpirationsEpochs().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__MinerV0ExpirationSet__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV0Partition__EarlyTerminated__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEarlyTerminated(), nil
-	
-}
-func MinerV0Partition__LivePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLivePower(), nil
-	
-}
-func MinerV0Partition__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFaultyPower(), nil
-	
-}
-func MinerV0Partition__RecoveringPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Partition)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRecoveringPower(), nil
-	
-}
-var MinerV0Partition__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0Partition",
-	Fields: graphql.Fields{
-		"Sectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV0Partition__Sectors__resolve,
-		},
-		"Faults": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV0Partition__Faults__resolve,
-		},
-		"Recoveries": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV0Partition__Recoveries__resolve,
-		},
-		"Terminated": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV0Partition__Terminated__resolve,
-		},
-		"ExpirationsEpochs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__MinerV0ExpirationSet__type),
-			
-			Resolve: MinerV0Partition__ExpirationsEpochs__resolve,
-		},
-		"EarlyTerminated": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MinerV0Partition__EarlyTerminated__resolve,
-		},
-		"LivePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV0Partition__LivePower__resolve,
-		},
-		"FaultyPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV0Partition__FaultyPower__resolve,
-		},
-		"RecoveringPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV0Partition__RecoveringPower__resolve,
-		},
-	},
-})
-var Map__SectorPreCommitOnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__SectorPreCommitOnChainInfo",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerV0SectorPreCommitOnChainInfo__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__SectorPreCommitOnChainInfo)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__SectorPreCommitOnChainInfo)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MinerV0SectorPreCommitOnChainInfo__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__SectorPreCommitOnChainInfo)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MinerV0SectorPreCommitInfo__SealProof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealProof().AsInt()
-	
-}
-func MinerV0SectorPreCommitInfo__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorNumber(), nil
-	
-}
-func MinerV0SectorPreCommitInfo__SealedCID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealedCID(), nil
-	
-}
-func MinerV0SectorPreCommitInfo__SealRandEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealRandEpoch(), nil
-	
-}
-func MinerV0SectorPreCommitInfo__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldDealIDs()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func MinerV0SectorPreCommitInfo__Expiration__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldExpiration(), nil
-	
-}
-func MinerV0SectorPreCommitInfo__ReplaceCapacity__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldReplaceCapacity().AsBool()
-	
-}
-func MinerV0SectorPreCommitInfo__ReplaceSectorDeadline__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldReplaceSectorDeadline().AsInt()
-	
-}
-func MinerV0SectorPreCommitInfo__ReplaceSectorPartition__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldReplaceSectorPartition().AsInt()
-	
-}
-func MinerV0SectorPreCommitInfo__ReplaceSectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldReplaceSectorNumber(), nil
-	
-}
-var MinerV0SectorPreCommitInfo__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0SectorPreCommitInfo",
-	Fields: graphql.Fields{
-		"SealProof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV0SectorPreCommitInfo__SealProof__resolve,
-		},
-		"SectorNumber": &graphql.Field{
-			
-			Type: graphql.NewNonNull(SectorNumber__type),
-			
-			Resolve: MinerV0SectorPreCommitInfo__SectorNumber__resolve,
-		},
-		"SealedCID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MinerV0SectorPreCommitInfo__SealedCID__resolve,
-		},
-		"SealRandEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV0SectorPreCommitInfo__SealRandEpoch__resolve,
-		},
-		"DealIDs": &graphql.Field{
-			
-			Type: List__DealID__type,
-			
-			Resolve: MinerV0SectorPreCommitInfo__DealIDs__resolve,
-		},
-		"Expiration": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV0SectorPreCommitInfo__Expiration__resolve,
-		},
-		"ReplaceCapacity": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Boolean),
-			
-			Resolve: MinerV0SectorPreCommitInfo__ReplaceCapacity__resolve,
-		},
-		"ReplaceSectorDeadline": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV0SectorPreCommitInfo__ReplaceSectorDeadline__resolve,
-		},
-		"ReplaceSectorPartition": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV0SectorPreCommitInfo__ReplaceSectorPartition__resolve,
-		},
-		"ReplaceSectorNumber": &graphql.Field{
-			
-			Type: graphql.NewNonNull(SectorNumber__type),
-			
-			Resolve: MinerV0SectorPreCommitInfo__ReplaceSectorNumber__resolve,
-		},
-	},
-})
-var Multimap__PowerV0CronEvent__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Multimap__PowerV0CronEvent",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: Map__PowerV0CronEvent__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Multimap__PowerV0CronEvent)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Multimap__PowerV0CronEvent)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(Map__PowerV0CronEvent__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Multimap__PowerV0CronEvent)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MessageParamsMarketTerminateDeals__Epoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketTerminateDeals)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEpoch(), nil
-	
-}
-func MessageParamsMarketTerminateDeals__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMarketTerminateDeals)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDealIDs(), nil
-	
-}
-var MessageParamsMarketTerminateDeals__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMarketTerminateDeals",
-	Fields: graphql.Fields{
-		"Epoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MessageParamsMarketTerminateDeals__Epoch__resolve,
-		},
-		"DealIDs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__DealID__type),
-			
-			Resolve: MessageParamsMarketTerminateDeals__DealIDs__resolve,
-		},
-	},
-})
-func CronV0State__Entries__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.CronV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEntries(), nil
-	
-}
-var CronV0State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "CronV0State",
-	Fields: graphql.Fields{
-		"Entries": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__CronV0Entry__type),
-			
-			Resolve: CronV0State__Entries__resolve,
-		},
-	},
-})
-func MinerV0Info__Owner__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldOwner(), nil
-	
-}
-func MinerV0Info__Worker__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldWorker(), nil
-	
-}
-func MinerV0Info__ControlAddresses__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldControlAddresses()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func MinerV0Info__PendingWorkerKey__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldPendingWorkerKey()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func MinerV0Info__PeerId__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPeerId(), nil
-	
-}
-func MinerV0Info__Multiaddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldMultiaddrs()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func MinerV0Info__SealProofType__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealProofType().AsInt()
-	
-}
-func MinerV0Info__SectorSize__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorSize(), nil
-	
-}
-func MinerV0Info__WindowPoStPartitionSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0Info)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldWindowPoStPartitionSectors().AsInt()
-	
-}
-var MinerV0Info__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0Info",
-	Fields: graphql.Fields{
-		"Owner": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MinerV0Info__Owner__resolve,
-		},
-		"Worker": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MinerV0Info__Worker__resolve,
-		},
-		"ControlAddresses": &graphql.Field{
-			
-			Type: List__Address__type,
-			
-			Resolve: MinerV0Info__ControlAddresses__resolve,
-		},
-		"PendingWorkerKey": &graphql.Field{
-			
-			Type: MinerV0WorkerChangeKey__type,
-			
-			Resolve: MinerV0Info__PendingWorkerKey__resolve,
-		},
-		"PeerId": &graphql.Field{
-			
-			Type: graphql.NewNonNull(PeerID__type),
-			
-			Resolve: MinerV0Info__PeerId__resolve,
-		},
-		"Multiaddrs": &graphql.Field{
-			
-			Type: List__Multiaddrs__type,
-			
-			Resolve: MinerV0Info__Multiaddrs__resolve,
-		},
-		"SealProofType": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV0Info__SealProofType__resolve,
-		},
-		"SectorSize": &graphql.Field{
-			
-			Type: graphql.NewNonNull(SectorSize__type),
-			
-			Resolve: MinerV0Info__SectorSize__resolve,
-		},
-		"WindowPoStPartitionSectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV0Info__WindowPoStPartitionSectors__resolve,
-		},
-	},
-})
-func MinerV2SectorOnChainInfo__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorNumber(), nil
-	
-}
-func MinerV2SectorOnChainInfo__SealProof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealProof().AsInt()
-	
-}
-func MinerV2SectorOnChainInfo__SealedCID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSealedCID(), nil
-	
-}
-func MinerV2SectorOnChainInfo__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDealIDs(), nil
-	
-}
-func MinerV2SectorOnChainInfo__Activation__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldActivation(), nil
-	
-}
-func MinerV2SectorOnChainInfo__Expiration__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldExpiration(), nil
-	
-}
-func MinerV2SectorOnChainInfo__DealWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDealWeight(), nil
-	
-}
-func MinerV2SectorOnChainInfo__VerifiedDealWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldVerifiedDealWeight(), nil
-	
-}
-func MinerV2SectorOnChainInfo__InitialPledge__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldInitialPledge(), nil
-	
-}
-func MinerV2SectorOnChainInfo__ExpectedDayReward__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldExpectedDayReward(), nil
-	
-}
-func MinerV2SectorOnChainInfo__ExpectedStorageReward__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldExpectedStorageReward(), nil
-	
-}
-func MinerV2SectorOnChainInfo__ReplacedSectorAge__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldReplacedSectorAge(), nil
-	
-}
-func MinerV2SectorOnChainInfo__ReplacedDayReward__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldReplacedDayReward(), nil
-	
-}
-var MinerV2SectorOnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV2SectorOnChainInfo",
-	Fields: graphql.Fields{
-		"SectorNumber": &graphql.Field{
-			
-			Type: graphql.NewNonNull(SectorNumber__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__SectorNumber__resolve,
-		},
-		"SealProof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV2SectorOnChainInfo__SealProof__resolve,
-		},
-		"SealedCID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MinerV2SectorOnChainInfo__SealedCID__resolve,
-		},
-		"DealIDs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__DealID__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__DealIDs__resolve,
-		},
-		"Activation": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__Activation__resolve,
-		},
-		"Expiration": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__Expiration__resolve,
-		},
-		"DealWeight": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__DealWeight__resolve,
-		},
-		"VerifiedDealWeight": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__VerifiedDealWeight__resolve,
-		},
-		"InitialPledge": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__InitialPledge__resolve,
-		},
-		"ExpectedDayReward": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__ExpectedDayReward__resolve,
-		},
-		"ExpectedStorageReward": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__ExpectedStorageReward__resolve,
-		},
-		"ReplacedSectorAge": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__ReplacedSectorAge__resolve,
-		},
-		"ReplacedDayReward": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV2SectorOnChainInfo__ReplacedDayReward__resolve,
-		},
-	},
-})
-func MessageParamsMinerDeclareFaults__Faults__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerDeclareFaults)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFaults(), nil
-	
-}
-var MessageParamsMinerDeclareFaults__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerDeclareFaults",
-	Fields: graphql.Fields{
-		"Faults": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__MinerTerminationDecl__type),
-			
-			Resolve: MessageParamsMinerDeclareFaults__Faults__resolve,
-		},
-	},
-})
-func MessageParamsMinerProveCommitSector__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerProveCommitSector)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorNumber(), nil
-	
-}
-func MessageParamsMinerProveCommitSector__Proof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerProveCommitSector)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProof(), nil
-	
-}
-var MessageParamsMinerProveCommitSector__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerProveCommitSector",
-	Fields: graphql.Fields{
-		"SectorNumber": &graphql.Field{
-			
-			Type: graphql.NewNonNull(SectorNumber__type),
-			
-			Resolve: MessageParamsMinerProveCommitSector__SectorNumber__resolve,
-		},
-		"Proof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MessageParamsMinerProveCommitSector__Proof__resolve,
-		},
-	},
-})
-func MessageParamsMultisigTxnID__ID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigTxnID)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldID().AsInt()
-	
-}
-func MessageParamsMultisigTxnID__ProposeHash__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigTxnID)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProposeHash(), nil
-	
-}
-var MessageParamsMultisigTxnID__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMultisigTxnID",
-	Fields: graphql.Fields{
-		"ID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MessageParamsMultisigTxnID__ID__resolve,
-		},
-		"ProposeHash": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MessageParamsMultisigTxnID__ProposeHash__resolve,
-		},
-	},
-})
-func LotusBlockHeader__Miner__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMiner(), nil
-	
-}
-func LotusBlockHeader__Ticket__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldTicket()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func LotusBlockHeader__ElectionProof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldElectionProof()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func LotusBlockHeader__BeaconEntries__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldBeaconEntries(), nil
-	
-}
-func LotusBlockHeader__WinPoStProof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldWinPoStProof(), nil
-	
-}
-func LotusBlockHeader__Parents__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldParents(), nil
-	
-}
-func LotusBlockHeader__ParentWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldParentWeight(), nil
-	
-}
-func LotusBlockHeader__Height__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldHeight(), nil
-	
-}
-func LotusBlockHeader__ParentStateRoot__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldParentStateRoot().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.LotusStateRoot__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func LotusBlockHeader__ParentMessageReceipts__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldParentMessageReceipts(), nil
-	
-}
-func LotusBlockHeader__Messages__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldMessages().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.LotusMsgMeta__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func LotusBlockHeader__BLSAggregate__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldBLSAggregate()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func LotusBlockHeader__Timestamp__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTimestamp().AsInt()
-	
-}
-func LotusBlockHeader__BlockSig__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldBlockSig()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func LotusBlockHeader__ForkSignaling__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldForkSignaling().AsInt()
-	
-}
-func LotusBlockHeader__ParentBaseFee__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBlockHeader)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldParentBaseFee(), nil
-	
-}
-var LotusBlockHeader__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "LotusBlockHeader",
-	Fields: graphql.Fields{
-		"Miner": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: LotusBlockHeader__Miner__resolve,
-		},
-		"Ticket": &graphql.Field{
-			
-			Type: LotusTicket__type,
-			
-			Resolve: LotusBlockHeader__Ticket__resolve,
-		},
-		"ElectionProof": &graphql.Field{
-			
-			Type: LotusElectionProof__type,
-			
-			Resolve: LotusBlockHeader__ElectionProof__resolve,
-		},
-		"BeaconEntries": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__LotusBeaconEntry__type),
-			
-			Resolve: LotusBlockHeader__BeaconEntries__resolve,
-		},
-		"WinPoStProof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__PoStProof__type),
-			
-			Resolve: LotusBlockHeader__WinPoStProof__resolve,
-		},
-		"Parents": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__Link__type),
-			
-			Resolve: LotusBlockHeader__Parents__resolve,
-		},
-		"ParentWeight": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: LotusBlockHeader__ParentWeight__resolve,
-		},
-		"Height": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: LotusBlockHeader__Height__resolve,
-		},
-		"ParentStateRoot": &graphql.Field{
-			
-			Type: graphql.NewNonNull(LotusStateRoot__type),
-			
-			Resolve: LotusBlockHeader__ParentStateRoot__resolve,
-		},
-		"ParentMessageReceipts": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: LotusBlockHeader__ParentMessageReceipts__resolve,
-		},
-		"Messages": &graphql.Field{
-			
-			Type: graphql.NewNonNull(LotusMsgMeta__type),
-			
-			Resolve: LotusBlockHeader__Messages__resolve,
-		},
-		"BLSAggregate": &graphql.Field{
-			
-			Type: Signature__type,
-			
-			Resolve: LotusBlockHeader__BLSAggregate__resolve,
-		},
-		"Timestamp": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: LotusBlockHeader__Timestamp__resolve,
-		},
-		"BlockSig": &graphql.Field{
-			
-			Type: Signature__type,
-			
-			Resolve: LotusBlockHeader__BlockSig__resolve,
-		},
-		"ForkSignaling": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: LotusBlockHeader__ForkSignaling__resolve,
-		},
-		"ParentBaseFee": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: LotusBlockHeader__ParentBaseFee__resolve,
-		},
-	},
-})
-func PowerV0CronEvent__MinerAddr__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0CronEvent)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMinerAddr(), nil
-	
-}
-func PowerV0CronEvent__CallbackPayload__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV0CronEvent)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldCallbackPayload(), nil
-	
-}
-var PowerV0CronEvent__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "PowerV0CronEvent",
-	Fields: graphql.Fields{
-		"MinerAddr": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: PowerV0CronEvent__MinerAddr__resolve,
-		},
-		"CallbackPayload": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: PowerV0CronEvent__CallbackPayload__resolve,
-		},
-	},
-})
-var Map__MinerV2Partition__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__MinerV2Partition",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerV2Partition__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MinerV2Partition)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MinerV2Partition)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MinerV2Partition__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MinerV2Partition)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MessageParamsMultisigLockBalance__StartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigLockBalance)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldStartEpoch(), nil
-	
-}
-func MessageParamsMultisigLockBalance__UnlockDuration__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigLockBalance)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldUnlockDuration(), nil
-	
-}
-func MessageParamsMultisigLockBalance__Amount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigLockBalance)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldAmount(), nil
-	
-}
-var MessageParamsMultisigLockBalance__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMultisigLockBalance",
-	Fields: graphql.Fields{
-		"StartEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MessageParamsMultisigLockBalance__StartEpoch__resolve,
-		},
-		"UnlockDuration": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MessageParamsMultisigLockBalance__UnlockDuration__resolve,
-		},
-		"Amount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsMultisigLockBalance__Amount__resolve,
-		},
-	},
-})
-func MinerV0WorkerChangeKey__NewWorker__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0WorkerChangeKey)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNewWorker(), nil
-	
-}
-func MinerV0WorkerChangeKey__EffectiveAt__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0WorkerChangeKey)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEffectiveAt(), nil
-	
-}
-var MinerV0WorkerChangeKey__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0WorkerChangeKey",
-	Fields: graphql.Fields{
-		"NewWorker": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MinerV0WorkerChangeKey__NewWorker__resolve,
-		},
-		"EffectiveAt": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV0WorkerChangeKey__EffectiveAt__resolve,
-		},
-	},
-})
-func MessageParamsMinerCheckSectorProven__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerCheckSectorProven)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorNumber(), nil
-	
-}
-var MessageParamsMinerCheckSectorProven__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerCheckSectorProven",
-	Fields: graphql.Fields{
-		"SectorNumber": &graphql.Field{
-			
-			Type: graphql.NewNonNull(SectorNumber__type),
-			
-			Resolve: MessageParamsMinerCheckSectorProven__SectorNumber__resolve,
-		},
-	},
-})
-func MessageParamsMinerTerminateSectors__Terminations__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerTerminateSectors)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTerminations(), nil
-	
-}
-var MessageParamsMinerTerminateSectors__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerTerminateSectors",
-	Fields: graphql.Fields{
-		"Terminations": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__MinerTerminationDecl__type),
-			
-			Resolve: MessageParamsMinerTerminateSectors__Terminations__resolve,
-		},
-	},
-})
-func CronV0Entry__Receiver__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.CronV0Entry)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldReceiver(), nil
-	
-}
-func CronV0Entry__MethodNum__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.CronV0Entry)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMethodNum(), nil
-	
-}
-var CronV0Entry__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "CronV0Entry",
-	Fields: graphql.Fields{
-		"Receiver": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: CronV0Entry__Receiver__resolve,
-		},
-		"MethodNum": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MethodNum__type),
-			
-			Resolve: CronV0Entry__MethodNum__resolve,
-		},
-	},
-})
-func MessageParamsMultisigRemoveSigner__Signer__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigRemoveSigner)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSigner(), nil
-	
-}
-func MessageParamsMultisigRemoveSigner__Decrease__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigRemoveSigner)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDecrease().AsBool()
-	
-}
-var MessageParamsMultisigRemoveSigner__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMultisigRemoveSigner",
-	Fields: graphql.Fields{
-		"Signer": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsMultisigRemoveSigner__Signer__resolve,
-		},
-		"Decrease": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Boolean),
-			
-			Resolve: MessageParamsMultisigRemoveSigner__Decrease__resolve,
-		},
-	},
-})
-func PowerV2State__TotalRawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalRawBytePower(), nil
-	
-}
-func PowerV2State__TotalBytesCommitted__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalBytesCommitted(), nil
-	
-}
-func PowerV2State__TotalQualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalQualityAdjPower(), nil
-	
-}
-func PowerV2State__TotalQABytesCommitted__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalQABytesCommitted(), nil
-	
-}
-func PowerV2State__TotalPledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalPledgeCollateral(), nil
-	
-}
-func PowerV2State__ThisEpochRawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochRawBytePower(), nil
-	
-}
-func PowerV2State__ThisEpochQualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochQualityAdjPower(), nil
-	
-}
-func PowerV2State__ThisEpochPledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochPledgeCollateral(), nil
-	
-}
-func PowerV2State__ThisEpochQAPowerSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldThisEpochQAPowerSmoothed()
-	if f.Exists() {
-		
-		return f.Must(), nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-func PowerV2State__MinerCount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMinerCount().AsInt()
-	
-}
-func PowerV2State__MinerAboveMinPowerCount__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMinerAboveMinPowerCount().AsInt()
-	
-}
-func PowerV2State__CronEventQueue__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldCronEventQueue().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Multimap__PowerV0CronEvent__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func PowerV2State__FirstCronEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFirstCronEpoch(), nil
-	
-}
-func PowerV2State__Claims__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldClaims().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__PowerV2Claim__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func PowerV2State__ProofValidationBatch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	f := ts.FieldProofValidationBatch()
-	if f.Exists() {
-		
-		return "IS a link", nil
-		
-	} else {
-		return nil, nil
-	}
-	
-}
-var PowerV2State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "PowerV2State",
-	Fields: graphql.Fields{
-		"TotalRawBytePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV2State__TotalRawBytePower__resolve,
-		},
-		"TotalBytesCommitted": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV2State__TotalBytesCommitted__resolve,
-		},
-		"TotalQualityAdjPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV2State__TotalQualityAdjPower__resolve,
-		},
-		"TotalQABytesCommitted": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV2State__TotalQABytesCommitted__resolve,
-		},
-		"TotalPledgeCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV2State__TotalPledgeCollateral__resolve,
-		},
-		"ThisEpochRawBytePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV2State__ThisEpochRawBytePower__resolve,
-		},
-		"ThisEpochQualityAdjPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV2State__ThisEpochQualityAdjPower__resolve,
-		},
-		"ThisEpochPledgeCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: PowerV2State__ThisEpochPledgeCollateral__resolve,
-		},
-		"ThisEpochQAPowerSmoothed": &graphql.Field{
-			
-			Type: V0FilterEstimate__type,
-			
-			Resolve: PowerV2State__ThisEpochQAPowerSmoothed__resolve,
-		},
-		"MinerCount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: PowerV2State__MinerCount__resolve,
-		},
-		"MinerAboveMinPowerCount": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: PowerV2State__MinerAboveMinPowerCount__resolve,
-		},
-		"CronEventQueue": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Multimap__PowerV0CronEvent__type),
-			
-			Resolve: PowerV2State__CronEventQueue__resolve,
-		},
-		"FirstCronEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: PowerV2State__FirstCronEpoch__resolve,
-		},
-		"Claims": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__PowerV2Claim__type),
-			
-			Resolve: PowerV2State__Claims__resolve,
-		},
-		"ProofValidationBatch": &graphql.Field{
-			
-			Type: graphql.ID,
-			
-			Resolve: PowerV2State__ProofValidationBatch__resolve,
-		},
-	},
-})
-func MinerV2Deadline__Partitions__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldPartitions().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.Map__MinerV2Partition__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-	
-}
-func MinerV2Deadline__ExpirationEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldExpirationEpochs(), nil
-	
-}
-func MinerV2Deadline__PostSubmissions__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPostSubmissions(), nil
-	
-}
-func MinerV2Deadline__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEarlyTerminations(), nil
-	
-}
-func MinerV2Deadline__LiveSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLiveSectors().AsInt()
-	
-}
-func MinerV2Deadline__TotalSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalSectors().AsInt()
-	
-}
-func MinerV2Deadline__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV2Deadline)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFaultyPower(), nil
-	
-}
-var MinerV2Deadline__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV2Deadline",
-	Fields: graphql.Fields{
-		"Partitions": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__MinerV2Partition__type),
-			
-			Resolve: MinerV2Deadline__Partitions__resolve,
-		},
-		"ExpirationEpochs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MinerV2Deadline__ExpirationEpochs__resolve,
-		},
-		"PostSubmissions": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV2Deadline__PostSubmissions__resolve,
-		},
-		"EarlyTerminations": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV2Deadline__EarlyTerminations__resolve,
-		},
-		"LiveSectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV2Deadline__LiveSectors__resolve,
-		},
-		"TotalSectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MinerV2Deadline__TotalSectors__resolve,
-		},
-		"FaultyPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV2Deadline__FaultyPower__resolve,
-		},
-	},
-})
-func MessageParamsMinerChangePeerID__NewID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerChangePeerID)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNewID(), nil
-	
-}
-var MessageParamsMinerChangePeerID__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerChangePeerID",
-	Fields: graphql.Fields{
-		"NewID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(PeerID__type),
-			
-			Resolve: MessageParamsMinerChangePeerID__NewID__resolve,
-		},
-	},
-})
-func MessageParamsMinerCompactSectorNumbers__MaskSectorNumbers__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerCompactSectorNumbers)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMaskSectorNumbers(), nil
-	
-}
-var MessageParamsMinerCompactSectorNumbers__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerCompactSectorNumbers",
-	Fields: graphql.Fields{
-		"MaskSectorNumbers": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MessageParamsMinerCompactSectorNumbers__MaskSectorNumbers__resolve,
-		},
-	},
-})
-func Multiaddr__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		b, err := value.AsBytes()
-		if err != nil {
-			return err
-		}
-		return b
-		
-	default:
-		return nil
-	}
-}
-func Multiaddr__type__parse(value interface{}) interface{} {
-	builder := types.Type.Multiaddr__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func Multiaddr__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.Multiaddr__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var Multiaddr__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "Multiaddr",
-	Description: "Multiaddr",
-	Serialize: Multiaddr__type__serialize,
-	ParseValue: Multiaddr__type__parse,
-	ParseLiteral: Multiaddr__type__parseLiteral,
-})
-var List__LinkLotusMessage__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__LinkLotusMessage",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: LotusMessage__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__LinkLotusMessage)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				if err != nil {
-					return nil, err
-				}
-				targetCid, err := out.AsLink()
-				if err != nil {
-					return nil, err
-				}
-				
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.LotusMessage__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-			return node, nil
-			
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(LotusMessage__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__LinkLotusMessage)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					targetCid, err := node.AsLink()
-					if err != nil {
-						return nil, err
-					}
-					
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.LotusMessage__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(LotusMessage__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__LinkLotusMessage)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					targetCid, err := node.AsLink()
-					if err != nil {
-						return nil, err
-					}
-					
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
-
-		builder := types.Type.LotusMessage__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
-	}
-	
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__LinkLotusMessage)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
-func MessageParamsMinerChangeAddress__NewWorker__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerChangeAddress)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNewWorker(), nil
-	
-}
-func MessageParamsMinerChangeAddress__NewControlAddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerChangeAddress)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNewControlAddrs(), nil
-	
-}
-var MessageParamsMinerChangeAddress__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerChangeAddress",
-	Fields: graphql.Fields{
-		"NewWorker": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsMinerChangeAddress__NewWorker__resolve,
-		},
-		"NewControlAddrs": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__Address__type),
-			
-			Resolve: MessageParamsMinerChangeAddress__NewControlAddrs__resolve,
-		},
-	},
-})
-var List__MinerPostPartition__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__MinerPostPartition",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerPostPartition__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerPostPartition)
-				if !ok {
-					return nil, errNotNode
-				}
-
-				arg := p.Args["key"]
-				var out ipld.Node
-				var err error
-				switch ta := arg.(type) {
-				case ipld.Node:
-					out, err = ts.LookupByNode(ta)
-				case int:
-					out, err = ts.LookupByIndex(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-				
-				return out, err
-				
-			},
-		},
-		"All": &graphql.Field{
-			Type: graphql.NewList(MinerPostPartition__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerPostPartition)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Range": &graphql.Field{
-			Type: graphql.NewList(MinerPostPartition__type),
-			Args: graphql.FieldConfigArgument{
-				"skip": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-				"take": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.Int),
-				},
-			},
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerPostPartition)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil	
-			},
-		},
-		"Count": &graphql.Field{
-			Type: graphql.NewNonNull(graphql.Int),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerPostPartition)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.Length(), nil
-			},
-		},
-	},
-})	
 func PaychV0LaneState__Redeemed__resolve(p graphql.ResolveParams) (interface{}, error) {
 	ts, ok := p.Source.(types.PaychV0LaneState)
 	if !ok {
@@ -9912,1320 +3571,6 @@ var PaychV0LaneState__type = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.NewNonNull(graphql.Int),
 			
 			Resolve: PaychV0LaneState__Nonce__resolve,
-		},
-	},
-})
-func MarketV0DealProposal__PieceCID__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPieceCID(), nil
-	
-}
-func MarketV0DealProposal__PieceSize__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPieceSize(), nil
-	
-}
-func MarketV0DealProposal__VerifiedDeal__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldVerifiedDeal().AsBool()
-	
-}
-func MarketV0DealProposal__Client__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldClient(), nil
-	
-}
-func MarketV0DealProposal__Provider__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProvider(), nil
-	
-}
-func MarketV0DealProposal__Label__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLabel().AsString()
-	
-}
-func MarketV0DealProposal__StartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldStartEpoch(), nil
-	
-}
-func MarketV0DealProposal__EndEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEndEpoch(), nil
-	
-}
-func MarketV0DealProposal__StoragePricePerEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldStoragePricePerEpoch(), nil
-	
-}
-func MarketV0DealProposal__ProviderCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProviderCollateral(), nil
-	
-}
-func MarketV0DealProposal__ClientCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealProposal)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldClientCollateral(), nil
-	
-}
-var MarketV0DealProposal__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MarketV0DealProposal",
-	Fields: graphql.Fields{
-		"PieceCID": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: MarketV0DealProposal__PieceCID__resolve,
-		},
-		"PieceSize": &graphql.Field{
-			
-			Type: graphql.NewNonNull(PaddedPieceSize__type),
-			
-			Resolve: MarketV0DealProposal__PieceSize__resolve,
-		},
-		"VerifiedDeal": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Boolean),
-			
-			Resolve: MarketV0DealProposal__VerifiedDeal__resolve,
-		},
-		"Client": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MarketV0DealProposal__Client__resolve,
-		},
-		"Provider": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MarketV0DealProposal__Provider__resolve,
-		},
-		"Label": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.String),
-			
-			Resolve: MarketV0DealProposal__Label__resolve,
-		},
-		"StartEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MarketV0DealProposal__StartEpoch__resolve,
-		},
-		"EndEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MarketV0DealProposal__EndEpoch__resolve,
-		},
-		"StoragePricePerEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MarketV0DealProposal__StoragePricePerEpoch__resolve,
-		},
-		"ProviderCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MarketV0DealProposal__ProviderCollateral__resolve,
-		},
-		"ClientCollateral": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MarketV0DealProposal__ClientCollateral__resolve,
-		},
-	},
-})
-func MessageParamsMultisigPropose__To__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigPropose)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTo(), nil
-	
-}
-func MessageParamsMultisigPropose__Value__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigPropose)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldValue(), nil
-	
-}
-func MessageParamsMultisigPropose__Method__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigPropose)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMethod(), nil
-	
-}
-func MessageParamsMultisigPropose__Params__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigPropose)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldParams(), nil
-	
-}
-var MessageParamsMultisigPropose__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMultisigPropose",
-	Fields: graphql.Fields{
-		"To": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MessageParamsMultisigPropose__To__resolve,
-		},
-		"Value": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MessageParamsMultisigPropose__Value__resolve,
-		},
-		"Method": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MethodNum__type),
-			
-			Resolve: MessageParamsMultisigPropose__Method__resolve,
-		},
-		"Params": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MessageParamsMultisigPropose__Params__resolve,
-		},
-	},
-})
-func V0FilterEstimate__PositionEstimate__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.V0FilterEstimate)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPositionEstimate(), nil
-	
-}
-func V0FilterEstimate__VelocityEstimate__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.V0FilterEstimate)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldVelocityEstimate(), nil
-	
-}
-var V0FilterEstimate__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "V0FilterEstimate",
-	Fields: graphql.Fields{
-		"PositionEstimate": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: V0FilterEstimate__PositionEstimate__resolve,
-		},
-		"VelocityEstimate": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: V0FilterEstimate__VelocityEstimate__resolve,
-		},
-	},
-})
-func LotusTicket__VRFProof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusTicket)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldVRFProof(), nil
-	
-}
-var LotusTicket__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "LotusTicket",
-	Fields: graphql.Fields{
-		"VRFProof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: LotusTicket__VRFProof__resolve,
-		},
-	},
-})
-func MarketV0DealState__SectorStartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealState)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectorStartEpoch(), nil
-	
-}
-func MarketV0DealState__LastUpdatedEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealState)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldLastUpdatedEpoch(), nil
-	
-}
-func MarketV0DealState__SlashEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MarketV0DealState)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSlashEpoch(), nil
-	
-}
-var MarketV0DealState__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MarketV0DealState",
-	Fields: graphql.Fields{
-		"SectorStartEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MarketV0DealState__SectorStartEpoch__resolve,
-		},
-		"LastUpdatedEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MarketV0DealState__LastUpdatedEpoch__resolve,
-		},
-		"SlashEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MarketV0DealState__SlashEpoch__resolve,
-		},
-	},
-})
-var Map__MinerV0Partition__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__MinerV0Partition",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: MinerV0Partition__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MinerV0Partition)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MinerV0Partition)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(MinerV0Partition__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MinerV0Partition)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func RewardV2State__CumsumBaseline__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldCumsumBaseline(), nil
-	
-}
-func RewardV2State__CumsumRealized__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldCumsumRealized(), nil
-	
-}
-func RewardV2State__EffectiveNetworkTime__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEffectiveNetworkTime(), nil
-	
-}
-func RewardV2State__EffectiveBaselinePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEffectiveBaselinePower(), nil
-	
-}
-func RewardV2State__ThisEpochReward__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochReward(), nil
-	
-}
-func RewardV2State__ThisEpochRewardSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochRewardSmoothed(), nil
-	
-}
-func RewardV2State__ThisEpochBaselinePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldThisEpochBaselinePower(), nil
-	
-}
-func RewardV2State__Epoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEpoch(), nil
-	
-}
-func RewardV2State__TotalStoragePowerReward__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTotalStoragePowerReward(), nil
-	
-}
-func RewardV2State__SimpleTotal__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSimpleTotal(), nil
-	
-}
-func RewardV2State__BaselineTotal__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.RewardV2State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldBaselineTotal(), nil
-	
-}
-var RewardV2State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "RewardV2State",
-	Fields: graphql.Fields{
-		"CumsumBaseline": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV2State__CumsumBaseline__resolve,
-		},
-		"CumsumRealized": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV2State__CumsumRealized__resolve,
-		},
-		"EffectiveNetworkTime": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: RewardV2State__EffectiveNetworkTime__resolve,
-		},
-		"EffectiveBaselinePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV2State__EffectiveBaselinePower__resolve,
-		},
-		"ThisEpochReward": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV2State__ThisEpochReward__resolve,
-		},
-		"ThisEpochRewardSmoothed": &graphql.Field{
-			
-			Type: graphql.NewNonNull(V0FilterEstimate__type),
-			
-			Resolve: RewardV2State__ThisEpochRewardSmoothed__resolve,
-		},
-		"ThisEpochBaselinePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV2State__ThisEpochBaselinePower__resolve,
-		},
-		"Epoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: RewardV2State__Epoch__resolve,
-		},
-		"TotalStoragePowerReward": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV2State__TotalStoragePowerReward__resolve,
-		},
-		"SimpleTotal": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV2State__SimpleTotal__resolve,
-		},
-		"BaselineTotal": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: RewardV2State__BaselineTotal__resolve,
-		},
-	},
-})
-var Map__BitField__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__BitField",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: BitField__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__BitField)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__BitField)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(BitField__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__BitField)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MessageParamsMultisigChangeThreshold__NewThreshold__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigChangeThreshold)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNewThreshold().AsInt()
-	
-}
-var MessageParamsMultisigChangeThreshold__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMultisigChangeThreshold",
-	Fields: graphql.Fields{
-		"NewThreshold": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MessageParamsMultisigChangeThreshold__NewThreshold__resolve,
-		},
-	},
-})
-func MessageParamsMultisigConstructor__Signers__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigConstructor)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSigners(), nil
-	
-}
-func MessageParamsMultisigConstructor__NumApprovalsThreshold__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigConstructor)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNumApprovalsThreshold().AsInt()
-	
-}
-func MessageParamsMultisigConstructor__UnlockDuration__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigConstructor)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldUnlockDuration(), nil
-	
-}
-func MessageParamsMultisigConstructor__StartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMultisigConstructor)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldStartEpoch(), nil
-	
-}
-var MessageParamsMultisigConstructor__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMultisigConstructor",
-	Fields: graphql.Fields{
-		"Signers": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__Address__type),
-			
-			Resolve: MessageParamsMultisigConstructor__Signers__resolve,
-		},
-		"NumApprovalsThreshold": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MessageParamsMultisigConstructor__NumApprovalsThreshold__resolve,
-		},
-		"UnlockDuration": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MessageParamsMultisigConstructor__UnlockDuration__resolve,
-		},
-		"StartEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MessageParamsMultisigConstructor__StartEpoch__resolve,
-		},
-	},
-})
-var Map__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map",
-	Fields: graphql.Fields{
-		"At": &graphql.Field{
-			Type: Any__type,
-			Args: graphql.FieldConfigArgument{
-				"key": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},	
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map)
-				if !ok {
-					return nil, errNotNode
-				}
-				arg := p.Args["key"]
-
-				switch ta := arg.(type) {
-				case ipld.Node:
-					return ts.LookupByNode(ta)
-				case string:
-					return ts.LookupByString(ta)
-				default:
-					return nil, fmt.Errorf("unknown key type: %T", arg)
-				}
-			},
-		},
-		"Keys": &graphql.Field{
-			Type: graphql.NewList(graphql.String),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.MapIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					node, _, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-		"Values": &graphql.Field{
-			Type: graphql.NewList(Any__type),
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map)
-				if !ok {
-					return nil, errNotNode
-				}
-				it := ts.ListIterator()
-				children := make([]ipld.Node, 0)
-
-				for !it.Done() {
-					_, node, err := it.Next()
-					if err != nil {
-						return nil, err
-					}
-					
-					children = append(children, node)
-				}
-				return children, nil
-			},
-		},
-	},	
-})
- 	func MethodNum__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		i, err := value.AsInt()
-		if err != nil {
-			return err
-		}
-		return i
-		
-	default:
-		return nil
-	}
-}
-func MethodNum__type__parse(value interface{}) interface{} {
-	builder := types.Type.MethodNum__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func MethodNum__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.MethodNum__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var MethodNum__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "MethodNum",
-	Description: "MethodNum",
-	Serialize: MethodNum__type__serialize,
-	ParseValue: MethodNum__type__parse,
-	ParseLiteral: MethodNum__type__parseLiteral,
-})
-func MinerV0PowerPair__Raw__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0PowerPair)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRaw(), nil
-	
-}
-func MinerV0PowerPair__QA__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0PowerPair)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldQA(), nil
-	
-}
-var MinerV0PowerPair__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0PowerPair",
-	Fields: graphql.Fields{
-		"Raw": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV0PowerPair__Raw__resolve,
-		},
-		"QA": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV0PowerPair__QA__resolve,
-		},
-	},
-})
-func CidString__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		s, err := value.AsString()
-		if err != nil {
-			return err
-		}
-		return s
-		
-	default:
-		return nil
-	}
-}
-func CidString__type__parse(value interface{}) interface{} {
-	builder := types.Type.CidString__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func CidString__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.CidString__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var CidString__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "CidString",
-	Description: "CidString",
-	Serialize: CidString__type__serialize,
-	ParseValue: CidString__type__parse,
-	ParseLiteral: CidString__type__parseLiteral,
-})
-func MessageParamsMinerCompactPartitions__Deadline__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerCompactPartitions)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDeadline().AsInt()
-	
-}
-func MessageParamsMinerCompactPartitions__Partitions__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerCompactPartitions)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPartitions(), nil
-	
-}
-var MessageParamsMinerCompactPartitions__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerCompactPartitions",
-	Fields: graphql.Fields{
-		"Deadline": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: MessageParamsMinerCompactPartitions__Deadline__resolve,
-		},
-		"Partitions": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MessageParamsMinerCompactPartitions__Partitions__resolve,
-		},
-	},
-})
-func SectorSize__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		i, err := value.AsInt()
-		if err != nil {
-			return err
-		}
-		return i
-		
-	default:
-		return nil
-	}
-}
-func SectorSize__type__parse(value interface{}) interface{} {
-	builder := types.Type.SectorSize__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func SectorSize__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.SectorSize__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var SectorSize__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "SectorSize",
-	Description: "SectorSize",
-	Serialize: SectorSize__type__serialize,
-	ParseValue: SectorSize__type__parse,
-	ParseLiteral: SectorSize__type__parseLiteral,
-})
-func Address__type__parse(value interface{}) interface{} {
-	builder := types.Type.Address__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func Address__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.Address__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var Address__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "Address",
-	Description: "Address",
-	Serialize: Address__type__serialize,
-	ParseValue: Address__type__parse,
-	ParseLiteral: Address__type__parseLiteral,
-})
-var Any__type = graphql.NewUnion(graphql.UnionConfig{
-	Name: "Any",
-	Types: []*graphql.Object{
-		
-		union__Any__Bool,
-		
-		
-		union__Any__Int,
-		
-		
-		union__Any__Float,
-		
-		
-		union__Any__String,
-		
-		
-		union__Any__Bytes,
-		
-		
-		union__Any__Map,
-		
-		
-		union__Any__List,
-		
-		
-		union__Any__Link,
-		
-	},
-	ResolveType: func(p graphql.ResolveTypeParams) *graphql.Object {
-		if node, ok := p.Value.(ipld.Node); ok {
-			switch node.Prototype() {
-			
-			case types.Type.Bool:
-				fallthrough
-			case types.Type.Bool__Repr:
-				return union__Any__Bool
-			
-			
-			case types.Type.Int:
-				fallthrough
-			case types.Type.Int__Repr:
-				return union__Any__Int
-			
-			
-			case types.Type.Float:
-				fallthrough
-			case types.Type.Float__Repr:
-				return union__Any__Float
-			
-			
-			case types.Type.String:
-				fallthrough
-			case types.Type.String__Repr:
-				return union__Any__String
-			
-			
-			case types.Type.Bytes:
-				fallthrough
-			case types.Type.Bytes__Repr:
-				return union__Any__Bytes
-			
-			
-			case types.Type.Map:
-				fallthrough
-			case types.Type.Map__Repr:
-				return union__Any__Map
-			
-			
-			case types.Type.List:
-				fallthrough
-			case types.Type.List__Repr:
-				return union__Any__List
-			
-			
-			case types.Type.Link:
-				fallthrough
-			case types.Type.Link__Repr:
-				return union__Any__Link
-			
-			}				
-		}
-		fmt.Printf("Actual type %T: %v not in union\n", p.Value, p.Value)
-		return nil
-	},
-})
-
-var union__Any__Bool = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Any.Bool",
-	Description: "Synthetic union member wrapper",
-	Fields: graphql.Fields{
-		
-		"": &graphql.Field{
-			Type: graphql.Boolean,
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Bool)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.AsBool()
-			},
-		},
-		
-	},
-})
-
-
-var union__Any__Int = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Any.Int",
-	Description: "Synthetic union member wrapper",
-	Fields: graphql.Fields{
-		
-		"": &graphql.Field{
-			Type: graphql.Int,
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Int)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.AsInt()
-			},
-		},
-		
-	},
-})
-
-
-var union__Any__Float = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Any.Float",
-	Description: "Synthetic union member wrapper",
-	Fields: graphql.Fields{
-		
-		"": &graphql.Field{
-			Type: graphql.Float,
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Float)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.AsFloat()
-			},
-		},
-		
-	},
-})
-
-
-var union__Any__String = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Any.String",
-	Description: "Synthetic union member wrapper",
-	Fields: graphql.Fields{
-		
-		"": &graphql.Field{
-			Type: graphql.String,
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.String)
-				if !ok {
-					return nil, errNotNode
-				}
-				return ts.AsString()
-			},
-		},
-		
-	},
-})
-
-
-var union__Any__Bytes = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Any.Bytes",
-	Description: "Synthetic union member wrapper",
-	Fields: graphql.Fields{
-		
-	},
-})
-
-
-var union__Any__Map = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Any.Map",
-	Description: "Synthetic union member wrapper",
-	Fields: graphql.Fields{
-		
-	},
-})
-
-
-var union__Any__List = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Any.List",
-	Description: "Synthetic union member wrapper",
-	Fields: graphql.Fields{
-		
-	},
-})
-
-
-var union__Any__Link = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Any.Link",
-	Description: "Synthetic union member wrapper",
-	Fields: graphql.Fields{
-		
-	},
-})
-
-func MinerV0ExpirationSet__OnTimeSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0ExpirationSet)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldOnTimeSectors(), nil
-	
-}
-func MinerV0ExpirationSet__EarlySectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0ExpirationSet)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldEarlySectors(), nil
-	
-}
-func MinerV0ExpirationSet__OnTimePledge__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0ExpirationSet)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldOnTimePledge(), nil
-	
-}
-func MinerV0ExpirationSet__ActivePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0ExpirationSet)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldActivePower(), nil
-	
-}
-func MinerV0ExpirationSet__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0ExpirationSet)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFaultyPower(), nil
-	
-}
-var MinerV0ExpirationSet__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0ExpirationSet",
-	Fields: graphql.Fields{
-		"OnTimeSectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV0ExpirationSet__OnTimeSectors__resolve,
-		},
-		"EarlySectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BitField__type),
-			
-			Resolve: MinerV0ExpirationSet__EarlySectors__resolve,
-		},
-		"OnTimePledge": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV0ExpirationSet__OnTimePledge__resolve,
-		},
-		"ActivePower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV0ExpirationSet__ActivePower__resolve,
-		},
-		"FaultyPower": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0PowerPair__type),
-			
-			Resolve: MinerV0ExpirationSet__FaultyPower__resolve,
 		},
 	},
 })
@@ -11363,263 +3708,8 @@ var MultisigV0State__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
-func MessageParamsMinerDeclareFaultsRecovered__Recoveries__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerDeclareFaultsRecovered)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldRecoveries(), nil
-	
-}
-var MessageParamsMinerDeclareFaultsRecovered__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerDeclareFaultsRecovered",
-	Fields: graphql.Fields{
-		"Recoveries": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__MinerTerminationDecl__type),
-			
-			Resolve: MessageParamsMinerDeclareFaultsRecovered__Recoveries__resolve,
-		},
-	},
-})
-func LotusMessage__Version__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldVersion().AsInt()
-	
-}
-func LotusMessage__To__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTo(), nil
-	
-}
-func LotusMessage__From__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFrom(), nil
-	
-}
-func LotusMessage__Nonce__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNonce().AsInt()
-	
-}
-func LotusMessage__Value__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldValue(), nil
-	
-}
-func LotusMessage__GasLimit__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldGasLimit().AsInt()
-	
-}
-func LotusMessage__GasFeeCap__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldGasFeeCap(), nil
-	
-}
-func LotusMessage__GasPremium__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldGasPremium(), nil
-	
-}
-func LotusMessage__Method__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMethod(), nil
-	
-}
-func LotusMessage__Params__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusMessage)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldParams(), nil
-	
-}
-var LotusMessage__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "LotusMessage",
-	Fields: graphql.Fields{
-		"Version": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: LotusMessage__Version__resolve,
-		},
-		"To": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: LotusMessage__To__resolve,
-		},
-		"From": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: LotusMessage__From__resolve,
-		},
-		"Nonce": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: LotusMessage__Nonce__resolve,
-		},
-		"Value": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: LotusMessage__Value__resolve,
-		},
-		"GasLimit": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: LotusMessage__GasLimit__resolve,
-		},
-		"GasFeeCap": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: LotusMessage__GasFeeCap__resolve,
-		},
-		"GasPremium": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: LotusMessage__GasPremium__resolve,
-		},
-		"Method": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MethodNum__type),
-			
-			Resolve: LotusMessage__Method__resolve,
-		},
-		"Params": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: LotusMessage__Params__resolve,
-		},
-	},
-})
-func MultisigV0Transaction__To__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MultisigV0Transaction)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTo(), nil
-	
-}
-func MultisigV0Transaction__Value__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MultisigV0Transaction)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldValue(), nil
-	
-}
-func MultisigV0Transaction__Method__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MultisigV0Transaction)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMethod(), nil
-	
-}
-func MultisigV0Transaction__Params__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MultisigV0Transaction)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldParams(), nil
-	
-}
-func MultisigV0Transaction__Approved__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MultisigV0Transaction)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldApproved(), nil
-	
-}
-var MultisigV0Transaction__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MultisigV0Transaction",
-	Fields: graphql.Fields{
-		"To": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Address__type),
-			
-			Resolve: MultisigV0Transaction__To__resolve,
-		},
-		"Value": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MultisigV0Transaction__Value__resolve,
-		},
-		"Method": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MethodNum__type),
-			
-			Resolve: MultisigV0Transaction__Method__resolve,
-		},
-		"Params": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MultisigV0Transaction__Params__resolve,
-		},
-		"Approved": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__Address__type),
-			
-			Resolve: MultisigV0Transaction__Approved__resolve,
-		},
-	},
-})
-func MessageParamsMinerSubmitWindowedPoSt__Deadline__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
+func MessageParamsMinerCompactPartitions__Deadline__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerCompactPartitions)
 	if !ok {
 		return nil, errNotNode
 	}
@@ -11627,8 +3717,8 @@ func MessageParamsMinerSubmitWindowedPoSt__Deadline__resolve(p graphql.ResolvePa
 	return ts.FieldDeadline().AsInt()
 	
 }
-func MessageParamsMinerSubmitWindowedPoSt__Partitions__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
+func MessageParamsMinerCompactPartitions__Partitions__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerCompactPartitions)
 	if !ok {
 		return nil, errNotNode
 	}
@@ -11636,65 +3726,305 @@ func MessageParamsMinerSubmitWindowedPoSt__Partitions__resolve(p graphql.Resolve
 	return ts.FieldPartitions(), nil
 	
 }
-func MessageParamsMinerSubmitWindowedPoSt__Proofs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldProofs(), nil
-	
-}
-func MessageParamsMinerSubmitWindowedPoSt__ChainCommitEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldChainCommitEpoch(), nil
-	
-}
-func MessageParamsMinerSubmitWindowedPoSt__ChainCommitRand__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldChainCommitRand(), nil
-	
-}
-var MessageParamsMinerSubmitWindowedPoSt__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerSubmitWindowedPoSt",
+var MessageParamsMinerCompactPartitions__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerCompactPartitions",
 	Fields: graphql.Fields{
 		"Deadline": &graphql.Field{
 			
 			Type: graphql.NewNonNull(graphql.Int),
 			
-			Resolve: MessageParamsMinerSubmitWindowedPoSt__Deadline__resolve,
+			Resolve: MessageParamsMinerCompactPartitions__Deadline__resolve,
 		},
 		"Partitions": &graphql.Field{
 			
-			Type: graphql.NewNonNull(List__MinerPostPartition__type),
+			Type: graphql.NewNonNull(BitField__type),
 			
-			Resolve: MessageParamsMinerSubmitWindowedPoSt__Partitions__resolve,
+			Resolve: MessageParamsMinerCompactPartitions__Partitions__resolve,
 		},
-		"Proofs": &graphql.Field{
+	},
+})
+func MessageParamsMultisigRemoveSigner__Signer__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigRemoveSigner)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSigner(), nil
+	
+}
+func MessageParamsMultisigRemoveSigner__Decrease__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigRemoveSigner)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDecrease().AsBool()
+	
+}
+var MessageParamsMultisigRemoveSigner__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMultisigRemoveSigner",
+	Fields: graphql.Fields{
+		"Signer": &graphql.Field{
 			
-			Type: graphql.NewNonNull(List__MinerPoStProof__type),
+			Type: graphql.NewNonNull(Address__type),
 			
-			Resolve: MessageParamsMinerSubmitWindowedPoSt__Proofs__resolve,
+			Resolve: MessageParamsMultisigRemoveSigner__Signer__resolve,
 		},
-		"ChainCommitEpoch": &graphql.Field{
+		"Decrease": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Boolean),
+			
+			Resolve: MessageParamsMultisigRemoveSigner__Decrease__resolve,
+		},
+	},
+})
+func MinerV0SectorPreCommitOnChainInfo__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldInfo(), nil
+	
+}
+func MinerV0SectorPreCommitOnChainInfo__PreCommitDeposit__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPreCommitDeposit(), nil
+	
+}
+func MinerV0SectorPreCommitOnChainInfo__PreCommitEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPreCommitEpoch(), nil
+	
+}
+func MinerV0SectorPreCommitOnChainInfo__DealWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDealWeight(), nil
+	
+}
+func MinerV0SectorPreCommitOnChainInfo__VerifiedDealWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldVerifiedDealWeight(), nil
+	
+}
+var MinerV0SectorPreCommitOnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0SectorPreCommitOnChainInfo",
+	Fields: graphql.Fields{
+		"Info": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0SectorPreCommitInfo__type),
+			
+			Resolve: MinerV0SectorPreCommitOnChainInfo__Info__resolve,
+		},
+		"PreCommitDeposit": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV0SectorPreCommitOnChainInfo__PreCommitDeposit__resolve,
+		},
+		"PreCommitEpoch": &graphql.Field{
 			
 			Type: graphql.NewNonNull(ChainEpoch__type),
 			
-			Resolve: MessageParamsMinerSubmitWindowedPoSt__ChainCommitEpoch__resolve,
+			Resolve: MinerV0SectorPreCommitOnChainInfo__PreCommitEpoch__resolve,
 		},
-		"ChainCommitRand": &graphql.Field{
+		"DealWeight": &graphql.Field{
 			
-			Type: graphql.NewNonNull(Bytes__type),
+			Type: graphql.NewNonNull(BigInt__type),
 			
-			Resolve: MessageParamsMinerSubmitWindowedPoSt__ChainCommitRand__resolve,
+			Resolve: MinerV0SectorPreCommitOnChainInfo__DealWeight__resolve,
+		},
+		"VerifiedDealWeight": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV0SectorPreCommitOnChainInfo__VerifiedDealWeight__resolve,
+		},
+	},
+})
+var Map__PaychV0LaneState__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__PaychV0LaneState",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: PaychV0LaneState__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__PaychV0LaneState)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__PaychV0LaneState)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(PaychV0LaneState__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__PaychV0LaneState)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MessageParamsPowerCurrentTotal__RawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerCurrentTotal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRawBytePower(), nil
+	
+}
+func MessageParamsPowerCurrentTotal__QualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerCurrentTotal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldQualityAdjPower(), nil
+	
+}
+func MessageParamsPowerCurrentTotal__PledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerCurrentTotal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPledgeCollateral(), nil
+	
+}
+func MessageParamsPowerCurrentTotal__QualityAdjPowerSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerCurrentTotal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldQualityAdjPowerSmoothed(), nil
+	
+}
+var MessageParamsPowerCurrentTotal__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsPowerCurrentTotal",
+	Fields: graphql.Fields{
+		"RawBytePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsPowerCurrentTotal__RawBytePower__resolve,
+		},
+		"QualityAdjPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsPowerCurrentTotal__QualityAdjPower__resolve,
+		},
+		"PledgeCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsPowerCurrentTotal__PledgeCollateral__resolve,
+		},
+		"QualityAdjPowerSmoothed": &graphql.Field{
+			
+			Type: graphql.NewNonNull(V0FilterEstimate__type),
+			
+			Resolve: MessageParamsPowerCurrentTotal__QualityAdjPowerSmoothed__resolve,
+		},
+	},
+})
+func ApplyRewardParams__Reward__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.ApplyRewardParams)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldReward(), nil
+	
+}
+func ApplyRewardParams__Penalty__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.ApplyRewardParams)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPenalty(), nil
+	
+}
+var ApplyRewardParams__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "ApplyRewardParams",
+	Fields: graphql.Fields{
+		"Reward": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: ApplyRewardParams__Reward__resolve,
+		},
+		"Penalty": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: ApplyRewardParams__Penalty__resolve,
 		},
 	},
 })
@@ -11733,7 +4063,62 @@ var MessageParamsMultisigSwapSigner__type = graphql.NewObject(graphql.ObjectConf
 		},
 	},
 })
-func ChainEpoch__type__serialize(value interface{}) interface{} {
+func MessageParamsMinerChangeAddress__NewWorker__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerChangeAddress)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNewWorker(), nil
+	
+}
+func MessageParamsMinerChangeAddress__NewControlAddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerChangeAddress)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNewControlAddrs(), nil
+	
+}
+var MessageParamsMinerChangeAddress__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerChangeAddress",
+	Fields: graphql.Fields{
+		"NewWorker": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MessageParamsMinerChangeAddress__NewWorker__resolve,
+		},
+		"NewControlAddrs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__Address__type),
+			
+			Resolve: MessageParamsMinerChangeAddress__NewControlAddrs__resolve,
+		},
+	},
+})
+func MessageParamsMinerChangePeerID__NewID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerChangePeerID)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNewID(), nil
+	
+}
+var MessageParamsMinerChangePeerID__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerChangePeerID",
+	Fields: graphql.Fields{
+		"NewID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(PeerID__type),
+			
+			Resolve: MessageParamsMinerChangePeerID__NewID__resolve,
+		},
+	},
+})
+func SectorSize__type__serialize(value interface{}) interface{} {
 	switch value := value.(type) {
 	case ipld.Node:
 		
@@ -11747,8 +4132,8 @@ func ChainEpoch__type__serialize(value interface{}) interface{} {
 		return nil
 	}
 }
-func ChainEpoch__type__parse(value interface{}) interface{} {
-	builder := types.Type.ChainEpoch__Repr.NewBuilder()
+func SectorSize__type__parse(value interface{}) interface{} {
+	builder := types.Type.SectorSize__Repr.NewBuilder()
 	switch v2 := value.(type) {
 	case string:
 		builder.AssignString(v2)
@@ -11759,8 +4144,8 @@ func ChainEpoch__type__parse(value interface{}) interface{} {
 	}
 	return builder.Build()
 }
-func ChainEpoch__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.ChainEpoch__Repr.NewBuilder()
+func SectorSize__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.SectorSize__Repr.NewBuilder()
 	switch valueAST := valueAST.(type) {
 	case *ast.StringValue:
 		builder.AssignString(valueAST.Value)
@@ -11769,68 +4154,25 @@ func ChainEpoch__type__parseLiteral(valueAST ast.Value) interface{} {
 	}
 	return builder.Build()
 }
-var ChainEpoch__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "ChainEpoch",
-	Description: "ChainEpoch",
-	Serialize: ChainEpoch__type__serialize,
-	ParseValue: ChainEpoch__type__parse,
-	ParseLiteral: ChainEpoch__type__parseLiteral,
+var SectorSize__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "SectorSize",
+	Description: "SectorSize",
+	Serialize: SectorSize__type__serialize,
+	ParseValue: SectorSize__type__parse,
+	ParseLiteral: SectorSize__type__parseLiteral,
 })
-func BitField__type__serialize(value interface{}) interface{} {
-	switch value := value.(type) {
-	case ipld.Node:
-		
-		b, err := value.AsBytes()
-		if err != nil {
-			return err
-		}
-		return b
-		
-	default:
-		return nil
-	}
-}
-func BitField__type__parse(value interface{}) interface{} {
-	builder := types.Type.BitField__Repr.NewBuilder()
-	switch v2 := value.(type) {
-	case string:
-		builder.AssignString(v2)
-	case *string:
-		builder.AssignString(*v2)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-func BitField__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.BitField__Repr.NewBuilder()
-	switch valueAST := valueAST.(type) {
-	case *ast.StringValue:
-		builder.AssignString(valueAST.Value)
-	default:
-		return nil
-	}
-	return builder.Build()
-}
-var BitField__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "BitField",
-	Description: "BitField",
-	Serialize: BitField__type__serialize,
-	ParseValue: BitField__type__parse,
-	ParseLiteral: BitField__type__parseLiteral,
-})
-var Map__MarketV0RawDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__MarketV0RawDealProposal",
+var Map__MarketV0DealState__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__MarketV0DealState",
 	Fields: graphql.Fields{
 		"At": &graphql.Field{
-			Type: MarketV0DealProposal__type,
+			Type: MarketV0DealState__type,
 			Args: graphql.FieldConfigArgument{
 				"key": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(graphql.String),
 				},
 			},	
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV0RawDealProposal)
+				ts, ok := p.Source.(types.Map__MarketV0DealState)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -11849,7 +4191,7 @@ var Map__MarketV0RawDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
 		"Keys": &graphql.Field{
 			Type: graphql.NewList(graphql.String),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV0RawDealProposal)
+				ts, ok := p.Source.(types.Map__MarketV0DealState)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -11867,9 +4209,9 @@ var Map__MarketV0RawDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"Values": &graphql.Field{
-			Type: graphql.NewList(MarketV0DealProposal__type),
+			Type: graphql.NewList(MarketV0DealState__type),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__MarketV0RawDealProposal)
+				ts, ok := p.Source.(types.Map__MarketV0DealState)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -11889,196 +4231,250 @@ var Map__MarketV0RawDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},	
 })
- 	func PaychV0State__From__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PaychV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldFrom(), nil
-	
-}
-func PaychV0State__To__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PaychV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldTo(), nil
-	
-}
-func PaychV0State__ToSend__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PaychV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldToSend(), nil
-	
-}
-func PaychV0State__SettlingAt__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PaychV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSettlingAt(), nil
-	
-}
-func PaychV0State__MinSettleHeight__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PaychV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldMinSettleHeight(), nil
-	
-}
-func PaychV0State__LaneStates__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PaychV0State)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	targetCid := ts.FieldLaneStates().Link()
-	
-			var node ipld.Node
-			
-	if cl, ok := targetCid.(cidlink.Link); ok {
-		v := p.Context.Value(nodeLoaderCtxKey)
-		if v == nil {
-			return cl.Cid, nil
-		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
-		if !ok {
-			return nil, errInvalidLoader
-		}
+ 	var Map__MarketV2RawDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__MarketV2RawDealProposal",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MarketV2DealProposal__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV2RawDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
 
-		builder := types.Type.Map__PaychV0LaneState__Repr.NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV2RawDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MarketV2DealProposal__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV2RawDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MessageParamsPowerCreateMiner__Owner__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
+	if !ok {
+		return nil, errNotNode
 	}
 	
-			return node, nil
-			
+	return ts.FieldOwner(), nil
 	
 }
-var PaychV0State__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "PaychV0State",
+func MessageParamsPowerCreateMiner__Worker__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldWorker(), nil
+	
+}
+func MessageParamsPowerCreateMiner__SealProofType__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealProofType().AsInt()
+	
+}
+func MessageParamsPowerCreateMiner__Peer__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPeer(), nil
+	
+}
+func MessageParamsPowerCreateMiner__Multiaddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerCreateMiner)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMultiaddrs(), nil
+	
+}
+var MessageParamsPowerCreateMiner__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsPowerCreateMiner",
 	Fields: graphql.Fields{
-		"From": &graphql.Field{
+		"Owner": &graphql.Field{
 			
 			Type: graphql.NewNonNull(Address__type),
 			
-			Resolve: PaychV0State__From__resolve,
+			Resolve: MessageParamsPowerCreateMiner__Owner__resolve,
 		},
-		"To": &graphql.Field{
+		"Worker": &graphql.Field{
 			
 			Type: graphql.NewNonNull(Address__type),
 			
-			Resolve: PaychV0State__To__resolve,
+			Resolve: MessageParamsPowerCreateMiner__Worker__resolve,
 		},
-		"ToSend": &graphql.Field{
+		"SealProofType": &graphql.Field{
 			
-			Type: graphql.NewNonNull(BigInt__type),
+			Type: graphql.NewNonNull(graphql.Int),
 			
-			Resolve: PaychV0State__ToSend__resolve,
+			Resolve: MessageParamsPowerCreateMiner__SealProofType__resolve,
 		},
-		"SettlingAt": &graphql.Field{
+		"Peer": &graphql.Field{
 			
-			Type: graphql.NewNonNull(ChainEpoch__type),
+			Type: graphql.NewNonNull(PeerID__type),
 			
-			Resolve: PaychV0State__SettlingAt__resolve,
+			Resolve: MessageParamsPowerCreateMiner__Peer__resolve,
 		},
-		"MinSettleHeight": &graphql.Field{
+		"Multiaddrs": &graphql.Field{
 			
-			Type: graphql.NewNonNull(ChainEpoch__type),
+			Type: graphql.NewNonNull(List__Multiaddrs__type),
 			
-			Resolve: PaychV0State__MinSettleHeight__resolve,
-		},
-		"LaneStates": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Map__PaychV0LaneState__type),
-			
-			Resolve: PaychV0State__LaneStates__resolve,
+			Resolve: MessageParamsPowerCreateMiner__Multiaddrs__resolve,
 		},
 	},
 })
-func MessageParamsMinerReportFault__BlockHeader1__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerReportFault)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldBlockHeader1(), nil
-	
-}
-func MessageParamsMinerReportFault__BlockHeader2__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerReportFault)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldBlockHeader2(), nil
-	
-}
-func MessageParamsMinerReportFault__BlockHeaderExtra__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerReportFault)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldBlockHeaderExtra(), nil
-	
-}
-var MessageParamsMinerReportFault__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerReportFault",
+var List__Merge__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__Merge",
 	Fields: graphql.Fields{
-		"BlockHeader1": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MessageParamsMinerReportFault__BlockHeader1__resolve,
+		"At": &graphql.Field{
+			Type: Merge__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Merge)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
 		},
-		"BlockHeader2": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MessageParamsMinerReportFault__BlockHeader2__resolve,
+		"All": &graphql.Field{
+			Type: graphql.NewList(Merge__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Merge)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
 		},
-		"BlockHeaderExtra": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: MessageParamsMinerReportFault__BlockHeaderExtra__resolve,
+		"Range": &graphql.Field{
+			Type: graphql.NewList(Merge__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Merge)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Merge)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
 		},
 	},
-})
-func MessageParamsMinerConfirmSectorProofs__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerConfirmSectorProofs)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldSectors(), nil
-	
-}
-var MessageParamsMinerConfirmSectorProofs__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerConfirmSectorProofs",
-	Fields: graphql.Fields{
-		"Sectors": &graphql.Field{
-			
-			Type: graphql.NewNonNull(List__SectorNumber__type),
-			
-			Resolve: MessageParamsMinerConfirmSectorProofs__Sectors__resolve,
-		},
-	},
-})
-func Signature__type__serialize(value interface{}) interface{} {
+})	
+func Multiaddr__type__serialize(value interface{}) interface{} {
 	switch value := value.(type) {
 	case ipld.Node:
 		
@@ -12092,8 +4488,8 @@ func Signature__type__serialize(value interface{}) interface{} {
 		return nil
 	}
 }
-func Signature__type__parse(value interface{}) interface{} {
-	builder := types.Type.Signature__Repr.NewBuilder()
+func Multiaddr__type__parse(value interface{}) interface{} {
+	builder := types.Type.Multiaddr__Repr.NewBuilder()
 	switch v2 := value.(type) {
 	case string:
 		builder.AssignString(v2)
@@ -12104,8 +4500,8 @@ func Signature__type__parse(value interface{}) interface{} {
 	}
 	return builder.Build()
 }
-func Signature__type__parseLiteral(valueAST ast.Value) interface{} {
-	builder := types.Type.Signature__Repr.NewBuilder()
+func Multiaddr__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.Multiaddr__Repr.NewBuilder()
 	switch valueAST := valueAST.(type) {
 	case *ast.StringValue:
 		builder.AssignString(valueAST.Value)
@@ -12114,25 +4510,328 @@ func Signature__type__parseLiteral(valueAST ast.Value) interface{} {
 	}
 	return builder.Build()
 }
-var Signature__type = graphql.NewScalar(graphql.ScalarConfig{
-	Name:        "Signature",
-	Description: "Signature",
-	Serialize: Signature__type__serialize,
-	ParseValue: Signature__type__parse,
-	ParseLiteral: Signature__type__parseLiteral,
+var Multiaddr__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "Multiaddr",
+	Description: "Multiaddr",
+	Serialize: Multiaddr__type__serialize,
+	ParseValue: Multiaddr__type__parse,
+	ParseLiteral: Multiaddr__type__parseLiteral,
 })
-var Map__DataCap__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Map__DataCap",
+func PowerV0CronEvent__MinerAddr__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0CronEvent)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMinerAddr(), nil
+	
+}
+func PowerV0CronEvent__CallbackPayload__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0CronEvent)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldCallbackPayload(), nil
+	
+}
+var PowerV0CronEvent__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "PowerV0CronEvent",
+	Fields: graphql.Fields{
+		"MinerAddr": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: PowerV0CronEvent__MinerAddr__resolve,
+		},
+		"CallbackPayload": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: PowerV0CronEvent__CallbackPayload__resolve,
+		},
+	},
+})
+var List__DealID__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__DealID",
 	Fields: graphql.Fields{
 		"At": &graphql.Field{
-			Type: BigInt__type,
+			Type: DealID__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__DealID)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(DealID__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__DealID)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(DealID__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__DealID)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__DealID)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+var Map__SectorOnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__SectorOnChainInfo",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerV0SectorOnChainInfo__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__SectorOnChainInfo)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__SectorOnChainInfo)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MinerV0SectorOnChainInfo__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__SectorOnChainInfo)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MessageParamsPaychConstructor__From__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPaychConstructor)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFrom(), nil
+	
+}
+func MessageParamsPaychConstructor__To__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPaychConstructor)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTo(), nil
+	
+}
+var MessageParamsPaychConstructor__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsPaychConstructor",
+	Fields: graphql.Fields{
+		"From": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MessageParamsPaychConstructor__From__resolve,
+		},
+		"To": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MessageParamsPaychConstructor__To__resolve,
+		},
+	},
+})
+var Map__PowerV0CronEvent__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__PowerV0CronEvent",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: PowerV0CronEvent__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__PowerV0CronEvent)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__PowerV0CronEvent)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(PowerV0CronEvent__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__PowerV0CronEvent)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	var Map__PowerV0Claim__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__PowerV0Claim",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: PowerV0Claim__type,
 			Args: graphql.FieldConfigArgument{
 				"key": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(RawAddress__type),
 				},
 			},	
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__DataCap)
+				ts, ok := p.Source.(types.Map__PowerV0Claim)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -12151,7 +4850,7 @@ var Map__DataCap__type = graphql.NewObject(graphql.ObjectConfig{
 		"Keys": &graphql.Field{
 			Type: graphql.NewList(RawAddress__type),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__DataCap)
+				ts, ok := p.Source.(types.Map__PowerV0Claim)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -12169,9 +4868,9 @@ var Map__DataCap__type = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"Values": &graphql.Field{
-			Type: graphql.NewList(BigInt__type),
+			Type: graphql.NewList(PowerV0Claim__type),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.Map__DataCap)
+				ts, ok := p.Source.(types.Map__PowerV0Claim)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -12191,53 +4890,308 @@ var Map__DataCap__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},	
 })
- 	func PowerV2Claim__SealProofType__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2Claim)
+ 	func RewardV0State__CumsumBaseline__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV0State)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldSealProofType().AsInt()
+	return ts.FieldCumsumBaseline(), nil
 	
 }
-func PowerV2Claim__RawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2Claim)
+func RewardV0State__CumsumRealized__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV0State)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldRawBytePower(), nil
+	return ts.FieldCumsumRealized(), nil
 	
 }
-func PowerV2Claim__QualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PowerV2Claim)
+func RewardV0State__EffectiveNetworkTime__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV0State)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldQualityAdjPower(), nil
+	return ts.FieldEffectiveNetworkTime(), nil
 	
 }
-var PowerV2Claim__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "PowerV2Claim",
+func RewardV0State__EffectiveBaselinePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEffectiveBaselinePower(), nil
+	
+}
+func RewardV0State__ThisEpochReward__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochReward(), nil
+	
+}
+func RewardV0State__ThisEpochRewardSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldThisEpochRewardSmoothed()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func RewardV0State__ThisEpochBaselinePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochBaselinePower(), nil
+	
+}
+func RewardV0State__Epoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEpoch(), nil
+	
+}
+func RewardV0State__TotalMined__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalMined(), nil
+	
+}
+var RewardV0State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "RewardV0State",
 	Fields: graphql.Fields{
-		"SealProofType": &graphql.Field{
+		"CumsumBaseline": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV0State__CumsumBaseline__resolve,
+		},
+		"CumsumRealized": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV0State__CumsumRealized__resolve,
+		},
+		"EffectiveNetworkTime": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: RewardV0State__EffectiveNetworkTime__resolve,
+		},
+		"EffectiveBaselinePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV0State__EffectiveBaselinePower__resolve,
+		},
+		"ThisEpochReward": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV0State__ThisEpochReward__resolve,
+		},
+		"ThisEpochRewardSmoothed": &graphql.Field{
+			
+			Type: V0FilterEstimate__type,
+			
+			Resolve: RewardV0State__ThisEpochRewardSmoothed__resolve,
+		},
+		"ThisEpochBaselinePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV0State__ThisEpochBaselinePower__resolve,
+		},
+		"Epoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: RewardV0State__Epoch__resolve,
+		},
+		"TotalMined": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV0State__TotalMined__resolve,
+		},
+	},
+})
+var List__ClientDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__ClientDealProposal",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MarketClientDealProposal__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__ClientDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(MarketClientDealProposal__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__ClientDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(MarketClientDealProposal__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__ClientDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__ClientDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+func MinerExpirationExtend__Deadline__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerExpirationExtend)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDeadline().AsInt()
+	
+}
+func MinerExpirationExtend__Partition__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerExpirationExtend)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPartition().AsInt()
+	
+}
+func MinerExpirationExtend__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerExpirationExtend)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectors(), nil
+	
+}
+func MinerExpirationExtend__NewExpiration__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerExpirationExtend)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNewExpiration(), nil
+	
+}
+var MinerExpirationExtend__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerExpirationExtend",
+	Fields: graphql.Fields{
+		"Deadline": &graphql.Field{
 			
 			Type: graphql.NewNonNull(graphql.Int),
 			
-			Resolve: PowerV2Claim__SealProofType__resolve,
+			Resolve: MinerExpirationExtend__Deadline__resolve,
 		},
-		"RawBytePower": &graphql.Field{
+		"Partition": &graphql.Field{
 			
-			Type: graphql.NewNonNull(BigInt__type),
+			Type: graphql.NewNonNull(graphql.Int),
 			
-			Resolve: PowerV2Claim__RawBytePower__resolve,
+			Resolve: MinerExpirationExtend__Partition__resolve,
 		},
-		"QualityAdjPower": &graphql.Field{
+		"Sectors": &graphql.Field{
 			
-			Type: graphql.NewNonNull(BigInt__type),
+			Type: graphql.NewNonNull(BitField__type),
 			
-			Resolve: PowerV2Claim__QualityAdjPower__resolve,
+			Resolve: MinerExpirationExtend__Sectors__resolve,
+		},
+		"NewExpiration": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerExpirationExtend__NewExpiration__resolve,
 		},
 	},
 })
@@ -12334,129 +5288,563 @@ var List__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })	
-func LotusBeaconEntry__Round__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBeaconEntry)
-	if !ok {
-		return nil, errNotNode
+func PeerID__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		b, err := value.AsBytes()
+		if err != nil {
+			return err
+		}
+		return b
+		
+	default:
+		return nil
 	}
-	
-	return ts.FieldRound().AsInt()
-	
 }
-func LotusBeaconEntry__Data__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusBeaconEntry)
-	if !ok {
-		return nil, errNotNode
+func PeerID__type__parse(value interface{}) interface{} {
+	builder := types.Type.PeerID__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
 	}
-	
-	return ts.FieldData(), nil
-	
+	return builder.Build()
 }
-var LotusBeaconEntry__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "LotusBeaconEntry",
+func PeerID__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.PeerID__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var PeerID__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "PeerID",
+	Description: "PeerID",
+	Serialize: PeerID__type__serialize,
+	ParseValue: PeerID__type__parse,
+	ParseLiteral: PeerID__type__parseLiteral,
+})
+func SectorNumber__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		i, err := value.AsInt()
+		if err != nil {
+			return err
+		}
+		return i
+		
+	default:
+		return nil
+	}
+}
+func SectorNumber__type__parse(value interface{}) interface{} {
+	builder := types.Type.SectorNumber__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func SectorNumber__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.SectorNumber__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var SectorNumber__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "SectorNumber",
+	Description: "SectorNumber",
+	Serialize: SectorNumber__type__serialize,
+	ParseValue: SectorNumber__type__parse,
+	ParseLiteral: SectorNumber__type__parseLiteral,
+})
+var List__Address__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__Address",
 	Fields: graphql.Fields{
-		"Round": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: LotusBeaconEntry__Round__resolve,
+		"At": &graphql.Field{
+			Type: Address__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Address)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
 		},
-		"Data": &graphql.Field{
+		"All": &graphql.Field{
+			Type: graphql.NewList(Address__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Address)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(Address__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Address)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Address)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+func InitV0State__AddressMap__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.InitV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldAddressMap().Link()
+	
+			var node ipld.Node
 			
-			Type: graphql.NewNonNull(Bytes__type),
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__ActorID__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
 			
-			Resolve: LotusBeaconEntry__Data__resolve,
+	
+}
+func InitV0State__NextID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.InitV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNextID(), nil
+	
+}
+func InitV0State__NetworkName__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.InitV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNetworkName().AsString()
+	
+}
+var InitV0State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "InitV0State",
+	Fields: graphql.Fields{
+		"AddressMap": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__ActorID__type),
+			
+			Resolve: InitV0State__AddressMap__resolve,
+		},
+		"NextID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ActorID__type),
+			
+			Resolve: InitV0State__NextID__resolve,
+		},
+		"NetworkName": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.String),
+			
+			Resolve: InitV0State__NetworkName__resolve,
 		},
 	},
 })
-func PoStProof__PoStProof__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PoStProof)
+func PowerV0State__TotalRawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldPoStProof().AsInt()
+	return ts.FieldTotalRawBytePower(), nil
 	
 }
-func PoStProof__ProofBytes__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.PoStProof)
+func PowerV0State__TotalBytesCommitted__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldProofBytes(), nil
+	return ts.FieldTotalBytesCommitted(), nil
 	
 }
-var PoStProof__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "PoStProof",
+func PowerV0State__TotalQualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalQualityAdjPower(), nil
+	
+}
+func PowerV0State__TotalQABytesCommitted__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalQABytesCommitted(), nil
+	
+}
+func PowerV0State__TotalPledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalPledgeCollateral(), nil
+	
+}
+func PowerV0State__ThisEpochRawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochRawBytePower(), nil
+	
+}
+func PowerV0State__ThisEpochQualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochQualityAdjPower(), nil
+	
+}
+func PowerV0State__ThisEpochPledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochPledgeCollateral(), nil
+	
+}
+func PowerV0State__ThisEpochQAPowerSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldThisEpochQAPowerSmoothed()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func PowerV0State__MinerCount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMinerCount().AsInt()
+	
+}
+func PowerV0State__MinerAboveMinPowerCount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMinerAboveMinPowerCount().AsInt()
+	
+}
+func PowerV0State__CronEventQueue__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldCronEventQueue().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Multimap__PowerV0CronEvent__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func PowerV0State__FirstCronEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFirstCronEpoch(), nil
+	
+}
+func PowerV0State__LastProcessedCronEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLastProcessedCronEpoch(), nil
+	
+}
+func PowerV0State__Claims__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldClaims().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__PowerV0Claim__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func PowerV0State__ProofValidationBatch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldProofValidationBatch()
+	if f.Exists() {
+		
+		return "IS a link", nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+var PowerV0State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "PowerV0State",
 	Fields: graphql.Fields{
-		"PoStProof": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: PoStProof__PoStProof__resolve,
-		},
-		"ProofBytes": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: PoStProof__ProofBytes__resolve,
-		},
-	},
-})
-func LotusActors__Code__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusActors)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldCode(), nil
-	
-}
-func LotusActors__Nonce__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusActors)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldNonce().AsInt()
-	
-}
-func LotusActors__Balance__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.LotusActors)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldBalance(), nil
-	
-}
-var LotusActors__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "LotusActors",
-	Fields: graphql.Fields{
-		"Code": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.ID),
-			
-			Resolve: LotusActors__Code__resolve,
-		},
-		"Head": &graphql.Field{
-			
-			Type: graphql.NewNonNull(LotusActorV2Head__type),
-			
-			Resolve: LotusActors__Head__resolve,
-		},
-		"Nonce": &graphql.Field{
-			
-			Type: graphql.NewNonNull(graphql.Int),
-			
-			Resolve: LotusActors__Nonce__resolve,
-		},
-		"Balance": &graphql.Field{
+		"TotalRawBytePower": &graphql.Field{
 			
 			Type: graphql.NewNonNull(BigInt__type),
 			
-			Resolve: LotusActors__Balance__resolve,
+			Resolve: PowerV0State__TotalRawBytePower__resolve,
+		},
+		"TotalBytesCommitted": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV0State__TotalBytesCommitted__resolve,
+		},
+		"TotalQualityAdjPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV0State__TotalQualityAdjPower__resolve,
+		},
+		"TotalQABytesCommitted": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV0State__TotalQABytesCommitted__resolve,
+		},
+		"TotalPledgeCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV0State__TotalPledgeCollateral__resolve,
+		},
+		"ThisEpochRawBytePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV0State__ThisEpochRawBytePower__resolve,
+		},
+		"ThisEpochQualityAdjPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV0State__ThisEpochQualityAdjPower__resolve,
+		},
+		"ThisEpochPledgeCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV0State__ThisEpochPledgeCollateral__resolve,
+		},
+		"ThisEpochQAPowerSmoothed": &graphql.Field{
+			
+			Type: V0FilterEstimate__type,
+			
+			Resolve: PowerV0State__ThisEpochQAPowerSmoothed__resolve,
+		},
+		"MinerCount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: PowerV0State__MinerCount__resolve,
+		},
+		"MinerAboveMinPowerCount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: PowerV0State__MinerAboveMinPowerCount__resolve,
+		},
+		"CronEventQueue": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Multimap__PowerV0CronEvent__type),
+			
+			Resolve: PowerV0State__CronEventQueue__resolve,
+		},
+		"FirstCronEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: PowerV0State__FirstCronEpoch__resolve,
+		},
+		"LastProcessedCronEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: PowerV0State__LastProcessedCronEpoch__resolve,
+		},
+		"Claims": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__PowerV0Claim__type),
+			
+			Resolve: PowerV0State__Claims__resolve,
+		},
+		"ProofValidationBatch": &graphql.Field{
+			
+			Type: graphql.ID,
+			
+			Resolve: PowerV0State__ProofValidationBatch__resolve,
 		},
 	},
 })
@@ -12495,27 +5883,2226 @@ var PowerV0Claim__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
-func MessageParamsMinerDeferredCron__EventType__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerDeferredCron)
+func BigInt__type__parse(value interface{}) interface{} {
+	builder := types.Type.BigInt__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func BigInt__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.BigInt__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var BigInt__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "BigInt",
+	Description: "BigInt",
+	Serialize: BigInt__type__serialize,
+	ParseValue: BigInt__type__parse,
+	ParseLiteral: BigInt__type__parseLiteral,
+})
+var Map__MarketV0RawDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__MarketV0RawDealProposal",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MarketV0DealProposal__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV0RawDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV0RawDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MarketV0DealProposal__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV0RawDealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MinerV0ExpirationSet__OnTimeSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0ExpirationSet)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldEventType().AsInt()
+	return ts.FieldOnTimeSectors(), nil
 	
 }
-var MessageParamsMinerDeferredCron__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerDeferredCron",
+func MinerV0ExpirationSet__EarlySectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0ExpirationSet)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEarlySectors(), nil
+	
+}
+func MinerV0ExpirationSet__OnTimePledge__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0ExpirationSet)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldOnTimePledge(), nil
+	
+}
+func MinerV0ExpirationSet__ActivePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0ExpirationSet)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldActivePower(), nil
+	
+}
+func MinerV0ExpirationSet__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0ExpirationSet)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFaultyPower(), nil
+	
+}
+var MinerV0ExpirationSet__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0ExpirationSet",
 	Fields: graphql.Fields{
-		"EventType": &graphql.Field{
+		"OnTimeSectors": &graphql.Field{
 			
-			Type: graphql.NewNonNull(graphql.Int),
+			Type: graphql.NewNonNull(BitField__type),
 			
-			Resolve: MessageParamsMinerDeferredCron__EventType__resolve,
+			Resolve: MinerV0ExpirationSet__OnTimeSectors__resolve,
+		},
+		"EarlySectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV0ExpirationSet__EarlySectors__resolve,
+		},
+		"OnTimePledge": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV0ExpirationSet__OnTimePledge__resolve,
+		},
+		"ActivePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV0ExpirationSet__ActivePower__resolve,
+		},
+		"FaultyPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV0ExpirationSet__FaultyPower__resolve,
 		},
 	},
 })
-func MinerV0State__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
+func MarketV0DealState__SectorStartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealState)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorStartEpoch(), nil
+	
+}
+func MarketV0DealState__LastUpdatedEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealState)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLastUpdatedEpoch(), nil
+	
+}
+func MarketV0DealState__SlashEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealState)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSlashEpoch(), nil
+	
+}
+var MarketV0DealState__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MarketV0DealState",
+	Fields: graphql.Fields{
+		"SectorStartEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MarketV0DealState__SectorStartEpoch__resolve,
+		},
+		"LastUpdatedEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MarketV0DealState__LastUpdatedEpoch__resolve,
+		},
+		"SlashEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MarketV0DealState__SlashEpoch__resolve,
+		},
+	},
+})
+var Map__MinerV0ExpirationSet__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__MinerV0ExpirationSet",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerV0ExpirationSet__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MinerV0ExpirationSet)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MinerV0ExpirationSet)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MinerV0ExpirationSet__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MinerV0ExpirationSet)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MessageParamsMinerCheckSectorProven__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerCheckSectorProven)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorNumber(), nil
+	
+}
+var MessageParamsMinerCheckSectorProven__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerCheckSectorProven",
+	Fields: graphql.Fields{
+		"SectorNumber": &graphql.Field{
+			
+			Type: graphql.NewNonNull(SectorNumber__type),
+			
+			Resolve: MessageParamsMinerCheckSectorProven__SectorNumber__resolve,
+		},
+	},
+})
+func MessageParamsMultisigConstructor__Signers__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigConstructor)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSigners(), nil
+	
+}
+func MessageParamsMultisigConstructor__NumApprovalsThreshold__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigConstructor)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNumApprovalsThreshold().AsInt()
+	
+}
+func MessageParamsMultisigConstructor__UnlockDuration__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigConstructor)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldUnlockDuration(), nil
+	
+}
+func MessageParamsMultisigConstructor__StartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigConstructor)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldStartEpoch(), nil
+	
+}
+var MessageParamsMultisigConstructor__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMultisigConstructor",
+	Fields: graphql.Fields{
+		"Signers": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__Address__type),
+			
+			Resolve: MessageParamsMultisigConstructor__Signers__resolve,
+		},
+		"NumApprovalsThreshold": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MessageParamsMultisigConstructor__NumApprovalsThreshold__resolve,
+		},
+		"UnlockDuration": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsMultisigConstructor__UnlockDuration__resolve,
+		},
+		"StartEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsMultisigConstructor__StartEpoch__resolve,
+		},
+	},
+})
+func MessageParamsVerifregAddVerifier__Address__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsVerifregAddVerifier)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldAddress(), nil
+	
+}
+func MessageParamsVerifregAddVerifier__Allowance__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsVerifregAddVerifier)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldAllowance(), nil
+	
+}
+var MessageParamsVerifregAddVerifier__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsVerifregAddVerifier",
+	Fields: graphql.Fields{
+		"Address": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MessageParamsVerifregAddVerifier__Address__resolve,
+		},
+		"Allowance": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsVerifregAddVerifier__Allowance__resolve,
+		},
+	},
+})
+var Map__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: Any__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(Any__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func UnpaddedPieceSize__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		i, err := value.AsInt()
+		if err != nil {
+			return err
+		}
+		return i
+		
+	default:
+		return nil
+	}
+}
+func UnpaddedPieceSize__type__parse(value interface{}) interface{} {
+	builder := types.Type.UnpaddedPieceSize__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func UnpaddedPieceSize__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.UnpaddedPieceSize__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var UnpaddedPieceSize__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "UnpaddedPieceSize",
+	Description: "UnpaddedPieceSize",
+	Serialize: UnpaddedPieceSize__type__serialize,
+	ParseValue: UnpaddedPieceSize__type__parse,
+	ParseLiteral: UnpaddedPieceSize__type__parseLiteral,
+})
+func AccountV0State__Address__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.AccountV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldAddress(), nil
+	
+}
+var AccountV0State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "AccountV0State",
+	Fields: graphql.Fields{
+		"Address": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: AccountV0State__Address__resolve,
+		},
+	},
+})
+func MinerV0VestingFund__Epoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0VestingFund)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEpoch(), nil
+	
+}
+func MinerV0VestingFund__Amount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0VestingFund)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldAmount(), nil
+	
+}
+var MinerV0VestingFund__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0VestingFund",
+	Fields: graphql.Fields{
+		"Epoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerV0VestingFund__Epoch__resolve,
+		},
+		"Amount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV0VestingFund__Amount__resolve,
+		},
+	},
+})
+func MinerV2Deadline__Partitions__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldPartitions().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV2Partition__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV2Deadline__ExpirationEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldExpirationEpochs(), nil
+	
+}
+func MinerV2Deadline__PostSubmissions__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPostSubmissions(), nil
+	
+}
+func MinerV2Deadline__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEarlyTerminations(), nil
+	
+}
+func MinerV2Deadline__LiveSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLiveSectors().AsInt()
+	
+}
+func MinerV2Deadline__TotalSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalSectors().AsInt()
+	
+}
+func MinerV2Deadline__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFaultyPower(), nil
+	
+}
+var MinerV2Deadline__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV2Deadline",
+	Fields: graphql.Fields{
+		"Partitions": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__MinerV2Partition__type),
+			
+			Resolve: MinerV2Deadline__Partitions__resolve,
+		},
+		"ExpirationEpochs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MinerV2Deadline__ExpirationEpochs__resolve,
+		},
+		"PostSubmissions": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV2Deadline__PostSubmissions__resolve,
+		},
+		"EarlyTerminations": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV2Deadline__EarlyTerminations__resolve,
+		},
+		"LiveSectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV2Deadline__LiveSectors__resolve,
+		},
+		"TotalSectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV2Deadline__TotalSectors__resolve,
+		},
+		"FaultyPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV2Deadline__FaultyPower__resolve,
+		},
+	},
+})
+func MessageParamsPowerEnrollCron__EventEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerEnrollCron)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEventEpoch(), nil
+	
+}
+func MessageParamsPowerEnrollCron__Payload__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerEnrollCron)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPayload(), nil
+	
+}
+var MessageParamsPowerEnrollCron__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsPowerEnrollCron",
+	Fields: graphql.Fields{
+		"EventEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsPowerEnrollCron__EventEpoch__resolve,
+		},
+		"Payload": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsPowerEnrollCron__Payload__resolve,
+		},
+	},
+})
+var List__SectorNumber__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__SectorNumber",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: SectorNumber__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__SectorNumber)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(SectorNumber__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__SectorNumber)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(SectorNumber__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__SectorNumber)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__SectorNumber)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+var List__MinerExpirationExtend__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__MinerExpirationExtend",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerExpirationExtend__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerExpirationExtend)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(MinerExpirationExtend__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerExpirationExtend)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(MinerExpirationExtend__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerExpirationExtend)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerExpirationExtend)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+func MessageParamsPowerUpdateClaimed__RawByteDelta__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerUpdateClaimed)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRawByteDelta(), nil
+	
+}
+func MessageParamsPowerUpdateClaimed__QualityAdjustedDelta__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPowerUpdateClaimed)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldQualityAdjustedDelta(), nil
+	
+}
+var MessageParamsPowerUpdateClaimed__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsPowerUpdateClaimed",
+	Fields: graphql.Fields{
+		"RawByteDelta": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsPowerUpdateClaimed__RawByteDelta__resolve,
+		},
+		"QualityAdjustedDelta": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsPowerUpdateClaimed__QualityAdjustedDelta__resolve,
+		},
+	},
+})
+var List__Multiaddrs__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__Multiaddrs",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: Multiaddr__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Multiaddrs)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(Multiaddr__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Multiaddrs)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(Multiaddr__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Multiaddrs)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__Multiaddrs)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+var Map__MarketV2DealProposal__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__MarketV2DealProposal",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MarketV2DealProposal__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(CidString__type),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV2DealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(CidString__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV2DealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MarketV2DealProposal__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV2DealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MessageParamsMarketVerifyDeals__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketVerifyDeals)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDealIDs(), nil
+	
+}
+func MessageParamsMarketVerifyDeals__SectorExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketVerifyDeals)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorExpiry(), nil
+	
+}
+func MessageParamsMarketVerifyDeals__SectorStart__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketVerifyDeals)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorStart(), nil
+	
+}
+var MessageParamsMarketVerifyDeals__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMarketVerifyDeals",
+	Fields: graphql.Fields{
+		"DealIDs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__DealID__type),
+			
+			Resolve: MessageParamsMarketVerifyDeals__DealIDs__resolve,
+		},
+		"SectorExpiry": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsMarketVerifyDeals__SectorExpiry__resolve,
+		},
+		"SectorStart": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsMarketVerifyDeals__SectorStart__resolve,
+		},
+	},
+})
+func MessageParamsMultisigLockBalance__StartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigLockBalance)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldStartEpoch(), nil
+	
+}
+func MessageParamsMultisigLockBalance__UnlockDuration__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigLockBalance)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldUnlockDuration(), nil
+	
+}
+func MessageParamsMultisigLockBalance__Amount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigLockBalance)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldAmount(), nil
+	
+}
+var MessageParamsMultisigLockBalance__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMultisigLockBalance",
+	Fields: graphql.Fields{
+		"StartEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsMultisigLockBalance__StartEpoch__resolve,
+		},
+		"UnlockDuration": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsMultisigLockBalance__UnlockDuration__resolve,
+		},
+		"Amount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsMultisigLockBalance__Amount__resolve,
+		},
+	},
+})
+func MinerV0PowerPair__Raw__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0PowerPair)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRaw(), nil
+	
+}
+func MinerV0PowerPair__QA__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0PowerPair)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldQA(), nil
+	
+}
+var MinerV0PowerPair__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0PowerPair",
+	Fields: graphql.Fields{
+		"Raw": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV0PowerPair__Raw__resolve,
+		},
+		"QA": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV0PowerPair__QA__resolve,
+		},
+	},
+})
+func SealVerifyInfo__SealProof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SealVerifyInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealProof(), nil
+	
+}
+func SealVerifyInfo__SectorID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SealVerifyInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorID().AsInt()
+	
+}
+func SealVerifyInfo__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SealVerifyInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDealIDs(), nil
+	
+}
+func SealVerifyInfo__Randomness__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SealVerifyInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRandomness(), nil
+	
+}
+func SealVerifyInfo__InteractiveRandomness__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SealVerifyInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldInteractiveRandomness(), nil
+	
+}
+func SealVerifyInfo__Proof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SealVerifyInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProof(), nil
+	
+}
+func SealVerifyInfo__SealedCID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SealVerifyInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealedCID(), nil
+	
+}
+func SealVerifyInfo__UnsealedCID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SealVerifyInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldUnsealedCID(), nil
+	
+}
+var SealVerifyInfo__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "SealVerifyInfo",
+	Fields: graphql.Fields{
+		"SealProof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: SealVerifyInfo__SealProof__resolve,
+		},
+		"SectorID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: SealVerifyInfo__SectorID__resolve,
+		},
+		"DealIDs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__DealID__type),
+			
+			Resolve: SealVerifyInfo__DealIDs__resolve,
+		},
+		"Randomness": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: SealVerifyInfo__Randomness__resolve,
+		},
+		"InteractiveRandomness": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: SealVerifyInfo__InteractiveRandomness__resolve,
+		},
+		"Proof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: SealVerifyInfo__Proof__resolve,
+		},
+		"SealedCID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: SealVerifyInfo__SealedCID__resolve,
+		},
+		"UnsealedCID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: SealVerifyInfo__UnsealedCID__resolve,
+		},
+	},
+})
+func MinerV2State__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldInfo().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Info__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV2State__PreCommitDeposits__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPreCommitDeposits(), nil
+	
+}
+func MinerV2State__LockedFunds__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLockedFunds(), nil
+	
+}
+func MinerV2State__VestingFunds__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldVestingFunds().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0VestingFunds__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV2State__FeeDebt__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFeeDebt(), nil
+	
+}
+func MinerV2State__InitialPledge__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldInitialPledge(), nil
+	
+}
+func MinerV2State__PreCommittedSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldPreCommittedSectors().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__SectorPreCommitOnChainInfo__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV2State__PreCommittedSectorsExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPreCommittedSectorsExpiry(), nil
+	
+}
+func MinerV2State__AllocatedSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldAllocatedSectors().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.BitField__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV2State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldSectors().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__SectorV2OnChainInfo__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV2State__ProvingPeriodStart__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProvingPeriodStart(), nil
+	
+}
+func MinerV2State__CurrentDeadline__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldCurrentDeadline().AsInt()
+	
+}
+func MinerV2State__Deadlines__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldDeadlines().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Deadlines__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV2State__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEarlyTerminations(), nil
+	
+}
+var MinerV2State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV2State",
+	Fields: graphql.Fields{
+		"Info": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV2Info__type),
+			
+			Resolve: MinerV2State__Info__resolve,
+		},
+		"PreCommitDeposits": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2State__PreCommitDeposits__resolve,
+		},
+		"LockedFunds": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2State__LockedFunds__resolve,
+		},
+		"VestingFunds": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0VestingFunds__type),
+			
+			Resolve: MinerV2State__VestingFunds__resolve,
+		},
+		"FeeDebt": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2State__FeeDebt__resolve,
+		},
+		"InitialPledge": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2State__InitialPledge__resolve,
+		},
+		"PreCommittedSectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__SectorPreCommitOnChainInfo__type),
+			
+			Resolve: MinerV2State__PreCommittedSectors__resolve,
+		},
+		"PreCommittedSectorsExpiry": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MinerV2State__PreCommittedSectorsExpiry__resolve,
+		},
+		"AllocatedSectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV2State__AllocatedSectors__resolve,
+		},
+		"Sectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__SectorV2OnChainInfo__type),
+			
+			Resolve: MinerV2State__Sectors__resolve,
+		},
+		"ProvingPeriodStart": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerV2State__ProvingPeriodStart__resolve,
+		},
+		"CurrentDeadline": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV2State__CurrentDeadline__resolve,
+		},
+		"Deadlines": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV2Deadlines__type),
+			
+			Resolve: MinerV2State__Deadlines__resolve,
+		},
+		"EarlyTerminations": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV2State__EarlyTerminations__resolve,
+		},
+	},
+})
+func MessageParamsMinerSubmitWindowedPoSt__Deadline__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDeadline().AsInt()
+	
+}
+func MessageParamsMinerSubmitWindowedPoSt__Partitions__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPartitions(), nil
+	
+}
+func MessageParamsMinerSubmitWindowedPoSt__Proofs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProofs(), nil
+	
+}
+func MessageParamsMinerSubmitWindowedPoSt__ChainCommitEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldChainCommitEpoch(), nil
+	
+}
+func MessageParamsMinerSubmitWindowedPoSt__ChainCommitRand__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerSubmitWindowedPoSt)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldChainCommitRand(), nil
+	
+}
+var MessageParamsMinerSubmitWindowedPoSt__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerSubmitWindowedPoSt",
+	Fields: graphql.Fields{
+		"Deadline": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MessageParamsMinerSubmitWindowedPoSt__Deadline__resolve,
+		},
+		"Partitions": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__MinerPostPartition__type),
+			
+			Resolve: MessageParamsMinerSubmitWindowedPoSt__Partitions__resolve,
+		},
+		"Proofs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__MinerPoStProof__type),
+			
+			Resolve: MessageParamsMinerSubmitWindowedPoSt__Proofs__resolve,
+		},
+		"ChainCommitEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsMinerSubmitWindowedPoSt__ChainCommitEpoch__resolve,
+		},
+		"ChainCommitRand": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsMinerSubmitWindowedPoSt__ChainCommitRand__resolve,
+		},
+	},
+})
+func LotusElectionProof__WinCount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusElectionProof)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldWinCount().AsInt()
+	
+}
+func LotusElectionProof__VRFProof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusElectionProof)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldVRFProof(), nil
+	
+}
+var LotusElectionProof__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "LotusElectionProof",
+	Fields: graphql.Fields{
+		"WinCount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: LotusElectionProof__WinCount__resolve,
+		},
+		"VRFProof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: LotusElectionProof__VRFProof__resolve,
+		},
+	},
+})
+var Map__SectorPreCommitOnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__SectorPreCommitOnChainInfo",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerV0SectorPreCommitOnChainInfo__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__SectorPreCommitOnChainInfo)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__SectorPreCommitOnChainInfo)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MinerV0SectorPreCommitOnChainInfo__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__SectorPreCommitOnChainInfo)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MultisigV0Transaction__To__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MultisigV0Transaction)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTo(), nil
+	
+}
+func MultisigV0Transaction__Value__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MultisigV0Transaction)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldValue(), nil
+	
+}
+func MultisigV0Transaction__Method__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MultisigV0Transaction)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMethod(), nil
+	
+}
+func MultisigV0Transaction__Params__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MultisigV0Transaction)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldParams(), nil
+	
+}
+func MultisigV0Transaction__Approved__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MultisigV0Transaction)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldApproved(), nil
+	
+}
+var MultisigV0Transaction__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MultisigV0Transaction",
+	Fields: graphql.Fields{
+		"To": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MultisigV0Transaction__To__resolve,
+		},
+		"Value": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MultisigV0Transaction__Value__resolve,
+		},
+		"Method": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MethodNum__type),
+			
+			Resolve: MultisigV0Transaction__Method__resolve,
+		},
+		"Params": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MultisigV0Transaction__Params__resolve,
+		},
+		"Approved": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__Address__type),
+			
+			Resolve: MultisigV0Transaction__Approved__resolve,
+		},
+	},
+})
+func MessageParamsMinerDeclareFaultsRecovered__Recoveries__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerDeclareFaultsRecovered)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRecoveries(), nil
+	
+}
+var MessageParamsMinerDeclareFaultsRecovered__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerDeclareFaultsRecovered",
+	Fields: graphql.Fields{
+		"Recoveries": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__MinerTerminationDecl__type),
+			
+			Resolve: MessageParamsMinerDeclareFaultsRecovered__Recoveries__resolve,
+		},
+	},
+})
+func MessageParamsVerifregUseBytes__Address__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsVerifregUseBytes)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldAddress(), nil
+	
+}
+func MessageParamsVerifregUseBytes__DealSize__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsVerifregUseBytes)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDealSize(), nil
+	
+}
+var MessageParamsVerifregUseBytes__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsVerifregUseBytes",
+	Fields: graphql.Fields{
+		"Address": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MessageParamsVerifregUseBytes__Address__resolve,
+		},
+		"DealSize": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsVerifregUseBytes__DealSize__resolve,
+		},
+	},
+})
+var Map__BitField__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__BitField",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: BitField__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__BitField)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__BitField)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(BitField__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__BitField)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	var Map__MultisigV0Transaction__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__MultisigV0Transaction",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MultisigV0Transaction__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MultisigV0Transaction)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MultisigV0Transaction)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MultisigV0Transaction__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MultisigV0Transaction)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MinerV0State__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
 	ts, ok := p.Source.(types.MinerV0State)
 	if !ok {
 		return nil, errNotNode
@@ -12859,6 +8446,1711 @@ var MinerV0State__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
+var MessageParamsMinerConstructor__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerConstructor",
+	Fields: graphql.Fields{
+		"__Exists": &graphql.Field{
+			Type: graphql.Boolean,
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				return true, nil
+			},
+		},
+	},
+})
+var Map__DataCap__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__DataCap",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: BigInt__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(RawAddress__type),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__DataCap)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(RawAddress__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__DataCap)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(BigInt__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__DataCap)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func LotusTicket__VRFProof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusTicket)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldVRFProof(), nil
+	
+}
+var LotusTicket__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "LotusTicket",
+	Fields: graphql.Fields{
+		"VRFProof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: LotusTicket__VRFProof__resolve,
+		},
+	},
+})
+func RewardV2State__CumsumBaseline__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldCumsumBaseline(), nil
+	
+}
+func RewardV2State__CumsumRealized__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldCumsumRealized(), nil
+	
+}
+func RewardV2State__EffectiveNetworkTime__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEffectiveNetworkTime(), nil
+	
+}
+func RewardV2State__EffectiveBaselinePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEffectiveBaselinePower(), nil
+	
+}
+func RewardV2State__ThisEpochReward__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochReward(), nil
+	
+}
+func RewardV2State__ThisEpochRewardSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochRewardSmoothed(), nil
+	
+}
+func RewardV2State__ThisEpochBaselinePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochBaselinePower(), nil
+	
+}
+func RewardV2State__Epoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEpoch(), nil
+	
+}
+func RewardV2State__TotalStoragePowerReward__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalStoragePowerReward(), nil
+	
+}
+func RewardV2State__SimpleTotal__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSimpleTotal(), nil
+	
+}
+func RewardV2State__BaselineTotal__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.RewardV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldBaselineTotal(), nil
+	
+}
+var RewardV2State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "RewardV2State",
+	Fields: graphql.Fields{
+		"CumsumBaseline": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV2State__CumsumBaseline__resolve,
+		},
+		"CumsumRealized": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV2State__CumsumRealized__resolve,
+		},
+		"EffectiveNetworkTime": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: RewardV2State__EffectiveNetworkTime__resolve,
+		},
+		"EffectiveBaselinePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV2State__EffectiveBaselinePower__resolve,
+		},
+		"ThisEpochReward": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV2State__ThisEpochReward__resolve,
+		},
+		"ThisEpochRewardSmoothed": &graphql.Field{
+			
+			Type: graphql.NewNonNull(V0FilterEstimate__type),
+			
+			Resolve: RewardV2State__ThisEpochRewardSmoothed__resolve,
+		},
+		"ThisEpochBaselinePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV2State__ThisEpochBaselinePower__resolve,
+		},
+		"Epoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: RewardV2State__Epoch__resolve,
+		},
+		"TotalStoragePowerReward": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV2State__TotalStoragePowerReward__resolve,
+		},
+		"SimpleTotal": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV2State__SimpleTotal__resolve,
+		},
+		"BaselineTotal": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: RewardV2State__BaselineTotal__resolve,
+		},
+	},
+})
+func MessageParamsMarketComputeCommitment__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketComputeCommitment)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDealIDs(), nil
+	
+}
+func MessageParamsMarketComputeCommitment__SectorType__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketComputeCommitment)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorType(), nil
+	
+}
+var MessageParamsMarketComputeCommitment__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMarketComputeCommitment",
+	Fields: graphql.Fields{
+		"DealIDs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__DealID__type),
+			
+			Resolve: MessageParamsMarketComputeCommitment__DealIDs__resolve,
+		},
+		"SectorType": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MessageParamsMarketComputeCommitment__SectorType__resolve,
+		},
+	},
+})
+func MessageParamsPaychUpdateChannelState__Sv__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPaychUpdateChannelState)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSv(), nil
+	
+}
+func MessageParamsPaychUpdateChannelState__Secret__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsPaychUpdateChannelState)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSecret(), nil
+	
+}
+var MessageParamsPaychUpdateChannelState__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsPaychUpdateChannelState",
+	Fields: graphql.Fields{
+		"Sv": &graphql.Field{
+			
+			Type: graphql.NewNonNull(SignedVoucher__type),
+			
+			Resolve: MessageParamsPaychUpdateChannelState__Sv__resolve,
+		},
+		"Secret": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsPaychUpdateChannelState__Secret__resolve,
+		},
+	},
+})
+func MinerV2SectorOnChainInfo__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorNumber(), nil
+	
+}
+func MinerV2SectorOnChainInfo__SealProof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealProof().AsInt()
+	
+}
+func MinerV2SectorOnChainInfo__SealedCID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealedCID(), nil
+	
+}
+func MinerV2SectorOnChainInfo__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDealIDs(), nil
+	
+}
+func MinerV2SectorOnChainInfo__Activation__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldActivation(), nil
+	
+}
+func MinerV2SectorOnChainInfo__Expiration__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldExpiration(), nil
+	
+}
+func MinerV2SectorOnChainInfo__DealWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDealWeight(), nil
+	
+}
+func MinerV2SectorOnChainInfo__VerifiedDealWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldVerifiedDealWeight(), nil
+	
+}
+func MinerV2SectorOnChainInfo__InitialPledge__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldInitialPledge(), nil
+	
+}
+func MinerV2SectorOnChainInfo__ExpectedDayReward__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldExpectedDayReward(), nil
+	
+}
+func MinerV2SectorOnChainInfo__ExpectedStorageReward__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldExpectedStorageReward(), nil
+	
+}
+func MinerV2SectorOnChainInfo__ReplacedSectorAge__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldReplacedSectorAge(), nil
+	
+}
+func MinerV2SectorOnChainInfo__ReplacedDayReward__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2SectorOnChainInfo)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldReplacedDayReward(), nil
+	
+}
+var MinerV2SectorOnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV2SectorOnChainInfo",
+	Fields: graphql.Fields{
+		"SectorNumber": &graphql.Field{
+			
+			Type: graphql.NewNonNull(SectorNumber__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__SectorNumber__resolve,
+		},
+		"SealProof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV2SectorOnChainInfo__SealProof__resolve,
+		},
+		"SealedCID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MinerV2SectorOnChainInfo__SealedCID__resolve,
+		},
+		"DealIDs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__DealID__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__DealIDs__resolve,
+		},
+		"Activation": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__Activation__resolve,
+		},
+		"Expiration": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__Expiration__resolve,
+		},
+		"DealWeight": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__DealWeight__resolve,
+		},
+		"VerifiedDealWeight": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__VerifiedDealWeight__resolve,
+		},
+		"InitialPledge": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__InitialPledge__resolve,
+		},
+		"ExpectedDayReward": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__ExpectedDayReward__resolve,
+		},
+		"ExpectedStorageReward": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__ExpectedStorageReward__resolve,
+		},
+		"ReplacedSectorAge": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__ReplacedSectorAge__resolve,
+		},
+		"ReplacedDayReward": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MinerV2SectorOnChainInfo__ReplacedDayReward__resolve,
+		},
+	},
+})
+func MessageParamsMarketActivateDeals__DealIDs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketActivateDeals)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDealIDs(), nil
+	
+}
+func MessageParamsMarketActivateDeals__SectorExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketActivateDeals)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorExpiry(), nil
+	
+}
+var MessageParamsMarketActivateDeals__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMarketActivateDeals",
+	Fields: graphql.Fields{
+		"DealIDs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__DealID__type),
+			
+			Resolve: MessageParamsMarketActivateDeals__DealIDs__resolve,
+		},
+		"SectorExpiry": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MessageParamsMarketActivateDeals__SectorExpiry__resolve,
+		},
+	},
+})
+func MessageParamsMinerChangeMultiaddrs__NewMultiaddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerChangeMultiaddrs)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNewMultiaddrs(), nil
+	
+}
+var MessageParamsMinerChangeMultiaddrs__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerChangeMultiaddrs",
+	Fields: graphql.Fields{
+		"NewMultiaddrs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__Multiaddrs__type),
+			
+			Resolve: MessageParamsMinerChangeMultiaddrs__NewMultiaddrs__resolve,
+		},
+	},
+})
+func ChainEpoch__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		i, err := value.AsInt()
+		if err != nil {
+			return err
+		}
+		return i
+		
+	default:
+		return nil
+	}
+}
+func ChainEpoch__type__parse(value interface{}) interface{} {
+	builder := types.Type.ChainEpoch__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func ChainEpoch__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.ChainEpoch__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var ChainEpoch__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "ChainEpoch",
+	Description: "ChainEpoch",
+	Serialize: ChainEpoch__type__serialize,
+	ParseValue: ChainEpoch__type__parse,
+	ParseLiteral: ChainEpoch__type__parseLiteral,
+})
+func CidString__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		s, err := value.AsString()
+		if err != nil {
+			return err
+		}
+		return s
+		
+	default:
+		return nil
+	}
+}
+func CidString__type__parse(value interface{}) interface{} {
+	builder := types.Type.CidString__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func CidString__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.CidString__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var CidString__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "CidString",
+	Description: "CidString",
+	Serialize: CidString__type__serialize,
+	ParseValue: CidString__type__parse,
+	ParseLiteral: CidString__type__parseLiteral,
+})
+func MessageParamsMultisigPropose__To__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigPropose)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTo(), nil
+	
+}
+func MessageParamsMultisigPropose__Value__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigPropose)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldValue(), nil
+	
+}
+func MessageParamsMultisigPropose__Method__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigPropose)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMethod(), nil
+	
+}
+func MessageParamsMultisigPropose__Params__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigPropose)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldParams(), nil
+	
+}
+var MessageParamsMultisigPropose__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMultisigPropose",
+	Fields: graphql.Fields{
+		"To": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MessageParamsMultisigPropose__To__resolve,
+		},
+		"Value": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsMultisigPropose__Value__resolve,
+		},
+		"Method": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MethodNum__type),
+			
+			Resolve: MessageParamsMultisigPropose__Method__resolve,
+		},
+		"Params": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsMultisigPropose__Params__resolve,
+		},
+	},
+})
+func MessageParamsMultisigChangeThreshold__NewThreshold__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigChangeThreshold)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNewThreshold().AsInt()
+	
+}
+var MessageParamsMultisigChangeThreshold__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMultisigChangeThreshold",
+	Fields: graphql.Fields{
+		"NewThreshold": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MessageParamsMultisigChangeThreshold__NewThreshold__resolve,
+		},
+	},
+})
+var Multimap__PowerV0CronEvent__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Multimap__PowerV0CronEvent",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: Map__PowerV0CronEvent__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Multimap__PowerV0CronEvent)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Multimap__PowerV0CronEvent)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(Map__PowerV0CronEvent__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Multimap__PowerV0CronEvent)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	var Map__MarketV0DealProposal__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__MarketV0DealProposal",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MarketV0DealProposal__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(CidString__type),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV0DealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(CidString__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV0DealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MarketV0DealProposal__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MarketV0DealProposal)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MessageParamsMinerDeclareFaults__Faults__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerDeclareFaults)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFaults(), nil
+	
+}
+var MessageParamsMinerDeclareFaults__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerDeclareFaults",
+	Fields: graphql.Fields{
+		"Faults": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__MinerTerminationDecl__type),
+			
+			Resolve: MessageParamsMinerDeclareFaults__Faults__resolve,
+		},
+	},
+})
+var Map__List__DealID__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__List__DealID",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: List__DealID__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__List__DealID)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__List__DealID)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(List__DealID__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__List__DealID)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MinerV0Info__Owner__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldOwner(), nil
+	
+}
+func MinerV0Info__Worker__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldWorker(), nil
+	
+}
+func MinerV0Info__ControlAddresses__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldControlAddresses()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func MinerV0Info__PendingWorkerKey__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldPendingWorkerKey()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func MinerV0Info__PeerId__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPeerId(), nil
+	
+}
+func MinerV0Info__Multiaddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldMultiaddrs()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func MinerV0Info__SealProofType__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealProofType().AsInt()
+	
+}
+func MinerV0Info__SectorSize__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorSize(), nil
+	
+}
+func MinerV0Info__WindowPoStPartitionSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Info)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldWindowPoStPartitionSectors().AsInt()
+	
+}
+var MinerV0Info__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0Info",
+	Fields: graphql.Fields{
+		"Owner": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MinerV0Info__Owner__resolve,
+		},
+		"Worker": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MinerV0Info__Worker__resolve,
+		},
+		"ControlAddresses": &graphql.Field{
+			
+			Type: List__Address__type,
+			
+			Resolve: MinerV0Info__ControlAddresses__resolve,
+		},
+		"PendingWorkerKey": &graphql.Field{
+			
+			Type: MinerV0WorkerChangeKey__type,
+			
+			Resolve: MinerV0Info__PendingWorkerKey__resolve,
+		},
+		"PeerId": &graphql.Field{
+			
+			Type: graphql.NewNonNull(PeerID__type),
+			
+			Resolve: MinerV0Info__PeerId__resolve,
+		},
+		"Multiaddrs": &graphql.Field{
+			
+			Type: List__Multiaddrs__type,
+			
+			Resolve: MinerV0Info__Multiaddrs__resolve,
+		},
+		"SealProofType": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV0Info__SealProofType__resolve,
+		},
+		"SectorSize": &graphql.Field{
+			
+			Type: graphql.NewNonNull(SectorSize__type),
+			
+			Resolve: MinerV0Info__SectorSize__resolve,
+		},
+		"WindowPoStPartitionSectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV0Info__WindowPoStPartitionSectors__resolve,
+		},
+	},
+})
+var Any__type = graphql.NewUnion(graphql.UnionConfig{
+	Name: "Any",
+	Types: []*graphql.Object{
+		
+		union__Any__Bool,
+		
+		
+		union__Any__Int,
+		
+		
+		union__Any__Float,
+		
+		
+		union__Any__String,
+		
+		
+		union__Any__Bytes,
+		
+		
+		union__Any__Map,
+		
+		
+		union__Any__List,
+		
+		
+		union__Any__Link,
+		
+	},
+	ResolveType: func(p graphql.ResolveTypeParams) *graphql.Object {
+		if node, ok := p.Value.(ipld.Node); ok {
+			switch node.Prototype() {
+			
+			case types.Type.Bool:
+				fallthrough
+			case types.Type.Bool__Repr:
+				return union__Any__Bool
+			
+			
+			case types.Type.Int:
+				fallthrough
+			case types.Type.Int__Repr:
+				return union__Any__Int
+			
+			
+			case types.Type.Float:
+				fallthrough
+			case types.Type.Float__Repr:
+				return union__Any__Float
+			
+			
+			case types.Type.String:
+				fallthrough
+			case types.Type.String__Repr:
+				return union__Any__String
+			
+			
+			case types.Type.Bytes:
+				fallthrough
+			case types.Type.Bytes__Repr:
+				return union__Any__Bytes
+			
+			
+			case types.Type.Map:
+				fallthrough
+			case types.Type.Map__Repr:
+				return union__Any__Map
+			
+			
+			case types.Type.List:
+				fallthrough
+			case types.Type.List__Repr:
+				return union__Any__List
+			
+			
+			case types.Type.Link:
+				fallthrough
+			case types.Type.Link__Repr:
+				return union__Any__Link
+			
+			}				
+		}
+		fmt.Printf("Actual type %T: %v not in union\n", p.Value, p.Value)
+		return nil
+	},
+})
+
+var union__Any__Bool = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Any.Bool",
+	Description: "Synthetic union member wrapper",
+	Fields: graphql.Fields{
+		
+		"": &graphql.Field{
+			Type: graphql.Boolean,
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Bool)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.AsBool()
+			},
+		},
+		
+	},
+})
+
+
+var union__Any__Int = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Any.Int",
+	Description: "Synthetic union member wrapper",
+	Fields: graphql.Fields{
+		
+		"": &graphql.Field{
+			Type: graphql.Int,
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Int)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.AsInt()
+			},
+		},
+		
+	},
+})
+
+
+var union__Any__Float = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Any.Float",
+	Description: "Synthetic union member wrapper",
+	Fields: graphql.Fields{
+		
+		"": &graphql.Field{
+			Type: graphql.Float,
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Float)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.AsFloat()
+			},
+		},
+		
+	},
+})
+
+
+var union__Any__String = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Any.String",
+	Description: "Synthetic union member wrapper",
+	Fields: graphql.Fields{
+		
+		"": &graphql.Field{
+			Type: graphql.String,
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.String)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.AsString()
+			},
+		},
+		
+	},
+})
+
+
+var union__Any__Bytes = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Any.Bytes",
+	Description: "Synthetic union member wrapper",
+	Fields: graphql.Fields{
+		
+	},
+})
+
+
+var union__Any__Map = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Any.Map",
+	Description: "Synthetic union member wrapper",
+	Fields: graphql.Fields{
+		
+	},
+})
+
+
+var union__Any__List = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Any.List",
+	Description: "Synthetic union member wrapper",
+	Fields: graphql.Fields{
+		
+	},
+})
+
+
+var union__Any__Link = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Any.Link",
+	Description: "Synthetic union member wrapper",
+	Fields: graphql.Fields{
+		
+	},
+})
+
+var Map__LotusActors__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__LotusActors",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: LotusActors__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(RawAddress__type),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__LotusActors)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(RawAddress__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__LotusActors)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(LotusActors__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__LotusActors)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MinerTerminationDecl__Deadline__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerTerminationDecl)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDeadline().AsInt()
+	
+}
+func MinerTerminationDecl__Partition__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerTerminationDecl)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPartition().AsInt()
+	
+}
+func MinerTerminationDecl__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerTerminationDecl)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectors(), nil
+	
+}
+var MinerTerminationDecl__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerTerminationDecl",
+	Fields: graphql.Fields{
+		"Deadline": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerTerminationDecl__Deadline__resolve,
+		},
+		"Partition": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerTerminationDecl__Partition__resolve,
+		},
+		"Sectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerTerminationDecl__Sectors__resolve,
+		},
+	},
+})
+func MinerV2Deadlines__Due__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV2Deadlines)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDue(), nil
+	
+}
+var MinerV2Deadlines__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV2Deadlines",
+	Fields: graphql.Fields{
+		"Due": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__MinerV2DeadlineLink__type),
+			
+			Resolve: MinerV2Deadlines__Due__resolve,
+		},
+	},
+})
+func MinerPostPartition__Index__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerPostPartition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldIndex().AsInt()
+	
+}
+func MinerPostPartition__Skipped__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerPostPartition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSkipped(), nil
+	
+}
+var MinerPostPartition__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerPostPartition",
+	Fields: graphql.Fields{
+		"Index": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerPostPartition__Index__resolve,
+		},
+		"Skipped": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerPostPartition__Skipped__resolve,
+		},
+	},
+})
+func MessageParamsMultisigAddSigner__Signer__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigAddSigner)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSigner(), nil
+	
+}
+func MessageParamsMultisigAddSigner__Increase__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMultisigAddSigner)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldIncrease().AsBool()
+	
+}
+var MessageParamsMultisigAddSigner__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMultisigAddSigner",
+	Fields: graphql.Fields{
+		"Signer": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MessageParamsMultisigAddSigner__Signer__resolve,
+		},
+		"Increase": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Boolean),
+			
+			Resolve: MessageParamsMultisigAddSigner__Increase__resolve,
+		},
+	},
+})
+func BitField__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		b, err := value.AsBytes()
+		if err != nil {
+			return err
+		}
+		return b
+		
+	default:
+		return nil
+	}
+}
+func BitField__type__parse(value interface{}) interface{} {
+	builder := types.Type.BitField__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func BitField__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.BitField__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var BitField__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "BitField",
+	Description: "BitField",
+	Serialize: BitField__type__serialize,
+	ParseValue: BitField__type__parse,
+	ParseLiteral: BitField__type__parseLiteral,
+})
+var List__LotusBeaconEntry__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__LotusBeaconEntry",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: LotusBeaconEntry__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__LotusBeaconEntry)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(LotusBeaconEntry__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__LotusBeaconEntry)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(LotusBeaconEntry__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__LotusBeaconEntry)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__LotusBeaconEntry)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
 func LotusSignedMessage__Message__resolve(p graphql.ResolveParams) (interface{}, error) {
 	ts, ok := p.Source.(types.LotusSignedMessage)
 	if !ok {
@@ -12894,42 +10186,2600 @@ var LotusSignedMessage__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
-func MessageParamsVerifregAddVerifier__Address__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsVerifregAddVerifier)
+func MarketV0State__Proposals__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldAddress(), nil
+	targetCid := ts.FieldProposals().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV0RawDealProposal__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
 	
 }
-func MessageParamsVerifregAddVerifier__Allowance__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsVerifregAddVerifier)
+func MarketV0State__States__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldAllowance(), nil
+	targetCid := ts.FieldStates().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV0DealState__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
 	
 }
-var MessageParamsVerifregAddVerifier__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsVerifregAddVerifier",
+func MarketV0State__PendingProposals__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldPendingProposals().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV0DealProposal__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MarketV0State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldEscrowTable().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__BalanceTable__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MarketV0State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldLockedTable().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__BalanceTable__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MarketV0State__NextID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNextID(), nil
+	
+}
+func MarketV0State__DealOpsByEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldDealOpsByEpoch().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__List__DealID__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MarketV0State__LastCron__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLastCron(), nil
+	
+}
+func MarketV0State__TotalClientLockedCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalClientLockedCollateral(), nil
+	
+}
+func MarketV0State__TotalProviderLockedCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalProviderLockedCollateral(), nil
+	
+}
+func MarketV0State__TotalClientStorageFee__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalClientStorageFee(), nil
+	
+}
+var MarketV0State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MarketV0State",
 	Fields: graphql.Fields{
-		"Address": &graphql.Field{
+		"Proposals": &graphql.Field{
 			
-			Type: graphql.NewNonNull(Address__type),
+			Type: graphql.NewNonNull(Map__MarketV0RawDealProposal__type),
 			
-			Resolve: MessageParamsVerifregAddVerifier__Address__resolve,
+			Resolve: MarketV0State__Proposals__resolve,
 		},
-		"Allowance": &graphql.Field{
+		"States": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__MarketV0DealState__type),
+			
+			Resolve: MarketV0State__States__resolve,
+		},
+		"PendingProposals": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__MarketV0DealProposal__type),
+			
+			Resolve: MarketV0State__PendingProposals__resolve,
+		},
+		"EscrowTable": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__BalanceTable__type),
+			
+			Resolve: MarketV0State__EscrowTable__resolve,
+		},
+		"LockedTable": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__BalanceTable__type),
+			
+			Resolve: MarketV0State__LockedTable__resolve,
+		},
+		"NextID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(DealID__type),
+			
+			Resolve: MarketV0State__NextID__resolve,
+		},
+		"DealOpsByEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__List__DealID__type),
+			
+			Resolve: MarketV0State__DealOpsByEpoch__resolve,
+		},
+		"LastCron": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MarketV0State__LastCron__resolve,
+		},
+		"TotalClientLockedCollateral": &graphql.Field{
 			
 			Type: graphql.NewNonNull(BigInt__type),
 			
-			Resolve: MessageParamsVerifregAddVerifier__Allowance__resolve,
+			Resolve: MarketV0State__TotalClientLockedCollateral__resolve,
+		},
+		"TotalProviderLockedCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MarketV0State__TotalProviderLockedCollateral__resolve,
+		},
+		"TotalClientStorageFee": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MarketV0State__TotalClientStorageFee__resolve,
 		},
 	},
 })
-func MinerV0SectorOnChainInfo__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
+func PowerV2Claim__SealProofType__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2Claim)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSealProofType().AsInt()
+	
+}
+func PowerV2Claim__RawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2Claim)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRawBytePower(), nil
+	
+}
+func PowerV2Claim__QualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2Claim)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldQualityAdjPower(), nil
+	
+}
+var PowerV2Claim__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "PowerV2Claim",
+	Fields: graphql.Fields{
+		"SealProofType": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: PowerV2Claim__SealProofType__resolve,
+		},
+		"RawBytePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2Claim__RawBytePower__resolve,
+		},
+		"QualityAdjPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2Claim__QualityAdjPower__resolve,
+		},
+	},
+})
+func MessageParamsMinerTerminateSectors__Terminations__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerTerminateSectors)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTerminations(), nil
+	
+}
+var MessageParamsMinerTerminateSectors__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerTerminateSectors",
+	Fields: graphql.Fields{
+		"Terminations": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__MinerTerminationDecl__type),
+			
+			Resolve: MessageParamsMinerTerminateSectors__Terminations__resolve,
+		},
+	},
+})
+func LotusMsgMeta__BlsMessages__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMsgMeta)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldBlsMessages().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.List__LinkLotusMessage__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func LotusMsgMeta__SecpkMessages__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMsgMeta)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSecpkMessages(), nil
+	
+}
+var LotusMsgMeta__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "LotusMsgMeta",
+	Fields: graphql.Fields{
+		"BlsMessages": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__LinkLotusMessage__type),
+			
+			Resolve: LotusMsgMeta__BlsMessages__resolve,
+		},
+		"SecpkMessages": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: LotusMsgMeta__SecpkMessages__resolve,
+		},
+	},
+})
+func MessageParamsMarketWithdrawBalance__ProviderOrClientAmount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketWithdrawBalance)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProviderOrClientAmount(), nil
+	
+}
+func MessageParamsMarketWithdrawBalance__Amount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketWithdrawBalance)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldAmount(), nil
+	
+}
+var MessageParamsMarketWithdrawBalance__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMarketWithdrawBalance",
+	Fields: graphql.Fields{
+		"ProviderOrClientAmount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MessageParamsMarketWithdrawBalance__ProviderOrClientAmount__resolve,
+		},
+		"Amount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsMarketWithdrawBalance__Amount__resolve,
+		},
+	},
+})
+func MessageParamsMarketPublishDeals__Deals__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMarketPublishDeals)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDeals(), nil
+	
+}
+var MessageParamsMarketPublishDeals__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMarketPublishDeals",
+	Fields: graphql.Fields{
+		"Deals": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__ClientDealProposal__type),
+			
+			Resolve: MessageParamsMarketPublishDeals__Deals__resolve,
+		},
+	},
+})
+func MessageParamsMinerProveCommitSector__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerProveCommitSector)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSectorNumber(), nil
+	
+}
+func MessageParamsMinerProveCommitSector__Proof__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerProveCommitSector)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProof(), nil
+	
+}
+var MessageParamsMinerProveCommitSector__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerProveCommitSector",
+	Fields: graphql.Fields{
+		"SectorNumber": &graphql.Field{
+			
+			Type: graphql.NewNonNull(SectorNumber__type),
+			
+			Resolve: MessageParamsMinerProveCommitSector__SectorNumber__resolve,
+		},
+		"Proof": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsMinerProveCommitSector__Proof__resolve,
+		},
+	},
+})
+var List__MinerPostPartition__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__MinerPostPartition",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerPostPartition__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerPostPartition)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(MinerPostPartition__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerPostPartition)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(MinerPostPartition__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerPostPartition)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerPostPartition)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+func PaychV0State__From__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PaychV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFrom(), nil
+	
+}
+func PaychV0State__To__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PaychV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTo(), nil
+	
+}
+func PaychV0State__ToSend__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PaychV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldToSend(), nil
+	
+}
+func PaychV0State__SettlingAt__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PaychV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldSettlingAt(), nil
+	
+}
+func PaychV0State__MinSettleHeight__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PaychV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMinSettleHeight(), nil
+	
+}
+func PaychV0State__LaneStates__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PaychV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldLaneStates().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__PaychV0LaneState__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+var PaychV0State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "PaychV0State",
+	Fields: graphql.Fields{
+		"From": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: PaychV0State__From__resolve,
+		},
+		"To": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: PaychV0State__To__resolve,
+		},
+		"ToSend": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PaychV0State__ToSend__resolve,
+		},
+		"SettlingAt": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: PaychV0State__SettlingAt__resolve,
+		},
+		"MinSettleHeight": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: PaychV0State__MinSettleHeight__resolve,
+		},
+		"LaneStates": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__PaychV0LaneState__type),
+			
+			Resolve: PaychV0State__LaneStates__resolve,
+		},
+	},
+})
+func MessageParamsRewardAwardBlock__Miner__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsRewardAwardBlock)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMiner(), nil
+	
+}
+func MessageParamsRewardAwardBlock__Penalty__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsRewardAwardBlock)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPenalty(), nil
+	
+}
+func MessageParamsRewardAwardBlock__GasReward__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsRewardAwardBlock)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldGasReward(), nil
+	
+}
+func MessageParamsRewardAwardBlock__WinCount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsRewardAwardBlock)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldWinCount().AsInt()
+	
+}
+var MessageParamsRewardAwardBlock__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsRewardAwardBlock",
+	Fields: graphql.Fields{
+		"Miner": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MessageParamsRewardAwardBlock__Miner__resolve,
+		},
+		"Penalty": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsRewardAwardBlock__Penalty__resolve,
+		},
+		"GasReward": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MessageParamsRewardAwardBlock__GasReward__resolve,
+		},
+		"WinCount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MessageParamsRewardAwardBlock__WinCount__resolve,
+		},
+	},
+})
+func PowerV2State__TotalRawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalRawBytePower(), nil
+	
+}
+func PowerV2State__TotalBytesCommitted__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalBytesCommitted(), nil
+	
+}
+func PowerV2State__TotalQualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalQualityAdjPower(), nil
+	
+}
+func PowerV2State__TotalQABytesCommitted__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalQABytesCommitted(), nil
+	
+}
+func PowerV2State__TotalPledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalPledgeCollateral(), nil
+	
+}
+func PowerV2State__ThisEpochRawBytePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochRawBytePower(), nil
+	
+}
+func PowerV2State__ThisEpochQualityAdjPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochQualityAdjPower(), nil
+	
+}
+func PowerV2State__ThisEpochPledgeCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldThisEpochPledgeCollateral(), nil
+	
+}
+func PowerV2State__ThisEpochQAPowerSmoothed__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldThisEpochQAPowerSmoothed()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func PowerV2State__MinerCount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMinerCount().AsInt()
+	
+}
+func PowerV2State__MinerAboveMinPowerCount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMinerAboveMinPowerCount().AsInt()
+	
+}
+func PowerV2State__CronEventQueue__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldCronEventQueue().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Multimap__PowerV0CronEvent__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func PowerV2State__FirstCronEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFirstCronEpoch(), nil
+	
+}
+func PowerV2State__Claims__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldClaims().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__PowerV2Claim__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func PowerV2State__ProofValidationBatch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.PowerV2State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldProofValidationBatch()
+	if f.Exists() {
+		
+		return "IS a link", nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+var PowerV2State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "PowerV2State",
+	Fields: graphql.Fields{
+		"TotalRawBytePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2State__TotalRawBytePower__resolve,
+		},
+		"TotalBytesCommitted": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2State__TotalBytesCommitted__resolve,
+		},
+		"TotalQualityAdjPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2State__TotalQualityAdjPower__resolve,
+		},
+		"TotalQABytesCommitted": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2State__TotalQABytesCommitted__resolve,
+		},
+		"TotalPledgeCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2State__TotalPledgeCollateral__resolve,
+		},
+		"ThisEpochRawBytePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2State__ThisEpochRawBytePower__resolve,
+		},
+		"ThisEpochQualityAdjPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2State__ThisEpochQualityAdjPower__resolve,
+		},
+		"ThisEpochPledgeCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: PowerV2State__ThisEpochPledgeCollateral__resolve,
+		},
+		"ThisEpochQAPowerSmoothed": &graphql.Field{
+			
+			Type: V0FilterEstimate__type,
+			
+			Resolve: PowerV2State__ThisEpochQAPowerSmoothed__resolve,
+		},
+		"MinerCount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: PowerV2State__MinerCount__resolve,
+		},
+		"MinerAboveMinPowerCount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: PowerV2State__MinerAboveMinPowerCount__resolve,
+		},
+		"CronEventQueue": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Multimap__PowerV0CronEvent__type),
+			
+			Resolve: PowerV2State__CronEventQueue__resolve,
+		},
+		"FirstCronEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: PowerV2State__FirstCronEpoch__resolve,
+		},
+		"Claims": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__PowerV2Claim__type),
+			
+			Resolve: PowerV2State__Claims__resolve,
+		},
+		"ProofValidationBatch": &graphql.Field{
+			
+			Type: graphql.ID,
+			
+			Resolve: PowerV2State__ProofValidationBatch__resolve,
+		},
+	},
+})
+func MethodNum__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		i, err := value.AsInt()
+		if err != nil {
+			return err
+		}
+		return i
+		
+	default:
+		return nil
+	}
+}
+func MethodNum__type__parse(value interface{}) interface{} {
+	builder := types.Type.MethodNum__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func MethodNum__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.MethodNum__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var MethodNum__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "MethodNum",
+	Description: "MethodNum",
+	Serialize: MethodNum__type__serialize,
+	ParseValue: MethodNum__type__parse,
+	ParseLiteral: MethodNum__type__parseLiteral,
+})
+func CronV0State__Entries__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.CronV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEntries(), nil
+	
+}
+var CronV0State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CronV0State",
+	Fields: graphql.Fields{
+		"Entries": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__CronV0Entry__type),
+			
+			Resolve: CronV0State__Entries__resolve,
+		},
+	},
+})
+func MessageParamsMinerCompactSectorNumbers__MaskSectorNumbers__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerCompactSectorNumbers)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMaskSectorNumbers(), nil
+	
+}
+var MessageParamsMinerCompactSectorNumbers__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerCompactSectorNumbers",
+	Fields: graphql.Fields{
+		"MaskSectorNumbers": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MessageParamsMinerCompactSectorNumbers__MaskSectorNumbers__resolve,
+		},
+	},
+})
+func DealID__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		i, err := value.AsInt()
+		if err != nil {
+			return err
+		}
+		return i
+		
+	default:
+		return nil
+	}
+}
+func DealID__type__parse(value interface{}) interface{} {
+	builder := types.Type.DealID__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func DealID__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.DealID__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var DealID__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "DealID",
+	Description: "DealID",
+	Serialize: DealID__type__serialize,
+	ParseValue: DealID__type__parse,
+	ParseLiteral: DealID__type__parseLiteral,
+})
+func MinerV0WorkerChangeKey__NewWorker__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0WorkerChangeKey)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNewWorker(), nil
+	
+}
+func MinerV0WorkerChangeKey__EffectiveAt__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0WorkerChangeKey)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEffectiveAt(), nil
+	
+}
+var MinerV0WorkerChangeKey__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0WorkerChangeKey",
+	Fields: graphql.Fields{
+		"NewWorker": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MinerV0WorkerChangeKey__NewWorker__resolve,
+		},
+		"EffectiveAt": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MinerV0WorkerChangeKey__EffectiveAt__resolve,
+		},
+	},
+})
+func SignedVoucher__ChannelAddr__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldChannelAddr(), nil
+	
+}
+func SignedVoucher__TimeLockMin__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTimeLockMin(), nil
+	
+}
+func SignedVoucher__TimeLockMax__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTimeLockMax(), nil
+	
+}
+func SignedVoucher__SecretPreimage__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldSecretPreimage()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func SignedVoucher__Extra__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldExtra()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func SignedVoucher__Lane__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLane().AsInt()
+	
+}
+func SignedVoucher__Nonce__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNonce().AsInt()
+	
+}
+func SignedVoucher__Amount__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldAmount(), nil
+	
+}
+func SignedVoucher__MinSettleHeight__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldMinSettleHeight()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func SignedVoucher__Merges__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldMerges()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+func SignedVoucher__Signature__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.SignedVoucher)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	f := ts.FieldSignature()
+	if f.Exists() {
+		
+		return f.Must(), nil
+		
+	} else {
+		return nil, nil
+	}
+	
+}
+var SignedVoucher__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "SignedVoucher",
+	Fields: graphql.Fields{
+		"ChannelAddr": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: SignedVoucher__ChannelAddr__resolve,
+		},
+		"TimeLockMin": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: SignedVoucher__TimeLockMin__resolve,
+		},
+		"TimeLockMax": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: SignedVoucher__TimeLockMax__resolve,
+		},
+		"SecretPreimage": &graphql.Field{
+			
+			Type: Bytes__type,
+			
+			Resolve: SignedVoucher__SecretPreimage__resolve,
+		},
+		"Extra": &graphql.Field{
+			
+			Type: ModVerifyParams__type,
+			
+			Resolve: SignedVoucher__Extra__resolve,
+		},
+		"Lane": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: SignedVoucher__Lane__resolve,
+		},
+		"Nonce": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: SignedVoucher__Nonce__resolve,
+		},
+		"Amount": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: SignedVoucher__Amount__resolve,
+		},
+		"MinSettleHeight": &graphql.Field{
+			
+			Type: ChainEpoch__type,
+			
+			Resolve: SignedVoucher__MinSettleHeight__resolve,
+		},
+		"Merges": &graphql.Field{
+			
+			Type: List__Merge__type,
+			
+			Resolve: SignedVoucher__Merges__resolve,
+		},
+		"Signature": &graphql.Field{
+			
+			Type: Signature__type,
+			
+			Resolve: SignedVoucher__Signature__resolve,
+		},
+	},
+})
+func MarketV0DealProposal__PieceCID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPieceCID(), nil
+	
+}
+func MarketV0DealProposal__PieceSize__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPieceSize(), nil
+	
+}
+func MarketV0DealProposal__VerifiedDeal__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldVerifiedDeal().AsBool()
+	
+}
+func MarketV0DealProposal__Client__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldClient(), nil
+	
+}
+func MarketV0DealProposal__Provider__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProvider(), nil
+	
+}
+func MarketV0DealProposal__Label__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLabel().AsString()
+	
+}
+func MarketV0DealProposal__StartEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldStartEpoch(), nil
+	
+}
+func MarketV0DealProposal__EndEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEndEpoch(), nil
+	
+}
+func MarketV0DealProposal__StoragePricePerEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldStoragePricePerEpoch(), nil
+	
+}
+func MarketV0DealProposal__ProviderCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProviderCollateral(), nil
+	
+}
+func MarketV0DealProposal__ClientCollateral__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketV0DealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldClientCollateral(), nil
+	
+}
+var MarketV0DealProposal__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MarketV0DealProposal",
+	Fields: graphql.Fields{
+		"PieceCID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MarketV0DealProposal__PieceCID__resolve,
+		},
+		"PieceSize": &graphql.Field{
+			
+			Type: graphql.NewNonNull(PaddedPieceSize__type),
+			
+			Resolve: MarketV0DealProposal__PieceSize__resolve,
+		},
+		"VerifiedDeal": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Boolean),
+			
+			Resolve: MarketV0DealProposal__VerifiedDeal__resolve,
+		},
+		"Client": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MarketV0DealProposal__Client__resolve,
+		},
+		"Provider": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: MarketV0DealProposal__Provider__resolve,
+		},
+		"Label": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.String),
+			
+			Resolve: MarketV0DealProposal__Label__resolve,
+		},
+		"StartEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MarketV0DealProposal__StartEpoch__resolve,
+		},
+		"EndEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(ChainEpoch__type),
+			
+			Resolve: MarketV0DealProposal__EndEpoch__resolve,
+		},
+		"StoragePricePerEpoch": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MarketV0DealProposal__StoragePricePerEpoch__resolve,
+		},
+		"ProviderCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MarketV0DealProposal__ProviderCollateral__resolve,
+		},
+		"ClientCollateral": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: MarketV0DealProposal__ClientCollateral__resolve,
+		},
+	},
+})
+var Map__MinerV2Partition__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__MinerV2Partition",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerV2Partition__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MinerV2Partition)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MinerV2Partition)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MinerV2Partition__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MinerV2Partition)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func LotusMessage__Version__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldVersion().AsInt()
+	
+}
+func LotusMessage__To__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTo(), nil
+	
+}
+func LotusMessage__From__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFrom(), nil
+	
+}
+func LotusMessage__Nonce__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldNonce().AsInt()
+	
+}
+func LotusMessage__Value__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldValue(), nil
+	
+}
+func LotusMessage__GasLimit__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldGasLimit().AsInt()
+	
+}
+func LotusMessage__GasFeeCap__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldGasFeeCap(), nil
+	
+}
+func LotusMessage__GasPremium__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldGasPremium(), nil
+	
+}
+func LotusMessage__Method__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldMethod(), nil
+	
+}
+func LotusMessage__Params__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.LotusMessage)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldParams(), nil
+	
+}
+var LotusMessage__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "LotusMessage",
+	Fields: graphql.Fields{
+		"Version": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: LotusMessage__Version__resolve,
+		},
+		"To": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: LotusMessage__To__resolve,
+		},
+		"From": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: LotusMessage__From__resolve,
+		},
+		"Nonce": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: LotusMessage__Nonce__resolve,
+		},
+		"Value": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: LotusMessage__Value__resolve,
+		},
+		"GasLimit": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: LotusMessage__GasLimit__resolve,
+		},
+		"GasFeeCap": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: LotusMessage__GasFeeCap__resolve,
+		},
+		"GasPremium": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BigInt__type),
+			
+			Resolve: LotusMessage__GasPremium__resolve,
+		},
+		"Method": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MethodNum__type),
+			
+			Resolve: LotusMessage__Method__resolve,
+		},
+		"Params": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: LotusMessage__Params__resolve,
+		},
+	},
+})
+func MinerV0Deadlines__Due__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Deadlines)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldDue(), nil
+	
+}
+var MinerV0Deadlines__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0Deadlines",
+	Fields: graphql.Fields{
+		"Due": &graphql.Field{
+			
+			Type: graphql.NewNonNull(List__MinerV0DeadlineLink__type),
+			
+			Resolve: MinerV0Deadlines__Due__resolve,
+		},
+	},
+})
+var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__MinerV2DeadlineLink",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerV2Deadline__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerV2DeadlineLink)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				if err != nil {
+					return nil, err
+				}
+				targetCid, err := out.AsLink()
+				if err != nil {
+					return nil, err
+				}
+				
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Deadline__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(MinerV2Deadline__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerV2DeadlineLink)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					targetCid, err := node.AsLink()
+					if err != nil {
+						return nil, err
+					}
+					
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Deadline__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(MinerV2Deadline__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerV2DeadlineLink)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					targetCid, err := node.AsLink()
+					if err != nil {
+						return nil, err
+					}
+					
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Deadline__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerV2DeadlineLink)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+var List__MinerV0VestingFund__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__MinerV0VestingFund",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerV0VestingFund__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerV0VestingFund)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(MinerV0VestingFund__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerV0VestingFund)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(MinerV0VestingFund__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerV0VestingFund)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerV0VestingFund)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+func MessageParamsInitExecParams__CodeCID__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsInitExecParams)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldCodeCID(), nil
+	
+}
+func MessageParamsInitExecParams__ConstructorParams__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsInitExecParams)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldConstructorParams(), nil
+	
+}
+var MessageParamsInitExecParams__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsInitExecParams",
+	Fields: graphql.Fields{
+		"CodeCID": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MessageParamsInitExecParams__CodeCID__resolve,
+		},
+		"ConstructorParams": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Bytes__type),
+			
+			Resolve: MessageParamsInitExecParams__ConstructorParams__resolve,
+		},
+	},
+})
+func MinerV0Deadline__Partitions__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldPartitions().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV0Partition__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV0Deadline__ExpirationEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldExpirationEpochs(), nil
+	
+}
+func MinerV0Deadline__PostSubmissions__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldPostSubmissions(), nil
+	
+}
+func MinerV0Deadline__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEarlyTerminations(), nil
+	
+}
+func MinerV0Deadline__LiveSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLiveSectors().AsInt()
+	
+}
+func MinerV0Deadline__TotalSectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTotalSectors().AsInt()
+	
+}
+func MinerV0Deadline__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Deadline)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFaultyPower(), nil
+	
+}
+var MinerV0Deadline__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0Deadline",
+	Fields: graphql.Fields{
+		"Partitions": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__MinerV0Partition__type),
+			
+			Resolve: MinerV0Deadline__Partitions__resolve,
+		},
+		"ExpirationEpochs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MinerV0Deadline__ExpirationEpochs__resolve,
+		},
+		"PostSubmissions": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV0Deadline__PostSubmissions__resolve,
+		},
+		"EarlyTerminations": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV0Deadline__EarlyTerminations__resolve,
+		},
+		"LiveSectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV0Deadline__LiveSectors__resolve,
+		},
+		"TotalSectors": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.Int),
+			
+			Resolve: MinerV0Deadline__TotalSectors__resolve,
+		},
+		"FaultyPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV0Deadline__FaultyPower__resolve,
+		},
+	},
+})
+func VerifregV0State__RootKey__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.VerifregV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRootKey(), nil
+	
+}
+func VerifregV0State__Verifiers__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.VerifregV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldVerifiers().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__DataCap__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func VerifregV0State__VerifiedClients__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.VerifregV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldVerifiedClients().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__DataCap__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+var VerifregV0State__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "VerifregV0State",
+	Fields: graphql.Fields{
+		"RootKey": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Address__type),
+			
+			Resolve: VerifregV0State__RootKey__resolve,
+		},
+		"Verifiers": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__DataCap__type),
+			
+			Resolve: VerifregV0State__Verifiers__resolve,
+		},
+		"VerifiedClients": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__DataCap__type),
+			
+			Resolve: VerifregV0State__VerifiedClients__resolve,
+		},
+	},
+})
+func MarketClientDealProposal__Proposal__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketClientDealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldProposal(), nil
+	
+}
+func MarketClientDealProposal__ClientSignature__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MarketClientDealProposal)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldClientSignature(), nil
+	
+}
+var MarketClientDealProposal__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MarketClientDealProposal",
+	Fields: graphql.Fields{
+		"Proposal": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MarketV2DealProposal__type),
+			
+			Resolve: MarketClientDealProposal__Proposal__resolve,
+		},
+		"ClientSignature": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Signature__type),
+			
+			Resolve: MarketClientDealProposal__ClientSignature__resolve,
+		},
+	},
+})
+func PaddedPieceSize__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		i, err := value.AsInt()
+		if err != nil {
+			return err
+		}
+		return i
+		
+	default:
+		return nil
+	}
+}
+func PaddedPieceSize__type__parse(value interface{}) interface{} {
+	builder := types.Type.PaddedPieceSize__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func PaddedPieceSize__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.PaddedPieceSize__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var PaddedPieceSize__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "PaddedPieceSize",
+	Description: "PaddedPieceSize",
+	Serialize: PaddedPieceSize__type__serialize,
+	ParseValue: PaddedPieceSize__type__parse,
+	ParseLiteral: PaddedPieceSize__type__parseLiteral,
+})
+func Address__type__parse(value interface{}) interface{} {
+	builder := types.Type.Address__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+func Address__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.Address__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var Address__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "Address",
+	Description: "Address",
+	Serialize: Address__type__serialize,
+	ParseValue: Address__type__parse,
+	ParseLiteral: Address__type__parseLiteral,
+})
+var Map__MinerV0Partition__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Map__MinerV0Partition",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerV0Partition__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},	
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MinerV0Partition)
+				if !ok {
+					return nil, errNotNode
+				}
+				arg := p.Args["key"]
+
+				switch ta := arg.(type) {
+				case ipld.Node:
+					return ts.LookupByNode(ta)
+				case string:
+					return ts.LookupByString(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+			},
+		},
+		"Keys": &graphql.Field{
+			Type: graphql.NewList(graphql.String),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MinerV0Partition)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.MapIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					node, _, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+		"Values": &graphql.Field{
+			Type: graphql.NewList(MinerV0Partition__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.Map__MinerV0Partition)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil
+			},
+		},
+	},	
+})
+ 	func MinerV0SectorOnChainInfo__SectorNumber__resolve(p graphql.ResolveParams) (interface{}, error) {
 	ts, ok := p.Source.(types.MinerV0SectorOnChainInfo)
 	if !ok {
 		return nil, errNotNode
@@ -13099,188 +12949,245 @@ var MinerV0SectorOnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
-func MessageParamsMinerChangeMultiaddrs__NewMultiaddrs__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsMinerChangeMultiaddrs)
+func MessageParamsMinerExtendSectorExpiration__Extension__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MessageParamsMinerExtendSectorExpiration)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldNewMultiaddrs(), nil
+	return ts.FieldExtension(), nil
 	
 }
-var MessageParamsMinerChangeMultiaddrs__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsMinerChangeMultiaddrs",
+var MessageParamsMinerExtendSectorExpiration__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MessageParamsMinerExtendSectorExpiration",
 	Fields: graphql.Fields{
-		"NewMultiaddrs": &graphql.Field{
+		"Extension": &graphql.Field{
 			
-			Type: graphql.NewNonNull(List__Multiaddrs__type),
+			Type: graphql.NewNonNull(List__MinerExpirationExtend__type),
 			
-			Resolve: MessageParamsMinerChangeMultiaddrs__NewMultiaddrs__resolve,
+			Resolve: MessageParamsMinerExtendSectorExpiration__Extension__resolve,
 		},
 	},
 })
-func MessageParamsVerifregUseBytes__Address__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsVerifregUseBytes)
+func MinerV0Partition__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Partition)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldAddress(), nil
+	return ts.FieldSectors(), nil
 	
 }
-func MessageParamsVerifregUseBytes__DealSize__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MessageParamsVerifregUseBytes)
+func MinerV0Partition__Faults__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Partition)
 	if !ok {
 		return nil, errNotNode
 	}
 	
-	return ts.FieldDealSize(), nil
+	return ts.FieldFaults(), nil
 	
 }
-var MessageParamsVerifregUseBytes__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MessageParamsVerifregUseBytes",
+func MinerV0Partition__Recoveries__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRecoveries(), nil
+	
+}
+func MinerV0Partition__Terminated__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldTerminated(), nil
+	
+}
+func MinerV0Partition__ExpirationsEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	targetCid := ts.FieldExpirationsEpochs().Link()
+	
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV0ExpirationSet__Repr.NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
+	
+}
+func MinerV0Partition__EarlyTerminated__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldEarlyTerminated(), nil
+	
+}
+func MinerV0Partition__LivePower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldLivePower(), nil
+	
+}
+func MinerV0Partition__FaultyPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldFaultyPower(), nil
+	
+}
+func MinerV0Partition__RecoveringPower__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.MinerV0Partition)
+	if !ok {
+		return nil, errNotNode
+	}
+	
+	return ts.FieldRecoveringPower(), nil
+	
+}
+var MinerV0Partition__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MinerV0Partition",
 	Fields: graphql.Fields{
-		"Address": &graphql.Field{
+		"Sectors": &graphql.Field{
 			
-			Type: graphql.NewNonNull(Address__type),
+			Type: graphql.NewNonNull(BitField__type),
 			
-			Resolve: MessageParamsVerifregUseBytes__Address__resolve,
+			Resolve: MinerV0Partition__Sectors__resolve,
 		},
-		"DealSize": &graphql.Field{
+		"Faults": &graphql.Field{
 			
-			Type: graphql.NewNonNull(BigInt__type),
+			Type: graphql.NewNonNull(BitField__type),
 			
-			Resolve: MessageParamsVerifregUseBytes__DealSize__resolve,
+			Resolve: MinerV0Partition__Faults__resolve,
+		},
+		"Recoveries": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV0Partition__Recoveries__resolve,
+		},
+		"Terminated": &graphql.Field{
+			
+			Type: graphql.NewNonNull(BitField__type),
+			
+			Resolve: MinerV0Partition__Terminated__resolve,
+		},
+		"ExpirationsEpochs": &graphql.Field{
+			
+			Type: graphql.NewNonNull(Map__MinerV0ExpirationSet__type),
+			
+			Resolve: MinerV0Partition__ExpirationsEpochs__resolve,
+		},
+		"EarlyTerminated": &graphql.Field{
+			
+			Type: graphql.NewNonNull(graphql.ID),
+			
+			Resolve: MinerV0Partition__EarlyTerminated__resolve,
+		},
+		"LivePower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV0Partition__LivePower__resolve,
+		},
+		"FaultyPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV0Partition__FaultyPower__resolve,
+		},
+		"RecoveringPower": &graphql.Field{
+			
+			Type: graphql.NewNonNull(MinerV0PowerPair__type),
+			
+			Resolve: MinerV0Partition__RecoveringPower__resolve,
 		},
 	},
 })
-func ModVerifyParams__Method__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.ModVerifyParams)
-	if !ok {
-		return nil, errNotNode
+func ActorID__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		
+		i, err := value.AsInt()
+		if err != nil {
+			return err
+		}
+		return i
+		
+	default:
+		return nil
 	}
-	
-	return ts.FieldMethod(), nil
-	
 }
-func ModVerifyParams__Params__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.ModVerifyParams)
-	if !ok {
-		return nil, errNotNode
+func ActorID__type__parse(value interface{}) interface{} {
+	builder := types.Type.ActorID__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		builder.AssignString(v2)
+	case *string:
+		builder.AssignString(*v2)
+	default:
+		return nil
 	}
-	
-	return ts.FieldParams(), nil
-	
+	return builder.Build()
 }
-var ModVerifyParams__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "ModVerifyParams",
-	Fields: graphql.Fields{
-		"Method": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MethodNum__type),
-			
-			Resolve: ModVerifyParams__Method__resolve,
-		},
-		"Params": &graphql.Field{
-			
-			Type: graphql.NewNonNull(Bytes__type),
-			
-			Resolve: ModVerifyParams__Params__resolve,
-		},
-	},
+func ActorID__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.ActorID__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		builder.AssignString(valueAST.Value)
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+var ActorID__type = graphql.NewScalar(graphql.ScalarConfig{
+	Name:        "ActorID",
+	Description: "ActorID",
+	Serialize: ActorID__type__serialize,
+	ParseValue: ActorID__type__parse,
+	ParseLiteral: ActorID__type__parseLiteral,
 })
-func MinerV0SectorPreCommitOnChainInfo__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldInfo(), nil
-	
-}
-func MinerV0SectorPreCommitOnChainInfo__PreCommitDeposit__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPreCommitDeposit(), nil
-	
-}
-func MinerV0SectorPreCommitOnChainInfo__PreCommitEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldPreCommitEpoch(), nil
-	
-}
-func MinerV0SectorPreCommitOnChainInfo__DealWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldDealWeight(), nil
-	
-}
-func MinerV0SectorPreCommitOnChainInfo__VerifiedDealWeight__resolve(p graphql.ResolveParams) (interface{}, error) {
-	ts, ok := p.Source.(types.MinerV0SectorPreCommitOnChainInfo)
-	if !ok {
-		return nil, errNotNode
-	}
-	
-	return ts.FieldVerifiedDealWeight(), nil
-	
-}
-var MinerV0SectorPreCommitOnChainInfo__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "MinerV0SectorPreCommitOnChainInfo",
-	Fields: graphql.Fields{
-		"Info": &graphql.Field{
-			
-			Type: graphql.NewNonNull(MinerV0SectorPreCommitInfo__type),
-			
-			Resolve: MinerV0SectorPreCommitOnChainInfo__Info__resolve,
-		},
-		"PreCommitDeposit": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV0SectorPreCommitOnChainInfo__PreCommitDeposit__resolve,
-		},
-		"PreCommitEpoch": &graphql.Field{
-			
-			Type: graphql.NewNonNull(ChainEpoch__type),
-			
-			Resolve: MinerV0SectorPreCommitOnChainInfo__PreCommitEpoch__resolve,
-		},
-		"DealWeight": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV0SectorPreCommitOnChainInfo__DealWeight__resolve,
-		},
-		"VerifiedDealWeight": &graphql.Field{
-			
-			Type: graphql.NewNonNull(BigInt__type),
-			
-			Resolve: MinerV0SectorPreCommitOnChainInfo__VerifiedDealWeight__resolve,
-		},
-	},
-})
-var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
-	Name: "List__MinerV2DeadlineLink",
+var List__MinerV0DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__MinerV0DeadlineLink",
 	Fields: graphql.Fields{
 		"At": &graphql.Field{
-			Type: MinerV2Deadline__type,
+			Type: MinerV0Deadline__type,
 			Args: graphql.FieldConfigArgument{
 				"key": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(graphql.Int),
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV2DeadlineLink)
+				ts, ok := p.Source.(types.List__MinerV0DeadlineLink)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -13317,7 +13224,7 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
 			return nil, errInvalidLoader
 		}
 
-		builder := types.Type.MinerV2Deadline__Repr.NewBuilder()
+		builder := types.Type.MinerV0Deadline__Repr.NewBuilder()
 		if err := loader(p.Context, cl, builder); err != nil {
 			return nil, err
 		}
@@ -13332,9 +13239,9 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"All": &graphql.Field{
-			Type: graphql.NewList(MinerV2Deadline__type),
+			Type: graphql.NewList(MinerV0Deadline__type),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV2DeadlineLink)
+				ts, ok := p.Source.(types.List__MinerV0DeadlineLink)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -13361,7 +13268,7 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
 			return nil, errInvalidLoader
 		}
 
-		builder := types.Type.MinerV2Deadline__Repr.NewBuilder()
+		builder := types.Type.MinerV0Deadline__Repr.NewBuilder()
 		if err := loader(p.Context, cl, builder); err != nil {
 			return nil, err
 		}
@@ -13377,7 +13284,7 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"Range": &graphql.Field{
-			Type: graphql.NewList(MinerV2Deadline__type),
+			Type: graphql.NewList(MinerV0Deadline__type),
 			Args: graphql.FieldConfigArgument{
 				"skip": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(graphql.Int),
@@ -13387,7 +13294,7 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV2DeadlineLink)
+				ts, ok := p.Source.(types.List__MinerV0DeadlineLink)
 				if !ok {
 					return nil, errNotNode
 				}
@@ -13415,7 +13322,7 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
 			return nil, errInvalidLoader
 		}
 
-		builder := types.Type.MinerV2Deadline__Repr.NewBuilder()
+		builder := types.Type.MinerV0Deadline__Repr.NewBuilder()
 		if err := loader(p.Context, cl, builder); err != nil {
 			return nil, err
 		}
@@ -13433,7 +13340,100 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
 		"Count": &graphql.Field{
 			Type: graphql.NewNonNull(graphql.Int),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				ts, ok := p.Source.(types.List__MinerV2DeadlineLink)
+				ts, ok := p.Source.(types.List__MinerV0DeadlineLink)
+				if !ok {
+					return nil, errNotNode
+				}
+				return ts.Length(), nil
+			},
+		},
+	},
+})	
+var List__MinerTerminationDecl__type = graphql.NewObject(graphql.ObjectConfig{
+	Name: "List__MinerTerminationDecl",
+	Fields: graphql.Fields{
+		"At": &graphql.Field{
+			Type: MinerTerminationDecl__type,
+			Args: graphql.FieldConfigArgument{
+				"key": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerTerminationDecl)
+				if !ok {
+					return nil, errNotNode
+				}
+
+				arg := p.Args["key"]
+				var out ipld.Node
+				var err error
+				switch ta := arg.(type) {
+				case ipld.Node:
+					out, err = ts.LookupByNode(ta)
+				case int:
+					out, err = ts.LookupByIndex(ta)
+				default:
+					return nil, fmt.Errorf("unknown key type: %T", arg)
+				}
+				
+				return out, err
+				
+			},
+		},
+		"All": &graphql.Field{
+			Type: graphql.NewList(MinerTerminationDecl__type),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerTerminationDecl)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Range": &graphql.Field{
+			Type: graphql.NewList(MinerTerminationDecl__type),
+			Args: graphql.FieldConfigArgument{
+				"skip": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+				"take": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.Int),
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerTerminationDecl)
+				if !ok {
+					return nil, errNotNode
+				}
+				it := ts.ListIterator()
+				children := make([]ipld.Node, 0)
+
+				for !it.Done() {
+					_, node, err := it.Next()
+					if err != nil {
+						return nil, err
+					}
+					
+					children = append(children, node)
+				}
+				return children, nil	
+			},
+		},
+		"Count": &graphql.Field{
+			Type: graphql.NewNonNull(graphql.Int),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				ts, ok := p.Source.(types.List__MinerTerminationDecl)
 				if !ok {
 					return nil, errNotNode
 				}

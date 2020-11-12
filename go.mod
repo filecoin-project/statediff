@@ -41,4 +41,4 @@ replace github.com/supranational/blst => github.com/filecoin-project/statediff/e
 
 replace github.com/filecoin-project/filecoin-ffi => github.com/filecoin-project/statediff/extern/filecoin-ffi v0.0.0-20201112005514-7550fe42bb9a
 
-replace github.com/ipld/go-ipld-prime => ../go-ipld-prime
+replace github.com/ipld/go-ipld-prime => github.com/willscott/go-ipld-prime v0.0.4-0.20201112182242-037dd591c472

@@ -41,6 +41,7 @@ jobs:
         go build -v ./cmd/statediff
         go build -v ./cmd/stateexplorer
         go build -v ./cmd/statedump
+        go build -v ./cmd/stateql
 
     - name: Test
       run: go test -v ./...
