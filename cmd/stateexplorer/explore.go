@@ -109,8 +109,8 @@ func runExploreCmd(c *cli.Context) error {
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return
 		}
-		cid := ds.Head(r.Context())
-		cidBytes, _ := json.Marshal(cid)
+		blkHdr := ds.Head(r.Context())
+		cidBytes, _ := json.Marshal([]cid.Cid{blkHdr})
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(cidBytes)
 	}
