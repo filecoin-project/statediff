@@ -19,7 +19,7 @@ require (
 	github.com/ipfs/go-cid v0.0.7
 	github.com/ipfs/go-datastore v0.4.5
 	github.com/ipfs/go-hamt-ipld v0.1.1
-	github.com/ipfs/go-ipfs-blockstore v1.0.1
+	github.com/ipfs/go-ipfs-blockstore v1.0.2
 	github.com/ipfs/go-ipld-cbor v0.0.5-0.20200428170625-a0bd04d3cbdf
 	github.com/ipld/go-car v0.1.1-0.20201015032735-ff6ccdc46acc
 	github.com/ipld/go-ipld-prime v0.5.1-0.20200910124733-350032422383
