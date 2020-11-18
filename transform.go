@@ -10,9 +10,9 @@ import (
 	"regexp"
 	"strings"
 
+	hamt "github.com/filecoin-project/go-hamt-ipld/v2"
 	abi "github.com/filecoin-project/go-state-types/abi"
 	"github.com/ipfs/go-cid"
-	hamt "github.com/ipfs/go-hamt-ipld"
 	cbor "github.com/ipfs/go-ipld-cbor"
 	"github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"
@@ -176,7 +176,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	PaymentChannelActorState:          types.Type.PaychV0State__Repr,
 	// Complex types
 	LotusTypeMsgList:                           types.Type.List__LinkLotusMessage__Repr,
-	LotusTypeStateroot:                         types.Type.Map__LotusActors__Repr,
+	LotusTypeStateroot:                         hamt.NewTypedHamt(types.Type.RawAddress__Repr, types.Type.LotusActors__Repr),
 	InitActorAddresses:                         types.Type.Map__ActorID__Repr,
 	StorageMinerActorPreCommittedSectors:       types.Type.Map__SectorPreCommitOnChainInfo__Repr,
 	StorageMinerActorDeadlinePartitionEarly:    types.Type.Map__BitField__Repr,
@@ -209,9 +209,11 @@ type Loader func(context.Context, cid.Cid, blockstore.Blockstore, ipld.NodeAssem
 
 var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.LotusStateRoot__Repr:                  maybeLoadUnversionedStateRoot,
+	LotusPrototypes[LotusTypeStateroot]:              loadHamt,
+	LotusPrototypes[InitActorAddresses]:              loadHamt,
 	types.Type.Map__LotusActors__Repr:                loadMap,
 	types.Type.List__LinkLotusMessage__Repr:          loadList,
-	types.Type.Map__ActorID__Repr:                    transformInitActor,
+	types.Type.Map__ActorID__Repr:                    loadMap,
 	types.Type.Map__SectorPreCommitOnChainInfo__Repr: transformMinerActorPreCommittedSectors,
 	types.Type.Map__BitField__Repr:                   loadListAsMap,
 	types.Type.Map__SectorOnChainInfo__Repr:          loadListAsMap,
@@ -478,6 +480,15 @@ func loadMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipl
 	return nil
 }
 
+func loadHamt(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
+	if err != nil {
+		return fmt.Errorf("hamt load node errored: %v", err)
+	}
+	return as.AssignNode(node)
+}
+
 func loadList(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
@@ -612,38 +623,6 @@ func loadMessage(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as
 	}
 	dat.AssignString(actorType)
 
-	return mapper.Finish()
-}
-
-func transformInitActor(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
-	cborStore := cbor.NewCborStore(store)
-	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
-	if err != nil {
-		return err
-	}
-	mapper, err := assembler.BeginMap(0)
-	if err != nil {
-		return err
-	}
-
-	var actorID cbg.CborInt
-	if err := node.ForEach(ctx, func(k string, val interface{}) error {
-		v, err := mapper.AssembleEntry(k)
-		if err != nil {
-			return err
-		}
-
-		asDef, ok := val.(*cbg.Deferred)
-		if !ok {
-			return fmt.Errorf("unexpected non-cbg.Deferred")
-		}
-		if err := cbor.DecodeInto(asDef.Raw, &actorID); err != nil {
-			return err
-		}
-		return v.AssignInt(int(actorID))
-	}); err != nil {
-		return err
-	}
 	return mapper.Finish()
 }
 

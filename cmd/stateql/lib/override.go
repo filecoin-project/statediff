@@ -150,3 +150,37 @@ func LotusActors__Head__resolve(p graphql.ResolveParams) (interface{}, error) {
 	return nil, fmt.Errorf("Invalid link")
 
 }
+
+// For hamts we use the hamt node rather than the expected builder.
+func InitV0State__AddressMap__resolve(p graphql.ResolveParams) (interface{}, error) {
+	ts, ok := p.Source.(types.InitV0State)
+	if !ok {
+		return nil, errNotNode
+	}
+
+	targetCid := ts.FieldAddressMap().Link()
+
+	var node ipld.Node
+
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := statediff.LotusPrototypes[statediff.InitActorAddresses].NewBuilder()
+		if err := loader(p.Context, cl, builder); err != nil {
+			return nil, err
+		}
+		node = builder.Build()
+	} else {
+		return nil, errInvalidLink
+	}
+
+	return node, nil
+
+}

@@ -3,8 +3,8 @@ package statediff
 import (
 	"bytes"
 
+	hamt "github.com/filecoin-project/go-hamt-ipld/v2"
 	"github.com/ipfs/go-cid"
-	hamt "github.com/ipfs/go-hamt-ipld"
 	cbornode "github.com/ipfs/go-ipld-cbor"
 )
 

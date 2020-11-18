@@ -8,11 +8,13 @@ require (
 	github.com/filecoin-project/go-address v0.0.4
 	github.com/filecoin-project/go-bitfield v0.2.2
 	github.com/filecoin-project/go-fil-markets v1.0.0
+	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
 	github.com/filecoin-project/go-multistore v0.0.3
 	github.com/filecoin-project/go-state-types v0.0.0-20201013222834-41ea465f274f
 	github.com/filecoin-project/lotus v1.1.2
 	github.com/filecoin-project/specs-actors v0.9.13
 	github.com/filecoin-project/specs-actors/v2 v2.2.0
+	github.com/go-bindata/go-bindata v3.1.2+incompatible // indirect
 	github.com/gorilla/handlers v1.5.1
 	github.com/graphql-go/graphql v0.7.9
 	github.com/ipfs/go-block-format v0.0.2
@@ -43,4 +45,7 @@ replace github.com/filecoin-project/filecoin-ffi => github.com/filecoin-project/
 
 replace github.com/whyrusleeping/ledger-filecoin-go => github.com/filecoin-project/statediff/extern/fil-ledger v0.0.0-20201112214200-3592b9922dcc
 
-replace github.com/ipld/go-ipld-prime => github.com/willscott/go-ipld-prime v0.0.4-0.20201112182242-037dd591c472
+replace github.com/ipld/go-ipld-prime => github.com/willscott/go-ipld-prime v0.0.4-0.20201117233610-e20af13830d8
+//replace github.com/ipld/go-ipld-prime => ../go-ipld-prime
+
+replace github.com/filecoin-project/go-hamt-ipld/v2 => github.com/willscott/go-hamt-ipld/v2 v2.0.1-0.20201115233521-38d62e432eed

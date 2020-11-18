@@ -305,6 +305,9 @@ github.com/getsentry/raven-go v0.2.0/go.mod h1:KungGk8q33+aIAZUIVWZDr2OfAEBsO49P
 github.com/ghemawat/stream v0.0.0-20171120220530-696b145b53b9/go.mod h1:106OIgooyS7OzLDOpUGgm9fA3bQENb/cFSyyBmMoJDs=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/gliderlabs/ssh v0.1.1/go.mod h1:U7qILu1NlMHj9FlMhZLlkCdDnU1DBEAqr0aevW3Awn0=
+github.com/go-bindata/go-bindata v1.0.0 h1:DZ34txDXWn1DyWa+vQf7V9ANc2ILTtrEjtlsdJRF26M=
+github.com/go-bindata/go-bindata v3.1.2+incompatible h1:5vjJMVhowQdPzjE1LdxyFF7YFTXg5IgGVW4gBr5IbvE=
+github.com/go-bindata/go-bindata v3.1.2+incompatible/go.mod h1:xK8Dsgwmeed+BBsSy2XTopBn/8uK2HWuGSnA11C3Joo=
 github.com/go-check/check v0.0.0-20180628173108-788fd7840127/go.mod h1:9ES+weclKsC9YodN5RgxqK/VD9HM9JsCSh7rNhMZE98=
 github.com/go-errors/errors v1.0.1/go.mod h1:f4zRHt4oKfwPJE5k8C9vpYG+aDHdBFUsgrm6/TyX73Q=
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
@@ -1454,8 +1457,12 @@ github.com/willscott/carbs v0.0.4-0.20201024182220-b40626ac657b h1:zLYKc9svf4MnJ
 github.com/willscott/carbs v0.0.4-0.20201024182220-b40626ac657b/go.mod h1:Ppgv7i3hDb5SZ1On6P7jB0FSk8U0UBE4PJVXjq8sXy8=
 github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345 h1:IJVAwIctqDFOrO0C2qzksXmANviyHJzrklU27e1ltzE=
 github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345/go.mod h1:D7hA8H5pyQx7Y5Em7IWx1R4vNJzfon3gpG9nxjkITjQ=
+github.com/willscott/go-hamt-ipld/v2 v2.0.1-0.20201115233521-38d62e432eed h1:K+YRfjztqTEtd6/ydRFLXUoeqkg0R2QUITeuVCB3+Gg=
+github.com/willscott/go-hamt-ipld/v2 v2.0.1-0.20201115233521-38d62e432eed/go.mod h1:7aWZdaQ1b16BVoQUYR+eEvrDCGJoPLxFpDynFjYfBjI=
 github.com/willscott/go-ipld-prime v0.0.4-0.20201112182242-037dd591c472 h1:oEqJ5Ev0edomA2slRfmBjS7E1AJFNYutY1RmeoM6itE=
 github.com/willscott/go-ipld-prime v0.0.4-0.20201112182242-037dd591c472/go.mod h1:0xEgdD6MKbZ1vF0GC+YcR/C4SQCAlRuOjIJ2i0HxqzM=
+github.com/willscott/go-ipld-prime v0.0.4-0.20201117233610-e20af13830d8 h1:keJL+ouo0rVEUUnEcrBY1V2yxlzTNQ667+LFcVvsr1U=
+github.com/willscott/go-ipld-prime v0.0.4-0.20201117233610-e20af13830d8/go.mod h1:0xEgdD6MKbZ1vF0GC+YcR/C4SQCAlRuOjIJ2i0HxqzM=
 github.com/x-cray/logrus-prefixed-formatter v0.5.2/go.mod h1:2duySbKsL6M18s5GU7VPsoEPHyzalCE06qoARUCeBBE=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/xorcare/golden v0.6.0/go.mod h1:7T39/ZMvaSEZlBPoYfVFmsBLmUl3uz9IuzWj/U6FtvQ=
