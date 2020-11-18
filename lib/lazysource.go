@@ -66,7 +66,9 @@ func (l *lazyDs) index(ctx context.Context) error {
 	if len(n) == 0 {
 		return fmt.Errorf("no head func for indexing")
 	}
-	l.tipsetMap = make(map[int]cid.Cid)
+	if l.tipsetMap == nil {
+		l.tipsetMap = make(map[int]cid.Cid)
+	}
 	c := n[0]
 	for true {
 		p := types.Type.LotusBlockHeader__Repr.NewBuilder()
@@ -81,6 +83,9 @@ func (l *lazyDs) index(ctx context.Context) error {
 		hn, err := h.AsInt()
 		if err != nil {
 			return fmt.Errorf("height could not be interpreted as int: %v", err)
+		}
+		if _, ok := l.tipsetMap[hn]; ok {
+			return nil
 		}
 		l.tipsetMap[hn] = c
 		if hn == 1 {
@@ -115,7 +120,14 @@ func (l *lazyDs) CidAtHeight(ctx context.Context, h int) (cid.Cid, error) {
 		}
 		return ts.Cids()[0], nil
 	} else if l.tipsetMap != nil {
-		return l.tipsetMap[h], nil
+		c, ok := l.tipsetMap[h]
+		if !ok {
+			if err := l.index(ctx); err != nil {
+				return cid.Undef, err
+			}
+			return l.tipsetMap[h], nil
+		}
+		return c, nil
 	}
 	return cid.Undef, nil
 }

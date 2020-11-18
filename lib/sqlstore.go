@@ -2,6 +2,7 @@ package lib
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	logging "github.com/ipfs/go-log/v2"
@@ -63,7 +64,14 @@ func NewSqlBlockStore(connstr string) (blockstore.Blockstore, statediff.StateRoo
 		db: DB(connstr),
 	}
 
-	srf := func(ctx context.Context) []cid.Cid { r, _ := sbs.getMasterTsKey(ctx, 0); return r.Cids() }
+	srf := func(ctx context.Context) []cid.Cid {
+		r, err := sbs.getMasterTsKey(ctx, 0)
+		if err != nil {
+			fmt.Printf("error getting head: %v\n", err)
+			return nil
+		}
+		return r.Cids()
+	}
 
 	// we do not currently use the Identity codec, but just in case...
 	return blockstore.WrapIDStore(sbs), srf, nil
@@ -208,7 +216,7 @@ func (sbs *SqlBlockstore) getMasterTsKey(ctx context.Context, lookback int) (*ty
 	var headCids string
 	if err := sbs.db.QueryRow(
 		ctx,
-		"SELECT blockcids FROM heads WHERE height = -5 + ( SELECT MAX(height) FROM heads ) ORDER BY seq DESC LIMIT 1",
+		fmt.Sprintf("SELECT blockcids FROM heads WHERE height = ( SELECT MAX(height) FROM heads ) + (-1 * %d) ORDER BY seq DESC LIMIT 1", lookback),
 	).Scan(&headCids); err != nil {
 		return nil, err
 	}
