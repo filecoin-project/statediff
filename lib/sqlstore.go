@@ -10,6 +10,7 @@ import (
 
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/lib/blockstore"
+	"github.com/filecoin-project/statediff"
 	blocks "github.com/ipfs/go-block-format"
 	"github.com/ipfs/go-cid"
 	"github.com/multiformats/go-multibase"
@@ -56,14 +57,16 @@ type SqlBlockstore struct {
 	db *pgxpool.Pool
 }
 
-func NewSqlBlockStore(connstr string) (blockstore.Blockstore, error) {
+func NewSqlBlockStore(connstr string) (blockstore.Blockstore, statediff.StateRootFunc, error) {
 
 	sbs := &SqlBlockstore{
 		db: DB(connstr),
 	}
 
+	srf := func(ctx context.Context) []cid.Cid { r, _ := sbs.getMasterTsKey(ctx, 0); return r.Cids() }
+
 	// we do not currently use the Identity codec, but just in case...
-	return blockstore.WrapIDStore(sbs), nil
+	return blockstore.WrapIDStore(sbs), srf, nil
 }
 
 func keyFromCid(c cid.Cid) (k string) {

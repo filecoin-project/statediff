@@ -141,14 +141,13 @@ func GetCar(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, err
 }
 
 func GetSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
-	db, err := NewSqlBlockStore(c.String(SqlFlag.Name))
+	db, srf, err := NewSqlBlockStore(c.String(SqlFlag.Name))
 	if err != nil {
 		return nil, nil, err
 	}
 	cacheDB := NewCachingStore(db)
 
-	sdb := db.(*SqlBlockstore)
-	return func(ctx context.Context) []cid.Cid { r, _ := sdb.getMasterTsKey(ctx, 0); return r.Cids() }, cacheDB, nil
+	return srf, cacheDB, nil
 }
 
 func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
