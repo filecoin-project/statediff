@@ -10,6 +10,7 @@ import (
 	"github.com/filecoin-project/statediff/types"
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/graphql/language/ast"
+	"github.com/ipfs/go-cid"
 	ipld "github.com/ipld/go-ipld-prime"
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
 )
@@ -39,6 +40,24 @@ func AddFields() {
 			return paramNode, err
 		},
 	})
+}
+
+// RawAddress__type__serialize - and undo the presentation of the "bytes" of address for presentation.
+func RawAddress__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		b, err := value.AsString()
+		if err != nil {
+			return err
+		}
+		a, err := address.NewFromBytes([]byte(b))
+		if err != nil {
+			return b
+		}
+		return a.String()
+	default:
+		return nil
+	}
 }
 
 // RawAddress__type__parse - massage incoming strings into their "bytes-in-string" on disk form
@@ -183,4 +202,60 @@ func InitV0State__AddressMap__resolve(p graphql.ResolveParams) (interface{}, err
 
 	return node, nil
 
+}
+
+// CidString__type__serialize is internally going to be cid bytes, but faked through a string.
+func CidString__type__serialize(value interface{}) interface{} {
+	switch value := value.(type) {
+	case ipld.Node:
+		s, err := value.AsString()
+		if err != nil {
+			return err
+		}
+		c, err := cid.Parse([]byte(s))
+		if err != nil {
+			return err
+		}
+		return c.String()
+	default:
+		return nil
+	}
+}
+
+// CidString__type__parse is internally going to be cid bytes, but faked through a string.
+func CidString__type__parse(value interface{}) interface{} {
+	builder := types.Type.CidString__Repr.NewBuilder()
+	switch v2 := value.(type) {
+	case string:
+		c, err := cid.Decode(v2)
+		if err != nil {
+			return err
+		}
+		builder.AssignString(string(c.Bytes()))
+	case *string:
+		c, err := cid.Decode(*v2)
+		if err != nil {
+			return err
+		}
+		builder.AssignString(string(c.Bytes()))
+	default:
+		return nil
+	}
+	return builder.Build()
+}
+
+// CidString__type__parseLiteral is internally going to be cid bytes, but faked through a string.
+func CidString__type__parseLiteral(valueAST ast.Value) interface{} {
+	builder := types.Type.CidString__Repr.NewBuilder()
+	switch valueAST := valueAST.(type) {
+	case *ast.StringValue:
+		c, err := cid.Decode(valueAST.Value)
+		if err != nil {
+			return err
+		}
+		builder.AssignString(string(c.Bytes()))
+	default:
+		return nil
+	}
+	return builder.Build()
 }
