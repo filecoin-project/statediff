@@ -27,6 +27,7 @@ var graphCmd = &cli.Command{
 	Flags: []cli.Flag{
 		&lib.ApiFlag,
 		&lib.CarFlag,
+		&lib.SqlFlag,
 		&lib.VectorFlag,
 		&bindFlag,
 	},

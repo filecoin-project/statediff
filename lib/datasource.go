@@ -47,6 +47,12 @@ var VectorFlag = cli.StringFlag{
 	Value: "",
 }
 
+var SqlFlag = cli.StringFlag{
+	Name:  "sql",
+	Usage: "sql connection string for data source",
+	Value: "",
+}
+
 func tryGetAPIFromHomeDir() ([]string, error) {
 	p, err := homedir.Expand("~/.lotus")
 	if err != nil {
@@ -69,7 +75,18 @@ func tryGetAPIFromHomeDir() ([]string, error) {
 func GetAPI(c *cli.Context) (api.FullNode, error) {
 	var err error
 	if c.IsSet(CarFlag.Name) {
-		return NewCarOpener(c)
+		r, b, err := GetCar(c)
+		if err != nil {
+			return nil, err
+		}
+		return NewOpener(c, r, b)
+	}
+	if c.IsSet(SqlFlag.Name) {
+		r, b, err := GetSql(c)
+		if err != nil {
+			return nil, err
+		}
+		return NewOpener(c, r, b)
 	}
 	api := c.String(ApiFlag.Name)
 	sp := strings.SplitN(api, ":", 2)
@@ -123,6 +140,17 @@ func GetCar(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, err
 	return func(_ context.Context) []cid.Cid { r, _ := db.Roots(); return r }, cacheDB, nil
 }
 
+func GetSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
+	db, err := NewSqlBlockStore(c.String(SqlFlag.Name))
+	if err != nil {
+		return nil, nil, err
+	}
+	cacheDB := NewCachingStore(db)
+
+	sdb := db.(*SqlBlockstore)
+	return func(ctx context.Context) []cid.Cid { r, _ := sdb.getMasterTsKey(ctx, 0); return r.Cids() }, cacheDB, nil
+}
+
 func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
 	file, err := os.Open(c.String(VectorFlag.Name))
 	if err != nil {
@@ -162,6 +190,10 @@ func GetBlockstore(c *cli.Context) (api.FullNode, statediff.StateRootFunc, block
 	}
 	if c.IsSet(VectorFlag.Name) {
 		srf, store, err := GetVector(c)
+		return nil, srf, store, err
+	}
+	if c.IsSet(SqlFlag.Name) {
+		srf, store, err := GetSql(c)
 		return nil, srf, store, err
 	}
 

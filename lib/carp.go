@@ -10,6 +10,7 @@ import (
 	"github.com/filecoin-project/go-multistore"
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/journal"
+	"github.com/filecoin-project/statediff"
 	peer "github.com/libp2p/go-libp2p-peer"
 	"github.com/urfave/cli/v2"
 
@@ -19,6 +20,7 @@ import (
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/chain/vm"
 	"github.com/filecoin-project/lotus/extern/sector-storage/ffiwrapper"
+	"github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/filecoin-project/lotus/lib/cachebs"
 	"github.com/filecoin-project/lotus/lib/ulimit"
 	marketevents "github.com/filecoin-project/lotus/markets/loggers"
@@ -29,21 +31,14 @@ import (
 	"github.com/filecoin-project/specs-actors/actors/util/adt"
 	"github.com/ipfs/go-cid"
 	cbor "github.com/ipfs/go-ipld-cbor"
-	"github.com/willscott/carbs"
 )
 
-func NewCarOpener(c *cli.Context) (*CarAPI, error) {
+func NewOpener(c *cli.Context, roots statediff.StateRootFunc, db blockstore.Blockstore) (*CarAPI, error) {
 	rapi := CarAPI{}
 
 	if _, _, err := ulimit.ManageFdLimit(); err != nil {
 		return nil, fmt.Errorf("setting file descriptor limit: %s", err)
 	}
-
-	db, err := carbs.Load(c.String(CarFlag.Name), false)
-	if err != nil {
-		return nil, err
-	}
-	cacheDB := NewCachingStore(db)
 
 	r := repo.NewMemory(nil)
 
@@ -57,12 +52,9 @@ func NewCarOpener(c *cli.Context) (*CarAPI, error) {
 		return nil, err
 	}
 
-	cs := store.NewChainStore(cacheDB, mds, vm.Syscalls(&fakeVerifier{}), journal.NilJournal())
+	cs := store.NewChainStore(db, mds, vm.Syscalls(&fakeVerifier{}), journal.NilJournal())
 
-	headKey, err := db.Roots()
-	if err != nil {
-		return nil, err
-	}
+	headKey := roots(c.Context)
 
 	headTs, err := cs.LoadTipSet(types.NewTipSetKey(headKey...))
 	if err != nil {

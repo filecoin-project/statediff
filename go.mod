@@ -23,12 +23,15 @@ require (
 	github.com/ipfs/go-hamt-ipld v0.1.1
 	github.com/ipfs/go-ipfs-blockstore v1.0.1
 	github.com/ipfs/go-ipld-cbor v0.0.5-0.20200428170625-a0bd04d3cbdf
+	github.com/ipfs/go-log/v2 v2.1.2-0.20200626104915-0016c0b4b3e4
 	github.com/ipld/go-car v0.1.1-0.20201015032735-ff6ccdc46acc
 	github.com/ipld/go-ipld-prime v0.5.1-0.20200910124733-350032422383
+	github.com/jackc/pgx/v4 v4.9.2
 	github.com/libp2p/go-libp2p-peer v0.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/multiformats/go-multiaddr v0.3.1
 	github.com/multiformats/go-multiaddr-net v0.2.0
+	github.com/multiformats/go-multibase v0.0.3
 	github.com/multiformats/go-multihash v0.0.14
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
 	github.com/stretchr/objx v0.2.0 // indirect
@@ -46,6 +49,7 @@ replace github.com/filecoin-project/filecoin-ffi => github.com/filecoin-project/
 replace github.com/whyrusleeping/ledger-filecoin-go => github.com/filecoin-project/statediff/extern/fil-ledger v0.0.0-20201112214200-3592b9922dcc
 
 replace github.com/ipld/go-ipld-prime => github.com/willscott/go-ipld-prime v0.0.4-0.20201117233610-e20af13830d8
+
 //replace github.com/ipld/go-ipld-prime => ../go-ipld-prime
 
 replace github.com/filecoin-project/go-hamt-ipld/v2 => github.com/willscott/go-hamt-ipld/v2 v2.0.1-0.20201115233521-38d62e432eed
