@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c // indirect
-	github.com/evanw/esbuild v0.7.18
+	github.com/evanw/esbuild v0.8.10
 	github.com/filecoin-project/go-address v0.0.4
 	github.com/filecoin-project/go-bitfield v0.2.2
 	github.com/filecoin-project/go-fil-markets v1.0.0
@@ -14,13 +14,11 @@ require (
 	github.com/filecoin-project/lotus v1.1.2
 	github.com/filecoin-project/specs-actors v0.9.13
 	github.com/filecoin-project/specs-actors/v2 v2.2.0
-	github.com/go-bindata/go-bindata v3.1.2+incompatible // indirect
 	github.com/gorilla/handlers v1.5.1
 	github.com/graphql-go/graphql v0.7.9
 	github.com/ipfs/go-block-format v0.0.2
 	github.com/ipfs/go-cid v0.0.7
 	github.com/ipfs/go-datastore v0.4.5
-	github.com/ipfs/go-hamt-ipld v0.1.1
 	github.com/ipfs/go-ipfs-blockstore v1.0.1
 	github.com/ipfs/go-ipld-cbor v0.0.5-0.20200428170625-a0bd04d3cbdf
 	github.com/ipfs/go-log/v2 v2.1.2-0.20200626104915-0016c0b4b3e4
@@ -34,7 +32,6 @@ require (
 	github.com/multiformats/go-multibase v0.0.3
 	github.com/multiformats/go-multihash v0.0.14
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
-	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/whyrusleeping/cbor-gen v0.0.0-20200826160007-0b9f6c5fb163
 	github.com/willscott/carbs v0.0.4-0.20201024182220-b40626ac657b
