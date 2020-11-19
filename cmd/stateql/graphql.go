@@ -55,11 +55,11 @@ func runGraphCmd(c *cli.Context) error {
 		Handler: handlers.LoggingHandler(os.Stdout, mux),
 	}
 
+	fmt.Printf("Listening at %v\n", lis.Addr())
 	if c.IsSet(crtFlag.Name) {
 		b := c.String(crtFlag.Name)
 		return s.ServeTLS(lis, b+".crt", b+".key")
 	} else {
-		fmt.Printf("Listening at %v\n", lis.Addr())
 		return s.Serve(lis)
 	}
 }

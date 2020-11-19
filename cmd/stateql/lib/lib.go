@@ -88,6 +88,9 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						if err != nil {
 							return nil, fmt.Errorf("Have not indexed a block at height %d", at)
 						}
+						if ch == cid.Undef {
+							return nil, nil
+						}
 						return statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
 					},
 				},
@@ -114,6 +117,9 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 							ch, err := source.CidAtHeight(p.Context, i)
 							if err != nil {
 								return nil, fmt.Errorf("Have not indexed a block at height %d", i)
+							}
+							if ch == cid.Undef {
+								continue
 							}
 							n, err := statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
 							if err != nil {
