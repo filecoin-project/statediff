@@ -20,6 +20,12 @@ var bindFlag = cli.StringFlag{
 	Value: ":0",
 }
 
+var crtFlag = cli.StringFlag{
+	Name:  "tls",
+	Usage: "root name (files of <name>.crt and <name>.key expected) for tls cert",
+	Value: "",
+}
+
 var graphCmd = &cli.Command{
 	Name:        "serve",
 	Description: "Serve GraphQL endpoint",
@@ -30,6 +36,7 @@ var graphCmd = &cli.Command{
 		&lib.SqlFlag,
 		&lib.VectorFlag,
 		&bindFlag,
+		&crtFlag,
 	},
 }
 
@@ -47,6 +54,12 @@ func runGraphCmd(c *cli.Context) error {
 	s := &http.Server{
 		Handler: handlers.LoggingHandler(os.Stdout, mux),
 	}
-	fmt.Printf("Listening at %v\n", lis.Addr())
-	return s.Serve(lis)
+
+	if c.IsSet(crtFlag.Name) {
+		b := c.String(crtFlag.Name)
+		return s.ServeTLS(lis, b+".crt", b+".key")
+	} else {
+		fmt.Printf("Listening at %v\n", lis.Addr())
+		return s.Serve(lis)
+	}
 }
