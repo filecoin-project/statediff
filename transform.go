@@ -335,6 +335,12 @@ func Load(ctx context.Context, c cid.Cid, store blockstore.Blockstore, into ipld
 
 // Transform will unmarshal cbor data based on a provided type hint.
 func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as string) (ipld.Node, error) {
+	ca := GetGlobalNodeCache()
+	k := string(c.Bytes()) + as
+	if n := ca.Get(k); n != nil {
+		return n, nil
+	}
+
 	proto, ok := LotusPrototypes[ResolveType(as)]
 	if !ok {
 		return nil, fmt.Errorf("unknown type: %s (parsed to %s)", as, ResolveType(as))
@@ -343,7 +349,11 @@ func Transform(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as s
 	if err := Load(ctx, c, store, assembler); err != nil {
 		return nil, err
 	}
-	return assembler.Build(), nil
+	n := assembler.Build()
+	if n != nil {
+		ca.Add(k, n)
+	}
+	return n, nil
 }
 
 // TypeOfActor returns the type a given actor will be based on its binary address and stateroot.

@@ -150,7 +150,7 @@ func LotusActors__Head__resolve(p graphql.ResolveParams) (interface{}, error) {
 			return cl.Cid, nil
 		}
 
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
 		if !ok {
 			return nil, fmt.Errorf("invalid Loader provided")
 		}
@@ -161,10 +161,7 @@ func LotusActors__Head__resolve(p graphql.ResolveParams) (interface{}, error) {
 		}
 
 		builder := statediff.LinkDest(typedTarget).NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		return builder.Build(), nil
+		return loader(p.Context, cl, builder)
 	}
 	return nil, fmt.Errorf("Invalid link")
 
@@ -179,29 +176,20 @@ func InitV0State__AddressMap__resolve(p graphql.ResolveParams) (interface{}, err
 
 	targetCid := ts.FieldAddressMap().Link()
 
-	var node ipld.Node
-
 	if cl, ok := targetCid.(cidlink.Link); ok {
 		v := p.Context.Value(nodeLoaderCtxKey)
 		if v == nil {
 			return cl.Cid, nil
 		}
-		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) error)
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
 		if !ok {
 			return nil, errInvalidLoader
 		}
 
 		builder := statediff.LotusPrototypes[statediff.InitActorAddresses].NewBuilder()
-		if err := loader(p.Context, cl, builder); err != nil {
-			return nil, err
-		}
-		node = builder.Build()
-	} else {
-		return nil, errInvalidLink
+		return loader(p.Context, cl, builder)
 	}
-
-	return node, nil
-
+	return nil, errInvalidLink
 }
 
 // CidString__type__serialize is internally going to be cid bytes, but faked through a string.

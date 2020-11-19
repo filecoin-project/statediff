@@ -213,6 +213,8 @@ github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1m
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/evanw/esbuild v0.7.18 h1:HNMBF6AbyXOhocM4X0WuEQdbfh+/c1URzN0TbihicAA=
 github.com/evanw/esbuild v0.7.18/go.mod h1:mptxmSXIzBIKKCe4jo9A5SToEd1G+AKZ9JmY85dYRJ0=
+github.com/evanw/esbuild v0.8.11 h1:sfs2i0c6oh3eiBCh1a6SLBZmybV5xVxs8obXi0qHyQU=
+github.com/evanw/esbuild v0.8.11/go.mod h1:y2AFBAGVelPqPodpdtxWWqe6n2jYf5FrsJbligmRmuw=
 github.com/facebookgo/atomicfile v0.0.0-20151019160806-2de1f203e7d5 h1:BBso6MBKW8ncyZLv37o+KNyy0HrrHgfnOaGQC2qvN+A=
 github.com/facebookgo/atomicfile v0.0.0-20151019160806-2de1f203e7d5/go.mod h1:JpoxHjuQauoxiFMl1ie8Xc/7TfLuMZ5eOCONd1sUBHg=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
@@ -1535,6 +1537,8 @@ github.com/willscott/go-ipld-prime v0.0.4-0.20201112182242-037dd591c472 h1:oEqJ5
 github.com/willscott/go-ipld-prime v0.0.4-0.20201112182242-037dd591c472/go.mod h1:0xEgdD6MKbZ1vF0GC+YcR/C4SQCAlRuOjIJ2i0HxqzM=
 github.com/willscott/go-ipld-prime v0.0.4-0.20201117233610-e20af13830d8 h1:keJL+ouo0rVEUUnEcrBY1V2yxlzTNQ667+LFcVvsr1U=
 github.com/willscott/go-ipld-prime v0.0.4-0.20201117233610-e20af13830d8/go.mod h1:0xEgdD6MKbZ1vF0GC+YcR/C4SQCAlRuOjIJ2i0HxqzM=
+github.com/willscott/go-ipld-prime v0.0.4-0.20201119011835-00d5475cca89 h1:TaPMbM5kCZBsavSZ+jROwB103AOS6LCIIlchWOAaF1s=
+github.com/willscott/go-ipld-prime v0.0.4-0.20201119011835-00d5475cca89/go.mod h1:0xEgdD6MKbZ1vF0GC+YcR/C4SQCAlRuOjIJ2i0HxqzM=
 github.com/x-cray/logrus-prefixed-formatter v0.5.2/go.mod h1:2duySbKsL6M18s5GU7VPsoEPHyzalCE06qoARUCeBBE=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/xorcare/golden v0.6.0/go.mod h1:7T39/ZMvaSEZlBPoYfVFmsBLmUl3uz9IuzWj/U6FtvQ=

@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c // indirect
-	github.com/evanw/esbuild v0.7.18
+	github.com/evanw/esbuild v0.8.11
 	github.com/filecoin-project/go-address v0.0.4
 	github.com/filecoin-project/go-bitfield v0.2.2
 	github.com/filecoin-project/go-fil-markets v1.0.0
@@ -17,6 +17,7 @@ require (
 	github.com/go-bindata/go-bindata v3.1.2+incompatible // indirect
 	github.com/gorilla/handlers v1.5.1
 	github.com/graphql-go/graphql v0.7.9
+	github.com/hashicorp/golang-lru v0.5.4
 	github.com/ipfs/go-block-format v0.0.2
 	github.com/ipfs/go-cid v0.0.7
 	github.com/ipfs/go-datastore v0.4.5
@@ -27,6 +28,7 @@ require (
 	github.com/ipld/go-car v0.1.1-0.20201015032735-ff6ccdc46acc
 	github.com/ipld/go-ipld-prime v0.5.1-0.20200910124733-350032422383
 	github.com/jackc/pgx/v4 v4.9.2
+	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/libp2p/go-libp2p-peer v0.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/multiformats/go-multiaddr v0.3.1
@@ -48,7 +50,7 @@ replace github.com/filecoin-project/filecoin-ffi => github.com/filecoin-project/
 
 replace github.com/whyrusleeping/ledger-filecoin-go => github.com/filecoin-project/statediff/extern/fil-ledger v0.0.0-20201112214200-3592b9922dcc
 
-replace github.com/ipld/go-ipld-prime => github.com/willscott/go-ipld-prime v0.0.4-0.20201117233610-e20af13830d8
+replace github.com/ipld/go-ipld-prime => github.com/willscott/go-ipld-prime v0.0.4-0.20201119011835-00d5475cca89
 
 //replace github.com/ipld/go-ipld-prime => ../go-ipld-prime
 

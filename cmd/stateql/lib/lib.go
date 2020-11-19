@@ -131,8 +131,20 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 		log.Fatal(err)
 	}
 
-	loader := func(ctx context.Context, cl cidlink.Link, builder ipld.NodeBuilder) error {
-		return statediff.Load(ctx, cl.Cid, source.Store(), builder)
+	loader := func(ctx context.Context, cl cidlink.Link, builder ipld.NodeBuilder) (ipld.Node, error) {
+		ca := statediff.GetGlobalNodeCache()
+		key := string(cl.Bytes()) + fmt.Sprintf("%T", builder.Prototype())
+		if n := ca.Get(key); n != nil {
+			return n, nil
+		}
+		if err := statediff.Load(ctx, cl.Cid, source.Store(), builder); err != nil {
+			return nil, err
+		}
+		n := builder.Build()
+		if n != nil {
+			ca.Add(key, n)
+		}
+		return n, nil
 	}
 
 	mux := http.NewServeMux()

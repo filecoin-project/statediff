@@ -70,6 +70,7 @@ func (l *lazyDs) index(ctx context.Context) error {
 		l.tipsetMap = make(map[int]cid.Cid)
 	}
 	c := n[0]
+	cooldown := -1
 	for true {
 		p := types.Type.LotusBlockHeader__Repr.NewBuilder()
 		if err := statediff.Load(ctx, c, l.store, p); err != nil {
@@ -84,8 +85,15 @@ func (l *lazyDs) index(ctx context.Context) error {
 		if err != nil {
 			return fmt.Errorf("height could not be interpreted as int: %v", err)
 		}
+		// re-do recent index when we're adding new things to handle recent reorgs
 		if _, ok := l.tipsetMap[hn]; ok {
-			return nil
+			if cooldown < 0 {
+				cooldown = 10
+			}
+			cooldown--
+			if cooldown == 0 {
+				return nil
+			}
 		}
 		l.tipsetMap[hn] = c
 		if hn == 1 {

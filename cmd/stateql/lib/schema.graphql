@@ -1,138 +1,65 @@
-type MinerV2SectorOnChainInfo {
-	SectorNumber: SectorNumber!
+type LotusActors {
+	Code: ID!
+	Head: LotusActorV2Head!
+	Nonce: Int!
+	Balance: BigInt!
+}
+type MinerV0SectorPreCommitInfo {
 	SealProof: Int!
+	SectorNumber: SectorNumber!
 	SealedCID: ID!
-	DealIDs: [DealID]!
-	Activation: ChainEpoch!
+	SealRandEpoch: ChainEpoch!
+	DealIDs: [DealID]
 	Expiration: ChainEpoch!
-	DealWeight: BigInt!
-	VerifiedDealWeight: BigInt!
-	InitialPledge: BigInt!
-	ExpectedDayReward: BigInt!
-	ExpectedStorageReward: BigInt!
-	ReplacedSectorAge: ChainEpoch!
-	ReplacedDayReward: BigInt!
+	ReplaceCapacity: Bool!
+	ReplaceSectorDeadline: Int!
+	ReplaceSectorPartition: Int!
+	ReplaceSectorNumber: SectorNumber!
 }
-type MessageParamsMinerConfirmSectorProofs {
-	Sectors: [SectorNumber!]!
+type MessageParamsMarketVerifyDeals {
+	DealIDs: [DealID]!
+	SectorExpiry: ChainEpoch!
+	SectorStart: ChainEpoch!
 }
-type MinerV0PowerPair {
-	Raw: BigInt!
-	QA: BigInt!
+type List__CronV0Entry {
+	CronV0Entry: [CronV0Entry!]
 }
-scalar MethodNum
-type LotusStateRoot {
-	Version: Int!
-	Actors: Map__LotusActors!
-	Info: ID!
+type Map__DataCap {
+	At(key: RawAddress): [BigInt]! 
+	All: [Map__DataCap__Record!]
 }
-type MultisigV0Transaction {
-	To: Address!
-	Value: BigInt!
-	Method: MethodNum!
-	Params: Bytes!
-	Approved: [Address]!
+type Map__DataCap__Record {
+	Key: RawAddress!
+	Value: BigInt
 }
-type MessageParamsMultisigSwapSigner {
-	From: Address!
-	To: Address!
+ 	type Map__PaychV0LaneState {
+	At(key: String): [PaychV0LaneState]! 
+	All: [Map__PaychV0LaneState__Record!]
 }
-scalar PaddedPieceSize
-scalar DealID
-type Map__MarketV0DealProposal {
-	At(key: CidString): [MarketV0DealProposal]! 
-	All: [Map__MarketV0DealProposal__Record!]
+type Map__PaychV0LaneState__Record {
+	Key: String!
+	Value: PaychV0LaneState
 }
-type Map__MarketV0DealProposal__Record {
-	Key: CidString!
-	Value: MarketV0DealProposal
+ 	type MessageParamsMinerChangeAddress {
+	NewWorker: Address!
+	NewControlAddrs: [Address]!
 }
- 	type PoStProof {
+type MessageParamsMinerCheckSectorProven {
+	SectorNumber: SectorNumber!
+}
+type PoStProof {
 	PoStProof: Int!
 	ProofBytes: Bytes!
 }
-type MinerV0Partition {
-	Sectors: BitField!
-	Faults: BitField!
-	Recoveries: BitField!
-	Terminated: BitField!
-	ExpirationsEpochs: Map__MinerV0ExpirationSet!
-	EarlyTerminated: ID!
-	LivePower: MinerV0PowerPair!
-	FaultyPower: MinerV0PowerPair!
-	RecoveringPower: MinerV0PowerPair!
+type Map__PowerV0CronEvent {
+	At(key: String): [PowerV0CronEvent]! 
+	All: [Map__PowerV0CronEvent__Record!]
 }
-scalar ActorID
-type Map__List__DealID {
-	At(key: String): [List__DealID]! 
-	All: [Map__List__DealID__Record!]
-}
-type Map__List__DealID__Record {
+type Map__PowerV0CronEvent__Record {
 	Key: String!
-	Value: [DealID]
+	Value: PowerV0CronEvent
 }
- 	type List__LotusBeaconEntry {
-	LotusBeaconEntry: [LotusBeaconEntry]
-}
-type List__MinerTerminationDecl {
-	MinerTerminationDecl: [MinerTerminationDecl!]
-}
-type MessageParamsMinerDeclareFaults {
-	Faults: [MinerTerminationDecl!]!
-}
-type MinerV2Info {
-	Owner: Address!
-	Worker: Address!
-	ControlAddresses: [Address]
-	PendingWorkerKey: MinerV0WorkerChangeKey
-	PeerId: PeerID!
-	Multiaddrs: [Multiaddr]
-	SealProofType: Int!
-	SectorSize: SectorSize!
-	WindowPoStPartitionSectors: Int!
-	ConsensusFaultElapsed: ChainEpoch!
-	PendingOwnerAddress: Address
-}
-type Map__MinerV0ExpirationSet {
-	At(key: String): [MinerV0ExpirationSet]! 
-	All: [Map__MinerV0ExpirationSet__Record!]
-}
-type Map__MinerV0ExpirationSet__Record {
-	Key: String!
-	Value: MinerV0ExpirationSet
-}
- 	type List__MinerExpirationExtend {
-	MinerExpirationExtend: [MinerExpirationExtend!]
-}
-type MarketV2DealProposal {
-	PieceCID: ID!
-	PieceSize: PaddedPieceSize!
-	VerifiedDeal: Bool!
-	Client: Address!
-	Provider: Address!
-	Label: String!
-	StartEpoch: ChainEpoch!
-	EndEpoch: ChainEpoch!
-	StoragePricePerEpoch: BigInt!
-	ProviderCollateral: BigInt!
-	ClientCollateral: BigInt!
-}
-type MessageParamsMarketPublishDeals {
-	Deals: [MarketClientDealProposal!]!
-}
-type MessageParamsVerifregUseBytes {
-	Address: Address!
-	DealSize: BigInt!
-}
-scalar ChainEpoch
-type MessageParamsMultisigChangeThreshold {
-	NewThreshold: Int!
-}
-type MessageParamsPaychConstructor {
-	From: Address!
-	To: Address!
-}
-type List__Merge {
+ 	type List__Merge {
 	Merge: [Merge!]
 }
 type MessageParamsPowerCurrentTotal {
@@ -141,349 +68,41 @@ type MessageParamsPowerCurrentTotal {
 	PledgeCollateral: BigInt!
 	QualityAdjPowerSmoothed: V0FilterEstimate!
 }
-type Map__LotusActors {
-	At(key: RawAddress): [LotusActors]! 
-	All: [Map__LotusActors__Record!]
+type MessageParamsInitExecParams {
+	CodeCID: ID!
+	ConstructorParams: Bytes!
 }
-type Map__LotusActors__Record {
-	Key: RawAddress!
-	Value: LotusActors
-}
- 	type MinerV2Partition {
+type MinerExpirationExtend {
+	Deadline: Int!
+	Partition: Int!
 	Sectors: BitField!
-	Unproven: BitField!
-	Faults: BitField!
-	Recoveries: BitField!
-	Terminated: BitField!
-	ExpirationsEpochs: Map__MinerV0ExpirationSet!
-	EarlyTerminated: ID!
-	LivePower: MinerV0PowerPair!
-	UnprovenPower: MinerV0PowerPair!
-	FaultyPower: MinerV0PowerPair!
-	RecoveringPower: MinerV0PowerPair!
+	NewExpiration: ChainEpoch!
 }
-type MinerPostPartition {
-	Index: Int!
-	Skipped: BitField!
-}
-type MessageParamsPaychUpdateChannelState {
-	Sv: SignedVoucher!
-	Secret: Bytes!
-}
-type List__Multiaddrs {
-	Multiaddr: [Multiaddr]
-}
-type SealVerifyInfo {
-	SealProof: ID!
-	SectorID: Int!
-	DealIDs: [DealID]!
-	Randomness: Bytes!
-	InteractiveRandomness: Bytes!
-	Proof: Bytes!
-	SealedCID: ID!
-	UnsealedCID: ID!
-}
-type MessageParamsMarketActivateDeals {
-	DealIDs: [DealID]!
-	SectorExpiry: ChainEpoch!
-}
-type MessageParamsMinerWithdrawBalance {
-	AmountRequested: BigInt!
-}
-scalar PeerID
-scalar Multiaddr
-type MinerV0VestingFunds {
-	Funds: [MinerV0VestingFund]!
-}
-scalar MessageParamsMinerConstructor
-type MessageParamsMarketWithdrawBalance {
-	ProviderOrClientAmount: Address!
-	Amount: BigInt!
-}
-type Map__MarketV0RawDealProposal {
-	At(key: String): [MarketV0DealProposal]! 
-	All: [Map__MarketV0RawDealProposal__Record!]
-}
-type Map__MarketV0RawDealProposal__Record {
-	Key: String!
-	Value: MarketV0DealProposal
-}
- 	type MessageParamsPowerCreateMiner {
+type MessageParamsPowerCreateMiner {
 	Owner: Address!
 	Worker: Address!
 	SealProofType: Int!
 	Peer: PeerID!
 	Multiaddrs: [Multiaddr]!
 }
-type List__MinerPoStProof {
-	MinerPostProof: [MinerPostProof!]
-}
-type MinerV0State {
-	Info: MinerV0Info!
-	PreCommitDeposits: BigInt!
-	LockedFunds: BigInt!
-	VestingFunds: MinerV0VestingFunds!
-	InitialPledgeRequirement: BigInt!
-	PreCommittedSectors: Map__SectorPreCommitOnChainInfo!
-	PreCommittedSectorsExpiry: ID!
-	AllocatedSectors: BitField!
-	Sectors: Map__SectorOnChainInfo!
-	ProvingPeriodStart: ChainEpoch!
-	CurrentDeadline: Int!
-	Deadlines: MinerV0Deadlines!
-	EarlyTerminations: BitField!
-}
-type MarketV0DealState {
-	SectorStartEpoch: ChainEpoch!
-	LastUpdatedEpoch: ChainEpoch!
-	SlashEpoch: ChainEpoch!
-}
-type Map__MinerV2Partition {
-	At(key: String): [MinerV2Partition]! 
-	All: [Map__MinerV2Partition__Record!]
-}
-type Map__MinerV2Partition__Record {
-	Key: String!
-	Value: MinerV2Partition
-}
- 	type MinerV0WorkerChangeKey {
-	NewWorker: Address!
-	EffectiveAt: ChainEpoch!
-}
-type MessageParamsPowerUpdateClaimed {
-	RawByteDelta: BigInt!
-	QualityAdjustedDelta: BigInt!
-}
-type MessageParamsRewardAwardBlock {
-	Miner: Address!
-	Penalty: BigInt!
-	GasReward: BigInt!
-	WinCount: Int!
-}
-type Map__BalanceTable {
-	At(key: RawAddress): [BigInt]! 
-	All: [Map__BalanceTable__Record!]
-}
-type Map__BalanceTable__Record {
-	Key: RawAddress!
-	Value: BigInt
-}
- 	type Map__DataCap {
-	At(key: RawAddress): [BigInt]! 
-	All: [Map__DataCap__Record!]
-}
-type Map__DataCap__Record {
-	Key: RawAddress!
-	Value: BigInt
-}
- 	type MessageParamsMinerTerminateSectors {
-	Terminations: [MinerTerminationDecl!]!
-}
-type Map__ActorID {
-	At(key: RawAddress): [ActorID]! 
-	All: [Map__ActorID__Record!]
-}
-type Map__ActorID__Record {
-	Key: RawAddress!
-	Value: ActorID
-}
- 	type PowerV2Claim {
-	SealProofType: Int!
-	RawBytePower: BigInt!
-	QualityAdjPower: BigInt!
-}
-type LotusTicket {
-	VRFProof: Bytes!
-}
-type MinerV0Deadline {
-	Partitions: Map__MinerV0Partition!
-	ExpirationEpochs: ID!
-	PostSubmissions: BitField!
-	EarlyTerminations: BitField!
-	LiveSectors: Int!
-	TotalSectors: Int!
-	FaultyPower: MinerV0PowerPair!
-}
-type MultisigV0State {
-	Signers: [Address]!
-	NumApprovalsThreshold: Int!
-	NextTxnID: Int!
-	InitialBalance: BigInt!
-	StartEpoch: ChainEpoch!
-	UnlockDuration: ChainEpoch!
-	PendingTxns: Map__MultisigV0Transaction!
-}
-type MessageParamsMultisigAddSigner {
-	Signer: Address!
-	Increase: Bool!
-}
-type CronV0Entry {
-	Receiver: Address!
-	MethodNum: MethodNum!
-}
-type MarketV0DealProposal {
-	PieceCID: ID!
-	PieceSize: PaddedPieceSize!
-	VerifiedDeal: Bool!
-	Client: Address!
-	Provider: Address!
-	Label: String!
-	StartEpoch: ChainEpoch!
-	EndEpoch: ChainEpoch!
-	StoragePricePerEpoch: BigInt!
-	ProviderCollateral: BigInt!
-	ClientCollateral: BigInt!
-}
-type Map__PowerV2Claim {
-	At(key: RawAddress): [PowerV2Claim]! 
-	All: [Map__PowerV2Claim__Record!]
-}
-type Map__PowerV2Claim__Record {
-	Key: RawAddress!
-	Value: PowerV2Claim
-}
- 	type List__LinkLotusMessage {
-	Link__LotusMessage: [LotusMessage!]
-}
-type InitV0State {
-	AddressMap: Map__ActorID!
-	NextID: ActorID!
-	NetworkName: String!
-}
-scalar Address
-type LotusSignedMessage {
-	Message: LotusMessage!
-	Signature: Signature!
-}
-type Map__MarketV0DealState {
-	At(key: String): [MarketV0DealState]! 
-	All: [Map__MarketV0DealState__Record!]
-}
-type Map__MarketV0DealState__Record {
-	Key: String!
-	Value: MarketV0DealState
-}
- 	type Map__MarketV2RawDealProposal {
-	At(key: String): [MarketV2DealProposal]! 
-	All: [Map__MarketV2RawDealProposal__Record!]
-}
-type Map__MarketV2RawDealProposal__Record {
-	Key: String!
-	Value: MarketV2DealProposal
-}
- 	type MessageParamsMinerExtendSectorExpiration {
-	Extension: [MinerExpirationExtend!]!
-}
-type MessageParamsMinerDeferredCron {
-	EventType: Int!
-}
-scalar SectorSize
-type List__ClientDealProposal {
-	MarketClientDealProposal: [MarketClientDealProposal!]
-}
-type ModVerifyParams {
-	Method: MethodNum!
-	Params: Bytes!
-}
-type MinerV0SectorPreCommitOnChainInfo {
-	Info: MinerV0SectorPreCommitInfo!
-	PreCommitDeposit: BigInt!
-	PreCommitEpoch: ChainEpoch!
-	DealWeight: BigInt!
-	VerifiedDealWeight: BigInt!
-}
-type MarketV2State {
-	Proposals: Map__MarketV2RawDealProposal!
-	States: Map__MarketV0DealState!
-	PendingProposals: Map__MarketV2DealProposal!
-	EscrowTable: Map__BalanceTable!
-	LockedTable: Map__BalanceTable!
-	NextID: DealID!
-	DealOpsByEpoch: Map__List__DealID!
-	LastCron: ChainEpoch!
-	TotalClientLockedCollateral: BigInt!
-	TotalProviderLockedCollateral: BigInt!
-	TotalClientStorageFee: BigInt!
-}
-type MinerV0VestingFund {
+type RewardV0State {
+	CumsumBaseline: BigInt!
+	CumsumRealized: BigInt!
+	EffectiveNetworkTime: ChainEpoch!
+	EffectiveBaselinePower: BigInt!
+	ThisEpochReward: BigInt!
+	ThisEpochRewardSmoothed: V0FilterEstimate
+	ThisEpochBaselinePower: BigInt!
 	Epoch: ChainEpoch!
-	Amount: BigInt!
+	TotalMined: BigInt!
 }
-type MinerTerminationDecl {
-	Deadline: Int!
-	Partition: Int!
-	Sectors: BitField!
+scalar ActorID
+type LotusBeaconEntry {
+	Round: Int!
+	Data: Bytes!
 }
-type MinerV0Info {
-	Owner: Address!
-	Worker: Address!
-	ControlAddresses: [Address]
-	PendingWorkerKey: MinerV0WorkerChangeKey
-	PeerId: PeerID!
-	Multiaddrs: [Multiaddr]
-	SealProofType: Int!
-	SectorSize: SectorSize!
-	WindowPoStPartitionSectors: Int!
-}
-type Map__MinerV0Partition {
-	At(key: String): [MinerV0Partition]! 
-	All: [Map__MinerV0Partition__Record!]
-}
-type Map__MinerV0Partition__Record {
-	Key: String!
-	Value: MinerV0Partition
-}
- 	type List__MinerPostPartition {
-	MinerPostPartition: [MinerPostPartition!]
-}
-type MessageParamsMarketVerifyDeals {
-	DealIDs: [DealID]!
-	SectorExpiry: ChainEpoch!
-	SectorStart: ChainEpoch!
-}
-type MessageParamsMinerProveCommitSector {
-	SectorNumber: SectorNumber!
-	Proof: Bytes!
-}
-type MessageParamsVerifregAddVerifier {
-	Address: Address!
-	Allowance: BigInt!
-}
-type LotusMessage {
-	Version: Int!
-	To: Address!
-	From: Address!
-	Nonce: Int!
-	Value: BigInt!
-	GasLimit: Int!
-	GasFeeCap: BigInt!
-	GasPremium: BigInt!
-	Method: MethodNum!
-	Params: Bytes!
-}
-type PaychV0State {
-	From: Address!
-	To: Address!
-	ToSend: BigInt!
-	SettlingAt: ChainEpoch!
-	MinSettleHeight: ChainEpoch!
-	LaneStates: Map__PaychV0LaneState!
-}
-type List__Link {
-	Link: [ID]
-}
-type Merge {
-	Lane: Int!
-	Nonce: Int!
-}
-scalar Bool
-scalar Bytes
-type LotusMsgMeta {
-	BlsMessages: [LotusMessage!]!
-	SecpkMessages: ID!
-}
-type List__MinerV2DeadlineLink {
-	Link__MinerV2Deadline: [MinerV2Deadline]
+type MinerV0VestingFunds {
+	Funds: [MinerV0VestingFund]!
 }
 type MinerV0SectorOnChainInfo {
 	SectorNumber: SectorNumber!
@@ -498,47 +117,8 @@ type MinerV0SectorOnChainInfo {
 	ExpectedDayReward: BigInt!
 	ExpectedStorageReward: BigInt!
 }
-type Map__MarketV2DealProposal {
-	At(key: CidString): [MarketV2DealProposal]! 
-	All: [Map__MarketV2DealProposal__Record!]
-}
-type Map__MarketV2DealProposal__Record {
-	Key: CidString!
-	Value: MarketV2DealProposal
-}
- 	scalar SectorNumber
-type MarketV0State {
-	Proposals: Map__MarketV0RawDealProposal!
-	States: Map__MarketV0DealState!
-	PendingProposals: Map__MarketV0DealProposal!
-	EscrowTable: Map__BalanceTable!
-	LockedTable: Map__BalanceTable!
-	NextID: DealID!
-	DealOpsByEpoch: Map__List__DealID!
-	LastCron: ChainEpoch!
-	TotalClientLockedCollateral: BigInt!
-	TotalProviderLockedCollateral: BigInt!
-	TotalClientStorageFee: BigInt!
-}
-type MessageParamsMinerCheckSectorProven {
-	SectorNumber: SectorNumber!
-}
-type PowerV2State {
-	TotalRawBytePower: BigInt!
-	TotalBytesCommitted: BigInt!
-	TotalQualityAdjPower: BigInt!
-	TotalQABytesCommitted: BigInt!
-	TotalPledgeCollateral: BigInt!
-	ThisEpochRawBytePower: BigInt!
-	ThisEpochQualityAdjPower: BigInt!
-	ThisEpochPledgeCollateral: BigInt!
-	ThisEpochQAPowerSmoothed: V0FilterEstimate
-	MinerCount: Int!
-	MinerAboveMinPowerCount: Int!
-	CronEventQueue: Multimap__PowerV0CronEvent!
-	FirstCronEpoch: ChainEpoch!
-	Claims: Map__PowerV2Claim!
-	ProofValidationBatch: ID
+type LotusTicket {
+	VRFProof: Bytes!
 }
 type CronV0State {
 	Entries: [CronV0Entry!]!
@@ -546,324 +126,46 @@ type CronV0State {
 type List__MinerV0DeadlineLink {
 	Link__MinerV0Deadline: [MinerV0Deadline]
 }
-type List__Address {
-	Address: [Address]
-}
-type LotusElectionProof {
-	WinCount: Int!
-	VRFProof: Bytes!
-}
-type MessageParamsMarketTerminateDeals {
-	Epoch: ChainEpoch!
-	DealIDs: [DealID]!
-}
-type Map {
-	At(key: String): [Any]! 
-	All: [Map__Record!]
-}
-type Map__Record {
-	Key: String!
-	Value: Any
-}
- 	type Map__BitField {
-	At(key: String): [BitField]! 
-	All: [Map__BitField__Record!]
-}
-type Map__BitField__Record {
-	Key: String!
-	Value: BitField
-}
- 	type List__CronV0Entry {
-	CronV0Entry: [CronV0Entry!]
-}
-type List__DealID {
-	DealID: [DealID]
-}
-type LotusBlockHeader {
-	Miner: Address!
-	Ticket: LotusTicket
-	ElectionProof: LotusElectionProof
-	BeaconEntries: [LotusBeaconEntry]!
-	WinPoStProof: [PoStProof!]!
-	Parents: [ID]!
-	ParentWeight: BigInt!
-	Height: ChainEpoch!
-	ParentStateRoot: LotusStateRoot!
-	ParentMessageReceipts: ID!
-	Messages: LotusMsgMeta!
-	BLSAggregate: Signature
-	Timestamp: Int!
-	BlockSig: Signature
-	ForkSignaling: Int!
-	ParentBaseFee: BigInt!
-}
-type MinerV0ExpirationSet {
-	OnTimeSectors: BitField!
-	EarlySectors: BitField!
-	OnTimePledge: BigInt!
-	ActivePower: MinerV0PowerPair!
-	FaultyPower: MinerV0PowerPair!
-}
-type MinerV0SectorPreCommitInfo {
-	SealProof: Int!
-	SectorNumber: SectorNumber!
-	SealedCID: ID!
-	SealRandEpoch: ChainEpoch!
-	DealIDs: [DealID]
-	Expiration: ChainEpoch!
-	ReplaceCapacity: Bool!
-	ReplaceSectorDeadline: Int!
-	ReplaceSectorPartition: Int!
-	ReplaceSectorNumber: SectorNumber!
-}
-type RewardV0State {
-	CumsumBaseline: BigInt!
-	CumsumRealized: BigInt!
-	EffectiveNetworkTime: ChainEpoch!
-	EffectiveBaselinePower: BigInt!
-	ThisEpochReward: BigInt!
-	ThisEpochRewardSmoothed: V0FilterEstimate
-	ThisEpochBaselinePower: BigInt!
-	Epoch: ChainEpoch!
-	TotalMined: BigInt!
-}
-type MessageParamsInitExecParams {
-	CodeCID: ID!
-	ConstructorParams: Bytes!
-}
-type MarketClientDealProposal {
-	Proposal: MarketV2DealProposal!
-	ClientSignature: Signature!
-}
-scalar BitField
-type Map__PowerV0Claim {
-	At(key: RawAddress): [PowerV0Claim]! 
-	All: [Map__PowerV0Claim__Record!]
-}
-type Map__PowerV0Claim__Record {
-	Key: RawAddress!
-	Value: PowerV0Claim
-}
- 	type LotusBeaconEntry {
-	Round: Int!
-	Data: Bytes!
-}
-type PowerV0State {
-	TotalRawBytePower: BigInt!
-	TotalBytesCommitted: BigInt!
-	TotalQualityAdjPower: BigInt!
-	TotalQABytesCommitted: BigInt!
-	TotalPledgeCollateral: BigInt!
-	ThisEpochRawBytePower: BigInt!
-	ThisEpochQualityAdjPower: BigInt!
-	ThisEpochPledgeCollateral: BigInt!
-	ThisEpochQAPowerSmoothed: V0FilterEstimate
-	MinerCount: Int!
-	MinerAboveMinPowerCount: Int!
-	CronEventQueue: Multimap__PowerV0CronEvent!
-	FirstCronEpoch: ChainEpoch!
-	LastProcessedCronEpoch: ChainEpoch!
-	Claims: Map__PowerV0Claim!
-	ProofValidationBatch: ID
-}
-type Multimap__PowerV0CronEvent {
-	At(key: String): [Map__PowerV0CronEvent]! 
-	All: [Multimap__PowerV0CronEvent__Record!]
-}
-type Multimap__PowerV0CronEvent__Record {
-	Key: String!
-	Value: Map__PowerV0CronEvent
-}
- 	type VerifregV0State {
-	RootKey: Address!
-	Verifiers: Map__DataCap!
-	VerifiedClients: Map__DataCap!
-}
-type List {
-	Any: [Any]
-}
-scalar UnpaddedPieceSize
-scalar CidString
-type List__PoStProof {
-	PoStProof: [PoStProof!]
-}
-type MessageParamsMinerChangeAddress {
-	NewWorker: Address!
-	NewControlAddrs: [Address]!
-}
-type ApplyRewardParams {
-	Reward: BigInt!
-	Penalty: BigInt!
-}
-type MessageParamsMultisigRemoveSigner {
-	Signer: Address!
-	Decrease: Bool!
-}
-type MessageParamsMinerChangePeerID {
-	NewID: PeerID!
-}
-type Map__PaychV0LaneState {
-	At(key: String): [PaychV0LaneState]! 
-	All: [Map__PaychV0LaneState__Record!]
-}
-type Map__PaychV0LaneState__Record {
-	Key: String!
-	Value: PaychV0LaneState
-}
- 	type MessageParamsMinerReportFault {
-	BlockHeader1: Bytes!
-	BlockHeader2: Bytes!
-	BlockHeaderExtra: Bytes!
-}
-
-union LotusMessageV2Params =MessageParamsInitExecParams | MinerV0SectorPreCommitInfo | MessageParamsMarketWithdrawBalance | MessageParamsMarketPublishDeals | MessageParamsMarketVerifyDeals | MessageParamsMarketActivateDeals | MessageParamsMarketTerminateDeals | MessageParamsMarketComputeCommitment | MessageParamsMinerConstructor | MessageParamsMinerChangeAddress | MessageParamsMinerChangeMultiaddrs | MessageParamsMinerChangePeerID | MessageParamsMinerSubmitWindowedPoSt | MessageParamsMinerProveCommitSector | MessageParamsMinerCheckSectorProven | MessageParamsMinerConfirmSectorProofs | MessageParamsMinerExtendSectorExpiration | MessageParamsMinerTerminateSectors | MessageParamsMinerDeclareFaults | MessageParamsMinerDeclareFaultsRecovered | MessageParamsMinerCompactPartitions | MessageParamsMinerCompactSectorNumbers | ApplyRewardParams | MessageParamsMinerReportFault | MessageParamsMinerWithdrawBalance | MessageParamsMinerDeferredCron | MessageParamsMultisigConstructor | MessageParamsMultisigPropose | MessageParamsMultisigTxnID | MessageParamsMultisigAddSigner | MessageParamsMultisigRemoveSigner | MessageParamsMultisigSwapSigner | MessageParamsMultisigChangeThreshold | MessageParamsMultisigLockBalance | MessageParamsPaychConstructor | MessageParamsPaychUpdateChannelState | MessageParamsPowerCreateMiner | MessageParamsPowerUpdateClaimed | MessageParamsPowerEnrollCron | MessageParamsPowerCurrentTotal | MessageParamsRewardAwardBlock | MessageParamsVerifregAddVerifier | MessageParamsVerifregUseBytes
-scalar RawAddress
-type MinerV2Deadline {
-	Partitions: Map__MinerV2Partition!
-	ExpirationEpochs: ID!
-	PostSubmissions: BitField!
-	EarlyTerminations: BitField!
-	LiveSectors: Int!
-	TotalSectors: Int!
-	FaultyPower: MinerV0PowerPair!
-}
-type SignedVoucher {
-	ChannelAddr: Address!
-	TimeLockMin: ChainEpoch!
-	TimeLockMax: ChainEpoch!
-	SecretPreimage: Bytes
-	Extra: ModVerifyParams
-	Lane: Int!
-	Nonce: Int!
-	Amount: BigInt!
-	MinSettleHeight: ChainEpoch
-	Merges: [Merge!]
-	Signature: Signature
-}
-type MinerExpirationExtend {
-	Deadline: Int!
-	Partition: Int!
-	Sectors: BitField!
-	NewExpiration: ChainEpoch!
-}
-type Map__SectorOnChainInfo {
-	At(key: String): [MinerV0SectorOnChainInfo]! 
-	All: [Map__SectorOnChainInfo__Record!]
-}
-type Map__SectorOnChainInfo__Record {
-	Key: String!
-	Value: MinerV0SectorOnChainInfo
-}
- 	type Map__MultisigV0Transaction {
-	At(key: String): [MultisigV0Transaction]! 
-	All: [Map__MultisigV0Transaction__Record!]
-}
-type Map__MultisigV0Transaction__Record {
-	Key: String!
-	Value: MultisigV0Transaction
-}
- 	type PowerV0Claim {
+type PowerV2Claim {
+	SealProofType: Int!
 	RawBytePower: BigInt!
 	QualityAdjPower: BigInt!
 }
-type MessageParamsMinerCompactPartitions {
-	Deadline: Int!
-	Partitions: BitField!
+type Map__PowerV2Claim {
+	At(key: RawAddress): [PowerV2Claim]! 
+	All: [Map__PowerV2Claim__Record!]
 }
-scalar Signature
-type V0FilterEstimate {
-	PositionEstimate: BigInt!
-	VelocityEstimate: BigInt!
+type Map__PowerV2Claim__Record {
+	Key: RawAddress!
+	Value: PowerV2Claim
 }
-type MessageParamsMultisigPropose {
+ 	scalar ChainEpoch
+type InitV0State {
+	AddressMap: Map__ActorID!
+	NextID: ActorID!
+	NetworkName: String!
+}
+type LotusMessage {
+	Version: Int!
 	To: Address!
+	From: Address!
+	Nonce: Int!
 	Value: BigInt!
+	GasLimit: Int!
+	GasFeeCap: BigInt!
+	GasPremium: BigInt!
 	Method: MethodNum!
 	Params: Bytes!
 }
-type AccountV0State {
-	Address: Address!
+type MessageParamsMinerExtendSectorExpiration {
+	Extension: [MinerExpirationExtend!]!
 }
-type RewardV2State {
-	CumsumBaseline: BigInt!
-	CumsumRealized: BigInt!
-	EffectiveNetworkTime: ChainEpoch!
-	EffectiveBaselinePower: BigInt!
-	ThisEpochReward: BigInt!
-	ThisEpochRewardSmoothed: V0FilterEstimate!
-	ThisEpochBaselinePower: BigInt!
-	Epoch: ChainEpoch!
-	TotalStoragePowerReward: BigInt!
-	SimpleTotal: BigInt!
-	BaselineTotal: BigInt!
+type List__Multiaddrs {
+	Multiaddr: [Multiaddr]
 }
-type MessageParamsMinerCompactSectorNumbers {
-	MaskSectorNumbers: BitField!
-}
-type MessageParamsMultisigConstructor {
-	Signers: [Address]!
-	NumApprovalsThreshold: Int!
-	UnlockDuration: ChainEpoch!
-	StartEpoch: ChainEpoch!
-}
-type MessageParamsMultisigTxnID {
-	ID: Int!
-	ProposeHash: Bytes!
-}
-type Map__SectorV2OnChainInfo {
-	At(key: String): [MinerV2SectorOnChainInfo]! 
-	All: [Map__SectorV2OnChainInfo__Record!]
-}
-type Map__SectorV2OnChainInfo__Record {
-	Key: String!
-	Value: MinerV2SectorOnChainInfo
-}
- 	scalar BigInt
-type MinerV0Deadlines {
-	Due: [MinerV0Deadline]!
-}
-type MessageParamsMarketComputeCommitment {
-	DealIDs: [DealID]!
-	SectorType: ID!
-}
-type List__SectorNumber {
-	SectorNumber: [SectorNumber!]
-}
-type MinerV2Deadlines {
-	Due: [MinerV2Deadline]!
-}
-type MessageParamsMinerSubmitWindowedPoSt {
-	Deadline: Int!
-	Partitions: [MinerPostPartition!]!
-	Proofs: [MinerPostProof!]!
-	ChainCommitEpoch: ChainEpoch!
-	ChainCommitRand: Bytes!
-}
-type List__MinerV0VestingFund {
-	MinerV0VestingFund: [MinerV0VestingFund]
-}
-type Map__PowerV0CronEvent {
-	At(key: String): [PowerV0CronEvent]! 
-	All: [Map__PowerV0CronEvent__Record!]
-}
-type Map__PowerV0CronEvent__Record {
-	Key: String!
-	Value: PowerV0CronEvent
-}
- 	type MinerPostProof {
-	PoStProof: Int!
-	ProofBytes: Bytes!
-}
-
-union LotusActorV2Head =MarketV2State | MinerV2State | PowerV2State | RewardV2State | AccountV0State | CronV0State | InitV0State | MarketV0State | MinerV0State | MultisigV0State | PaychV0State | PowerV0State | RewardV0State | VerifregV0State
-type MessageParamsMultisigLockBalance {
-	StartEpoch: ChainEpoch!
-	UnlockDuration: ChainEpoch!
-	Amount: BigInt!
-}
-type MessageParamsPowerEnrollCron {
-	EventEpoch: ChainEpoch!
-	Payload: Bytes!
+type MinerV0PowerPair {
+	Raw: BigInt!
+	QA: BigInt!
 }
 
 union Any =Wrapped_Any_Bool | Wrapped_Any_Int | Wrapped_Any_Float | Wrapped_Any_String | Wrapped_Any_Bytes | Map | List | Wrapped_Any_ID
@@ -891,14 +193,149 @@ type Wrapped_Any_ID {
 	ID: ID!
 }
 
-type LotusActors {
-	Code: ID!
-	Head: LotusActorV2Head!
-	Nonce: Int!
-	Balance: BigInt!
+type MessageParamsMarketComputeCommitment {
+	DealIDs: [DealID]!
+	SectorType: ID!
 }
-type MessageParamsMinerChangeMultiaddrs {
-	NewMultiaddrs: [Multiaddr]!
+type MessageParamsMultisigRemoveSigner {
+	Signer: Address!
+	Decrease: Bool!
+}
+type MessageParamsMultisigConstructor {
+	Signers: [Address]!
+	NumApprovalsThreshold: Int!
+	UnlockDuration: ChainEpoch!
+	StartEpoch: ChainEpoch!
+}
+type List__PoStProof {
+	PoStProof: [PoStProof!]
+}
+type MarketV2DealProposal {
+	PieceCID: ID!
+	PieceSize: PaddedPieceSize!
+	VerifiedDeal: Bool!
+	Client: Address!
+	Provider: Address!
+	Label: String!
+	StartEpoch: ChainEpoch!
+	EndEpoch: ChainEpoch!
+	StoragePricePerEpoch: BigInt!
+	ProviderCollateral: BigInt!
+	ClientCollateral: BigInt!
+}
+scalar MessageParamsMinerConstructor
+type PowerV2State {
+	TotalRawBytePower: BigInt!
+	TotalBytesCommitted: BigInt!
+	TotalQualityAdjPower: BigInt!
+	TotalQABytesCommitted: BigInt!
+	TotalPledgeCollateral: BigInt!
+	ThisEpochRawBytePower: BigInt!
+	ThisEpochQualityAdjPower: BigInt!
+	ThisEpochPledgeCollateral: BigInt!
+	ThisEpochQAPowerSmoothed: V0FilterEstimate
+	MinerCount: Int!
+	MinerAboveMinPowerCount: Int!
+	CronEventQueue: Multimap__PowerV0CronEvent!
+	FirstCronEpoch: ChainEpoch!
+	Claims: Map__PowerV2Claim!
+	ProofValidationBatch: ID
+}
+type List__SectorNumber {
+	SectorNumber: [SectorNumber!]
+}
+type Map__SectorPreCommitOnChainInfo {
+	At(key: String): [MinerV0SectorPreCommitOnChainInfo]! 
+	All: [Map__SectorPreCommitOnChainInfo__Record!]
+}
+type Map__SectorPreCommitOnChainInfo__Record {
+	Key: String!
+	Value: MinerV0SectorPreCommitOnChainInfo
+}
+ 	type PaychV0State {
+	From: Address!
+	To: Address!
+	ToSend: BigInt!
+	SettlingAt: ChainEpoch!
+	MinSettleHeight: ChainEpoch!
+	LaneStates: Map__PaychV0LaneState!
+}
+type Multimap__PowerV0CronEvent {
+	At(key: String): [Map__PowerV0CronEvent]! 
+	All: [Multimap__PowerV0CronEvent__Record!]
+}
+type Multimap__PowerV0CronEvent__Record {
+	Key: String!
+	Value: Map__PowerV0CronEvent
+}
+ 	
+union LotusActorV2Head =MarketV2State | MinerV2State | PowerV2State | RewardV2State | AccountV0State | CronV0State | InitV0State | MarketV0State | MinerV0State | MultisigV0State | PaychV0State | PowerV0State | RewardV0State | VerifregV0State
+type MessageParamsMinerConfirmSectorProofs {
+	Sectors: [SectorNumber!]!
+}
+scalar RawAddress
+type PowerV0State {
+	TotalRawBytePower: BigInt!
+	TotalBytesCommitted: BigInt!
+	TotalQualityAdjPower: BigInt!
+	TotalQABytesCommitted: BigInt!
+	TotalPledgeCollateral: BigInt!
+	ThisEpochRawBytePower: BigInt!
+	ThisEpochQualityAdjPower: BigInt!
+	ThisEpochPledgeCollateral: BigInt!
+	ThisEpochQAPowerSmoothed: V0FilterEstimate
+	MinerCount: Int!
+	MinerAboveMinPowerCount: Int!
+	CronEventQueue: Multimap__PowerV0CronEvent!
+	FirstCronEpoch: ChainEpoch!
+	LastProcessedCronEpoch: ChainEpoch!
+	Claims: Map__PowerV0Claim!
+	ProofValidationBatch: ID
+}
+type MarketClientDealProposal {
+	Proposal: MarketV2DealProposal!
+	ClientSignature: Signature!
+}
+type Map__MinerV0Partition {
+	At(key: String): [MinerV0Partition]! 
+	All: [Map__MinerV0Partition__Record!]
+}
+type Map__MinerV0Partition__Record {
+	Key: String!
+	Value: MinerV0Partition
+}
+ 	scalar BitField
+type Map__MinerV0ExpirationSet {
+	At(key: String): [MinerV0ExpirationSet]! 
+	All: [Map__MinerV0ExpirationSet__Record!]
+}
+type Map__MinerV0ExpirationSet__Record {
+	Key: String!
+	Value: MinerV0ExpirationSet
+}
+ 	type MultisigV0Transaction {
+	To: Address!
+	Value: BigInt!
+	Method: MethodNum!
+	Params: Bytes!
+	Approved: [Address]!
+}
+type MessageParamsRewardAwardBlock {
+	Miner: Address!
+	Penalty: BigInt!
+	GasReward: BigInt!
+	WinCount: Int!
+}
+type AccountV0State {
+	Address: Address!
+}
+type PaychV0LaneState {
+	Redeemed: BigInt!
+	Nonce: Int!
+}
+type ApplyRewardParams {
+	Reward: BigInt!
+	Penalty: BigInt!
 }
 type MinerV2State {
 	Info: MinerV2Info!
@@ -916,24 +353,587 @@ type MinerV2State {
 	Deadlines: MinerV2Deadlines!
 	EarlyTerminations: BitField!
 }
-type Map__SectorPreCommitOnChainInfo {
-	At(key: String): [MinerV0SectorPreCommitOnChainInfo]! 
-	All: [Map__SectorPreCommitOnChainInfo__Record!]
+type Map__MarketV2DealProposal {
+	At(key: CidString): [MarketV2DealProposal]! 
+	All: [Map__MarketV2DealProposal__Record!]
 }
-type Map__SectorPreCommitOnChainInfo__Record {
+type Map__MarketV2DealProposal__Record {
+	Key: CidString!
+	Value: MarketV2DealProposal
+}
+ 	type MinerV0ExpirationSet {
+	OnTimeSectors: BitField!
+	EarlySectors: BitField!
+	OnTimePledge: BigInt!
+	ActivePower: MinerV0PowerPair!
+	FaultyPower: MinerV0PowerPair!
+}
+type Map__LotusActors {
+	At(key: RawAddress): [LotusActors]! 
+	All: [Map__LotusActors__Record!]
+}
+type Map__LotusActors__Record {
+	Key: RawAddress!
+	Value: LotusActors
+}
+ 	type Map__MarketV0RawDealProposal {
+	At(key: String): [MarketV0DealProposal]! 
+	All: [Map__MarketV0RawDealProposal__Record!]
+}
+type Map__MarketV0RawDealProposal__Record {
 	Key: String!
-	Value: MinerV0SectorPreCommitOnChainInfo
+	Value: MarketV0DealProposal
 }
- 	type PowerV0CronEvent {
-	MinerAddr: Address!
-	CallbackPayload: Bytes!
+ 	type MinerV0Partition {
+	Sectors: BitField!
+	Faults: BitField!
+	Recoveries: BitField!
+	Terminated: BitField!
+	ExpirationsEpochs: Map__MinerV0ExpirationSet!
+	EarlyTerminated: ID!
+	LivePower: MinerV0PowerPair!
+	FaultyPower: MinerV0PowerPair!
+	RecoveringPower: MinerV0PowerPair!
+}
+type MessageParamsMultisigChangeThreshold {
+	NewThreshold: Int!
+}
+type MessageParamsVerifregUseBytes {
+	Address: Address!
+	DealSize: BigInt!
+}
+type MessageParamsMultisigTxnID {
+	ID: Int!
+	ProposeHash: Bytes!
+}
+type SealVerifyInfo {
+	SealProof: ID!
+	SectorID: Int!
+	DealIDs: [DealID]!
+	Randomness: Bytes!
+	InteractiveRandomness: Bytes!
+	Proof: Bytes!
+	SealedCID: ID!
+	UnsealedCID: ID!
+}
+type MinerPostPartition {
+	Index: Int!
+	Skipped: BitField!
+}
+type MessageParamsMinerCompactSectorNumbers {
+	MaskSectorNumbers: BitField!
+}
+type PowerV0Claim {
+	RawBytePower: BigInt!
+	QualityAdjPower: BigInt!
+}
+type MessageParamsMarketTerminateDeals {
+	Epoch: ChainEpoch!
+	DealIDs: [DealID]!
+}
+type MessageParamsMinerProveCommitSector {
+	SectorNumber: SectorNumber!
+	Proof: Bytes!
+}
+type Map {
+	At(key: String): [Any]! 
+	All: [Map__Record!]
+}
+type Map__Record {
+	Key: String!
+	Value: Any
+}
+ 	type MessageParamsMarketActivateDeals {
+	DealIDs: [DealID]!
+	SectorExpiry: ChainEpoch!
+}
+type MessageParamsMultisigPropose {
+	To: Address!
+	Value: BigInt!
+	Method: MethodNum!
+	Params: Bytes!
+}
+type LotusSignedMessage {
+	Message: LotusMessage!
+	Signature: Signature!
+}
+type V0FilterEstimate {
+	PositionEstimate: BigInt!
+	VelocityEstimate: BigInt!
+}
+type MessageParamsPaychConstructor {
+	From: Address!
+	To: Address!
+}
+type MessageParamsMinerReportFault {
+	BlockHeader1: Bytes!
+	BlockHeader2: Bytes!
+	BlockHeaderExtra: Bytes!
+}
+type LotusStateRoot {
+	Version: Int!
+	Actors: Map__LotusActors!
+	Info: ID!
+}
+type MultisigV0State {
+	Signers: [Address]!
+	NumApprovalsThreshold: Int!
+	NextTxnID: Int!
+	InitialBalance: BigInt!
+	StartEpoch: ChainEpoch!
+	UnlockDuration: ChainEpoch!
+	PendingTxns: Map__MultisigV0Transaction!
+}
+type MessageParamsMarketPublishDeals {
+	Deals: [MarketClientDealProposal!]!
+}
+type LotusBlockHeader {
+	Miner: Address!
+	Ticket: LotusTicket
+	ElectionProof: LotusElectionProof
+	BeaconEntries: [LotusBeaconEntry]!
+	WinPoStProof: [PoStProof!]!
+	Parents: [ID]!
+	ParentWeight: BigInt!
+	Height: ChainEpoch!
+	ParentStateRoot: LotusStateRoot!
+	ParentMessageReceipts: ID!
+	Messages: LotusMsgMeta!
+	BLSAggregate: Signature
+	Timestamp: Int!
+	BlockSig: Signature
+	ForkSignaling: Int!
+	ParentBaseFee: BigInt!
+}
+type MinerV0Info {
+	Owner: Address!
+	Worker: Address!
+	ControlAddresses: [Address]
+	PendingWorkerKey: MinerV0WorkerChangeKey
+	PeerId: PeerID!
+	Multiaddrs: [Multiaddr]
+	SealProofType: Int!
+	SectorSize: SectorSize!
+	WindowPoStPartitionSectors: Int!
+}
+type MinerV2Deadlines {
+	Due: [MinerV2Deadline]!
+}
+type Map__MinerV2Partition {
+	At(key: String): [MinerV2Partition]! 
+	All: [Map__MinerV2Partition__Record!]
+}
+type Map__MinerV2Partition__Record {
+	Key: String!
+	Value: MinerV2Partition
+}
+ 	scalar UnpaddedPieceSize
+type MinerV0Deadline {
+	Partitions: Map__MinerV0Partition!
+	ExpirationEpochs: ID!
+	PostSubmissions: BitField!
+	EarlyTerminations: BitField!
+	LiveSectors: Int!
+	TotalSectors: Int!
+	FaultyPower: MinerV0PowerPair!
+}
+type MessageParamsMinerTerminateSectors {
+	Terminations: [MinerTerminationDecl!]!
+}
+type SignedVoucher {
+	ChannelAddr: Address!
+	TimeLockMin: ChainEpoch!
+	TimeLockMax: ChainEpoch!
+	SecretPreimage: Bytes
+	Extra: ModVerifyParams
+	Lane: Int!
+	Nonce: Int!
+	Amount: BigInt!
+	MinSettleHeight: ChainEpoch
+	Merges: [Merge!]
+	Signature: Signature
+}
+type Merge {
+	Lane: Int!
+	Nonce: Int!
+}
+type MinerV0WorkerChangeKey {
+	NewWorker: Address!
+	EffectiveAt: ChainEpoch!
+}
+type List__MinerV0VestingFund {
+	MinerV0VestingFund: [MinerV0VestingFund]
+}
+scalar Bytes
+scalar MethodNum
+type MinerV0Deadlines {
+	Due: [MinerV0Deadline]!
+}
+type List__MinerV2DeadlineLink {
+	Link__MinerV2Deadline: [MinerV2Deadline]
 }
 type MessageParamsMinerDeclareFaultsRecovered {
 	Recoveries: [MinerTerminationDecl!]!
 }
-type PaychV0LaneState {
-	Redeemed: BigInt!
-	Nonce: Int!
+type MessageParamsMinerDeferredCron {
+	EventType: Int!
+}
+type MessageParamsMultisigSwapSigner {
+	From: Address!
+	To: Address!
+}
+type MinerV0SectorPreCommitOnChainInfo {
+	Info: MinerV0SectorPreCommitInfo!
+	PreCommitDeposit: BigInt!
+	PreCommitEpoch: ChainEpoch!
+	DealWeight: BigInt!
+	VerifiedDealWeight: BigInt!
+}
+type MessageParamsPowerUpdateClaimed {
+	RawByteDelta: BigInt!
+	QualityAdjustedDelta: BigInt!
+}
+type MinerV2Partition {
+	Sectors: BitField!
+	Unproven: BitField!
+	Faults: BitField!
+	Recoveries: BitField!
+	Terminated: BitField!
+	ExpirationsEpochs: Map__MinerV0ExpirationSet!
+	EarlyTerminated: ID!
+	LivePower: MinerV0PowerPair!
+	UnprovenPower: MinerV0PowerPair!
+	FaultyPower: MinerV0PowerPair!
+	RecoveringPower: MinerV0PowerPair!
+}
+type Map__SectorV2OnChainInfo {
+	At(key: String): [MinerV2SectorOnChainInfo]! 
+	All: [Map__SectorV2OnChainInfo__Record!]
+}
+type Map__SectorV2OnChainInfo__Record {
+	Key: String!
+	Value: MinerV2SectorOnChainInfo
+}
+ 	scalar CidString
+type MinerV0VestingFund {
+	Epoch: ChainEpoch!
+	Amount: BigInt!
+}
+type MessageParamsMinerSubmitWindowedPoSt {
+	Deadline: Int!
+	Partitions: [MinerPostPartition!]!
+	Proofs: [MinerPostProof!]!
+	ChainCommitEpoch: ChainEpoch!
+	ChainCommitRand: Bytes!
+}
+type MessageParamsVerifregAddVerifier {
+	Address: Address!
+	Allowance: BigInt!
+}
+scalar PeerID
+type List__LotusBeaconEntry {
+	LotusBeaconEntry: [LotusBeaconEntry]
+}
+type Map__BalanceTable {
+	At(key: RawAddress): [BigInt]! 
+	All: [Map__BalanceTable__Record!]
+}
+type Map__BalanceTable__Record {
+	Key: RawAddress!
+	Value: BigInt
+}
+ 	scalar Bool
+type Map__List__DealID {
+	At(key: String): [List__DealID]! 
+	All: [Map__List__DealID__Record!]
+}
+type Map__List__DealID__Record {
+	Key: String!
+	Value: [DealID]
+}
+ 	type MinerV2SectorOnChainInfo {
+	SectorNumber: SectorNumber!
+	SealProof: Int!
+	SealedCID: ID!
+	DealIDs: [DealID]!
+	Activation: ChainEpoch!
+	Expiration: ChainEpoch!
+	DealWeight: BigInt!
+	VerifiedDealWeight: BigInt!
+	InitialPledge: BigInt!
+	ExpectedDayReward: BigInt!
+	ExpectedStorageReward: BigInt!
+	ReplacedSectorAge: ChainEpoch!
+	ReplacedDayReward: BigInt!
+}
+type Map__PowerV0Claim {
+	At(key: RawAddress): [PowerV0Claim]! 
+	All: [Map__PowerV0Claim__Record!]
+}
+type Map__PowerV0Claim__Record {
+	Key: RawAddress!
+	Value: PowerV0Claim
+}
+ 	type RewardV2State {
+	CumsumBaseline: BigInt!
+	CumsumRealized: BigInt!
+	EffectiveNetworkTime: ChainEpoch!
+	EffectiveBaselinePower: BigInt!
+	ThisEpochReward: BigInt!
+	ThisEpochRewardSmoothed: V0FilterEstimate!
+	ThisEpochBaselinePower: BigInt!
+	Epoch: ChainEpoch!
+	TotalStoragePowerReward: BigInt!
+	SimpleTotal: BigInt!
+	BaselineTotal: BigInt!
+}
+type List__MinerPostPartition {
+	MinerPostPartition: [MinerPostPartition!]
+}
+type List__LinkLotusMessage {
+	Link__LotusMessage: [LotusMessage!]
+}
+type CronV0Entry {
+	Receiver: Address!
+	MethodNum: MethodNum!
+}
+type MinerPostProof {
+	PoStProof: Int!
+	ProofBytes: Bytes!
+}
+type MessageParamsMinerCompactPartitions {
+	Deadline: Int!
+	Partitions: BitField!
+}
+type Map__ActorID {
+	At(key: RawAddress): [ActorID]! 
+	All: [Map__ActorID__Record!]
+}
+type Map__ActorID__Record {
+	Key: RawAddress!
+	Value: ActorID
+}
+ 	type MinerV2Deadline {
+	Partitions: Map__MinerV2Partition!
+	ExpirationEpochs: ID!
+	PostSubmissions: BitField!
+	EarlyTerminations: BitField!
+	LiveSectors: Int!
+	TotalSectors: Int!
+	FaultyPower: MinerV0PowerPair!
+}
+type LotusMsgMeta {
+	BlsMessages: [LotusMessage!]!
+	SecpkMessages: ID!
+}
+type MessageParamsMarketWithdrawBalance {
+	ProviderOrClientAmount: Address!
+	Amount: BigInt!
+}
+type List__ClientDealProposal {
+	MarketClientDealProposal: [MarketClientDealProposal!]
+}
+type List__Address {
+	Address: [Address]
+}
+type MinerTerminationDecl {
+	Deadline: Int!
+	Partition: Int!
+	Sectors: BitField!
+}
+type MessageParamsMultisigLockBalance {
+	StartEpoch: ChainEpoch!
+	UnlockDuration: ChainEpoch!
+	Amount: BigInt!
+}
+type MessageParamsMinerChangeMultiaddrs {
+	NewMultiaddrs: [Multiaddr]!
+}
+type Map__SectorOnChainInfo {
+	At(key: String): [MinerV0SectorOnChainInfo]! 
+	All: [Map__SectorOnChainInfo__Record!]
+}
+type Map__SectorOnChainInfo__Record {
+	Key: String!
+	Value: MinerV0SectorOnChainInfo
+}
+ 	type VerifregV0State {
+	RootKey: Address!
+	Verifiers: Map__DataCap!
+	VerifiedClients: Map__DataCap!
+}
+scalar SectorNumber
+scalar DealID
+type MarketV0DealProposal {
+	PieceCID: ID!
+	PieceSize: PaddedPieceSize!
+	VerifiedDeal: Bool!
+	Client: Address!
+	Provider: Address!
+	Label: String!
+	StartEpoch: ChainEpoch!
+	EndEpoch: ChainEpoch!
+	StoragePricePerEpoch: BigInt!
+	ProviderCollateral: BigInt!
+	ClientCollateral: BigInt!
+}
+type MarketV2State {
+	Proposals: Map__MarketV2RawDealProposal!
+	States: Map__MarketV0DealState!
+	PendingProposals: Map__MarketV2DealProposal!
+	EscrowTable: Map__BalanceTable!
+	LockedTable: Map__BalanceTable!
+	NextID: DealID!
+	DealOpsByEpoch: Map__List__DealID!
+	LastCron: ChainEpoch!
+	TotalClientLockedCollateral: BigInt!
+	TotalProviderLockedCollateral: BigInt!
+	TotalClientStorageFee: BigInt!
+}
+type ModVerifyParams {
+	Method: MethodNum!
+	Params: Bytes!
+}
+type List {
+	Any: [Any]
+}
+scalar SectorSize
+type LotusElectionProof {
+	WinCount: Int!
+	VRFProof: Bytes!
+}
+type MessageParamsPaychUpdateChannelState {
+	Sv: SignedVoucher!
+	Secret: Bytes!
+}
+type List__DealID {
+	DealID: [DealID]
+}
+scalar Multiaddr
+type List__Link {
+	Link: [ID]
+}
+type Map__MarketV0DealState {
+	At(key: String): [MarketV0DealState]! 
+	All: [Map__MarketV0DealState__Record!]
+}
+type Map__MarketV0DealState__Record {
+	Key: String!
+	Value: MarketV0DealState
+}
+ 	type Map__MarketV2RawDealProposal {
+	At(key: String): [MarketV2DealProposal]! 
+	All: [Map__MarketV2RawDealProposal__Record!]
+}
+type Map__MarketV2RawDealProposal__Record {
+	Key: String!
+	Value: MarketV2DealProposal
+}
+ 	type List__MinerExpirationExtend {
+	MinerExpirationExtend: [MinerExpirationExtend!]
+}
+
+union LotusMessageV2Params =MessageParamsInitExecParams | MinerV0SectorPreCommitInfo | MessageParamsMarketWithdrawBalance | MessageParamsMarketPublishDeals | MessageParamsMarketVerifyDeals | MessageParamsMarketActivateDeals | MessageParamsMarketTerminateDeals | MessageParamsMarketComputeCommitment | MessageParamsMinerConstructor | MessageParamsMinerChangeAddress | MessageParamsMinerChangeMultiaddrs | MessageParamsMinerChangePeerID | MessageParamsMinerSubmitWindowedPoSt | MessageParamsMinerProveCommitSector | MessageParamsMinerCheckSectorProven | MessageParamsMinerConfirmSectorProofs | MessageParamsMinerExtendSectorExpiration | MessageParamsMinerTerminateSectors | MessageParamsMinerDeclareFaults | MessageParamsMinerDeclareFaultsRecovered | MessageParamsMinerCompactPartitions | MessageParamsMinerCompactSectorNumbers | ApplyRewardParams | MessageParamsMinerReportFault | MessageParamsMinerWithdrawBalance | MessageParamsMinerDeferredCron | MessageParamsMultisigConstructor | MessageParamsMultisigPropose | MessageParamsMultisigTxnID | MessageParamsMultisigAddSigner | MessageParamsMultisigRemoveSigner | MessageParamsMultisigSwapSigner | MessageParamsMultisigChangeThreshold | MessageParamsMultisigLockBalance | MessageParamsPaychConstructor | MessageParamsPaychUpdateChannelState | MessageParamsPowerCreateMiner | MessageParamsPowerUpdateClaimed | MessageParamsPowerEnrollCron | MessageParamsPowerCurrentTotal | MessageParamsRewardAwardBlock | MessageParamsVerifregAddVerifier | MessageParamsVerifregUseBytes
+scalar BigInt
+scalar Signature
+type List__MinerPoStProof {
+	MinerPostProof: [MinerPostProof!]
+}
+type MessageParamsPowerEnrollCron {
+	EventEpoch: ChainEpoch!
+	Payload: Bytes!
+}
+scalar Address
+type MessageParamsMinerDeclareFaults {
+	Faults: [MinerTerminationDecl!]!
+}
+type PowerV0CronEvent {
+	MinerAddr: Address!
+	CallbackPayload: Bytes!
+}
+type List__MinerTerminationDecl {
+	MinerTerminationDecl: [MinerTerminationDecl!]
+}
+type MarketV0State {
+	Proposals: Map__MarketV0RawDealProposal!
+	States: Map__MarketV0DealState!
+	PendingProposals: Map__MarketV0DealProposal!
+	EscrowTable: Map__BalanceTable!
+	LockedTable: Map__BalanceTable!
+	NextID: DealID!
+	DealOpsByEpoch: Map__List__DealID!
+	LastCron: ChainEpoch!
+	TotalClientLockedCollateral: BigInt!
+	TotalProviderLockedCollateral: BigInt!
+	TotalClientStorageFee: BigInt!
+}
+type MinerV0State {
+	Info: MinerV0Info!
+	PreCommitDeposits: BigInt!
+	LockedFunds: BigInt!
+	VestingFunds: MinerV0VestingFunds!
+	InitialPledgeRequirement: BigInt!
+	PreCommittedSectors: Map__SectorPreCommitOnChainInfo!
+	PreCommittedSectorsExpiry: ID!
+	AllocatedSectors: BitField!
+	Sectors: Map__SectorOnChainInfo!
+	ProvingPeriodStart: ChainEpoch!
+	CurrentDeadline: Int!
+	Deadlines: MinerV0Deadlines!
+	EarlyTerminations: BitField!
+}
+type Map__MultisigV0Transaction {
+	At(key: String): [MultisigV0Transaction]! 
+	All: [Map__MultisigV0Transaction__Record!]
+}
+type Map__MultisigV0Transaction__Record {
+	Key: String!
+	Value: MultisigV0Transaction
+}
+ 	type MessageParamsMultisigAddSigner {
+	Signer: Address!
+	Increase: Bool!
+}
+type MarketV0DealState {
+	SectorStartEpoch: ChainEpoch!
+	LastUpdatedEpoch: ChainEpoch!
+	SlashEpoch: ChainEpoch!
+}
+type MinerV2Info {
+	Owner: Address!
+	Worker: Address!
+	ControlAddresses: [Address]
+	PendingWorkerKey: MinerV0WorkerChangeKey
+	PeerId: PeerID!
+	Multiaddrs: [Multiaddr]
+	SealProofType: Int!
+	SectorSize: SectorSize!
+	WindowPoStPartitionSectors: Int!
+	ConsensusFaultElapsed: ChainEpoch!
+	PendingOwnerAddress: Address
+}
+type MessageParamsMinerChangePeerID {
+	NewID: PeerID!
+}
+scalar PaddedPieceSize
+type Map__BitField {
+	At(key: String): [BitField]! 
+	All: [Map__BitField__Record!]
+}
+type Map__BitField__Record {
+	Key: String!
+	Value: BitField
+}
+ 	type Map__MarketV0DealProposal {
+	At(key: CidString): [MarketV0DealProposal]! 
+	All: [Map__MarketV0DealProposal__Record!]
+}
+type Map__MarketV0DealProposal__Record {
+	Key: CidString!
+	Value: MarketV0DealProposal
+}
+ 	type MessageParamsMinerWithdrawBalance {
+	AmountRequested: BigInt!
 }
 type Root {
 	AccountV0State(id: ID): AccountV0State
