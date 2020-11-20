@@ -11,6 +11,7 @@ import (
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/graphql/language/ast"
 	"github.com/ipfs/go-cid"
+	blockstore "github.com/ipfs/go-ipfs-blockstore"
 	ipld "github.com/ipld/go-ipld-prime"
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
 )
@@ -38,6 +39,119 @@ func AddFields() {
 				}
 			}
 			return paramNode, err
+		},
+	})
+
+	List__LinkLotusMessage__type.AddFieldConfig("CountOf", &graphql.Field{
+		Name: "CountOf",
+		Args: graphql.FieldConfigArgument{
+			"method": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+		},
+		Type: graphql.NewNonNull(graphql.Int),
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			ts := p.Source.(types.List__LinkLotusMessage)
+			m := p.Args["method"].(int)
+
+			store := p.Context.Value(storeCtx).(blockstore.Blockstore)
+
+			b := types.Type.LotusMessage__Repr.NewBuilder()
+			c := 0
+			li := ts.ListIterator()
+			for !li.Done() {
+				_, lm, err := li.Next()
+				if err != nil {
+					return 0, err
+				}
+				mcid, err := lm.AsLink()
+				if err != nil {
+					return 0, err
+				}
+				mcl := mcid.(cidlink.Link)
+				if err = statediff.Load(p.Context, mcl.Cid, store, b); err != nil {
+					return 0, err
+				}
+				msg := b.Build()
+				b.Reset()
+
+				method, err := msg.LookupByString("Method")
+				if err != nil {
+					return 0, err
+				}
+				mn, err := method.AsInt()
+				if err != nil {
+					return 0, err
+				}
+				if mn == m {
+					c++
+				}
+			}
+
+			return c, nil
+		},
+	})
+
+	List__LinkLotusMessage__type.AddFieldConfig("AllOf", &graphql.Field{
+		Name: "AllOf",
+		Type: graphql.NewList(LotusMessage__type),
+		Args: graphql.FieldConfigArgument{
+			"method": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			m := p.Args["method"].(int)
+			ts, ok := p.Source.(types.List__LinkLotusMessage)
+			if !ok {
+				return nil, errNotNode
+			}
+			it := ts.ListIterator()
+			children := make([]ipld.Node, 0)
+			for !it.Done() {
+				_, node, err := it.Next()
+				if err != nil {
+					return nil, err
+				}
+
+				targetCid, err := node.AsLink()
+				if err != nil {
+					return nil, err
+				}
+
+				if cl, ok := targetCid.(cidlink.Link); ok {
+					v := p.Context.Value(nodeLoaderCtxKey)
+					if v == nil {
+						return cl.Cid, nil
+					}
+					loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+					if !ok {
+						return nil, errInvalidLoader
+					}
+
+					builder := types.Type.LotusMessage__Repr.NewBuilder()
+					n, err := loader(p.Context, cl, builder)
+					if err != nil {
+						return nil, err
+					}
+					node = n
+				} else {
+					return nil, errInvalidLink
+				}
+
+				method, err := node.LookupByString("Method")
+				if err != nil {
+					return nil, err
+				}
+				mn, err := method.AsInt()
+				if err != nil {
+					return 0, err
+				}
+				if mn == m {
+					children = append(children, node)
+				}
+			}
+			return children, nil
 		},
 	})
 }
