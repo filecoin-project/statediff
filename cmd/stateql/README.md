@@ -99,7 +99,7 @@ query query {
 The `AllOf` filtering limits parsing to help with errors a bit. The table of which number
 a method corresponds to can be found in the top level of [this repo](https://github.com/filecoin-project/statediff/blob/master/messageparams.go#L25).
 
-A parameterized query for a Miner's Owner
+A parameterized query for a specific Miner's Owner
 ```graphql
 query Query($addr: RawAddress!) {
   Height(at: -1) {
@@ -122,5 +122,30 @@ query Query($addr: RawAddress!) {
 with Query variable:
 {
   "addr": "f02770"
+}
+```
+
+Or again, using the `AllOf` helper to get all Miner's
+```graphql
+query Query {
+  Heights(from: 224222, to: 224224) {
+    Height
+    ParentStateRoot {
+      Actors {
+        AllOf(type: "storageMinerActorV2") {
+          Key
+          Value {
+            Head {
+              ... on MinerV2State {
+                Info {
+                  Owner
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 ```
