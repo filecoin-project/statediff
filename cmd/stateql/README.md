@@ -71,6 +71,34 @@ query Query {
 ```
 Note: the `actorType` string is defined as the value in the table of [mapped types](https://github.com/filecoin-project/statediff/blob/master/transform.go#L35)
 
+A more realistic message extraction query would be:
+```graphql
+query query {
+  Heights(from: 261540, to: 261545) {
+    Height
+    Messages {
+      BlsMessages {
+        AllOf(method: 4) {
+          InterpretedParams(actorType: "storageMarketActorV2") {
+            ... on MessageParamsMarketPublishDeals {
+              Deals {
+                All {
+                  Proposal {
+                    Client
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+The `AllOf` filtering limits parsing to help with errors a bit. The table of which number
+a method corresponds to can be found in the top level of [this repo](https://github.com/filecoin-project/statediff/blob/master/messageparams.go#L25).
+
 A parameterized query for a Miner's Owner
 ```graphql
 query Query($addr: RawAddress!) {

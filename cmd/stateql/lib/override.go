@@ -154,6 +154,44 @@ func AddFields() {
 			return children, nil
 		},
 	})
+
+	Map__LotusActors__type.AddFieldConfig("AllOf", &graphql.Field{
+		Name: "AllOf",
+		Args: graphql.FieldConfigArgument{
+			"type": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Type: graphql.NewList(Map__LotusActors__type__entry),
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			match := (p.Args["type"]).(string)
+			ts, ok := p.Source.(ipld.Node)
+			if !ok {
+				return nil, errNotNode
+			}
+			it := ts.MapIterator()
+			children := make([][]ipld.Node, 0)
+
+			for !it.Done() {
+				k, v, err := it.Next()
+				if err != nil {
+					return nil, err
+				}
+				codeType, err := v.LookupByString("Code")
+				if err != nil {
+					return nil, err
+				}
+				codeLink, err := codeType.AsLink()
+				if err != nil {
+					return nil, err
+				}
+				if statediff.LotusActorCodes[codeLink.(cidlink.Link).String()] == statediff.LotusType(match) {
+					children = append(children, []ipld.Node{k, v})
+				}
+			}
+			return children, nil
+		},
+	})
 }
 
 // RawAddress__type__serialize - and undo the presentation of the "bytes" of address for presentation.
