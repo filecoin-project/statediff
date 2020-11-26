@@ -42,6 +42,16 @@ func AddFields() {
 		},
 	})
 
+	LotusBlockHeader__type.AddFieldConfig("Time", &graphql.Field{
+		Name: "Time",
+		Type: graphql.NewNonNull(graphql.Int),
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			ts := p.Source.(types.LotusBlockHeader)
+			t := epochToTime(int(ts.Height.Int()))
+			return t.Second, nil
+		},
+	})
+
 	List__LinkLotusMessage__type.AddFieldConfig("CountOf", &graphql.Field{
 		Name: "CountOf",
 		Args: graphql.FieldConfigArgument{

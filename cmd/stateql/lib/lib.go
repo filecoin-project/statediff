@@ -130,6 +130,51 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						return out, nil
 					},
 				},
+				"Samples": &graphql.Field{
+					Type: graphql.NewList(LotusBlockHeader__type),
+					Args: graphql.FieldConfigArgument{
+						"from": &graphql.ArgumentConfig{
+							Type:        graphql.Int,
+							Description: "Starting unix time stamp in seconds",
+						},
+						"to": &graphql.ArgumentConfig{
+							Type:        graphql.Int,
+							Description: "Ending unix time stamp in seconds",
+						},
+						"interval": &graphql.ArgumentConfig{
+							Type:        graphql.Int,
+							Description: "Interval in seconds. Only really makes sense in multiples of 30",
+						},
+					},
+					Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+						// figure out which blocks to get.
+						s, ok := p.Context.Value(storeCtx).(blockstore.Blockstore)
+						if !ok {
+							return nil, fmt.Errorf("no datastore provided")
+						}
+						from := p.Args["from"].(int)
+						to := p.Args["to"].(int)
+						interval := p.Args["interval"].(int)
+
+						out := make([]ipld.Node, 0)
+						// get them.
+						for i := from; i < to; i += interval {
+							ch, err := source.CidAtHeight(p.Context, timeStampToEpoch(time.Unix(int64(i), 0)))
+							if err != nil {
+								return nil, fmt.Errorf("Have not indexed a block at height %d", i)
+							}
+							if ch == cid.Undef {
+								continue
+							}
+							n, err := statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
+							if err != nil {
+								return nil, err
+							}
+							out = append(out, n)
+						}
+						return out, nil
+					},
+				},
 			},
 		}),
 	})
@@ -215,4 +260,12 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 		http.ServeContent(w, r, "graphql.html", time.Unix(0, 0), f)
 	})
 	return mux
+}
+
+func timeStampToEpoch(t time.Time) int {
+	return t.Second()/30 - (1598306400 / 30)
+}
+
+func epochToTime(e int) time.Time {
+	return time.Unix(int64(e*30)+1598306400, 0)
 }
