@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"time"
 
 	"github.com/filecoin-project/go-address"
 	"github.com/filecoin-project/statediff"
@@ -43,12 +44,13 @@ func AddFields() {
 	})
 
 	LotusBlockHeader__type.AddFieldConfig("Time", &graphql.Field{
-		Name: "Time",
-		Type: graphql.NewNonNull(graphql.Int),
+		Name:        "Time",
+		Description: "ISO8601 timestamp of the time at which this block appears. derived from epoch height.",
+		Type:        graphql.NewNonNull(graphql.String),
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 			ts := p.Source.(types.LotusBlockHeader)
 			t := epochToTime(int(ts.Height.Int()))
-			return t.Second, nil
+			return ISO8601(&t), nil
 		},
 	})
 
@@ -408,4 +410,15 @@ func CidString__type__parseLiteral(valueAST ast.Value) interface{} {
 		return nil
 	}
 	return builder.Build()
+}
+
+func ISO8601(t *time.Time) string {
+	var tz string
+	if z, offset := t.Zone(); z == "UTC" {
+		tz = "Z"
+	} else {
+		tz = fmt.Sprintf("%03d00", offset/3600)
+	}
+	return fmt.Sprintf("%04d-%02d-%02dT%02d:%02d:%02d%s", t.Year, t.Month, t.Day, t.Hour, t.Minute,
+		t.Second, tz)
 }

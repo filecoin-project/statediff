@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/filecoin-project/statediff"
@@ -134,12 +135,12 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 					Type: graphql.NewList(LotusBlockHeader__type),
 					Args: graphql.FieldConfigArgument{
 						"from": &graphql.ArgumentConfig{
-							Type:        graphql.Int,
-							Description: "Starting unix time stamp in seconds",
+							Type:        graphql.String,
+							Description: "Starting unix time stamp as iso-8601 or rfc-3339",
 						},
 						"to": &graphql.ArgumentConfig{
-							Type:        graphql.Int,
-							Description: "Ending unix time stamp in seconds",
+							Type:        graphql.String,
+							Description: "Ending unix time stamp as iso-8601 or rfc-3339",
 						},
 						"interval": &graphql.ArgumentConfig{
 							Type:        graphql.Int,
@@ -152,14 +153,35 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						if !ok {
 							return nil, fmt.Errorf("no datastore provided")
 						}
-						from := p.Args["from"].(int)
-						to := p.Args["to"].(int)
+						froms := p.Args["from"].(string)
+						tos := p.Args["to"].(string)
 						interval := p.Args["interval"].(int)
+
+						fromRFC := strings.Replace(froms, " ", "T", 1)
+						if !strings.Contains(fromRFC, "Z") {
+							fromRFC += "Z"
+						}
+						toRFC := strings.Replace(tos, " ", "T", 1)
+						if !strings.Contains(toRFC, "Z") {
+							toRFC += "Z"
+						}
+
+						from, err := time.Parse(time.RFC3339, fromRFC)
+						if err != nil {
+							return nil, err
+						}
+						to, err := time.Parse(time.RFC3339, toRFC)
+						if err != nil {
+							return nil, err
+						}
+						if interval < 30 {
+							interval = 30
+						}
 
 						out := make([]ipld.Node, 0)
 						// get them.
-						for i := from; i < to; i += interval {
-							ch, err := source.CidAtHeight(p.Context, timeStampToEpoch(time.Unix(int64(i), 0)))
+						for i := from; to.After(i); i.Add(time.Duration(interval) * time.Second) {
+							ch, err := source.CidAtHeight(p.Context, timeStampToEpoch(i))
 							if err != nil {
 								return nil, fmt.Errorf("Have not indexed a block at height %d", i)
 							}
