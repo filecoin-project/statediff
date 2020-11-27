@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/filecoin-project/statediff"
@@ -157,20 +156,11 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						tos := p.Args["to"].(string)
 						interval := p.Args["interval"].(int)
 
-						fromRFC := strings.Replace(froms, " ", "T", 1)
-						if !strings.Contains(fromRFC, "Z") {
-							fromRFC += "Z"
-						}
-						toRFC := strings.Replace(tos, " ", "T", 1)
-						if !strings.Contains(toRFC, "Z") {
-							toRFC += "Z"
-						}
-
-						from, err := time.Parse(time.RFC3339, fromRFC)
+						from, err := time.Parse(time.RFC3339, froms)
 						if err != nil {
 							return nil, err
 						}
-						to, err := time.Parse(time.RFC3339, toRFC)
+						to, err := time.Parse(time.RFC3339, tos)
 						if err != nil {
 							return nil, err
 						}
@@ -178,9 +168,12 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 							interval = 30
 						}
 
+						fmt.Printf("From: %v - %d\n", from, timeStampToEpoch(from))
+						fmt.Printf("To: %v\n", to)
+
 						out := make([]ipld.Node, 0)
 						// get them.
-						for i := from; to.After(i); i.Add(time.Duration(interval) * time.Second) {
+						for i := from; to.After(i); i = i.Add(time.Duration(interval) * time.Second) {
 							ch, err := source.CidAtHeight(p.Context, timeStampToEpoch(i))
 							if err != nil {
 								return nil, fmt.Errorf("Have not indexed a block at height %d", timeStampToEpoch(i))
@@ -285,7 +278,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 }
 
 func timeStampToEpoch(t time.Time) int {
-	return t.Second()/30 - (1598306400 / 30)
+	return int(t.Unix()/30) - (1598306400 / 30)
 }
 
 func epochToTime(e int) time.Time {
