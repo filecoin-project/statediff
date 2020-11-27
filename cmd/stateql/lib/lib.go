@@ -183,7 +183,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						for i := from; to.After(i); i.Add(time.Duration(interval) * time.Second) {
 							ch, err := source.CidAtHeight(p.Context, timeStampToEpoch(i))
 							if err != nil {
-								return nil, fmt.Errorf("Have not indexed a block at height %d", i)
+								return nil, fmt.Errorf("Have not indexed a block at height %d", timeStampToEpoch(i))
 							}
 							if ch == cid.Undef {
 								continue
