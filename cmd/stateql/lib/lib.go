@@ -130,6 +130,66 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						return out, nil
 					},
 				},
+				"Samples": &graphql.Field{
+					Type: graphql.NewList(LotusBlockHeader__type),
+					Args: graphql.FieldConfigArgument{
+						"from": &graphql.ArgumentConfig{
+							Type:        graphql.String,
+							Description: "Starting unix time stamp as iso-8601 or rfc-3339",
+						},
+						"to": &graphql.ArgumentConfig{
+							Type:        graphql.String,
+							Description: "Ending unix time stamp as iso-8601 or rfc-3339",
+						},
+						"interval": &graphql.ArgumentConfig{
+							Type:        graphql.Int,
+							Description: "Interval in seconds. Only really makes sense in multiples of 30",
+						},
+					},
+					Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+						// figure out which blocks to get.
+						s, ok := p.Context.Value(storeCtx).(blockstore.Blockstore)
+						if !ok {
+							return nil, fmt.Errorf("no datastore provided")
+						}
+						froms := p.Args["from"].(string)
+						tos := p.Args["to"].(string)
+						interval := p.Args["interval"].(int)
+
+						from, err := time.Parse(time.RFC3339, froms)
+						if err != nil {
+							return nil, err
+						}
+						to, err := time.Parse(time.RFC3339, tos)
+						if err != nil {
+							return nil, err
+						}
+						if interval < 30 {
+							interval = 30
+						}
+
+						fmt.Printf("From: %v - %d\n", from, timeStampToEpoch(from))
+						fmt.Printf("To: %v\n", to)
+
+						out := make([]ipld.Node, 0)
+						// get them.
+						for i := from; to.After(i); i = i.Add(time.Duration(interval) * time.Second) {
+							ch, err := source.CidAtHeight(p.Context, timeStampToEpoch(i))
+							if err != nil {
+								return nil, fmt.Errorf("Have not indexed a block at height %d", timeStampToEpoch(i))
+							}
+							if ch == cid.Undef {
+								continue
+							}
+							n, err := statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
+							if err != nil {
+								return nil, err
+							}
+							out = append(out, n)
+						}
+						return out, nil
+					},
+				},
 			},
 		}),
 	})
@@ -215,4 +275,12 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 		http.ServeContent(w, r, "graphql.html", time.Unix(0, 0), f)
 	})
 	return mux
+}
+
+func timeStampToEpoch(t time.Time) int {
+	return int(t.Unix()/30) - (1598306400 / 30)
+}
+
+func epochToTime(e int) time.Time {
+	return time.Unix(int64(e*30)+1598306400, 0)
 }
