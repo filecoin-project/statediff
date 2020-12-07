@@ -149,3 +149,28 @@ query Query {
   }
 }
 ```
+
+Or using `AllOf` to get all multisig signers:
+
+```graphql
+query Query {
+  Height(at: -1) {
+    ParentStateRoot {
+      Actors {
+        AllOf(type: "multisigActor") {
+          Key
+          Value {
+            Head {
+              ...on MultisigV0State {
+                Signers {
+                  All
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
