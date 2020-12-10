@@ -3,6 +3,7 @@ package lib
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/api"
@@ -32,7 +33,8 @@ type lazyDs struct {
 
 	// when loaded from a car snapshot there's no gettipsetbyheight metadata index.
 	// we build it into tipsetMap in those cases.
-	tipsetMap map[int]cid.Cid
+	tipsetMap   map[int]cid.Cid
+	tipsetMutex sync.RWMutex
 }
 
 var lazyInst *lazyDs
@@ -66,6 +68,8 @@ func (l *lazyDs) index(ctx context.Context) error {
 	if len(n) == 0 {
 		return fmt.Errorf("no head func for indexing")
 	}
+	l.tipsetMutex.Lock()
+	defer l.tipsetMutex.Unlock()
 	if l.tipsetMap == nil {
 		l.tipsetMap = make(map[int]cid.Cid)
 	}
@@ -118,7 +122,9 @@ func (l *lazyDs) index(ctx context.Context) error {
 }
 
 func (l *lazyDs) CidAtHeight(ctx context.Context, h int) (cid.Cid, error) {
+	l.tipsetMutex.RLock()
 	if l.tipsetMap == nil && l.client != nil {
+		l.tipsetMutex.RUnlock()
 		ts, err := l.client.ChainGetTipSetByHeight(ctx, abi.ChainEpoch(h), abitypes.TipSetKey{})
 		if err != nil {
 			if _, err := l.client.ChainHead(ctx); err != nil {
@@ -129,14 +135,18 @@ func (l *lazyDs) CidAtHeight(ctx context.Context, h int) (cid.Cid, error) {
 		return ts.Cids()[0], nil
 	} else if l.tipsetMap != nil {
 		c, ok := l.tipsetMap[h]
+		l.tipsetMutex.RUnlock()
 		if !ok {
 			if err := l.index(ctx); err != nil {
 				return cid.Undef, err
 			}
+			l.tipsetMutex.RLock()
+			defer l.tipsetMutex.RUnlock()
 			return l.tipsetMap[h], nil
 		}
 		return c, nil
 	}
+	l.tipsetMutex.RUnlock()
 	return cid.Undef, nil
 }
 
