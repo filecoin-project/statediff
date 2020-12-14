@@ -10,10 +10,10 @@ require (
 	github.com/filecoin-project/go-fil-markets v1.0.0
 	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
 	github.com/filecoin-project/go-multistore v0.0.3
-	github.com/filecoin-project/go-state-types v0.0.0-20201013222834-41ea465f274f
+	github.com/filecoin-project/go-state-types v0.0.0-20201102161440-c8033295a1fc
 	github.com/filecoin-project/lotus v1.1.2
 	github.com/filecoin-project/specs-actors v0.9.13
-	github.com/filecoin-project/specs-actors/v2 v2.2.0
+	github.com/filecoin-project/specs-actors/v2 v2.3.2
 	github.com/gorilla/handlers v1.5.1
 	github.com/graphql-go/graphql v0.7.9
 	github.com/hashicorp/golang-lru v0.5.4
