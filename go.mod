@@ -5,26 +5,26 @@ go 1.14
 require (
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c // indirect
 	github.com/evanw/esbuild v0.8.21
-	github.com/filecoin-project/go-address v0.0.4
-	github.com/filecoin-project/go-bitfield v0.2.2
-	github.com/filecoin-project/go-fil-markets v1.0.0
+	github.com/filecoin-project/go-address v0.0.5-0.20201103152444-f2023ef3f5bb
+	github.com/filecoin-project/go-bitfield v0.2.3-0.20201110211213-fe2c1862e816
+	github.com/filecoin-project/go-fil-markets v1.0.9
 	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
 	github.com/filecoin-project/go-multistore v0.0.3
-	github.com/filecoin-project/go-state-types v0.0.0-20201013222834-41ea465f274f
-	github.com/filecoin-project/lotus v1.1.2
+	github.com/filecoin-project/go-state-types v0.0.0-20201102161440-c8033295a1fc
+	github.com/filecoin-project/lotus v1.2.2
 	github.com/filecoin-project/specs-actors v0.9.13
-	github.com/filecoin-project/specs-actors/v2 v2.2.0
+	github.com/filecoin-project/specs-actors/v2 v2.3.2
 	github.com/gorilla/handlers v1.5.1
 	github.com/graphql-go/graphql v0.7.9
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/ipfs/go-block-format v0.0.2
 	github.com/ipfs/go-cid v0.0.7
 	github.com/ipfs/go-datastore v0.4.5
-	github.com/ipfs/go-ipfs-blockstore v1.0.1
-	github.com/ipfs/go-ipld-cbor v0.0.5-0.20200428170625-a0bd04d3cbdf
+	github.com/ipfs/go-ipfs-blockstore v1.0.3
+	github.com/ipfs/go-ipld-cbor v0.0.5
 	github.com/ipfs/go-log/v2 v2.1.2-0.20200626104915-0016c0b4b3e4
-	github.com/ipld/go-car v0.1.1-0.20201015032735-ff6ccdc46acc
-	github.com/ipld/go-ipld-prime v0.5.1-0.20200910124733-350032422383
+	github.com/ipld/go-car v0.1.1-0.20201119040415-11b6074b6d4d
+	github.com/ipld/go-ipld-prime v0.5.1-0.20201021195245-109253e8a018
 	github.com/jackc/pgx/v4 v4.10.0
 	github.com/libp2p/go-libp2p-peer v0.2.0
 	github.com/mitchellh/go-homedir v1.1.0
