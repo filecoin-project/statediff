@@ -1,6 +1,9 @@
 package statediff
 
 import (
+	"fmt"
+	"os"
+	"strconv"
 	"sync"
 
 	lru "github.com/hashicorp/golang-lru"
@@ -37,7 +40,17 @@ var singletonNodeCache *NodeCache
 var snocsetup sync.Once
 
 func setupSingleton() {
-	singletonNodeCache = NewNodeCache(32 * 1024)
+	rcsn := 32 * 1024
+	rcs := os.Getenv("REALIZED_CACHE_SIZE")
+	if rcs != "" {
+		var err error
+		rcsn, err = strconv.Atoi(rcs)
+		if err != nil {
+			fmt.Printf("Failed to parse cache size: %v\n", err)
+			rcsn = 32 * 1024
+		}
+	}
+	singletonNodeCache = NewNodeCache(rcsn)
 }
 
 func GetGlobalNodeCache() *NodeCache {
