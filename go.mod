@@ -25,7 +25,7 @@ require (
 	github.com/ipfs/go-log/v2 v2.1.2-0.20200626104915-0016c0b4b3e4
 	github.com/ipld/go-car v0.1.1-0.20201015032735-ff6ccdc46acc
 	github.com/ipld/go-ipld-prime v0.5.1-0.20200910124733-350032422383
-	github.com/jackc/pgx/v4 v4.10.0
+	github.com/jackc/pgx/v4 v4.10.1
 	github.com/libp2p/go-libp2p-peer v0.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/multiformats/go-multiaddr v0.3.1
