@@ -21,4 +21,5 @@ FROM alpine
 # Copy our static executable.
 COPY --from=builder /go/src/app/stateexplorer /stateexplorer
 ENV REALIZED_CACHE_SIZE 32768
+ENV BLOCK_CACHE_SIZE 32768
 ENTRYPOINT ["/stateexplorer"]
