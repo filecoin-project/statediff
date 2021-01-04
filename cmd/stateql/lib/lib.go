@@ -94,6 +94,26 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						return statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
 					},
 				},
+				"Message": &graphql.Field{
+					Type: LotusMessage__type,
+					Args: graphql.FieldConfigArgument{
+						"id": &graphql.ArgumentConfig{
+							Type: graphql.NewNonNull(graphql.ID),
+						},
+					},
+					Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+						s, ok := p.Context.Value(storeCtx).(blockstore.Blockstore)
+						if !ok {
+							return nil, fmt.Errorf("no datastore provided")
+						}
+						id := p.Args["id"]
+						idCid, err := cid.Parse(id)
+						if err != nil {
+							return nil, err
+						}
+						return statediff.Transform(p.Context, idCid, s, string(statediff.LotusTypeMessage))
+					},
+				},
 				"Heights": &graphql.Field{
 					Type: graphql.NewList(LotusBlockHeader__type),
 					Args: graphql.FieldConfigArgument{
