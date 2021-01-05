@@ -431,3 +431,18 @@ func (cs *acs) deploy(ctx context.Context) (err error) {
 
 	return nil
 }
+
+func (cs *acs) Reload() error {
+	// hope this is good if it worked before.
+	connectString, _ := os.LookupEnv(envVarConn)
+
+	newPool, err := pgxpool.Connect(context.Background(), connectString)
+	if err != nil {
+		return err
+	}
+
+	oldPool := cs.dbPool
+	cs.dbPool = newPool
+	oldPool.Close()
+	return nil
+}

@@ -160,6 +160,10 @@ func Lazy(c *cli.Context) (Datasource, error) {
 		return nil, err
 	}
 
+	if dsc, ok := store.(Datasource); ok {
+		return dsc, nil
+	}
+
 	lazyInst = &lazyDs{
 		ctx:    c,
 		client: client,

@@ -129,3 +129,28 @@ func (cs *acs) View(c cid.Cid, cb func([]byte) error) error {
 	}
 	return cb(blk.RawData())
 }
+
+// implement the lib.Datasource interface
+func (cs *acs) Store() blockstore.Blockstore {
+	return cs
+}
+
+func (cs *acs) Head(ctx context.Context) cid.Cid {
+	hts := cs.GetCurrentTipset(ctx)
+	if len(hts) > 0 {
+		return hts[0]
+	}
+	return cid.Undef
+}
+
+func (cs *acs) CidAtHeight(ctx context.Context, h int) (cid.Cid, error) {
+	row := cs.dbPool.QueryRow(ctx, "SELECT tipset_key FROM tipsets WHERE epoch = $1 LIMIT 1", h)
+	var tsk []string
+	if err := row.Scan(&tsk); err != nil {
+		return cid.Undef, err
+	}
+	if len(tsk) == 0 {
+		return cid.Undef, nil
+	}
+	return cid.Parse(tsk[0])
+}

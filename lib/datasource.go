@@ -170,8 +170,7 @@ func GetNewSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, 
 		return nil, nil, err
 	}
 
-	cacheDB := NewCachingStore(scs)
-	return scs.GetCurrentTipset, cacheDB, nil
+	return scs.GetCurrentTipset, scs, nil
 }
 
 func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
