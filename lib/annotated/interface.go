@@ -144,7 +144,16 @@ func (cs *acs) Head(ctx context.Context) cid.Cid {
 }
 
 func (cs *acs) CidAtHeight(ctx context.Context, h int) (cid.Cid, error) {
-	row := cs.dbPool.QueryRow(ctx, "SELECT tipset_key FROM tipsets WHERE epoch = $1 LIMIT 1", h)
+	row := cs.dbPool.QueryRow(ctx, `
+      SELECT tipset_key
+	    FROM tipsets ts
+	    JOIN stateroots sr
+	      ON ts.parent_stateroot_blkid = sr.blkid
+       WHERE ts.epoch = $1
+       ORDER BY
+	         sr.weight DESC,
+	         array_length( tipset_key, 1 ) DESC
+       LIMIT 1`, h)
 	var tsk []string
 	if err := row.Scan(&tsk); err != nil {
 		return cid.Undef, err

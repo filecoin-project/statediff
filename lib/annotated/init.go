@@ -433,10 +433,7 @@ func (cs *acs) deploy(ctx context.Context) (err error) {
 }
 
 func (cs *acs) Reload() error {
-	// hope this is good if it worked before.
-	connectString, _ := os.LookupEnv(envVarConn)
-
-	newPool, err := pgxpool.Connect(context.Background(), connectString)
+	newPool, err := pgxpool.Connect(context.Background(), cs.dbPool.Config().ConnString())
 	if err != nil {
 		return err
 	}
