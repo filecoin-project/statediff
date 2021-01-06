@@ -40,16 +40,19 @@ const (
 
 var log = logging.Logger("annotated-blockstore")
 
-func NewPgChainStore(ctx context.Context) (Chainstore, error) {
+func NewPgChainStore(ctx context.Context, connectString string) (Chainstore, error) {
 
 	cacheSize := int64(16 << 30) // 16GiB of cache by default, overridable through envVarCacheGiB
 
-	connectString, envSet := os.LookupEnv(envVarConn)
-	if !envSet || connectString == "" {
-		return nil, fmt.Errorf(
-			"\n\nyou must set the '%s' environment variable to a valid PostgreSQL connection string, e.g. 'postgres:///{{dbname}}?user={{user}}&password={{pass}}&host=/var/run/postgresql'",
-			envVarConn,
-		)
+	if connectString == "" {
+		var envSet bool
+		connectString, envSet = os.LookupEnv(envVarConn)
+		if !envSet || connectString == "" {
+			return nil, fmt.Errorf(
+				"\n\nyou must set the '%s' environment variable to a valid PostgreSQL connection string, e.g. 'postgres:///{{dbname}}?user={{user}}&password={{pass}}&host=/var/run/postgresql'",
+				envVarConn,
+			)
+		}
 	}
 
 	dbPool, err := pgxpool.Connect(ctx, connectString)

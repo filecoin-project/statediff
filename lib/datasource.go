@@ -165,7 +165,7 @@ func GetSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, err
 }
 
 func GetNewSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
-	scs, err := annotated.NewPgChainStore(c.Context)
+	scs, err := annotated.NewPgChainStore(c.Context, c.String(NewSqlFlag.Name))
 	if err != nil {
 		return nil, nil, err
 	}

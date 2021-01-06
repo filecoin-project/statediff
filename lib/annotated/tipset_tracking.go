@@ -16,22 +16,26 @@ import (
 )
 
 func (cs *acs) noteAccess(dbID uint64, t time.Time, atype accessType) {
-	cs.mu.Lock()
+	// not used since this is a read-only instance.
+	return
+	/*
+		cs.mu.Lock()
 
-	// FIXME: not sure what to track s "recent" exactly: just write down all non-PUT's for now...
-	if atype&MASKTYPE != PUT {
-		cs.accessStatsRecent[dbID] = struct{}{}
-	}
+		// FIXME: not sure what to track s "recent" exactly: just write down all non-PUT's for now...
+		if atype&MASKTYPE != PUT {
+			cs.accessStatsRecent[dbID] = struct{}{}
+		}
 
-	if cs.accessStatsHiRes != nil {
-		cs.accessStatsHiRes[accessUnit{
-			atUnix:     t.Truncate(time.Millisecond),
-			dbID:       dbID,
-			accessType: atype,
-		}]++
-	}
+		if cs.accessStatsHiRes != nil {
+			cs.accessStatsHiRes[accessUnit{
+				atUnix:     t.Truncate(time.Millisecond),
+				dbID:       dbID,
+				accessType: atype,
+			}]++
+		}
 
-	cs.mu.Unlock()
+		cs.mu.Unlock()
+	*/
 }
 
 func (cs *acs) SetCurrentTipset(ctx context.Context, ts *types.TipSet) (didChange bool, err error) {
