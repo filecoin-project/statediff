@@ -34,6 +34,7 @@ var graphCmd = &cli.Command{
 		&lib.ApiFlag,
 		&lib.CarFlag,
 		&lib.SqlFlag,
+		&lib.NewSqlFlag,
 		&lib.VectorFlag,
 		&bindFlag,
 		&crtFlag,
