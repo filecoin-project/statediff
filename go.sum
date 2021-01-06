@@ -265,6 +265,8 @@ github.com/filecoin-project/go-state-types v0.0.0-20200928172055-2df22083d8ab h1
 github.com/filecoin-project/go-state-types v0.0.0-20200928172055-2df22083d8ab/go.mod h1:ezYnPf0bNkTsDibL/psSz5dy4B5awOJ/E7P2Saeep8g=
 github.com/filecoin-project/go-state-types v0.0.0-20201013222834-41ea465f274f h1:TZDTu4MtBKSFLXWGKLy+cvC3nHfMFIrVgWLAz/+GgZQ=
 github.com/filecoin-project/go-state-types v0.0.0-20201013222834-41ea465f274f/go.mod h1:ezYnPf0bNkTsDibL/psSz5dy4B5awOJ/E7P2Saeep8g=
+github.com/filecoin-project/go-state-types v0.0.0-20201102161440-c8033295a1fc h1:+hbMY4Pcx2oizrfH08VWXwrj5mU8aJT6g0UNxGHFCGU=
+github.com/filecoin-project/go-state-types v0.0.0-20201102161440-c8033295a1fc/go.mod h1:ezYnPf0bNkTsDibL/psSz5dy4B5awOJ/E7P2Saeep8g=
 github.com/filecoin-project/go-statemachine v0.0.0-20200925024713-05bd7c71fbfe h1:dF8u+LEWeIcTcfUcCf3WFVlc81Fr2JKg8zPzIbBDKDw=
 github.com/filecoin-project/go-statemachine v0.0.0-20200925024713-05bd7c71fbfe/go.mod h1:FGwQgZAt2Gh5mjlwJUlVB62JeYdo+if0xWxSEfBD9ig=
 github.com/filecoin-project/go-statestore v0.1.0 h1:t56reH59843TwXHkMcwyuayStBIiWBRilQjQ+5IiwdQ=
@@ -282,6 +284,8 @@ github.com/filecoin-project/specs-actors/v2 v2.0.1 h1:bf08x6tqCDfClzrv2q/rmt/A/U
 github.com/filecoin-project/specs-actors/v2 v2.0.1/go.mod h1:v2NZVYinNIKA9acEMBm5wWXxqv5+frFEbekBFemYghY=
 github.com/filecoin-project/specs-actors/v2 v2.2.0 h1:IyCICb0NHYeD0sdSqjVGwWydn/7r7xXuxdpvGAcRCGY=
 github.com/filecoin-project/specs-actors/v2 v2.2.0/go.mod h1:rlv5Mx9wUhV8Qsz+vUezZNm+zL4tK08O0HreKKPB2Wc=
+github.com/filecoin-project/specs-actors/v2 v2.3.4 h1:NZK2oMCcA71wNsUzDBmLQyRMzcCnX9tDGvwZ53G67j8=
+github.com/filecoin-project/specs-actors/v2 v2.3.4/go.mod h1:UuJQLoTx/HPvvWeqlIFmC/ywlOLHNe8SNQ3OunFbu2Y=
 github.com/filecoin-project/specs-storage v0.1.1-0.20200907031224-ed2e5cd13796 h1:dJsTPWpG2pcTeojO2pyn0c6l+x/3MZYCBgo/9d11JEk=
 github.com/filecoin-project/specs-storage v0.1.1-0.20200907031224-ed2e5cd13796/go.mod h1:nJRRM7Aa9XVvygr3W9k6xGF46RWzr2zxF/iGoAIfA/g=
 github.com/filecoin-project/statediff/extern/fil-blst v0.0.0-20201112005514-7550fe42bb9a h1:b41miJ1oQ2z7zaOw13UQLwrAUCaX+1ti8LUUto9a2hg=
