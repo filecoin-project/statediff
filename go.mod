@@ -4,6 +4,8 @@ go 1.14
 
 require (
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c // indirect
+	github.com/dgraph-io/ristretto v0.0.3-0.20200630154024-f66de99634de
+	github.com/dustin/go-humanize v1.0.0
 	github.com/evanw/esbuild v0.8.33
 	github.com/filecoin-project/go-address v0.0.4
 	github.com/filecoin-project/go-bitfield v0.2.2
@@ -26,18 +28,22 @@ require (
 	github.com/ipld/go-car v0.1.1-0.20201015032735-ff6ccdc46acc
 	github.com/ipld/go-ipld-prime v0.5.1-0.20200910124733-350032422383
 	github.com/jackc/pgx/v4 v4.10.1
+	github.com/klauspost/compress v1.11.7
 	github.com/libp2p/go-libp2p-peer v0.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/multiformats/go-multiaddr v0.3.1
 	github.com/multiformats/go-multiaddr-net v0.2.0
 	github.com/multiformats/go-multibase v0.0.3
 	github.com/multiformats/go-multihash v0.0.14
+	github.com/multiformats/go-varint v0.0.6
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
 	github.com/urfave/cli/v2 v2.3.0
+	github.com/valyala/gozstd v1.9.0
 	github.com/whyrusleeping/cbor-gen v0.0.0-20200826160007-0b9f6c5fb163
 	github.com/willscott/carbs v0.0.4-0.20201024182220-b40626ac657b
 	github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 )
 
 replace github.com/supranational/blst => github.com/filecoin-project/statediff/extern/fil-blst v0.0.0-20201112005514-7550fe42bb9a
