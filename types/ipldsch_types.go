@@ -51,6 +51,8 @@ type typeSlab struct {
 	Float__Repr _Float__ReprPrototype
 	InitV0State       _InitV0State__Prototype
 	InitV0State__Repr _InitV0State__ReprPrototype
+	InitV3State       _InitV3State__Prototype
+	InitV3State__Repr _InitV3State__ReprPrototype
 	Int       _Int__Prototype
 	Int__Repr _Int__ReprPrototype
 	Link       _Link__Prototype
@@ -67,10 +69,14 @@ type typeSlab struct {
 	Link__DataCap__Repr _Link__DataCap__ReprPrototype
 	Link__InitV0State       _Link__InitV0State__Prototype
 	Link__InitV0State__Repr _Link__InitV0State__ReprPrototype
+	Link__InitV3State       _Link__InitV3State__Prototype
+	Link__InitV3State__Repr _Link__InitV3State__ReprPrototype
 	Link__ListLotusMessage       _Link__ListLotusMessage__Prototype
 	Link__ListLotusMessage__Repr _Link__ListLotusMessage__ReprPrototype
 	Link__LotusActorV2Head       _Link__LotusActorV2Head__Prototype
 	Link__LotusActorV2Head__Repr _Link__LotusActorV2Head__ReprPrototype
+	Link__LotusActorV3Head       _Link__LotusActorV3Head__Prototype
+	Link__LotusActorV3Head__Repr _Link__LotusActorV3Head__ReprPrototype
 	Link__LotusActors       _Link__LotusActors__Prototype
 	Link__LotusActors__Repr _Link__LotusActors__ReprPrototype
 	Link__LotusMessage       _Link__LotusMessage__Prototype
@@ -95,6 +101,16 @@ type typeSlab struct {
 	Link__MarketV2RawDealProposal__Repr _Link__MarketV2RawDealProposal__ReprPrototype
 	Link__MarketV2State       _Link__MarketV2State__Prototype
 	Link__MarketV2State__Repr _Link__MarketV2State__ReprPrototype
+	Link__MarketV3DealProposal       _Link__MarketV3DealProposal__Prototype
+	Link__MarketV3DealProposal__Repr _Link__MarketV3DealProposal__ReprPrototype
+	Link__MarketV3DealState       _Link__MarketV3DealState__Prototype
+	Link__MarketV3DealState__Repr _Link__MarketV3DealState__ReprPrototype
+	Link__MarketV3MultimapDealID       _Link__MarketV3MultimapDealID__Prototype
+	Link__MarketV3MultimapDealID__Repr _Link__MarketV3MultimapDealID__ReprPrototype
+	Link__MarketV3RawDealProposal       _Link__MarketV3RawDealProposal__Prototype
+	Link__MarketV3RawDealProposal__Repr _Link__MarketV3RawDealProposal__ReprPrototype
+	Link__MarketV3State       _Link__MarketV3State__Prototype
+	Link__MarketV3State__Repr _Link__MarketV3State__ReprPrototype
 	Link__MinerV0Deadline       _Link__MinerV0Deadline__Prototype
 	Link__MinerV0Deadline__Repr _Link__MinerV0Deadline__ReprPrototype
 	Link__MinerV0Deadlines       _Link__MinerV0Deadlines__Prototype
@@ -125,16 +141,38 @@ type typeSlab struct {
 	Link__MinerV2SectorInfo__Repr _Link__MinerV2SectorInfo__ReprPrototype
 	Link__MinerV2State       _Link__MinerV2State__Prototype
 	Link__MinerV2State__Repr _Link__MinerV2State__ReprPrototype
+	Link__MinerV3Deadline       _Link__MinerV3Deadline__Prototype
+	Link__MinerV3Deadline__Repr _Link__MinerV3Deadline__ReprPrototype
+	Link__MinerV3Deadlines       _Link__MinerV3Deadlines__Prototype
+	Link__MinerV3Deadlines__Repr _Link__MinerV3Deadlines__ReprPrototype
+	Link__MinerV3ExpirationSet       _Link__MinerV3ExpirationSet__Prototype
+	Link__MinerV3ExpirationSet__Repr _Link__MinerV3ExpirationSet__ReprPrototype
+	Link__MinerV3Partition       _Link__MinerV3Partition__Prototype
+	Link__MinerV3Partition__Repr _Link__MinerV3Partition__ReprPrototype
+	Link__MinerV3SectorInfo       _Link__MinerV3SectorInfo__Prototype
+	Link__MinerV3SectorInfo__Repr _Link__MinerV3SectorInfo__ReprPrototype
+	Link__MinerV3SectorPreCommits       _Link__MinerV3SectorPreCommits__Prototype
+	Link__MinerV3SectorPreCommits__Repr _Link__MinerV3SectorPreCommits__ReprPrototype
+	Link__MinerV3State       _Link__MinerV3State__Prototype
+	Link__MinerV3State__Repr _Link__MinerV3State__ReprPrototype
 	Link__MultimapDealID       _Link__MultimapDealID__Prototype
 	Link__MultimapDealID__Repr _Link__MultimapDealID__ReprPrototype
 	Link__MultisigV0State       _Link__MultisigV0State__Prototype
 	Link__MultisigV0State__Repr _Link__MultisigV0State__ReprPrototype
 	Link__MultisigV0Transaction       _Link__MultisigV0Transaction__Prototype
 	Link__MultisigV0Transaction__Repr _Link__MultisigV0Transaction__ReprPrototype
+	Link__MultisigV3State       _Link__MultisigV3State__Prototype
+	Link__MultisigV3State__Repr _Link__MultisigV3State__ReprPrototype
+	Link__MultisigV3Transaction       _Link__MultisigV3Transaction__Prototype
+	Link__MultisigV3Transaction__Repr _Link__MultisigV3Transaction__ReprPrototype
 	Link__PaychV0LaneState       _Link__PaychV0LaneState__Prototype
 	Link__PaychV0LaneState__Repr _Link__PaychV0LaneState__ReprPrototype
 	Link__PaychV0State       _Link__PaychV0State__Prototype
 	Link__PaychV0State__Repr _Link__PaychV0State__ReprPrototype
+	Link__PaychV3LaneState       _Link__PaychV3LaneState__Prototype
+	Link__PaychV3LaneState__Repr _Link__PaychV3LaneState__ReprPrototype
+	Link__PaychV3State       _Link__PaychV3State__Prototype
+	Link__PaychV3State__Repr _Link__PaychV3State__ReprPrototype
 	Link__PowerV0Claim       _Link__PowerV0Claim__Prototype
 	Link__PowerV0Claim__Repr _Link__PowerV0Claim__ReprPrototype
 	Link__PowerV0CronEvent       _Link__PowerV0CronEvent__Prototype
@@ -145,12 +183,26 @@ type typeSlab struct {
 	Link__PowerV2Claim__Repr _Link__PowerV2Claim__ReprPrototype
 	Link__PowerV2State       _Link__PowerV2State__Prototype
 	Link__PowerV2State__Repr _Link__PowerV2State__ReprPrototype
+	Link__PowerV3Claim       _Link__PowerV3Claim__Prototype
+	Link__PowerV3Claim__Repr _Link__PowerV3Claim__ReprPrototype
+	Link__PowerV3CronEvent       _Link__PowerV3CronEvent__Prototype
+	Link__PowerV3CronEvent__Repr _Link__PowerV3CronEvent__ReprPrototype
+	Link__PowerV3State       _Link__PowerV3State__Prototype
+	Link__PowerV3State__Repr _Link__PowerV3State__ReprPrototype
 	Link__RewardV0State       _Link__RewardV0State__Prototype
 	Link__RewardV0State__Repr _Link__RewardV0State__ReprPrototype
 	Link__RewardV2State       _Link__RewardV2State__Prototype
 	Link__RewardV2State__Repr _Link__RewardV2State__ReprPrototype
+	Link__V3BalanceTable       _Link__V3BalanceTable__Prototype
+	Link__V3BalanceTable__Repr _Link__V3BalanceTable__ReprPrototype
+	Link__V3DataCap       _Link__V3DataCap__Prototype
+	Link__V3DataCap__Repr _Link__V3DataCap__ReprPrototype
+	Link__V3MapActorID       _Link__V3MapActorID__Prototype
+	Link__V3MapActorID__Repr _Link__V3MapActorID__ReprPrototype
 	Link__VerifregV0State       _Link__VerifregV0State__Prototype
 	Link__VerifregV0State__Repr _Link__VerifregV0State__ReprPrototype
+	Link__VerifregV3State       _Link__VerifregV3State__Prototype
+	Link__VerifregV3State__Repr _Link__VerifregV3State__ReprPrototype
 	List       _List__Prototype
 	List__Repr _List__ReprPrototype
 	List__Address       _List__Address__Prototype
@@ -183,6 +235,8 @@ type typeSlab struct {
 	List__MinerV0VestingFund__Repr _List__MinerV0VestingFund__ReprPrototype
 	List__MinerV2DeadlineLink       _List__MinerV2DeadlineLink__Prototype
 	List__MinerV2DeadlineLink__Repr _List__MinerV2DeadlineLink__ReprPrototype
+	List__MinerV3DeadlineLink       _List__MinerV3DeadlineLink__Prototype
+	List__MinerV3DeadlineLink__Repr _List__MinerV3DeadlineLink__ReprPrototype
 	List__Multiaddrs       _List__Multiaddrs__Prototype
 	List__Multiaddrs__Repr _List__Multiaddrs__ReprPrototype
 	List__PoStProof       _List__PoStProof__Prototype
@@ -191,6 +245,8 @@ type typeSlab struct {
 	List__SectorNumber__Repr _List__SectorNumber__ReprPrototype
 	LotusActorV2Head       _LotusActorV2Head__Prototype
 	LotusActorV2Head__Repr _LotusActorV2Head__ReprPrototype
+	LotusActorV3Head       _LotusActorV3Head__Prototype
+	LotusActorV3Head__Repr _LotusActorV3Head__ReprPrototype
 	LotusActors       _LotusActors__Prototype
 	LotusActors__Repr _LotusActors__ReprPrototype
 	LotusBeaconEntry       _LotusBeaconEntry__Prototype
@@ -213,6 +269,10 @@ type typeSlab struct {
 	LotusTicket__Repr _LotusTicket__ReprPrototype
 	Map       _Map__Prototype
 	Map__Repr _Map__ReprPrototype
+	MapV3__BitField       _MapV3__BitField__Prototype
+	MapV3__BitField__Repr _MapV3__BitField__ReprPrototype
+	MapV3__List__DealID       _MapV3__List__DealID__Prototype
+	MapV3__List__DealID__Repr _MapV3__List__DealID__ReprPrototype
 	Map__ActorID       _Map__ActorID__Prototype
 	Map__ActorID__Repr _Map__ActorID__ReprPrototype
 	Map__BalanceTable       _Map__BalanceTable__Prototype
@@ -235,28 +295,56 @@ type typeSlab struct {
 	Map__MarketV2DealProposal__Repr _Map__MarketV2DealProposal__ReprPrototype
 	Map__MarketV2RawDealProposal       _Map__MarketV2RawDealProposal__Prototype
 	Map__MarketV2RawDealProposal__Repr _Map__MarketV2RawDealProposal__ReprPrototype
+	Map__MarketV3DealProposal       _Map__MarketV3DealProposal__Prototype
+	Map__MarketV3DealProposal__Repr _Map__MarketV3DealProposal__ReprPrototype
+	Map__MarketV3DealState       _Map__MarketV3DealState__Prototype
+	Map__MarketV3DealState__Repr _Map__MarketV3DealState__ReprPrototype
+	Map__MarketV3RawDealProposal       _Map__MarketV3RawDealProposal__Prototype
+	Map__MarketV3RawDealProposal__Repr _Map__MarketV3RawDealProposal__ReprPrototype
 	Map__MinerV0ExpirationSet       _Map__MinerV0ExpirationSet__Prototype
 	Map__MinerV0ExpirationSet__Repr _Map__MinerV0ExpirationSet__ReprPrototype
 	Map__MinerV0Partition       _Map__MinerV0Partition__Prototype
 	Map__MinerV0Partition__Repr _Map__MinerV0Partition__ReprPrototype
 	Map__MinerV2Partition       _Map__MinerV2Partition__Prototype
 	Map__MinerV2Partition__Repr _Map__MinerV2Partition__ReprPrototype
+	Map__MinerV3ExpirationSet       _Map__MinerV3ExpirationSet__Prototype
+	Map__MinerV3ExpirationSet__Repr _Map__MinerV3ExpirationSet__ReprPrototype
+	Map__MinerV3Partition       _Map__MinerV3Partition__Prototype
+	Map__MinerV3Partition__Repr _Map__MinerV3Partition__ReprPrototype
 	Map__MultisigV0Transaction       _Map__MultisigV0Transaction__Prototype
 	Map__MultisigV0Transaction__Repr _Map__MultisigV0Transaction__ReprPrototype
+	Map__MultisigV3Transaction       _Map__MultisigV3Transaction__Prototype
+	Map__MultisigV3Transaction__Repr _Map__MultisigV3Transaction__ReprPrototype
 	Map__PaychV0LaneState       _Map__PaychV0LaneState__Prototype
 	Map__PaychV0LaneState__Repr _Map__PaychV0LaneState__ReprPrototype
+	Map__PaychV3LaneState       _Map__PaychV3LaneState__Prototype
+	Map__PaychV3LaneState__Repr _Map__PaychV3LaneState__ReprPrototype
 	Map__PowerV0Claim       _Map__PowerV0Claim__Prototype
 	Map__PowerV0Claim__Repr _Map__PowerV0Claim__ReprPrototype
 	Map__PowerV0CronEvent       _Map__PowerV0CronEvent__Prototype
 	Map__PowerV0CronEvent__Repr _Map__PowerV0CronEvent__ReprPrototype
 	Map__PowerV2Claim       _Map__PowerV2Claim__Prototype
 	Map__PowerV2Claim__Repr _Map__PowerV2Claim__ReprPrototype
+	Map__PowerV3Claim       _Map__PowerV3Claim__Prototype
+	Map__PowerV3Claim__Repr _Map__PowerV3Claim__ReprPrototype
+	Map__PowerV3CronEvent       _Map__PowerV3CronEvent__Prototype
+	Map__PowerV3CronEvent__Repr _Map__PowerV3CronEvent__ReprPrototype
 	Map__SectorOnChainInfo       _Map__SectorOnChainInfo__Prototype
 	Map__SectorOnChainInfo__Repr _Map__SectorOnChainInfo__ReprPrototype
 	Map__SectorPreCommitOnChainInfo       _Map__SectorPreCommitOnChainInfo__Prototype
 	Map__SectorPreCommitOnChainInfo__Repr _Map__SectorPreCommitOnChainInfo__ReprPrototype
 	Map__SectorV2OnChainInfo       _Map__SectorV2OnChainInfo__Prototype
 	Map__SectorV2OnChainInfo__Repr _Map__SectorV2OnChainInfo__ReprPrototype
+	Map__SectorV3OnChainInfo       _Map__SectorV3OnChainInfo__Prototype
+	Map__SectorV3OnChainInfo__Repr _Map__SectorV3OnChainInfo__ReprPrototype
+	Map__V3ActorID       _Map__V3ActorID__Prototype
+	Map__V3ActorID__Repr _Map__V3ActorID__ReprPrototype
+	Map__V3BalanceTable       _Map__V3BalanceTable__Prototype
+	Map__V3BalanceTable__Repr _Map__V3BalanceTable__ReprPrototype
+	Map__V3DataCap       _Map__V3DataCap__Prototype
+	Map__V3DataCap__Repr _Map__V3DataCap__ReprPrototype
+	Map__V3SectorPreCommitOnChainInfo       _Map__V3SectorPreCommitOnChainInfo__Prototype
+	Map__V3SectorPreCommitOnChainInfo__Repr _Map__V3SectorPreCommitOnChainInfo__ReprPrototype
 	MarketClientDealProposal       _MarketClientDealProposal__Prototype
 	MarketClientDealProposal__Repr _MarketClientDealProposal__ReprPrototype
 	MarketV0DealProposal       _MarketV0DealProposal__Prototype
@@ -269,6 +357,8 @@ type typeSlab struct {
 	MarketV2DealProposal__Repr _MarketV2DealProposal__ReprPrototype
 	MarketV2State       _MarketV2State__Prototype
 	MarketV2State__Repr _MarketV2State__ReprPrototype
+	MarketV3State       _MarketV3State__Prototype
+	MarketV3State__Repr _MarketV3State__ReprPrototype
 	Merge       _Merge__Prototype
 	Merge__Repr _Merge__ReprPrototype
 	MessageParamsInitExecParams       _MessageParamsInitExecParams__Prototype
@@ -401,22 +491,36 @@ type typeSlab struct {
 	MinerV2SectorOnChainInfo__Repr _MinerV2SectorOnChainInfo__ReprPrototype
 	MinerV2State       _MinerV2State__Prototype
 	MinerV2State__Repr _MinerV2State__ReprPrototype
+	MinerV3Deadline       _MinerV3Deadline__Prototype
+	MinerV3Deadline__Repr _MinerV3Deadline__ReprPrototype
+	MinerV3Deadlines       _MinerV3Deadlines__Prototype
+	MinerV3Deadlines__Repr _MinerV3Deadlines__ReprPrototype
+	MinerV3Partition       _MinerV3Partition__Prototype
+	MinerV3Partition__Repr _MinerV3Partition__ReprPrototype
+	MinerV3State       _MinerV3State__Prototype
+	MinerV3State__Repr _MinerV3State__ReprPrototype
 	ModVerifyParams       _ModVerifyParams__Prototype
 	ModVerifyParams__Repr _ModVerifyParams__ReprPrototype
 	Multiaddr       _Multiaddr__Prototype
 	Multiaddr__Repr _Multiaddr__ReprPrototype
 	Multimap__PowerV0CronEvent       _Multimap__PowerV0CronEvent__Prototype
 	Multimap__PowerV0CronEvent__Repr _Multimap__PowerV0CronEvent__ReprPrototype
+	Multimap__PowerV3CronEvent       _Multimap__PowerV3CronEvent__Prototype
+	Multimap__PowerV3CronEvent__Repr _Multimap__PowerV3CronEvent__ReprPrototype
 	MultisigV0State       _MultisigV0State__Prototype
 	MultisigV0State__Repr _MultisigV0State__ReprPrototype
 	MultisigV0Transaction       _MultisigV0Transaction__Prototype
 	MultisigV0Transaction__Repr _MultisigV0Transaction__ReprPrototype
+	MultisigV3State       _MultisigV3State__Prototype
+	MultisigV3State__Repr _MultisigV3State__ReprPrototype
 	PaddedPieceSize       _PaddedPieceSize__Prototype
 	PaddedPieceSize__Repr _PaddedPieceSize__ReprPrototype
 	PaychV0LaneState       _PaychV0LaneState__Prototype
 	PaychV0LaneState__Repr _PaychV0LaneState__ReprPrototype
 	PaychV0State       _PaychV0State__Prototype
 	PaychV0State__Repr _PaychV0State__ReprPrototype
+	PaychV3State       _PaychV3State__Prototype
+	PaychV3State__Repr _PaychV3State__ReprPrototype
 	PeerID       _PeerID__Prototype
 	PeerID__Repr _PeerID__ReprPrototype
 	PoStProof       _PoStProof__Prototype
@@ -431,6 +535,8 @@ type typeSlab struct {
 	PowerV2Claim__Repr _PowerV2Claim__ReprPrototype
 	PowerV2State       _PowerV2State__Prototype
 	PowerV2State__Repr _PowerV2State__ReprPrototype
+	PowerV3State       _PowerV3State__Prototype
+	PowerV3State__Repr _PowerV3State__ReprPrototype
 	RawAddress       _RawAddress__Prototype
 	RawAddress__Repr _RawAddress__ReprPrototype
 	RegisteredSealProof       _RegisteredSealProof__Prototype
@@ -457,6 +563,8 @@ type typeSlab struct {
 	V0FilterEstimate__Repr _V0FilterEstimate__ReprPrototype
 	VerifregV0State       _VerifregV0State__Prototype
 	VerifregV0State__Repr _VerifregV0State__ReprPrototype
+	VerifregV3State       _VerifregV3State__Prototype
+	VerifregV3State__Repr _VerifregV3State__ReprPrototype
 }
 
 // --- type definitions follow ---
@@ -552,6 +660,14 @@ type _InitV0State struct {
 	NetworkName _String
 }
 
+// InitV3State matches the IPLD Schema type "InitV3State".  It has Struct type-kind, and may be interrogated like map kind.
+type InitV3State = *_InitV3State
+type _InitV3State struct {
+	AddressMap _Link__V3MapActorID
+	NextID _ActorID
+	NetworkName _String
+}
+
 // Int matches the IPLD Schema type "Int".  It has int kind.
 type Int = *_Int
 type _Int struct{ x int }
@@ -584,6 +700,10 @@ type _Link__DataCap struct{ x ipld.Link }
 type Link__InitV0State = *_Link__InitV0State
 type _Link__InitV0State struct{ x ipld.Link }
 
+// Link__InitV3State matches the IPLD Schema type "Link__InitV3State".  It has link kind.
+type Link__InitV3State = *_Link__InitV3State
+type _Link__InitV3State struct{ x ipld.Link }
+
 // Link__ListLotusMessage matches the IPLD Schema type "Link__ListLotusMessage".  It has link kind.
 type Link__ListLotusMessage = *_Link__ListLotusMessage
 type _Link__ListLotusMessage struct{ x ipld.Link }
@@ -591,6 +711,10 @@ type _Link__ListLotusMessage struct{ x ipld.Link }
 // Link__LotusActorV2Head matches the IPLD Schema type "Link__LotusActorV2Head".  It has link kind.
 type Link__LotusActorV2Head = *_Link__LotusActorV2Head
 type _Link__LotusActorV2Head struct{ x ipld.Link }
+
+// Link__LotusActorV3Head matches the IPLD Schema type "Link__LotusActorV3Head".  It has link kind.
+type Link__LotusActorV3Head = *_Link__LotusActorV3Head
+type _Link__LotusActorV3Head struct{ x ipld.Link }
 
 // Link__LotusActors matches the IPLD Schema type "Link__LotusActors".  It has link kind.
 type Link__LotusActors = *_Link__LotusActors
@@ -639,6 +763,26 @@ type _Link__MarketV2RawDealProposal struct{ x ipld.Link }
 // Link__MarketV2State matches the IPLD Schema type "Link__MarketV2State".  It has link kind.
 type Link__MarketV2State = *_Link__MarketV2State
 type _Link__MarketV2State struct{ x ipld.Link }
+
+// Link__MarketV3DealProposal matches the IPLD Schema type "Link__MarketV3DealProposal".  It has link kind.
+type Link__MarketV3DealProposal = *_Link__MarketV3DealProposal
+type _Link__MarketV3DealProposal struct{ x ipld.Link }
+
+// Link__MarketV3DealState matches the IPLD Schema type "Link__MarketV3DealState".  It has link kind.
+type Link__MarketV3DealState = *_Link__MarketV3DealState
+type _Link__MarketV3DealState struct{ x ipld.Link }
+
+// Link__MarketV3MultimapDealID matches the IPLD Schema type "Link__MarketV3MultimapDealID".  It has link kind.
+type Link__MarketV3MultimapDealID = *_Link__MarketV3MultimapDealID
+type _Link__MarketV3MultimapDealID struct{ x ipld.Link }
+
+// Link__MarketV3RawDealProposal matches the IPLD Schema type "Link__MarketV3RawDealProposal".  It has link kind.
+type Link__MarketV3RawDealProposal = *_Link__MarketV3RawDealProposal
+type _Link__MarketV3RawDealProposal struct{ x ipld.Link }
+
+// Link__MarketV3State matches the IPLD Schema type "Link__MarketV3State".  It has link kind.
+type Link__MarketV3State = *_Link__MarketV3State
+type _Link__MarketV3State struct{ x ipld.Link }
 
 // Link__MinerV0Deadline matches the IPLD Schema type "Link__MinerV0Deadline".  It has link kind.
 type Link__MinerV0Deadline = *_Link__MinerV0Deadline
@@ -700,6 +844,34 @@ type _Link__MinerV2SectorInfo struct{ x ipld.Link }
 type Link__MinerV2State = *_Link__MinerV2State
 type _Link__MinerV2State struct{ x ipld.Link }
 
+// Link__MinerV3Deadline matches the IPLD Schema type "Link__MinerV3Deadline".  It has link kind.
+type Link__MinerV3Deadline = *_Link__MinerV3Deadline
+type _Link__MinerV3Deadline struct{ x ipld.Link }
+
+// Link__MinerV3Deadlines matches the IPLD Schema type "Link__MinerV3Deadlines".  It has link kind.
+type Link__MinerV3Deadlines = *_Link__MinerV3Deadlines
+type _Link__MinerV3Deadlines struct{ x ipld.Link }
+
+// Link__MinerV3ExpirationSet matches the IPLD Schema type "Link__MinerV3ExpirationSet".  It has link kind.
+type Link__MinerV3ExpirationSet = *_Link__MinerV3ExpirationSet
+type _Link__MinerV3ExpirationSet struct{ x ipld.Link }
+
+// Link__MinerV3Partition matches the IPLD Schema type "Link__MinerV3Partition".  It has link kind.
+type Link__MinerV3Partition = *_Link__MinerV3Partition
+type _Link__MinerV3Partition struct{ x ipld.Link }
+
+// Link__MinerV3SectorInfo matches the IPLD Schema type "Link__MinerV3SectorInfo".  It has link kind.
+type Link__MinerV3SectorInfo = *_Link__MinerV3SectorInfo
+type _Link__MinerV3SectorInfo struct{ x ipld.Link }
+
+// Link__MinerV3SectorPreCommits matches the IPLD Schema type "Link__MinerV3SectorPreCommits".  It has link kind.
+type Link__MinerV3SectorPreCommits = *_Link__MinerV3SectorPreCommits
+type _Link__MinerV3SectorPreCommits struct{ x ipld.Link }
+
+// Link__MinerV3State matches the IPLD Schema type "Link__MinerV3State".  It has link kind.
+type Link__MinerV3State = *_Link__MinerV3State
+type _Link__MinerV3State struct{ x ipld.Link }
+
 // Link__MultimapDealID matches the IPLD Schema type "Link__MultimapDealID".  It has link kind.
 type Link__MultimapDealID = *_Link__MultimapDealID
 type _Link__MultimapDealID struct{ x ipld.Link }
@@ -712,6 +884,14 @@ type _Link__MultisigV0State struct{ x ipld.Link }
 type Link__MultisigV0Transaction = *_Link__MultisigV0Transaction
 type _Link__MultisigV0Transaction struct{ x ipld.Link }
 
+// Link__MultisigV3State matches the IPLD Schema type "Link__MultisigV3State".  It has link kind.
+type Link__MultisigV3State = *_Link__MultisigV3State
+type _Link__MultisigV3State struct{ x ipld.Link }
+
+// Link__MultisigV3Transaction matches the IPLD Schema type "Link__MultisigV3Transaction".  It has link kind.
+type Link__MultisigV3Transaction = *_Link__MultisigV3Transaction
+type _Link__MultisigV3Transaction struct{ x ipld.Link }
+
 // Link__PaychV0LaneState matches the IPLD Schema type "Link__PaychV0LaneState".  It has link kind.
 type Link__PaychV0LaneState = *_Link__PaychV0LaneState
 type _Link__PaychV0LaneState struct{ x ipld.Link }
@@ -719,6 +899,14 @@ type _Link__PaychV0LaneState struct{ x ipld.Link }
 // Link__PaychV0State matches the IPLD Schema type "Link__PaychV0State".  It has link kind.
 type Link__PaychV0State = *_Link__PaychV0State
 type _Link__PaychV0State struct{ x ipld.Link }
+
+// Link__PaychV3LaneState matches the IPLD Schema type "Link__PaychV3LaneState".  It has link kind.
+type Link__PaychV3LaneState = *_Link__PaychV3LaneState
+type _Link__PaychV3LaneState struct{ x ipld.Link }
+
+// Link__PaychV3State matches the IPLD Schema type "Link__PaychV3State".  It has link kind.
+type Link__PaychV3State = *_Link__PaychV3State
+type _Link__PaychV3State struct{ x ipld.Link }
 
 // Link__PowerV0Claim matches the IPLD Schema type "Link__PowerV0Claim".  It has link kind.
 type Link__PowerV0Claim = *_Link__PowerV0Claim
@@ -740,6 +928,18 @@ type _Link__PowerV2Claim struct{ x ipld.Link }
 type Link__PowerV2State = *_Link__PowerV2State
 type _Link__PowerV2State struct{ x ipld.Link }
 
+// Link__PowerV3Claim matches the IPLD Schema type "Link__PowerV3Claim".  It has link kind.
+type Link__PowerV3Claim = *_Link__PowerV3Claim
+type _Link__PowerV3Claim struct{ x ipld.Link }
+
+// Link__PowerV3CronEvent matches the IPLD Schema type "Link__PowerV3CronEvent".  It has link kind.
+type Link__PowerV3CronEvent = *_Link__PowerV3CronEvent
+type _Link__PowerV3CronEvent struct{ x ipld.Link }
+
+// Link__PowerV3State matches the IPLD Schema type "Link__PowerV3State".  It has link kind.
+type Link__PowerV3State = *_Link__PowerV3State
+type _Link__PowerV3State struct{ x ipld.Link }
+
 // Link__RewardV0State matches the IPLD Schema type "Link__RewardV0State".  It has link kind.
 type Link__RewardV0State = *_Link__RewardV0State
 type _Link__RewardV0State struct{ x ipld.Link }
@@ -748,9 +948,25 @@ type _Link__RewardV0State struct{ x ipld.Link }
 type Link__RewardV2State = *_Link__RewardV2State
 type _Link__RewardV2State struct{ x ipld.Link }
 
+// Link__V3BalanceTable matches the IPLD Schema type "Link__V3BalanceTable".  It has link kind.
+type Link__V3BalanceTable = *_Link__V3BalanceTable
+type _Link__V3BalanceTable struct{ x ipld.Link }
+
+// Link__V3DataCap matches the IPLD Schema type "Link__V3DataCap".  It has link kind.
+type Link__V3DataCap = *_Link__V3DataCap
+type _Link__V3DataCap struct{ x ipld.Link }
+
+// Link__V3MapActorID matches the IPLD Schema type "Link__V3MapActorID".  It has link kind.
+type Link__V3MapActorID = *_Link__V3MapActorID
+type _Link__V3MapActorID struct{ x ipld.Link }
+
 // Link__VerifregV0State matches the IPLD Schema type "Link__VerifregV0State".  It has link kind.
 type Link__VerifregV0State = *_Link__VerifregV0State
 type _Link__VerifregV0State struct{ x ipld.Link }
+
+// Link__VerifregV3State matches the IPLD Schema type "Link__VerifregV3State".  It has link kind.
+type Link__VerifregV3State = *_Link__VerifregV3State
+type _Link__VerifregV3State struct{ x ipld.Link }
 
 // List matches the IPLD Schema type "List".  It has list kind.
 type List = *_List
@@ -848,6 +1064,12 @@ type _List__MinerV2DeadlineLink struct {
 	x []_Link__MinerV2Deadline__Maybe
 }
 
+// List__MinerV3DeadlineLink matches the IPLD Schema type "List__MinerV3DeadlineLink".  It has list kind.
+type List__MinerV3DeadlineLink = *_List__MinerV3DeadlineLink
+type _List__MinerV3DeadlineLink struct {
+	x []_Link__MinerV3Deadline__Maybe
+}
+
 // List__Multiaddrs matches the IPLD Schema type "List__Multiaddrs".  It has list kind.
 type List__Multiaddrs = *_List__Multiaddrs
 type _List__Multiaddrs struct {
@@ -903,11 +1125,62 @@ func (_PowerV0State) _LotusActorV2Head__member() {}
 func (_RewardV0State) _LotusActorV2Head__member() {}
 func (_VerifregV0State) _LotusActorV2Head__member() {}
 
+// LotusActorV3Head matches the IPLD Schema type "LotusActorV3Head".  It has Union type-kind, and may be interrogated like map kind.
+type LotusActorV3Head = *_LotusActorV3Head
+type _LotusActorV3Head struct {
+	tag uint
+	x1 _MarketV3State
+	x2 _MinerV3State
+	x3 _PowerV3State
+	x4 _InitV3State
+	x5 _VerifregV3State
+	x6 _PaychV3State
+	x7 _MultisigV3State
+	x8 _MarketV2State
+	x9 _MinerV2State
+	x10 _PowerV2State
+	x11 _RewardV2State
+	x12 _AccountV0State
+	x13 _CronV0State
+	x14 _InitV0State
+	x15 _MarketV0State
+	x16 _MinerV0State
+	x17 _MultisigV0State
+	x18 _PaychV0State
+	x19 _PowerV0State
+	x20 _RewardV0State
+	x21 _VerifregV0State
+}
+type _LotusActorV3Head__iface interface {
+	_LotusActorV3Head__member()
+}
+func (_MarketV3State) _LotusActorV3Head__member() {}
+func (_MinerV3State) _LotusActorV3Head__member() {}
+func (_PowerV3State) _LotusActorV3Head__member() {}
+func (_InitV3State) _LotusActorV3Head__member() {}
+func (_VerifregV3State) _LotusActorV3Head__member() {}
+func (_PaychV3State) _LotusActorV3Head__member() {}
+func (_MultisigV3State) _LotusActorV3Head__member() {}
+func (_MarketV2State) _LotusActorV3Head__member() {}
+func (_MinerV2State) _LotusActorV3Head__member() {}
+func (_PowerV2State) _LotusActorV3Head__member() {}
+func (_RewardV2State) _LotusActorV3Head__member() {}
+func (_AccountV0State) _LotusActorV3Head__member() {}
+func (_CronV0State) _LotusActorV3Head__member() {}
+func (_InitV0State) _LotusActorV3Head__member() {}
+func (_MarketV0State) _LotusActorV3Head__member() {}
+func (_MinerV0State) _LotusActorV3Head__member() {}
+func (_MultisigV0State) _LotusActorV3Head__member() {}
+func (_PaychV0State) _LotusActorV3Head__member() {}
+func (_PowerV0State) _LotusActorV3Head__member() {}
+func (_RewardV0State) _LotusActorV3Head__member() {}
+func (_VerifregV0State) _LotusActorV3Head__member() {}
+
 // LotusActors matches the IPLD Schema type "LotusActors".  It has Struct type-kind, and may be interrogated like map kind.
 type LotusActors = *_LotusActors
 type _LotusActors struct {
 	Code _Link
-	Head _Link__LotusActorV2Head
+	Head _Link__LotusActorV3Head
 	Nonce _Int
 	Balance _BigInt
 }
@@ -1096,6 +1369,28 @@ type _Map__entry struct {
 	v _Any__Maybe
 }
 
+// MapV3__BitField matches the IPLD Schema type "MapV3__BitField".  It has map kind.
+type MapV3__BitField = *_MapV3__BitField
+type _MapV3__BitField struct {
+	m map[_String]MaybeBitField
+	t []_MapV3__BitField__entry
+}
+type _MapV3__BitField__entry struct {
+	k _String
+	v _BitField__Maybe
+}
+
+// MapV3__List__DealID matches the IPLD Schema type "MapV3__List__DealID".  It has map kind.
+type MapV3__List__DealID = *_MapV3__List__DealID
+type _MapV3__List__DealID struct {
+	m map[_String]*_List__DealID
+	t []_MapV3__List__DealID__entry
+}
+type _MapV3__List__DealID__entry struct {
+	k _String
+	v _List__DealID
+}
+
 // Map__BalanceTable matches the IPLD Schema type "Map__BalanceTable".  It has map kind.
 type Map__BalanceTable = *_Map__BalanceTable
 type _Map__BalanceTable struct {
@@ -1206,6 +1501,39 @@ type _Map__MarketV2RawDealProposal__entry struct {
 	v _MarketV2DealProposal
 }
 
+// Map__MarketV3DealProposal matches the IPLD Schema type "Map__MarketV3DealProposal".  It has map kind.
+type Map__MarketV3DealProposal = *_Map__MarketV3DealProposal
+type _Map__MarketV3DealProposal struct {
+	m map[_CidString]*_MarketV2DealProposal
+	t []_Map__MarketV3DealProposal__entry
+}
+type _Map__MarketV3DealProposal__entry struct {
+	k _CidString
+	v _MarketV2DealProposal
+}
+
+// Map__MarketV3DealState matches the IPLD Schema type "Map__MarketV3DealState".  It has map kind.
+type Map__MarketV3DealState = *_Map__MarketV3DealState
+type _Map__MarketV3DealState struct {
+	m map[_String]*_MarketV0DealState
+	t []_Map__MarketV3DealState__entry
+}
+type _Map__MarketV3DealState__entry struct {
+	k _String
+	v _MarketV0DealState
+}
+
+// Map__MarketV3RawDealProposal matches the IPLD Schema type "Map__MarketV3RawDealProposal".  It has map kind.
+type Map__MarketV3RawDealProposal = *_Map__MarketV3RawDealProposal
+type _Map__MarketV3RawDealProposal struct {
+	m map[_String]*_MarketV2DealProposal
+	t []_Map__MarketV3RawDealProposal__entry
+}
+type _Map__MarketV3RawDealProposal__entry struct {
+	k _String
+	v _MarketV2DealProposal
+}
+
 // Map__MinerV0ExpirationSet matches the IPLD Schema type "Map__MinerV0ExpirationSet".  It has map kind.
 type Map__MinerV0ExpirationSet = *_Map__MinerV0ExpirationSet
 type _Map__MinerV0ExpirationSet struct {
@@ -1239,6 +1567,28 @@ type _Map__MinerV2Partition__entry struct {
 	v _MinerV2Partition__Maybe
 }
 
+// Map__MinerV3ExpirationSet matches the IPLD Schema type "Map__MinerV3ExpirationSet".  It has map kind.
+type Map__MinerV3ExpirationSet = *_Map__MinerV3ExpirationSet
+type _Map__MinerV3ExpirationSet struct {
+	m map[_String]MaybeMinerV0ExpirationSet
+	t []_Map__MinerV3ExpirationSet__entry
+}
+type _Map__MinerV3ExpirationSet__entry struct {
+	k _String
+	v _MinerV0ExpirationSet__Maybe
+}
+
+// Map__MinerV3Partition matches the IPLD Schema type "Map__MinerV3Partition".  It has map kind.
+type Map__MinerV3Partition = *_Map__MinerV3Partition
+type _Map__MinerV3Partition struct {
+	m map[_String]MaybeMinerV3Partition
+	t []_Map__MinerV3Partition__entry
+}
+type _Map__MinerV3Partition__entry struct {
+	k _String
+	v _MinerV3Partition__Maybe
+}
+
 // Map__MultisigV0Transaction matches the IPLD Schema type "Map__MultisigV0Transaction".  It has map kind.
 type Map__MultisigV0Transaction = *_Map__MultisigV0Transaction
 type _Map__MultisigV0Transaction struct {
@@ -1250,6 +1600,17 @@ type _Map__MultisigV0Transaction__entry struct {
 	v _MultisigV0Transaction
 }
 
+// Map__MultisigV3Transaction matches the IPLD Schema type "Map__MultisigV3Transaction".  It has map kind.
+type Map__MultisigV3Transaction = *_Map__MultisigV3Transaction
+type _Map__MultisigV3Transaction struct {
+	m map[_String]*_MultisigV0Transaction
+	t []_Map__MultisigV3Transaction__entry
+}
+type _Map__MultisigV3Transaction__entry struct {
+	k _String
+	v _MultisigV0Transaction
+}
+
 // Map__PaychV0LaneState matches the IPLD Schema type "Map__PaychV0LaneState".  It has map kind.
 type Map__PaychV0LaneState = *_Map__PaychV0LaneState
 type _Map__PaychV0LaneState struct {
@@ -1257,6 +1618,17 @@ type _Map__PaychV0LaneState struct {
 	t []_Map__PaychV0LaneState__entry
 }
 type _Map__PaychV0LaneState__entry struct {
+	k _String
+	v _PaychV0LaneState
+}
+
+// Map__PaychV3LaneState matches the IPLD Schema type "Map__PaychV3LaneState".  It has map kind.
+type Map__PaychV3LaneState = *_Map__PaychV3LaneState
+type _Map__PaychV3LaneState struct {
+	m map[_String]*_PaychV0LaneState
+	t []_Map__PaychV3LaneState__entry
+}
+type _Map__PaychV3LaneState__entry struct {
 	k _String
 	v _PaychV0LaneState
 }
@@ -1294,6 +1666,28 @@ type _Map__PowerV2Claim__entry struct {
 	v _PowerV2Claim__Maybe
 }
 
+// Map__PowerV3Claim matches the IPLD Schema type "Map__PowerV3Claim".  It has map kind.
+type Map__PowerV3Claim = *_Map__PowerV3Claim
+type _Map__PowerV3Claim struct {
+	m map[_RawAddress]MaybePowerV2Claim
+	t []_Map__PowerV3Claim__entry
+}
+type _Map__PowerV3Claim__entry struct {
+	k _RawAddress
+	v _PowerV2Claim__Maybe
+}
+
+// Map__PowerV3CronEvent matches the IPLD Schema type "Map__PowerV3CronEvent".  It has map kind.
+type Map__PowerV3CronEvent = *_Map__PowerV3CronEvent
+type _Map__PowerV3CronEvent struct {
+	m map[_String]MaybePowerV0CronEvent
+	t []_Map__PowerV3CronEvent__entry
+}
+type _Map__PowerV3CronEvent__entry struct {
+	k _String
+	v _PowerV0CronEvent__Maybe
+}
+
 // Map__SectorOnChainInfo matches the IPLD Schema type "Map__SectorOnChainInfo".  It has map kind.
 type Map__SectorOnChainInfo = *_Map__SectorOnChainInfo
 type _Map__SectorOnChainInfo struct {
@@ -1325,6 +1719,61 @@ type _Map__SectorV2OnChainInfo struct {
 type _Map__SectorV2OnChainInfo__entry struct {
 	k _String
 	v _MinerV2SectorOnChainInfo__Maybe
+}
+
+// Map__SectorV3OnChainInfo matches the IPLD Schema type "Map__SectorV3OnChainInfo".  It has map kind.
+type Map__SectorV3OnChainInfo = *_Map__SectorV3OnChainInfo
+type _Map__SectorV3OnChainInfo struct {
+	m map[_String]MaybeMinerV2SectorOnChainInfo
+	t []_Map__SectorV3OnChainInfo__entry
+}
+type _Map__SectorV3OnChainInfo__entry struct {
+	k _String
+	v _MinerV2SectorOnChainInfo__Maybe
+}
+
+// Map__V3ActorID matches the IPLD Schema type "Map__V3ActorID".  It has map kind.
+type Map__V3ActorID = *_Map__V3ActorID
+type _Map__V3ActorID struct {
+	m map[_RawAddress]*_ActorID
+	t []_Map__V3ActorID__entry
+}
+type _Map__V3ActorID__entry struct {
+	k _RawAddress
+	v _ActorID
+}
+
+// Map__V3BalanceTable matches the IPLD Schema type "Map__V3BalanceTable".  It has map kind.
+type Map__V3BalanceTable = *_Map__V3BalanceTable
+type _Map__V3BalanceTable struct {
+	m map[_RawAddress]*_BigInt
+	t []_Map__V3BalanceTable__entry
+}
+type _Map__V3BalanceTable__entry struct {
+	k _RawAddress
+	v _BigInt
+}
+
+// Map__V3DataCap matches the IPLD Schema type "Map__V3DataCap".  It has map kind.
+type Map__V3DataCap = *_Map__V3DataCap
+type _Map__V3DataCap struct {
+	m map[_RawAddress]*_BigInt
+	t []_Map__V3DataCap__entry
+}
+type _Map__V3DataCap__entry struct {
+	k _RawAddress
+	v _BigInt
+}
+
+// Map__V3SectorPreCommitOnChainInfo matches the IPLD Schema type "Map__V3SectorPreCommitOnChainInfo".  It has map kind.
+type Map__V3SectorPreCommitOnChainInfo = *_Map__V3SectorPreCommitOnChainInfo
+type _Map__V3SectorPreCommitOnChainInfo struct {
+	m map[_String]MaybeMinerV0SectorPreCommitOnChainInfo
+	t []_Map__V3SectorPreCommitOnChainInfo__entry
+}
+type _Map__V3SectorPreCommitOnChainInfo__entry struct {
+	k _String
+	v _MinerV0SectorPreCommitOnChainInfo__Maybe
 }
 
 // MarketClientDealProposal matches the IPLD Schema type "MarketClientDealProposal".  It has Struct type-kind, and may be interrogated like map kind.
@@ -1400,6 +1849,22 @@ type _MarketV2State struct {
 	LockedTable _Link__BalanceTable
 	NextID _DealID
 	DealOpsByEpoch _Link__MultimapDealID
+	LastCron _ChainEpoch
+	TotalClientLockedCollateral _BigInt
+	TotalProviderLockedCollateral _BigInt
+	TotalClientStorageFee _BigInt
+}
+
+// MarketV3State matches the IPLD Schema type "MarketV3State".  It has Struct type-kind, and may be interrogated like map kind.
+type MarketV3State = *_MarketV3State
+type _MarketV3State struct {
+	Proposals _Link__MarketV3RawDealProposal
+	States _Link__MarketV3DealState
+	PendingProposals _Link__MarketV3DealProposal
+	EscrowTable _Link__V3BalanceTable
+	LockedTable _Link__V3BalanceTable
+	NextID _DealID
+	DealOpsByEpoch _Link__MarketV3MultimapDealID
 	LastCron _ChainEpoch
 	TotalClientLockedCollateral _BigInt
 	TotalProviderLockedCollateral _BigInt
@@ -1966,6 +2431,59 @@ type _MinerV2State struct {
 	EarlyTerminations _BitField
 }
 
+// MinerV3Deadline matches the IPLD Schema type "MinerV3Deadline".  It has Struct type-kind, and may be interrogated like map kind.
+type MinerV3Deadline = *_MinerV3Deadline
+type _MinerV3Deadline struct {
+	Partitions _Link__MinerV3Partition
+	ExpirationEpochs _Link
+	PostSubmissions _BitField
+	EarlyTerminations _BitField
+	LiveSectors _Int
+	TotalSectors _Int
+	FaultyPower _MinerV0PowerPair
+}
+
+// MinerV3Deadlines matches the IPLD Schema type "MinerV3Deadlines".  It has Struct type-kind, and may be interrogated like map kind.
+type MinerV3Deadlines = *_MinerV3Deadlines
+type _MinerV3Deadlines struct {
+	Due _List__MinerV3DeadlineLink
+}
+
+// MinerV3Partition matches the IPLD Schema type "MinerV3Partition".  It has Struct type-kind, and may be interrogated like map kind.
+type MinerV3Partition = *_MinerV3Partition
+type _MinerV3Partition struct {
+	Sectors _BitField
+	Unproven _BitField
+	Faults _BitField
+	Recoveries _BitField
+	Terminated _BitField
+	ExpirationsEpochs _Link__MinerV3ExpirationSet
+	EarlyTerminated _Link
+	LivePower _MinerV0PowerPair
+	UnprovenPower _MinerV0PowerPair
+	FaultyPower _MinerV0PowerPair
+	RecoveringPower _MinerV0PowerPair
+}
+
+// MinerV3State matches the IPLD Schema type "MinerV3State".  It has Struct type-kind, and may be interrogated like map kind.
+type MinerV3State = *_MinerV3State
+type _MinerV3State struct {
+	Info _Link__MinerV2Info
+	PreCommitDeposits _BigInt
+	LockedFunds _BigInt
+	VestingFunds _Link__MinerV0VestingFunds
+	FeeDebt _BigInt
+	InitialPledge _BigInt
+	PreCommittedSectors _Link__MinerV3SectorPreCommits
+	PreCommittedSectorsExpiry _Link
+	AllocatedSectors _Link__BitField
+	Sectors _Link__MinerV3SectorInfo
+	ProvingPeriodStart _ChainEpoch
+	CurrentDeadline _Int
+	Deadlines _Link__MinerV3Deadlines
+	EarlyTerminations _BitField
+}
+
 // ModVerifyParams matches the IPLD Schema type "ModVerifyParams".  It has Struct type-kind, and may be interrogated like map kind.
 type ModVerifyParams = *_ModVerifyParams
 type _ModVerifyParams struct {
@@ -1986,6 +2504,17 @@ type _Multimap__PowerV0CronEvent struct {
 type _Multimap__PowerV0CronEvent__entry struct {
 	k _String
 	v _Map__PowerV0CronEvent__Maybe
+}
+
+// Multimap__PowerV3CronEvent matches the IPLD Schema type "Multimap__PowerV3CronEvent".  It has map kind.
+type Multimap__PowerV3CronEvent = *_Multimap__PowerV3CronEvent
+type _Multimap__PowerV3CronEvent struct {
+	m map[_String]MaybeMap__PowerV3CronEvent
+	t []_Multimap__PowerV3CronEvent__entry
+}
+type _Multimap__PowerV3CronEvent__entry struct {
+	k _String
+	v _Map__PowerV3CronEvent__Maybe
 }
 
 // MultisigV0State matches the IPLD Schema type "MultisigV0State".  It has Struct type-kind, and may be interrogated like map kind.
@@ -2010,6 +2539,18 @@ type _MultisigV0Transaction struct {
 	Approved _List__Address
 }
 
+// MultisigV3State matches the IPLD Schema type "MultisigV3State".  It has Struct type-kind, and may be interrogated like map kind.
+type MultisigV3State = *_MultisigV3State
+type _MultisigV3State struct {
+	Signers _List__Address
+	NumApprovalsThreshold _Int
+	NextTxnID _Int
+	InitialBalance _BigInt
+	StartEpoch _ChainEpoch
+	UnlockDuration _ChainEpoch
+	PendingTxns _Link__MultisigV3Transaction
+}
+
 // PaddedPieceSize matches the IPLD Schema type "PaddedPieceSize".  It has int kind.
 type PaddedPieceSize = *_PaddedPieceSize
 type _PaddedPieceSize struct{ x int }
@@ -2030,6 +2571,17 @@ type _PaychV0State struct {
 	SettlingAt _ChainEpoch
 	MinSettleHeight _ChainEpoch
 	LaneStates _Link__PaychV0LaneState
+}
+
+// PaychV3State matches the IPLD Schema type "PaychV3State".  It has Struct type-kind, and may be interrogated like map kind.
+type PaychV3State = *_PaychV3State
+type _PaychV3State struct {
+	From _Address
+	To _Address
+	ToSend _BigInt
+	SettlingAt _ChainEpoch
+	MinSettleHeight _ChainEpoch
+	LaneStates _Link__PaychV3LaneState
 }
 
 // PeerID matches the IPLD Schema type "PeerID".  It has bytes kind.
@@ -2103,6 +2655,26 @@ type _PowerV2State struct {
 	CronEventQueue _Link__PowerV0CronEvent
 	FirstCronEpoch _ChainEpoch
 	Claims _Link__PowerV2Claim
+	ProofValidationBatch _Link__Maybe
+}
+
+// PowerV3State matches the IPLD Schema type "PowerV3State".  It has Struct type-kind, and may be interrogated like map kind.
+type PowerV3State = *_PowerV3State
+type _PowerV3State struct {
+	TotalRawBytePower _BigInt
+	TotalBytesCommitted _BigInt
+	TotalQualityAdjPower _BigInt
+	TotalQABytesCommitted _BigInt
+	TotalPledgeCollateral _BigInt
+	ThisEpochRawBytePower _BigInt
+	ThisEpochQualityAdjPower _BigInt
+	ThisEpochPledgeCollateral _BigInt
+	ThisEpochQAPowerSmoothed _V0FilterEstimate__Maybe
+	MinerCount _Int
+	MinerAboveMinPowerCount _Int
+	CronEventQueue _Link__PowerV3CronEvent
+	FirstCronEpoch _ChainEpoch
+	Claims _Link__PowerV3Claim
 	ProofValidationBatch _Link__Maybe
 }
 
@@ -2206,5 +2778,13 @@ type _VerifregV0State struct {
 	RootKey _Address
 	Verifiers _Link__DataCap
 	VerifiedClients _Link__DataCap
+}
+
+// VerifregV3State matches the IPLD Schema type "VerifregV3State".  It has Struct type-kind, and may be interrogated like map kind.
+type VerifregV3State = *_VerifregV3State
+type _VerifregV3State struct {
+	RootKey _Address
+	Verifiers _Link__V3DataCap
+	VerifiedClients _Link__V3DataCap
 }
 
