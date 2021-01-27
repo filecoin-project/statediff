@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	hamt "github.com/filecoin-project/go-hamt-ipld/v2"
+	hamtv3 "github.com/filecoin-project/go-hamt-ipld/v3"
 	abi "github.com/filecoin-project/go-state-types/abi"
 	"github.com/ipfs/go-cid"
 	cbor "github.com/ipfs/go-ipld-cbor"
@@ -27,6 +28,7 @@ import (
 
 	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 	adtv2 "github.com/filecoin-project/specs-actors/v2/actors/util/adt"
+	adtv3 "github.com/filecoin-project/specs-actors/v3/actors/util/adt"
 )
 
 // LotusType represents known types
@@ -45,27 +47,40 @@ const (
 	AccountActorState                          LotusType = "accountActor"
 	CronActorState                             LotusType = "cronActor"
 	InitActorState                             LotusType = "initActor"
+	InitActorV3State                           LotusType = "initActorV3"
 	InitActorAddresses                         LotusType = "initActorAddresses"
+	InitActorV3Addresses                       LotusType = "initActorV3Addresses"
 	MarketActorState                           LotusType = "storageMarketActor"
 	MarketActorV2State                         LotusType = "storageMarketActorV2"
+	MarketActorV3State                         LotusType = "storageMarketActorV3"
 	MarketActorProposals                       LotusType = "storageMarketActor.Proposals"
 	MarketActorV2Proposals                     LotusType = "storageMarketActorV2.Proposals"
+	MarketActorV3Proposals                     LotusType = "storageMarketActorV3.Proposals"
 	MarketActorStates                          LotusType = "storageMarketActor.States"
+	MarketActorV3States                        LotusType = "storageMarketActorV3.States"
 	MarketActorPendingProposals                LotusType = "storageMarketActor.PendingProposals"
 	MarketActorV2PendingProposals              LotusType = "storageMarketActorV2.PendingProposals"
+	MarketActorV3PendingProposals              LotusType = "storageMarketActorV3.PendingProposals"
 	MarketActorEscrowTable                     LotusType = "storageMarketActor.EscrowTable"
 	MarketActorLockedTable                     LotusType = "storageMarketActor.LockedTable"
+	MarketActorV3EscrowTable                   LotusType = "storageMarketActorV3.EscrowTable"
+	MarketActorV3LockedTable                   LotusType = "storageMarketActorV3.LockedTable"
 	MarketActorDealOpsByEpoch                  LotusType = "storageMarketActor.DealOpsByEpoch"
+	MarketActorV3DealOpsByEpoch                LotusType = "storageMarketActorV3.DealOpsByEpoch"
 	MultisigActorState                         LotusType = "multisigActor"
+	MultisigActorV3State                       LotusType = "multisigActorV3"
 	MultisigActorPending                       LotusType = "multisigActor.PendingTxns"
+	MultisigActorV3Pending                     LotusType = "multisigActorV3.PendingTxns"
 	StorageMinerActorState                     LotusType = "storageMinerActor"
 	StorageMinerActorInfo                      LotusType = "storageMinerActor.Info"
 	StorageMinerActorVestingFunds              LotusType = "storageMinerActor.VestingFunds"
 	StorageMinerActorPreCommittedSectors       LotusType = "storageMinerActor.PreCommittedSectors"
+	StorageMinerActorV3PreCommittedSectors     LotusType = "storageMinerActorV3.PreCommittedSectors"
 	StorageMinerActorPreCommittedSectorsExpiry LotusType = "storageMinerActor.PreCommittedSectorsExpiry"
 	StorageMinerActorAllocatedSectors          LotusType = "storageMinerActor.AllocatedSectors"
 	StorageMinerActorSectors                   LotusType = "storageMinerActor.Sectors"
 	StorageMinerActorV2Sectors                 LotusType = "storageMinerActorV2.Sectors"
+	StorageMinerActorV3Sectors                 LotusType = "storageMinerActorV3.Sectors"
 	StorageMinerActorDeadlines                 LotusType = "storageMinerActor.Deadlines"
 	StorageMinerActorDeadline                  LotusType = "storageMinerActor.Deadlines.Due[]"
 	StorageMinerActorDeadlinePartitions        LotusType = "storageMinerActor.Deadlines.Due.Partitions"
@@ -77,28 +92,46 @@ const (
 	StorageMinerActorV2Deadlines               LotusType = "storageMinerActorV2.Deadlines"
 	StorageMinerActorV2Deadline                LotusType = "storageMinerActorV2.Deadlines.Due[]"
 	StorageMinerActorV2DeadlinePartitions      LotusType = "storageMinerActorV2.Deadlines.Due.Partitions"
+	StorageMinerActorV3State                   LotusType = "storageMinerActorV3"
+	StorageMinerActorV3Deadlines               LotusType = "storageMinerActorV3.Deadlines"
+	StorageMinerActorV3Deadline                LotusType = "storageMinerActorV3.Deadlines.Due[]"
+	StorageMinerActorV3DeadlineExpiry          LotusType = "storageMinerActorV3.Deadlines.Due.ExpirationsEpochs"
+	StorageMinerActorV3DeadlinePartitions      LotusType = "storageMinerActorV3.Deadlines.Due.Partitions"
+	StorageMinerActorV3DeadlinePartitionExpiry LotusType = "storageMinerActorV3.Deadlines.Due.Partitions.ExpirationsEpochs"
+	StorageMinerActorV3DeadlinePartitionEarly  LotusType = "storageMinerActorV3.Deadlines.Due.Partitions.EarlyTerminated"
 	StoragePowerActorState                     LotusType = "storagePowerActor"
 	StoragePowerActorV2State                   LotusType = "storagePowerActorV2"
+	StoragePowerActorV3State                   LotusType = "storagePowerActorV3"
 	StoragePowerActorCronEventQueue            LotusType = "storagePowerCronEventQueue"
+	StoragePowerActorV3CronEventQueue          LotusType = "storagePowerV3CronEventQueue"
 	StoragePowerActorClaims                    LotusType = "storagePowerClaims"
 	StoragePowerActorV2Claims                  LotusType = "storagePowerClaimsV2"
+	StoragePowerActorV3Claims                  LotusType = "storagePowerClaimsV3"
 	RewardActorState                           LotusType = "rewardActor"
 	RewardActorV2State                         LotusType = "rewardActorV2"
 	VerifiedRegistryActorState                 LotusType = "verifiedRegistryActor"
 	VerifiedRegistryActorVerifiers             LotusType = "verifiedRegistryActor.Verifiers"
 	VerifiedRegistryActorVerifiedClients       LotusType = "verifiedRegistryActor.VerifiedClients"
+	VerifiedRegistryActorV3State               LotusType = "verifiedRegistryActorV3"
+	VerifiedRegistryActorV3Verifiers           LotusType = "verifiedRegistryActorV3.Verifiers"
+	VerifiedRegistryActorV3VerifiedClients     LotusType = "verifiedRegistryActorV3.VerifiedClients"
 	PaymentChannelActorState                   LotusType = "paymentChannelActor"
 	PaymentChannelActorLaneStates              LotusType = "paymentChannelActor.LaneStates"
+	PaymentChannelActorV3State                 LotusType = "paymentChannelActorV3"
+	PaymentChannelActorV3LaneStates            LotusType = "paymentChannelActorV3.LaneStates"
 )
 
 // LotusTypeAliases lists non-direct mapped aliases
 var LotusTypeAliases = map[string]LotusType{
 	"tipset.ParentStateRoot":                                         LotusTypeStateroot,
 	"initActor.AddressMap":                                           InitActorAddresses,
+	"initActorV3.AddressMap":                                         InitActorV3Addresses,
 	"storagePowerActor.CronEventQueue":                               StoragePowerActorCronEventQueue,
 	"storagePowerActorV2.CronEventQueue":                             StoragePowerActorCronEventQueue,
+	"storagePowerActorV3.CronEventQueue":                             StoragePowerActorV3CronEventQueue,
 	"storagePowerActor.Claims":                                       StoragePowerActorClaims,
 	"storagePowerActorV2.Claims":                                     StoragePowerActorV2Claims,
+	"storagePowerActorV3.Claims":                                     StoragePowerActorV3Claims,
 	"storageMarketActorV2.States":                                    MarketActorStates,
 	"storageMarketActorV2.EscrowTable":                               MarketActorEscrowTable,
 	"storageMarketActorV2.LockedTable":                               MarketActorLockedTable,
@@ -112,7 +145,16 @@ var LotusTypeAliases = map[string]LotusType{
 	"storageMinerActorV2.Deadlines.Due.ExpirationEpochs":             StorageMinerActorDeadlineExpiry,
 	"storageMinerActorV2.Deadlines.Due.Partitions.ExpirationsEpochs": StorageMinerActorDeadlinePartitionExpiry,
 	"storageMinerActorV2.Deadlines.Due.Partitions.EarlyTerminated":   StorageMinerActorDeadlinePartitionEarly,
+	"storageMinerActorV3.Info":                                       StorageMinerActorV2Info,
+	"storageMinerActorV3.VestingFunds":                               StorageMinerActorVestingFunds,
+	"storageMinerActorV3.AllocatedSectors":                           StorageMinerActorAllocatedSectors,
 	"msgMeta.SecpkMessages":                                          LotusTypeMsgList,
+}
+
+func cidOf(name string) string {
+	builder := cid.V1Builder{Codec: cid.Raw, MhType: multihash.IDENTITY}
+	c, _ := builder.Sum([]byte(name))
+	return c.String()
 }
 
 // LotusActorCodes for actor states
@@ -140,6 +182,18 @@ var LotusActorCodes = map[string]LotusType{
 	"bafkqadtgnfwc6mrpnv2wy5djonuwo":              MultisigActorState,
 	"bafkqafdgnfwc6mrpobqxs3lfnz2gg2dbnzxgk3a":    PaymentChannelActorState,
 	"bafkqaetgnfwc6mrpon2g64tbm5sw22lomvza":       StorageMinerActorV2State,
+	// v3
+	cidOf("fil/3/system"):           LotusType("systemActor"),
+	cidOf("fil/3/init"):             InitActorV3State,
+	cidOf("fil/3/cron"):             CronActorState,
+	cidOf("fil/3/storagepower"):     StoragePowerActorV3State,
+	cidOf("fil/3/storageminer"):     StorageMinerActorV3State,
+	cidOf("fil/3/storagemarket"):    MarketActorV3State,
+	cidOf("fil/3/paymentchannel"):   PaymentChannelActorV3State,
+	cidOf("fil/3/reward"):           RewardActorV2State,
+	cidOf("fil/3/verifiedregistry"): VerifiedRegistryActorV3State,
+	cidOf("fil/3/account"):          AccountActorState,
+	cidOf("fil/3/multisig"):         MultisigActorV3State,
 }
 
 var lotusMessageMap = basicnode.Prototype__Map{}
@@ -155,8 +209,10 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	AccountActorState:                 types.Type.AccountV0State__Repr,
 	CronActorState:                    types.Type.CronV0State__Repr,
 	InitActorState:                    types.Type.InitV0State__Repr,
+	InitActorV3State:                  types.Type.InitV3State__Repr,
 	MarketActorState:                  types.Type.MarketV0State__Repr,
 	MarketActorV2State:                types.Type.MarketV2State__Repr,
+	MarketActorV3State:                types.Type.MarketV3State__Repr,
 	MultisigActorState:                types.Type.MultisigV0State__Repr,
 	StorageMinerActorState:            types.Type.MinerV0State__Repr,
 	StorageMinerActorInfo:             types.Type.MinerV0Info__Repr,
@@ -168,72 +224,114 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	StorageMinerActorV2Info:           types.Type.MinerV2Info__Repr,
 	StorageMinerActorV2Deadlines:      types.Type.MinerV2Deadlines__Repr,
 	StorageMinerActorV2Deadline:       types.Type.MinerV2Deadline__Repr,
+	StorageMinerActorV3State:          types.Type.MinerV3State__Repr,
+	StorageMinerActorV3Deadlines:      types.Type.MinerV3Deadlines__Repr,
+	StorageMinerActorV3Deadline:       types.Type.MinerV3Deadline__Repr,
 	StoragePowerActorState:            types.Type.PowerV0State__Repr,
 	StoragePowerActorV2State:          types.Type.PowerV2State__Repr,
+	StoragePowerActorV3State:          types.Type.PowerV3State__Repr,
 	RewardActorState:                  types.Type.RewardV0State__Repr,
 	RewardActorV2State:                types.Type.RewardV2State__Repr,
 	VerifiedRegistryActorState:        types.Type.VerifregV0State__Repr,
+	VerifiedRegistryActorV3State:      types.Type.VerifregV3State__Repr,
 	PaymentChannelActorState:          types.Type.PaychV0State__Repr,
+	PaymentChannelActorV3State:        types.Type.PaychV3State__Repr,
 	// Complex types
 	LotusTypeMsgList:                           types.Type.List__LinkLotusMessage__Repr,
 	LotusTypeStateroot:                         hamt.NewTypedHamt(types.Type.RawAddress__Repr, types.Type.LotusActors__Repr),
 	InitActorAddresses:                         types.Type.Map__ActorID__Repr,
+	InitActorV3Addresses:                       types.Type.Map__V3ActorID__Repr,
 	StorageMinerActorPreCommittedSectors:       types.Type.Map__SectorPreCommitOnChainInfo__Repr,
+	StorageMinerActorV3PreCommittedSectors:     types.Type.Map__V3SectorPreCommitOnChainInfo__Repr,
 	StorageMinerActorDeadlinePartitionEarly:    types.Type.Map__BitField__Repr,
+	StorageMinerActorV3DeadlinePartitionEarly:  types.Type.MapV3__BitField__Repr,
 	StorageMinerActorPreCommittedSectorsExpiry: types.Type.Map__BitField__Repr,
 	StorageMinerActorSectors:                   types.Type.Map__SectorOnChainInfo__Repr,
 	StorageMinerActorV2Sectors:                 types.Type.Map__SectorV2OnChainInfo__Repr,
+	StorageMinerActorV3Sectors:                 types.Type.Map__SectorV3OnChainInfo__Repr,
 	StorageMinerActorDeadlinePartitions:        types.Type.Map__MinerV0Partition__Repr,
 	StorageMinerActorV2DeadlinePartitions:      types.Type.Map__MinerV2Partition__Repr,
+	StorageMinerActorV3DeadlinePartitions:      types.Type.Map__MinerV3Partition__Repr,
 	StorageMinerActorDeadlinePartitionExpiry:   types.Type.Map__MinerV0ExpirationSet__Repr,
+	StorageMinerActorV3DeadlinePartitionExpiry: types.Type.Map__MinerV3ExpirationSet__Repr,
 	StorageMinerActorDeadlineExpiry:            types.Type.Map__BitField__Repr,
+	StorageMinerActorV3DeadlineExpiry:          types.Type.MapV3__BitField__Repr,
 	StoragePowerActorCronEventQueue:            types.Type.Multimap__PowerV0CronEvent__Repr,
-	StoragePowerActorClaims:                    types.Type.Map__PowerV0Claim__Repr,
-	StoragePowerActorV2Claims:                  types.Type.Map__PowerV2Claim__Repr,
-	VerifiedRegistryActorVerifiers:             types.Type.Map__DataCap__Repr,
-	VerifiedRegistryActorVerifiedClients:       types.Type.Map__DataCap__Repr,
-	MarketActorPendingProposals:                types.Type.Map__MarketV0DealProposal__Repr,
-	MarketActorV2PendingProposals:              types.Type.Map__MarketV2DealProposal__Repr,
-	MarketActorProposals:                       types.Type.Map__MarketV0RawDealProposal__Repr,
-	MarketActorV2Proposals:                     types.Type.Map__MarketV2RawDealProposal__Repr,
-	MarketActorStates:                          types.Type.Map__MarketV0DealState__Repr,
-	MarketActorEscrowTable:                     types.Type.Map__BalanceTable__Repr,
-	MarketActorLockedTable:                     types.Type.Map__BalanceTable__Repr,
-	MarketActorDealOpsByEpoch:                  types.Type.Map__List__DealID__Repr,
-	MultisigActorPending:                       types.Type.Map__MultisigV0Transaction__Repr,
-	PaymentChannelActorLaneStates:              types.Type.Map__PaychV0LaneState__Repr,
+
+	StoragePowerActorV3CronEventQueue:      types.Type.Multimap__PowerV3CronEvent__Repr,
+	StoragePowerActorClaims:                types.Type.Map__PowerV0Claim__Repr,
+	StoragePowerActorV2Claims:              types.Type.Map__PowerV2Claim__Repr,
+	StoragePowerActorV3Claims:              types.Type.Map__PowerV3Claim__Repr,
+	VerifiedRegistryActorVerifiers:         types.Type.Map__DataCap__Repr,
+	VerifiedRegistryActorVerifiedClients:   types.Type.Map__DataCap__Repr,
+	VerifiedRegistryActorV3Verifiers:       types.Type.Map__V3DataCap__Repr,
+	VerifiedRegistryActorV3VerifiedClients: types.Type.Map__V3DataCap__Repr,
+	MarketActorPendingProposals:            types.Type.Map__MarketV0DealProposal__Repr,
+	MarketActorV2PendingProposals:          types.Type.Map__MarketV2DealProposal__Repr,
+	MarketActorV3PendingProposals:          types.Type.Map__MarketV3DealProposal__Repr,
+	MarketActorProposals:                   types.Type.Map__MarketV0RawDealProposal__Repr,
+	MarketActorV2Proposals:                 types.Type.Map__MarketV2RawDealProposal__Repr,
+	MarketActorV3Proposals:                 types.Type.Map__MarketV3RawDealProposal__Repr,
+	MarketActorStates:                      types.Type.Map__MarketV0DealState__Repr,
+	MarketActorV3States:                    types.Type.Map__MarketV3DealState__Repr,
+	MarketActorEscrowTable:                 types.Type.Map__BalanceTable__Repr,
+	MarketActorV3EscrowTable:               types.Type.Map__V3BalanceTable__Repr,
+	MarketActorLockedTable:                 types.Type.Map__BalanceTable__Repr,
+	MarketActorV3LockedTable:               types.Type.Map__V3BalanceTable__Repr,
+	MarketActorDealOpsByEpoch:              types.Type.Map__List__DealID__Repr,
+	MarketActorV3DealOpsByEpoch:            types.Type.MapV3__List__DealID__Repr,
+	MultisigActorPending:                   types.Type.Map__MultisigV0Transaction__Repr,
+	MultisigActorV3Pending:                 types.Type.Map__MultisigV3Transaction__Repr,
+	PaymentChannelActorLaneStates:          types.Type.Map__PaychV0LaneState__Repr,
+	PaymentChannelActorV3LaneStates:        types.Type.Map__PaychV3LaneState__Repr,
 }
 
 // Loader is the conformer for our wrapper around ADLs
 type Loader func(context.Context, cid.Cid, blockstore.Blockstore, ipld.NodeAssembler) error
 
 var complexLoaders = map[ipld.NodePrototype]Loader{
-	types.Type.LotusStateRoot__Repr:                  maybeLoadUnversionedStateRoot,
-	LotusPrototypes[LotusTypeStateroot]:              loadHamt,
-	LotusPrototypes[InitActorAddresses]:              loadHamt,
-	types.Type.Map__LotusActors__Repr:                loadMap,
-	types.Type.List__LinkLotusMessage__Repr:          loadList,
-	types.Type.Map__ActorID__Repr:                    loadMap,
-	types.Type.Map__SectorPreCommitOnChainInfo__Repr: transformMinerActorPreCommittedSectors,
-	types.Type.Map__BitField__Repr:                   loadListAsMap,
-	types.Type.Map__SectorOnChainInfo__Repr:          loadListAsMap,
-	types.Type.Map__SectorV2OnChainInfo__Repr:        loadListAsMap,
-	types.Type.Map__MinerV0Partition__Repr:           loadListAsMap,
-	types.Type.Map__MinerV2Partition__Repr:           loadListAsMap,
-	types.Type.Map__MinerV0ExpirationSet__Repr:       loadListAsMap,
-	types.Type.Multimap__PowerV0CronEvent__Repr:      transformPowerActorEventQueue,
-	types.Type.Map__PowerV0Claim__Repr:               loadMap,
-	types.Type.Map__PowerV2Claim__Repr:               loadMap,
-	types.Type.Map__DataCap__Repr:                    transformVerifiedRegistryDataCaps,
-	types.Type.Map__MarketV0DealProposal__Repr:       loadListAsMap,
-	types.Type.Map__MarketV2DealProposal__Repr:       loadMap,
-	types.Type.Map__MarketV0RawDealProposal__Repr:    loadMap,
-	types.Type.Map__MarketV2RawDealProposal__Repr:    transformMarketV2Proposals,
-	types.Type.Map__MarketV0DealState__Repr:          loadListAsMap,
-	types.Type.Map__BalanceTable__Repr:               transformMarketBalanceTable,
-	types.Type.Map__List__DealID__Repr:               transformMarketDealOpsByEpoch,
-	types.Type.Map__MultisigV0Transaction__Repr:      transformMultisigPending,
-	types.Type.Map__PaychV0LaneState__Repr:           transformPaymentChannelLaneStates,
+	types.Type.LotusStateRoot__Repr:                    maybeLoadUnversionedStateRoot,
+	LotusPrototypes[LotusTypeStateroot]:                loadHamt,
+	LotusPrototypes[InitActorAddresses]:                loadHamt,
+	types.Type.Map__LotusActors__Repr:                  loadMap,
+	types.Type.List__LinkLotusMessage__Repr:            loadList,
+	types.Type.Map__ActorID__Repr:                      loadMap,
+	types.Type.Map__V3ActorID__Repr:                    loadV3Map,
+	types.Type.Map__SectorPreCommitOnChainInfo__Repr:   transformMinerActorPreCommittedSectors,
+	types.Type.Map__V3SectorPreCommitOnChainInfo__Repr: transformMinerActorV3PreCommittedSectors,
+	types.Type.Map__BitField__Repr:                     loadListAsMap,
+	types.Type.MapV3__BitField__Repr:                   loadV3ListAsMap(5),
+	types.Type.Map__SectorOnChainInfo__Repr:            loadListAsMap,
+	types.Type.Map__SectorV2OnChainInfo__Repr:          loadListAsMap,
+	types.Type.Map__SectorV3OnChainInfo__Repr:          loadV3ListAsMap(5),
+	types.Type.Map__MinerV0Partition__Repr:             loadListAsMap,
+	types.Type.Map__MinerV2Partition__Repr:             loadListAsMap,
+	types.Type.Map__MinerV3Partition__Repr:             loadV3ListAsMap(5),
+	types.Type.Map__MinerV0ExpirationSet__Repr:         loadListAsMap,
+	types.Type.Map__MinerV3ExpirationSet__Repr:         loadV3ListAsMap(6),
+	types.Type.Multimap__PowerV0CronEvent__Repr:        transformPowerActorEventQueue,
+	types.Type.Multimap__PowerV3CronEvent__Repr:        transformPowerActorV3EventQueue,
+	types.Type.Map__PowerV0Claim__Repr:                 loadMap,
+	types.Type.Map__PowerV2Claim__Repr:                 loadMap,
+	types.Type.Map__PowerV3Claim__Repr:                 loadV3Map,
+	types.Type.Map__DataCap__Repr:                      transformVerifiedRegistryDataCaps,
+	types.Type.Map__V3DataCap__Repr:                    transformVerifiedRegistryV3DataCaps,
+	types.Type.Map__MarketV0DealProposal__Repr:         loadListAsMap,
+	types.Type.Map__MarketV2DealProposal__Repr:         loadMap,
+	types.Type.Map__MarketV3DealProposal__Repr:         loadV3Map,
+	types.Type.Map__MarketV0RawDealProposal__Repr:      loadMap,
+	types.Type.Map__MarketV2RawDealProposal__Repr:      transformMarketV2Proposals,
+	types.Type.Map__MarketV3RawDealProposal__Repr:      loadV3ListAsMap(5),
+	types.Type.Map__MarketV0DealState__Repr:            loadListAsMap,
+	types.Type.Map__MarketV3DealState__Repr:            loadV3ListAsMap(6),
+	types.Type.Map__BalanceTable__Repr:                 transformMarketBalanceTable,
+	types.Type.Map__V3BalanceTable__Repr:               transformMarketV3BalanceTable,
+	types.Type.Map__List__DealID__Repr:                 transformMarketDealOpsByEpoch,
+	types.Type.MapV3__List__DealID__Repr:               transformMarketDealOpsByEpochV3,
+	types.Type.Map__MultisigV0Transaction__Repr:        transformMultisigPending,
+	types.Type.Map__MultisigV3Transaction__Repr:        transformMultisigPendingV3,
+	types.Type.Map__PaychV0LaneState__Repr:             transformPaymentChannelLaneStates,
+	types.Type.Map__PaychV3LaneState__Repr:             transformPaymentChannelV3LaneStates,
 }
 
 func init() {
@@ -242,16 +340,22 @@ func init() {
 
 var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
 	types.Type.Link__BalanceTable:            types.Type.Map__BalanceTable__Repr,
+	types.Type.Link__V3BalanceTable:          types.Type.Map__V3BalanceTable__Repr,
 	types.Type.Link__BitField:                types.Type.BitField__Repr,
 	types.Type.Link__DataCap:                 types.Type.Map__DataCap__Repr,
+	types.Type.Link__V3DataCap:               types.Type.Map__V3DataCap__Repr,
 	types.Type.Link__LotusStateRoot:          types.Type.LotusStateRoot__Repr,
 	types.Type.Link__MapActorID:              types.Type.Map__ActorID__Repr,
 	types.Type.Link__MarketV0DealProposal:    types.Type.Map__MarketV0DealProposal__Repr,
 	types.Type.Link__MarketV2DealProposal:    types.Type.Map__MarketV2DealProposal__Repr,
+	types.Type.Link__MarketV3DealProposal:    types.Type.Map__MarketV3DealProposal__Repr,
 	types.Type.Link__MarketV0DealState:       types.Type.Map__MarketV0DealState__Repr,
+	types.Type.Link__MarketV3DealState:       types.Type.Map__MarketV3DealState__Repr,
 	types.Type.Link__MarketV0RawDealProposal: types.Type.Map__MarketV0RawDealProposal__Repr,
 	types.Type.Link__MarketV2RawDealProposal: types.Type.Map__MarketV2RawDealProposal__Repr,
+	types.Type.Link__MarketV3RawDealProposal: types.Type.Map__MarketV3RawDealProposal__Repr,
 	types.Type.Link__MultimapDealID:          types.Type.Map__List__DealID__Repr,
+	types.Type.Link__MarketV3MultimapDealID:  types.Type.MapV3__List__DealID__Repr,
 	types.Type.Link__MinerV0Deadlines:        types.Type.List__MinerV0DeadlineLink__Repr,
 	types.Type.Link__MinerV0Deadline:         types.Type.MinerV0Deadline__Repr,
 	types.Type.Link__MinerV0ExpirationSet:    types.Type.Map__MinerV0ExpirationSet__Repr,
@@ -265,25 +369,42 @@ var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
 	types.Type.Link__MinerV2Deadline:         types.Type.MinerV2Deadline__Repr,
 	types.Type.Link__MinerV2Info:             types.Type.MinerV2Info__Repr,
 	types.Type.Link__MinerV2Partition:        types.Type.MinerV2Partition__Repr,
+	types.Type.Link__MinerV3SectorPreCommits: types.Type.Map__V3SectorPreCommitOnChainInfo__Repr,
+	types.Type.Link__MinerV3Deadlines:        types.Type.List__MinerV3DeadlineLink__Repr,
+	types.Type.Link__MinerV3Deadline:         types.Type.MinerV3Deadline__Repr,
+	types.Type.Link__MinerV3Partition:        types.Type.MinerV3Partition__Repr,
+	types.Type.Link__MinerV3ExpirationSet:    types.Type.Map__MinerV3ExpirationSet__Repr,
+	types.Type.Link__MinerV3SectorInfo:       types.Type.Map__SectorV3OnChainInfo__Repr,
 	types.Type.Link__MultisigV0Transaction:   types.Type.Map__MultisigV0Transaction__Repr,
+	types.Type.Link__MultisigV3Transaction:   types.Type.Map__MultisigV3Transaction__Repr,
 	types.Type.Link__PaychV0LaneState:        types.Type.Map__PaychV0LaneState__Repr,
+	types.Type.Link__PaychV3LaneState:        types.Type.Map__PaychV3LaneState__Repr,
 	types.Type.Link__PowerV0Claim:            types.Type.Map__PowerV0Claim__Repr,
 	types.Type.Link__PowerV2Claim:            types.Type.Map__PowerV2Claim__Repr,
+	types.Type.Link__PowerV3Claim:            types.Type.Map__PowerV3Claim__Repr,
 	types.Type.Link__PowerV0CronEvent:        types.Type.Multimap__PowerV0CronEvent__Repr,
+	types.Type.Link__PowerV3CronEvent:        types.Type.Multimap__PowerV3CronEvent__Repr,
 	types.Type.Link__AccountV0State:          types.Type.AccountV0State__Repr,
 	types.Type.Link__CronV0State:             types.Type.CronV0State__Repr,
 	types.Type.Link__InitV0State:             types.Type.InitV0State__Repr,
+	types.Type.Link__InitV3State:             types.Type.InitV3State__Repr,
 	types.Type.Link__MarketV0State:           types.Type.MarketV0State__Repr,
 	types.Type.Link__MarketV2State:           types.Type.MarketV2State__Repr,
+	types.Type.Link__MarketV3State:           types.Type.MarketV3State__Repr,
 	types.Type.Link__MinerV0State:            types.Type.MinerV0State__Repr,
 	types.Type.Link__MinerV2State:            types.Type.MinerV2State__Repr,
+	types.Type.Link__MinerV3State:            types.Type.MinerV3State__Repr,
 	types.Type.Link__MultisigV0State:         types.Type.MultisigV0State__Repr,
+	types.Type.Link__MultisigV3State:         types.Type.MultisigV3State__Repr,
 	types.Type.Link__PaychV0State:            types.Type.PaychV0State__Repr,
+	types.Type.Link__PaychV3State:            types.Type.PaychV3State__Repr,
 	types.Type.Link__PowerV0State:            types.Type.PowerV0State__Repr,
 	types.Type.Link__PowerV2State:            types.Type.PowerV2State__Repr,
+	types.Type.Link__PowerV3State:            types.Type.PowerV3State__Repr,
 	types.Type.Link__RewardV0State:           types.Type.RewardV0State__Repr,
 	types.Type.Link__RewardV2State:           types.Type.RewardV2State__Repr,
 	types.Type.Link__VerifregV0State:         types.Type.VerifregV0State__Repr,
+	types.Type.Link__VerifregV3State:         types.Type.VerifregV3State__Repr,
 	types.Type.Link__LotusMsgMeta:            types.Type.LotusMsgMeta__Repr,
 	types.Type.Link__ListLotusMessage:        types.Type.List__LinkLotusMessage__Repr,
 	types.Type.Link__LotusMessage:            types.Type.LotusMessage__Repr,
@@ -446,6 +567,45 @@ func maybeLoadUnversionedStateRoot(ctx context.Context, c cid.Cid, store blockst
 // AllowDegradedADLNodes uses adl walks that ignore store.Get fails
 var AllowDegradedADLNodes = false
 
+func loadV3Map(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamtv3.LoadNode(ctx, cborStore, c, hamtv3.UseTreeBitWidth(5))
+	if err != nil {
+		return fmt.Errorf("hamt load node errored: %v", err)
+	}
+	mapper, err := as.BeginMap(0)
+	if err != nil {
+		return err
+	}
+
+	mapcb := func(k string, val *cbg.Deferred) error {
+		v, err := mapper.AssembleEntry(k)
+		if err != nil {
+			return err
+		}
+
+		value := mapper.ValuePrototype(k).NewBuilder()
+		if err := dagcbor.Decoder(value, bytes.NewBuffer(val.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(value.Build())
+	}
+
+	if AllowDegradedADLNodes {
+		if err := degradedForEachV3(node, mapcb, cborStore); err != nil {
+			return fmt.Errorf("Hamt browse failed: %v", err)
+		}
+	} else {
+		if err := node.ForEach(ctx, mapcb); err != nil {
+			return fmt.Errorf("Hamt browse failed: %v", err)
+		}
+	}
+	if err := mapper.Finish(); err != nil {
+		return err
+	}
+	return nil
+}
+
 func loadMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamt.LoadNode(ctx, cborStore, c, hamt.UseTreeBitWidth(5))
@@ -545,6 +705,34 @@ func loadListAsMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, 
 		return err
 	}
 	return mapper.Finish()
+}
+
+func loadV3ListAsMap(bitwidth int) func(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	return func(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+		cborStore := cbor.NewCborStore(store)
+		list, err := adtv3.AsArray(adt.WrapStore(ctx, cborStore), c, bitwidth)
+		if err != nil {
+			return err
+		}
+
+		mapper, err := assembler.BeginMap(0)
+		if err != nil {
+			return err
+		}
+
+		value := cbg.Deferred{}
+		if err := list.ForEach(&value, func(k int64) error {
+			v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+			if err != nil {
+				return err
+			}
+
+			return dagcbor.Decoder(v, bytes.NewBuffer(value.Raw))
+		}); err != nil {
+			return err
+		}
+		return mapper.Finish()
+	}
 }
 
 type StateRootFunc func(context.Context) []cid.Cid
@@ -672,6 +860,37 @@ func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, stor
 	return mapper.Finish()
 }
 
+func transformMinerActorV3PreCommittedSectors(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamtv3.LoadNode(ctx, cborStore, c, hamtv3.UseTreeBitWidth(5))
+	if err != nil {
+		return err
+	}
+
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return err
+	}
+
+	if err := node.ForEach(ctx, func(k string, val *cbg.Deferred) error {
+		i := big.NewInt(0)
+		i.SetBytes([]byte(k))
+		v, err := mapper.AssembleEntry(i.String())
+		if err != nil {
+			return err
+		}
+
+		actor := types.Type.MinerV0SectorPreCommitOnChainInfo__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(val.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
+	}); err != nil {
+		return err
+	}
+	return mapper.Finish()
+}
+
 func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	node, err := adt.AsMultimap(adt.WrapStore(ctx, cborStore), c)
@@ -684,6 +903,59 @@ func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockst
 	}
 
 	if err := node.ForAll(func(k string, val *adt.Array) error {
+		bi := big.NewInt(0)
+		bi.SetBytes([]byte(k))
+		v, err := mapper.AssembleEntry(bi.String())
+		if err != nil {
+			return err
+		}
+
+		amt := types.Type.Map__PowerV0CronEvent__Repr.NewBuilder()
+		amtM, err := amt.BeginMap(0)
+		if err != nil {
+			return err
+		}
+
+		var eval cbg.Deferred
+		if err := val.ForEach(&eval, func(i int64) error {
+			subv, err := amtM.AssembleEntry(fmt.Sprintf("%d", i))
+			if err != nil {
+				return err
+			}
+
+			actor := types.Type.PowerV0CronEvent__Repr.NewBuilder()
+			if err := dagcbor.Decoder(actor, bytes.NewBuffer(eval.Raw)); err != nil {
+				return fmt.Errorf("decoding of event leaf failed: %w", err)
+			}
+			if err := subv.AssignNode(actor.Build()); err != nil {
+				return fmt.Errorf("Aassign of thign sad:%w", err)
+			}
+			return nil
+		}); err != nil {
+			return err
+		}
+		if err := amtM.Finish(); err != nil {
+			return err
+		}
+		return v.AssignNode(amt.Build())
+	}); err != nil {
+		return err
+	}
+	return mapper.Finish()
+}
+
+func transformPowerActorV3EventQueue(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	node, err := adtv3.AsMultimap(adtv3.WrapStore(ctx, cborStore), c, 6, 6)
+	if err != nil {
+		return err
+	}
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return err
+	}
+
+	if err := node.ForAll(func(k string, val *adtv3.Array) error {
 		bi := big.NewInt(0)
 		bi.SetBytes([]byte(k))
 		v, err := mapper.AssembleEntry(bi.String())
@@ -756,6 +1028,31 @@ func transformVerifiedRegistryDataCaps(ctx context.Context, c cid.Cid, store blo
 	return mapper.Finish()
 }
 
+func transformVerifiedRegistryV3DataCaps(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamtv3.LoadNode(ctx, cborStore, c, hamtv3.UseTreeBitWidth(5))
+	if err != nil {
+		return err
+	}
+
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return err
+	}
+
+	if err := node.ForEach(ctx, func(k string, val *cbg.Deferred) error {
+		v, err := mapper.AssembleEntry(k)
+		if err != nil {
+			return err
+		}
+
+		return v.AssignBytes(val.Raw)
+	}); err != nil {
+		return err
+	}
+	return mapper.Finish()
+}
+
 func transformMarketV2Proposals(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adtv2.AsArray(adtv2.WrapStore(ctx, cborStore), c)
@@ -817,6 +1114,31 @@ func transformMarketBalanceTable(ctx context.Context, c cid.Cid, store blockstor
 	return mapper.Finish()
 }
 
+func transformMarketV3BalanceTable(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamtv3.LoadNode(ctx, cborStore, c, hamtv3.UseTreeBitWidth(5))
+	if err != nil {
+		return err
+	}
+
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return err
+	}
+
+	if err := node.ForEach(ctx, func(k string, val *cbg.Deferred) error {
+		v, err := mapper.AssembleEntry(k)
+		if err != nil {
+			return err
+		}
+
+		return v.AssignBytes(val.Raw)
+	}); err != nil {
+		return err
+	}
+	return mapper.Finish()
+}
+
 func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	adtStore := adt.WrapStore(ctx, cbor.NewCborStore(store))
 	table, err := adt.AsMap(adtStore, c)
@@ -832,6 +1154,58 @@ func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockst
 	var value cbg.CborCid
 	if err := table.ForEach(&value, func(k string) error {
 		set, err := adt.AsSet(adtStore, cid.Cid(value))
+		if err != nil {
+			return err
+		}
+
+		b := big.NewInt(0)
+		b.SetBytes([]byte(k))
+		v, err := mapper.AssembleEntry(b.String())
+		if err != nil {
+			return err
+		}
+
+		amt := types.Type.List__DealID__Repr.NewBuilder()
+		amtL, err := amt.BeginList(0)
+		if err != nil {
+			return err
+		}
+
+		set.ForEach(func(d string) error {
+			key, err := abi.ParseUIntKey(d)
+			if err != nil {
+				return err
+			}
+			return amtL.AssembleValue().AssignInt(int(key))
+		})
+
+		if err := amtL.Finish(); err != nil {
+			return err
+		}
+
+		return v.AssignNode(amt.Build())
+	}); err != nil {
+		return err
+	}
+
+	return mapper.Finish()
+}
+
+func transformMarketDealOpsByEpochV3(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	adtStore := adt.WrapStore(ctx, cbor.NewCborStore(store))
+	table, err := adtv3.AsMap(adtStore, c, 5)
+	if err != nil {
+		return err
+	}
+
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return err
+	}
+
+	var value cbg.CborCid
+	if err := table.ForEach(&value, func(k string) error {
+		set, err := adtv3.AsSet(adtStore, cid.Cid(value), 5)
 		if err != nil {
 			return err
 		}
@@ -905,9 +1279,70 @@ func transformMultisigPending(ctx context.Context, c cid.Cid, store blockstore.B
 	return mapper.Finish()
 }
 
+func transformMultisigPendingV3(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	node, err := hamtv3.LoadNode(ctx, cborStore, c, hamtv3.UseTreeBitWidth(5))
+	if err != nil {
+		return err
+	}
+
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return err
+	}
+
+	if err := node.ForEach(ctx, func(k string, val *cbg.Deferred) error {
+		i := big.NewInt(0)
+		i.SetBytes([]byte(k))
+		v, err := mapper.AssembleEntry(i.String())
+		if err != nil {
+			return err
+		}
+
+		actor := types.Type.MultisigV0Transaction__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(val.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
+	}); err != nil {
+		return err
+	}
+	return mapper.Finish()
+}
+
 func transformPaymentChannelLaneStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
 	cborStore := cbor.NewCborStore(store)
 	list, err := adt.AsArray(adt.WrapStore(ctx, cborStore), c)
+	if err != nil {
+		return err
+	}
+
+	mapper, err := assembler.BeginMap(0)
+	if err != nil {
+		return err
+	}
+
+	value := cbg.Deferred{}
+	if err := list.ForEach(&value, func(k int64) error {
+		v, err := mapper.AssembleEntry(fmt.Sprintf("%d", k))
+		if err != nil {
+			return err
+		}
+
+		actor := types.Type.PaychV0LaneState__Repr.NewBuilder()
+		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+			return err
+		}
+		return v.AssignNode(actor.Build())
+	}); err != nil {
+		return err
+	}
+	return mapper.Finish()
+}
+
+func transformPaymentChannelV3LaneStates(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assembler ipld.NodeAssembler) error {
+	cborStore := cbor.NewCborStore(store)
+	list, err := adtv3.AsArray(adt.WrapStore(ctx, cborStore), c, 3)
 	if err != nil {
 		return err
 	}

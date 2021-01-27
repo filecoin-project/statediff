@@ -7,6 +7,7 @@ import (
 	messages "github.com/filecoin-project/statediff/types/gen/messages"
 	v0 "github.com/filecoin-project/statediff/types/gen/v0"
 	v2 "github.com/filecoin-project/statediff/types/gen/v2"
+	v3 "github.com/filecoin-project/statediff/types/gen/v3"
 
 	ipld "github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/schema"
@@ -77,6 +78,7 @@ func main() {
 	accumulateLotus(ts)
 	v0.Accumulate(ts)
 	v2.Accumulate(ts)
+	v3.Accumulate(ts)
 	messages.Accumulate(ts)
 
 	if errs := ts.ValidateGraph(); errs != nil {

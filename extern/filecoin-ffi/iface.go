@@ -85,3 +85,24 @@ func GenerateWinningPoStSectorChallenge(abi.RegisteredPoStProof, abi.ActorID, ab
 func FauxRep(abi.RegisteredSealProof, string, string) (cid.Cid, error) {
 	return cid.Undef, nil
 }
+
+type FallbackChallenges struct {
+	Sectors    []abi.SectorNumber
+	Challenges map[abi.SectorNumber][]uint64
+}
+
+func GeneratePoStFallbackSectorChallenges(
+	proofType abi.RegisteredPoStProof,
+	minerID abi.ActorID,
+	randomness abi.PoStRandomness,
+	sectorIds []abi.SectorNumber,
+) (*FallbackChallenges, error) {
+	return nil, nil
+}
+
+func GenerateSingleVanillaProof(
+	replica PrivateSectorInfo,
+	challange []uint64,
+) ([]byte, error) {
+	return nil, nil
+}

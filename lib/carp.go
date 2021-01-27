@@ -21,7 +21,6 @@ import (
 	"github.com/filecoin-project/lotus/chain/vm"
 	"github.com/filecoin-project/lotus/extern/sector-storage/ffiwrapper"
 	"github.com/filecoin-project/lotus/lib/blockstore"
-	"github.com/filecoin-project/lotus/lib/cachebs"
 	"github.com/filecoin-project/lotus/lib/ulimit"
 	marketevents "github.com/filecoin-project/lotus/markets/loggers"
 	"github.com/filecoin-project/lotus/node/impl"
@@ -52,7 +51,7 @@ func NewOpener(c *cli.Context, roots statediff.StateRootFunc, db blockstore.Bloc
 		return nil, err
 	}
 
-	cs := store.NewChainStore(db, mds, vm.Syscalls(&fakeVerifier{}), journal.NilJournal())
+	cs := store.NewChainStore(db, db, mds, vm.Syscalls(&fakeVerifier{}), journal.NilJournal())
 
 	headKey := roots(c.Context)
 
@@ -84,12 +83,16 @@ type CarAPI struct {
 }
 
 func (ra *CarAPI) ComputeGasOutputs(gasUsed, gasLimit int64, baseFee, feeCap, gasPremium abi.TokenAmount) vm.GasOutputs {
-	return vm.ComputeGasOutputs(gasUsed, gasLimit, baseFee, feeCap, gasPremium)
+	return vm.ComputeGasOutputs(gasUsed, gasLimit, baseFee, feeCap, gasPremium, true)
 }
 
 func (ra *CarAPI) Store() adt.Store {
 	bs := ra.FullNodeAPI.ChainAPI.Chain.Blockstore()
-	cachedStore := cachebs.NewBufferedBstore(bs, ra.cacheSize)
+	cachedStore, _ := blockstore.CachedBlockstore(ra.Context, bs, blockstore.CacheOpts{
+		HasBloomFilterSize:   0,
+		HasBloomFilterHashes: 0,
+		HasARCCacheSize:      ra.cacheSize,
+	})
 	cs := cbor.NewCborStore(cachedStore)
 	adtStore := adt.WrapStore(ra.Context, cs)
 	return adtStore
