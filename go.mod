@@ -16,7 +16,6 @@ require (
 	github.com/filecoin-project/specs-actors v0.9.13
 	github.com/filecoin-project/specs-actors/v2 v2.3.4
 	github.com/filecoin-project/specs-actors/v3 v3.0.1-0.20210122191213-c7ea99141c44
-	github.com/go-bindata/go-bindata v3.1.2+incompatible // indirect
 	github.com/gorilla/handlers v1.5.1
 	github.com/graphql-go/graphql v0.7.9
 	github.com/hashicorp/golang-lru v0.5.4
@@ -36,9 +35,7 @@ require (
 	github.com/multiformats/go-multibase v0.0.3
 	github.com/multiformats/go-multihash v0.0.14
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
-	github.com/supranational/blst v0.1.1 // indirect
 	github.com/urfave/cli/v2 v2.3.0
-	github.com/wangjia184/sortedset v0.0.0-20160527075905-f5d03557ba30 // indirect
 	github.com/whyrusleeping/cbor-gen v0.0.0-20200826160007-0b9f6c5fb163
 	github.com/willscott/carbs v0.0.4
 	github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345
