@@ -9,7 +9,7 @@ require (
 	github.com/filecoin-project/go-bitfield v0.2.3-0.20201110211213-fe2c1862e816
 	github.com/filecoin-project/go-fil-markets v1.1.2
 	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
-	github.com/filecoin-project/go-hamt-ipld/v3 v3.0.0
+	github.com/filecoin-project/go-hamt-ipld/v3 v3.0.1
 	github.com/filecoin-project/go-multistore v0.0.3
 	github.com/filecoin-project/go-state-types v0.0.0-20210119062722-4adba5aaea71
 	github.com/filecoin-project/lotus v1.5.0-pre1
