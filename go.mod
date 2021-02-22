@@ -7,7 +7,7 @@ require (
 	github.com/evanw/esbuild v0.8.50
 	github.com/filecoin-project/go-address v0.0.5-0.20201103152444-f2023ef3f5bb
 	github.com/filecoin-project/go-bitfield v0.2.3-0.20201110211213-fe2c1862e816
-	github.com/filecoin-project/go-fil-markets v1.1.2
+	github.com/filecoin-project/go-fil-markets v1.1.8
 	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
 	github.com/filecoin-project/go-hamt-ipld/v3 v3.0.1
 	github.com/filecoin-project/go-multistore v0.0.3
