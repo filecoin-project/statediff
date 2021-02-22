@@ -24,7 +24,7 @@ See what state change is expected by a [test vector](https://github.com/filecoin
 statediff vector --file vector.json 
 ```
 
-See what state chaned on the local lotus chain across a block or message:
+See what state changed on the local lotus chain across a block or message:
 
 ```
 statediff chain --expand-actors all bafy...
