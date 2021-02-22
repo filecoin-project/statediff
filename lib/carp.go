@@ -46,7 +46,7 @@ func NewOpener(c *cli.Context, roots statediff.StateRootFunc, db blockstore.Bloc
 		return nil, err
 	}
 
-	mds, err := lr.Datastore("/metadata")
+	mds, err := lr.Datastore(c.Context, "/metadata")
 	if err != nil {
 		return nil, err
 	}
