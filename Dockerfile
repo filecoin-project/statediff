@@ -13,7 +13,7 @@ WORKDIR /go/src/app/
 COPY . .
 COPY --from=js /usr/src/app ./npm/app
 # Fetch dependencies.
-RUN go get -d -v ./...
+RUN go get -d -v ./... && go get github.com/go-bindata/go-bindata/go-bindata
 RUN go generate ./...
 RUN go build -o stateexplorer ./cmd/stateexplorer
 
