@@ -53,6 +53,12 @@ var SqlFlag = cli.StringFlag{
 	Value: "",
 }
 
+var NoCacheFlag = cli.BoolFlag{
+	Name:  "nocache",
+	Usage: "disable datastore cache layer",
+	Value: false,
+}
+
 func tryGetAPIFromHomeDir() ([]string, error) {
 	p, err := homedir.Expand("~/.lotus")
 	if err != nil {
@@ -136,8 +142,12 @@ func GetCar(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, err
 	if err != nil {
 		return nil, nil, err
 	}
-	cacheDB := NewCachingStore(db)
-	return func(_ context.Context) []cid.Cid { r, _ := db.Roots(); return r }, cacheDB, nil
+
+	odb := blockstore.Blockstore(db)
+	if !c.Bool(NoCacheFlag.Name) {
+		odb = NewCachingStore(db)
+	}
+	return func(_ context.Context) []cid.Cid { r, _ := db.Roots(); return r }, odb, nil
 }
 
 func GetSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
@@ -145,9 +155,13 @@ func GetSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, err
 	if err != nil {
 		return nil, nil, err
 	}
-	cacheDB := NewCachingStore(db)
 
-	return srf, cacheDB, nil
+	odb := blockstore.Blockstore(db)
+	if !c.Bool(NoCacheFlag.Name) {
+		odb = NewCachingStore(db)
+	}
+
+	return srf, odb, nil
 }
 
 func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {

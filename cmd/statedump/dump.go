@@ -35,6 +35,7 @@ var dumpCmd = &cli.Command{
 		&lib.ApiFlag,
 		&lib.CarFlag,
 		&lib.VectorFlag,
+		&lib.NoCacheFlag,
 		&profileFlag,
 		&byActorFlag,
 	},

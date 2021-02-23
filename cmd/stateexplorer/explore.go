@@ -50,6 +50,7 @@ var exploreCmd = &cli.Command{
 		&lib.CarFlag,
 		&lib.SqlFlag,
 		&lib.VectorFlag,
+		&lib.NoCacheFlag,
 		&assetsFlag,
 		&bindFlag,
 		&qlFlag,
