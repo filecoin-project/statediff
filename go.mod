@@ -26,7 +26,7 @@ require (
 	github.com/ipfs/go-ipld-cbor v0.0.5
 	github.com/ipfs/go-log/v2 v2.1.2-0.20200626104915-0016c0b4b3e4
 	github.com/ipld/go-car v0.1.1-0.20201119040415-11b6074b6d4d
-	github.com/ipld/go-ipld-graphql v0.0.0-20210225031953-7bc6eb470b4f
+	github.com/ipld/go-ipld-graphql v0.0.0-20210225034639-cece726cd342
 	github.com/ipld/go-ipld-prime v0.7.0
 	github.com/jackc/pgx/v4 v4.10.1
 	github.com/libp2p/go-libp2p-peer v0.2.0

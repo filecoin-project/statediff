@@ -692,6 +692,8 @@ github.com/ipld/go-car v0.1.1-0.20201119040415-11b6074b6d4d/go.mod h1:2Gys8L8MJ6
 github.com/ipld/go-ipld-graphql v0.0.0-20210218152247-8a8f216cb679/go.mod h1:v8cyEcsK9YLsyt5ByUhAyTbBsi4auBP943d4x/33D6U=
 github.com/ipld/go-ipld-graphql v0.0.0-20210225031953-7bc6eb470b4f h1:hLxQ389XAS/qhlPeqefeCPyID3lmWd+ljpMz01D+v5s=
 github.com/ipld/go-ipld-graphql v0.0.0-20210225031953-7bc6eb470b4f/go.mod h1:v8cyEcsK9YLsyt5ByUhAyTbBsi4auBP943d4x/33D6U=
+github.com/ipld/go-ipld-graphql v0.0.0-20210225034639-cece726cd342 h1:GuxrrJt27Gm0pGYUjDaRUvRkKGxQV762mFbUmSDJ1kg=
+github.com/ipld/go-ipld-graphql v0.0.0-20210225034639-cece726cd342/go.mod h1:sajcENnQ/xr4QO46hRv7Aek4txv/VBjTjWJFzaBPvEY=
 github.com/ipld/go-ipld-prime v0.0.2-0.20200428162820-8b59dc292b8e/go.mod h1:uVIwe/u0H4VdKv3kaN1ck7uCb6yD9cFLS9/ELyXbsw8=
 github.com/ipld/go-ipld-prime v0.5.0/go.mod h1:uVIwe/u0H4VdKv3kaN1ck7uCb6yD9cFLS9/ELyXbsw8=
 github.com/ipld/go-ipld-prime v0.5.1-0.20200828233916-988837377a7f/go.mod h1:0xEgdD6MKbZ1vF0GC+YcR/C4SQCAlRuOjIJ2i0HxqzM=
