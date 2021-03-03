@@ -31,6 +31,14 @@ func (tcs *tcs) CurrentDbTipSetKey(ctx context.Context) (*types.TipSetKey, abi.C
 	return &tsk, epoch, nil
 }
 
+func (tcs *tcs) GetCurrentTipset(ctx context.Context) []cid.Cid {
+	tsk, _, err := tcs.CurrentDbTipSetKey(ctx)
+	if err != nil {
+		return []cid.Cid{}
+	}
+	return tsk.Cids()
+}
+
 func (tcs *tcs) StoreTipSetVist(ctx context.Context, ts *types.TipSet, isHeadChange bool) error {
 
 	// note the time before anything else
