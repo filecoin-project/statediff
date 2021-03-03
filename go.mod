@@ -7,7 +7,7 @@ require (
 	github.com/evanw/esbuild v0.8.54
 	github.com/filecoin-project/go-address v0.0.5
 	github.com/filecoin-project/go-bitfield v0.2.4
-	github.com/filecoin-project/go-fil-markets v1.1.7
+	github.com/filecoin-project/go-fil-markets v1.1.9
 	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
 	github.com/filecoin-project/go-hamt-ipld/v3 v3.0.1
 	github.com/filecoin-project/go-multistore v0.0.3
@@ -38,7 +38,7 @@ require (
 	github.com/multiformats/go-multihash v0.0.14
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
 	github.com/urfave/cli/v2 v2.3.0
-	github.com/whyrusleeping/cbor-gen v0.0.0-20210118024343-169e9d70c0c2
+	github.com/whyrusleeping/cbor-gen v0.0.0-20210219115102-f37d292932f2
 	github.com/willscott/carbs v0.0.4
 	github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
