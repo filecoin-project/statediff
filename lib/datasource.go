@@ -19,7 +19,7 @@ import (
 	"github.com/filecoin-project/lotus/api/client"
 	"github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/filecoin-project/statediff"
-	"github.com/filecoin-project/statediff/lib/annotated"
+	"github.com/filecoin-project/statediff/lib/tstracker"
 	"github.com/ipfs/go-cid"
 	"github.com/ipld/go-car"
 	"github.com/mitchellh/go-homedir"
@@ -178,7 +178,7 @@ func GetSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, err
 }
 
 func GetNewSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
-	scs, err := annotated.NewPgChainStore(c.Context, c.String(NewSqlFlag.Name))
+	scs, err := tstracker.NewTrackingPgChainstore(c.Context, c.String(NewSqlFlag.Name))
 	if err != nil {
 		return nil, nil, err
 	}
