@@ -68,8 +68,8 @@ func (m MaybeMap__ActorID) Must() Map__ActorID {
 var _ ipld.Node = (Map__ActorID)(&_Map__ActorID{})
 var _ schema.TypedNode = (Map__ActorID)(&_Map__ActorID{})
 
-func (Map__ActorID) ReprKind() ipld.ReprKind {
-	return ipld.ReprKind_Map
+func (Map__ActorID) Kind() ipld.Kind {
+	return ipld.Kind_Map
 }
 func (n Map__ActorID) LookupByString(k string) (ipld.Node, error) {
 	var k2 _RawAddress
@@ -94,7 +94,7 @@ func (n Map__ActorID) LookupByNode(k ipld.Node) (ipld.Node, error) {
 	}
 	return v, nil
 }
-func (Map__ActorID) LookupByIndex(idx int) (ipld.Node, error) {
+func (Map__ActorID) LookupByIndex(idx int64) (ipld.Node, error) {
 	return mixins.Map{"types.Map__ActorID"}.LookupByIndex(0)
 }
 func (n Map__ActorID) LookupBySegment(seg ipld.PathSegment) (ipld.Node, error) {
@@ -126,8 +126,8 @@ func (itr *_Map__ActorID__MapItr) Done() bool {
 func (Map__ActorID) ListIterator() ipld.ListIterator {
 	return nil
 }
-func (n Map__ActorID) Length() int {
-	return len(n.t)
+func (n Map__ActorID) Length() int64 {
+	return int64(len(n.t))
 }
 func (Map__ActorID) IsAbsent() bool {
 	return false
@@ -138,7 +138,7 @@ func (Map__ActorID) IsNull() bool {
 func (Map__ActorID) AsBool() (bool, error) {
 	return mixins.Map{"types.Map__ActorID"}.AsBool()
 }
-func (Map__ActorID) AsInt() (int, error) {
+func (Map__ActorID) AsInt() (int64, error) {
 	return mixins.Map{"types.Map__ActorID"}.AsInt()
 }
 func (Map__ActorID) AsFloat() (float64, error) {
@@ -201,7 +201,7 @@ func (na *_Map__ActorID__Assembler) reset() {
 	na.ka.reset()
 	na.va.reset()
 }
-func (na *_Map__ActorID__Assembler) BeginMap(sizeHint int) (ipld.MapAssembler, error) {
+func (na *_Map__ActorID__Assembler) BeginMap(sizeHint int64) (ipld.MapAssembler, error) {
 	switch *na.m {
 	case schema.Maybe_Value, schema.Maybe_Null:
 		panic("invalid state: cannot assign into assembler that's already finished")
@@ -219,7 +219,7 @@ func (na *_Map__ActorID__Assembler) BeginMap(sizeHint int) (ipld.MapAssembler, e
 	na.w.t = make([]_Map__ActorID__entry, 0, sizeHint)
 	return na, nil
 }
-func (_Map__ActorID__Assembler) BeginList(sizeHint int) (ipld.ListAssembler, error) {
+func (_Map__ActorID__Assembler) BeginList(sizeHint int64) (ipld.ListAssembler, error) {
 	return mixins.MapAssembler{"types.Map__ActorID"}.BeginList(0)
 }
 func (na *_Map__ActorID__Assembler) AssignNull() error {
@@ -239,7 +239,7 @@ func (na *_Map__ActorID__Assembler) AssignNull() error {
 func (_Map__ActorID__Assembler) AssignBool(bool) error {
 	return mixins.MapAssembler{"types.Map__ActorID"}.AssignBool(false)
 }
-func (_Map__ActorID__Assembler) AssignInt(int) error {
+func (_Map__ActorID__Assembler) AssignInt(int64) error {
 	return mixins.MapAssembler{"types.Map__ActorID"}.AssignInt(0)
 }
 func (_Map__ActorID__Assembler) AssignFloat(float64) error {
@@ -279,8 +279,8 @@ func (na *_Map__ActorID__Assembler) AssignNode(v ipld.Node) error {
 		*na.m = schema.Maybe_Value
 		return nil
 	}
-	if v.ReprKind() != ipld.ReprKind_Map {
-		return ipld.ErrWrongKind{TypeName: "types.Map__ActorID", MethodName: "AssignNode", AppropriateKind: ipld.ReprKindSet_JustMap, ActualKind: v.ReprKind()}
+	if v.Kind() != ipld.Kind_Map {
+		return ipld.ErrWrongKind{TypeName: "types.Map__ActorID", MethodName: "AssignNode", AppropriateKind: ipld.KindSet_JustMap, ActualKind: v.Kind()}
 	}
 	itr := v.MapIterator()
 	for !itr.Done() {
@@ -435,8 +435,8 @@ type _Map__ActorID__Repr _Map__ActorID
 
 var _ ipld.Node = &_Map__ActorID__Repr{}
 
-func (_Map__ActorID__Repr) ReprKind() ipld.ReprKind {
-	return ipld.ReprKind_Map
+func (_Map__ActorID__Repr) Kind() ipld.Kind {
+	return ipld.Kind_Map
 }
 func (nr *_Map__ActorID__Repr) LookupByString(k string) (ipld.Node, error) {
 	v, err := (Map__ActorID)(nr).LookupByString(k)
@@ -452,7 +452,7 @@ func (nr *_Map__ActorID__Repr) LookupByNode(k ipld.Node) (ipld.Node, error) {
 	}
 	return v.(ActorID).Representation(), nil
 }
-func (_Map__ActorID__Repr) LookupByIndex(idx int) (ipld.Node, error) {
+func (_Map__ActorID__Repr) LookupByIndex(idx int64) (ipld.Node, error) {
 	return mixins.Map{"types.Map__ActorID.Repr"}.LookupByIndex(0)
 }
 func (n _Map__ActorID__Repr) LookupBySegment(seg ipld.PathSegment) (ipld.Node, error) {
@@ -478,8 +478,8 @@ func (itr *_Map__ActorID__ReprMapItr) Done() bool {
 func (_Map__ActorID__Repr) ListIterator() ipld.ListIterator {
 	return nil
 }
-func (rn *_Map__ActorID__Repr) Length() int {
-	return len(rn.t)
+func (rn *_Map__ActorID__Repr) Length() int64 {
+	return int64(len(rn.t))
 }
 func (_Map__ActorID__Repr) IsAbsent() bool {
 	return false
@@ -490,7 +490,7 @@ func (_Map__ActorID__Repr) IsNull() bool {
 func (_Map__ActorID__Repr) AsBool() (bool, error) {
 	return mixins.Map{"types.Map__ActorID.Repr"}.AsBool()
 }
-func (_Map__ActorID__Repr) AsInt() (int, error) {
+func (_Map__ActorID__Repr) AsInt() (int64, error) {
 	return mixins.Map{"types.Map__ActorID.Repr"}.AsInt()
 }
 func (_Map__ActorID__Repr) AsFloat() (float64, error) {
@@ -553,7 +553,7 @@ func (na *_Map__ActorID__ReprAssembler) reset() {
 	na.ka.reset()
 	na.va.reset()
 }
-func (na *_Map__ActorID__ReprAssembler) BeginMap(sizeHint int) (ipld.MapAssembler, error) {
+func (na *_Map__ActorID__ReprAssembler) BeginMap(sizeHint int64) (ipld.MapAssembler, error) {
 	switch *na.m {
 	case schema.Maybe_Value, schema.Maybe_Null:
 		panic("invalid state: cannot assign into assembler that's already finished")
@@ -571,7 +571,7 @@ func (na *_Map__ActorID__ReprAssembler) BeginMap(sizeHint int) (ipld.MapAssemble
 	na.w.t = make([]_Map__ActorID__entry, 0, sizeHint)
 	return na, nil
 }
-func (_Map__ActorID__ReprAssembler) BeginList(sizeHint int) (ipld.ListAssembler, error) {
+func (_Map__ActorID__ReprAssembler) BeginList(sizeHint int64) (ipld.ListAssembler, error) {
 	return mixins.MapAssembler{"types.Map__ActorID.Repr"}.BeginList(0)
 }
 func (na *_Map__ActorID__ReprAssembler) AssignNull() error {
@@ -591,7 +591,7 @@ func (na *_Map__ActorID__ReprAssembler) AssignNull() error {
 func (_Map__ActorID__ReprAssembler) AssignBool(bool) error {
 	return mixins.MapAssembler{"types.Map__ActorID.Repr"}.AssignBool(false)
 }
-func (_Map__ActorID__ReprAssembler) AssignInt(int) error {
+func (_Map__ActorID__ReprAssembler) AssignInt(int64) error {
 	return mixins.MapAssembler{"types.Map__ActorID.Repr"}.AssignInt(0)
 }
 func (_Map__ActorID__ReprAssembler) AssignFloat(float64) error {
@@ -631,8 +631,8 @@ func (na *_Map__ActorID__ReprAssembler) AssignNode(v ipld.Node) error {
 		*na.m = schema.Maybe_Value
 		return nil
 	}
-	if v.ReprKind() != ipld.ReprKind_Map {
-		return ipld.ErrWrongKind{TypeName: "types.Map__ActorID.Repr", MethodName: "AssignNode", AppropriateKind: ipld.ReprKindSet_JustMap, ActualKind: v.ReprKind()}
+	if v.Kind() != ipld.Kind_Map {
+		return ipld.ErrWrongKind{TypeName: "types.Map__ActorID.Repr", MethodName: "AssignNode", AppropriateKind: ipld.KindSet_JustMap, ActualKind: v.Kind()}
 	}
 	itr := v.MapIterator()
 	for !itr.Done() {

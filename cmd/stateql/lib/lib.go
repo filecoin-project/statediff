@@ -84,7 +84,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 							ch := source.Head(p.Context)
 							return statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
 						}
-						ch, err := source.CidAtHeight(p.Context, at)
+						ch, err := source.CidAtHeight(p.Context, int64(at))
 						if err != nil {
 							return nil, fmt.Errorf("Have not indexed a block at height %d", at)
 						}
@@ -134,7 +134,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 
 						out := make([]ipld.Node, 0, to-from)
 						for i := from; i < to; i++ {
-							ch, err := source.CidAtHeight(p.Context, i)
+							ch, err := source.CidAtHeight(p.Context, int64(i))
 							if err != nil {
 								return nil, fmt.Errorf("Have not indexed a block at height %d", i)
 							}
@@ -194,7 +194,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						out := make([]ipld.Node, 0)
 						// get them.
 						for i := from; to.After(i); i = i.Add(time.Duration(interval) * time.Second) {
-							ch, err := source.CidAtHeight(p.Context, timeStampToEpoch(i))
+							ch, err := source.CidAtHeight(p.Context, int64(timeStampToEpoch(i)))
 							if err != nil {
 								return nil, fmt.Errorf("Have not indexed a block at height %d", timeStampToEpoch(i))
 							}

@@ -64,7 +64,7 @@ func AddFields() {
 		Type: graphql.NewNonNull(graphql.Int),
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 			ts := p.Source.(types.List__LinkLotusMessage)
-			m := p.Args["method"].(int)
+			m := p.Args["method"].(int64)
 
 			store := p.Context.Value(storeCtx).(blockstore.Blockstore)
 
@@ -113,7 +113,7 @@ func AddFields() {
 			},
 		},
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-			m := p.Args["method"].(int)
+			m := p.Args["method"].(int64)
 			ts, ok := p.Source.(types.List__LinkLotusMessage)
 			if !ok {
 				return nil, errNotNode

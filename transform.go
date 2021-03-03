@@ -1176,7 +1176,7 @@ func transformMarketDealOpsByEpoch(ctx context.Context, c cid.Cid, store blockst
 			if err != nil {
 				return err
 			}
-			return amtL.AssembleValue().AssignInt(int(key))
+			return amtL.AssembleValue().AssignInt(int64(key))
 		})
 
 		if err := amtL.Finish(); err != nil {
@@ -1228,7 +1228,7 @@ func transformMarketDealOpsByEpochV3(ctx context.Context, c cid.Cid, store block
 			if err != nil {
 				return err
 			}
-			return amtL.AssembleValue().AssignInt(int(key))
+			return amtL.AssembleValue().AssignInt(int64(key))
 		})
 
 		if err := amtL.Finish(); err != nil {

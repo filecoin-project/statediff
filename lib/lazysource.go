@@ -20,7 +20,7 @@ import (
 type Datasource interface {
 	Store() blockstore.Blockstore
 	Head(ctx context.Context) cid.Cid
-	CidAtHeight(ctx context.Context, h int) (cid.Cid, error)
+	CidAtHeight(ctx context.Context, h int64) (cid.Cid, error)
 	Reload() error
 }
 
@@ -33,7 +33,7 @@ type lazyDs struct {
 
 	// when loaded from a car snapshot there's no gettipsetbyheight metadata index.
 	// we build it into tipsetMap in those cases.
-	tipsetMap   map[int]cid.Cid
+	tipsetMap   map[int64]cid.Cid
 	tipsetMutex sync.RWMutex
 }
 
@@ -71,7 +71,7 @@ func (l *lazyDs) index(ctx context.Context) error {
 	l.tipsetMutex.Lock()
 	defer l.tipsetMutex.Unlock()
 	if l.tipsetMap == nil {
-		l.tipsetMap = make(map[int]cid.Cid)
+		l.tipsetMap = make(map[int64]cid.Cid)
 	}
 	c := n[0]
 	cooldown := -1
@@ -121,7 +121,7 @@ func (l *lazyDs) index(ctx context.Context) error {
 	return nil
 }
 
-func (l *lazyDs) CidAtHeight(ctx context.Context, h int) (cid.Cid, error) {
+func (l *lazyDs) CidAtHeight(ctx context.Context, h int64) (cid.Cid, error) {
 	l.tipsetMutex.RLock()
 	if l.tipsetMap == nil && l.client != nil {
 		l.tipsetMutex.RUnlock()

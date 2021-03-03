@@ -13,7 +13,7 @@ type methodMeta struct {
 	Name string
 	ipld.NodePrototype
 }
-type methodtable map[int]methodMeta
+type methodtable map[int64]methodMeta
 
 var initTable = methodtable{
 	2: methodMeta{"InitExecParams", types.Type.MessageParamsInitExecParams__Repr},
@@ -138,7 +138,7 @@ func ParamFor(destType LotusType, msg ipld.Node) (ipld.Node, string, error) {
 	return ParseParams(tMsg.Params.Bytes(), method, destType)
 }
 
-func ParseParams(params []byte, method int, destType LotusType) (ipld.Node, string, error) {
+func ParseParams(params []byte, method int64, destType LotusType) (ipld.Node, string, error) {
 	mthdTable, ok := messageParamTable[destType]
 	if !ok {
 		return nil, "", fmt.Errorf("unknown parameters for %s", destType)

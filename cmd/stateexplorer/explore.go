@@ -137,7 +137,7 @@ func runExploreCmd(c *cli.Context) error {
 			w.Write([]byte(fmt.Sprintf("error: invalid height")))
 			return
 		}
-		tipset, err := ds.CidAtHeight(r.Context(), asNumber)
+		tipset, err := ds.CidAtHeight(r.Context(), int64(asNumber))
 		if err != nil {
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 			return

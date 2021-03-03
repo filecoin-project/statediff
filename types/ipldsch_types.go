@@ -577,7 +577,7 @@ type _AccountV0State struct {
 
 // ActorID matches the IPLD Schema type "ActorID".  It has int kind.
 type ActorID = *_ActorID
-type _ActorID struct{ x int }
+type _ActorID struct{ x int64 }
 
 // Address matches the IPLD Schema type "Address".  It has bytes kind.
 type Address = *_Address
@@ -625,7 +625,7 @@ type _Bytes struct{ x []byte }
 
 // ChainEpoch matches the IPLD Schema type "ChainEpoch".  It has int kind.
 type ChainEpoch = *_ChainEpoch
-type _ChainEpoch struct{ x int }
+type _ChainEpoch struct{ x int64 }
 
 // CidString matches the IPLD Schema type "CidString".  It has string kind.
 type CidString = *_CidString
@@ -646,7 +646,7 @@ type _CronV0State struct {
 
 // DealID matches the IPLD Schema type "DealID".  It has int kind.
 type DealID = *_DealID
-type _DealID struct{ x int }
+type _DealID struct{ x int64 }
 
 // Float matches the IPLD Schema type "Float".  It has float kind.
 type Float = *_Float
@@ -670,7 +670,7 @@ type _InitV3State struct {
 
 // Int matches the IPLD Schema type "Int".  It has int kind.
 type Int = *_Int
-type _Int struct{ x int }
+type _Int struct{ x int64 }
 
 // Link matches the IPLD Schema type "Link".  It has link kind.
 type Link = *_Link
@@ -2169,7 +2169,7 @@ type _MessageParamsVerifregUseBytes struct {
 
 // MethodNum matches the IPLD Schema type "MethodNum".  It has int kind.
 type MethodNum = *_MethodNum
-type _MethodNum struct{ x int }
+type _MethodNum struct{ x int64 }
 
 // MinerExpirationExtend matches the IPLD Schema type "MinerExpirationExtend".  It has Struct type-kind, and may be interrogated like map kind.
 type MinerExpirationExtend = *_MinerExpirationExtend
@@ -2553,7 +2553,7 @@ type _MultisigV3State struct {
 
 // PaddedPieceSize matches the IPLD Schema type "PaddedPieceSize".  It has int kind.
 type PaddedPieceSize = *_PaddedPieceSize
-type _PaddedPieceSize struct{ x int }
+type _PaddedPieceSize struct{ x int64 }
 
 // PaychV0LaneState matches the IPLD Schema type "PaychV0LaneState".  It has Struct type-kind, and may be interrogated like map kind.
 type PaychV0LaneState = *_PaychV0LaneState
@@ -2731,11 +2731,11 @@ type _SealVerifyInfo struct {
 
 // SectorNumber matches the IPLD Schema type "SectorNumber".  It has int kind.
 type SectorNumber = *_SectorNumber
-type _SectorNumber struct{ x int }
+type _SectorNumber struct{ x int64 }
 
 // SectorSize matches the IPLD Schema type "SectorSize".  It has int kind.
 type SectorSize = *_SectorSize
-type _SectorSize struct{ x int }
+type _SectorSize struct{ x int64 }
 
 // Signature matches the IPLD Schema type "Signature".  It has bytes kind.
 type Signature = *_Signature
@@ -2763,7 +2763,7 @@ type _String struct{ x string }
 
 // UnpaddedPieceSize matches the IPLD Schema type "UnpaddedPieceSize".  It has int kind.
 type UnpaddedPieceSize = *_UnpaddedPieceSize
-type _UnpaddedPieceSize struct{ x int }
+type _UnpaddedPieceSize struct{ x int64 }
 
 // V0FilterEstimate matches the IPLD Schema type "V0FilterEstimate".  It has Struct type-kind, and may be interrogated like map kind.
 type V0FilterEstimate = *_V0FilterEstimate

@@ -28,28 +28,28 @@ func (s *state) matchingNode(a, b ipld.Node) bool {
 	if a.Prototype() != b.Prototype() {
 		return false
 	}
-	switch a.ReprKind() {
-	case ipld.ReprKind_Bool:
+	switch a.Kind() {
+	case ipld.Kind_Bool:
 		l, _ := a.AsBool()
 		r, _ := b.AsBool()
 		return l == r
-	case ipld.ReprKind_Bytes:
+	case ipld.Kind_Bytes:
 		l, _ := a.AsBytes()
 		r, _ := b.AsBytes()
 		return bytes.Equal(l, r)
-	case ipld.ReprKind_Float:
+	case ipld.Kind_Float:
 		l, _ := a.AsFloat()
 		r, _ := b.AsFloat()
 		return l == r
-	case ipld.ReprKind_Int:
+	case ipld.Kind_Int:
 		l, _ := a.AsInt()
 		r, _ := b.AsInt()
 		return l == r
-	case ipld.ReprKind_Invalid:
+	case ipld.Kind_Invalid:
 		return true
-	case ipld.ReprKind_Null:
+	case ipld.Kind_Null:
 		return true
-	case ipld.ReprKind_Link:
+	case ipld.Kind_Link:
 		l, _ := a.AsLink()
 		r, _ := b.AsLink()
 		if l.String() != r.String() {
@@ -63,24 +63,24 @@ func (s *state) matchingNode(a, b ipld.Node) bool {
 			return false
 		}
 		return true
-	case ipld.ReprKind_String:
+	case ipld.Kind_String:
 		l, _ := a.AsString()
 		r, _ := b.AsString()
 		return l == r
-	case ipld.ReprKind_List:
+	case ipld.Kind_List:
 		return false
-	case ipld.ReprKind_Map:
+	case ipld.Kind_Map:
 		return false
 	}
 	return true
 }
 
 func (s *state) nodeTerminator(n ipld.Node) interface{} {
-	switch n.ReprKind() {
-	case ipld.ReprKind_Bool:
+	switch n.Kind() {
+	case ipld.Kind_Bool:
 		v, _ := n.AsBool()
 		return v
-	case ipld.ReprKind_Bytes:
+	case ipld.Kind_Bytes:
 		v, _ := n.AsBytes()
 		if _, ok := n.(types.Address); ok {
 			a, err := address.NewFromBytes(v)
@@ -102,23 +102,23 @@ func (s *state) nodeTerminator(n ipld.Node) interface{} {
 			return hex.EncodeToString(buf.Bytes())
 		}
 		return v
-	case ipld.ReprKind_Float:
+	case ipld.Kind_Float:
 		v, _ := n.AsFloat()
 		return v
-	case ipld.ReprKind_Int:
+	case ipld.Kind_Int:
 		v, _ := n.AsInt()
 		return v
-	case ipld.ReprKind_Invalid:
+	case ipld.Kind_Invalid:
 		return "<Invalid>"
-	case ipld.ReprKind_Link:
+	case ipld.Kind_Link:
 		v, _ := n.AsLink()
 		return v.String()
-	case ipld.ReprKind_Null:
+	case ipld.Kind_Null:
 		return nil
-	case ipld.ReprKind_String:
+	case ipld.Kind_String:
 		v, _ := n.AsString()
 		return v
-	case ipld.ReprKind_List:
+	case ipld.Kind_List:
 		items := make([]ipld.Node, 0)
 		v := n.ListIterator()
 		for !v.Done() {
@@ -126,7 +126,7 @@ func (s *state) nodeTerminator(n ipld.Node) interface{} {
 			items = append(items, val)
 		}
 		return items
-	case ipld.ReprKind_Map:
+	case ipld.Kind_Map:
 		items := make(map[string]ipld.Node)
 		v := n.MapIterator()
 		for !v.Done() {
@@ -159,7 +159,7 @@ type Ref struct {
 }
 
 func (s *state) nodeLoader(n ipld.Node) interface{} {
-	if n.ReprKind() == ipld.ReprKind_Link {
+	if n.Kind() == ipld.Kind_Link {
 		l, _ := n.AsLink()
 		cidlink, ok := l.(cidlink.Link)
 		if !ok {

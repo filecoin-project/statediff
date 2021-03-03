@@ -40,17 +40,17 @@ type DagMarshaler struct {
 // MarshalRecursive is a combination traversal + codec
 func (d *DagMarshaler) MarshalRecursive(n ipld.Node, sink shared.TokenSink) error {
 	var tk tok.Token
-	switch n.ReprKind() {
-	case ipld.ReprKind_Invalid:
+	switch n.Kind() {
+	case ipld.Kind_Invalid:
 		return fmt.Errorf("cannot traverse a node that is absent")
-	case ipld.ReprKind_Null:
+	case ipld.Kind_Null:
 		tk.Type = tok.TNull
 		_, err := sink.Step(&tk)
 		return err
-	case ipld.ReprKind_Map:
+	case ipld.Kind_Map:
 		// Emit start of map.
 		tk.Type = tok.TMapOpen
-		tk.Length = n.Length()
+		tk.Length = int(n.Length())
 		if _, err := sink.Step(&tk); err != nil {
 			return err
 		}
@@ -91,22 +91,22 @@ func (d *DagMarshaler) MarshalRecursive(n ipld.Node, sink shared.TokenSink) erro
 		tk.Type = tok.TMapClose
 		_, err := sink.Step(&tk)
 		return err
-	case ipld.ReprKind_List:
+	case ipld.Kind_List:
 		// Emit start of list.
 		tk.Type = tok.TArrOpen
 		l := n.Length()
-		tk.Length = l
+		tk.Length = int(l)
 		if _, err := sink.Step(&tk); err != nil {
 			return err
 		}
 		// Emit list contents (and recurse).
-		for i := 0; i < l; i++ {
-			v, err := n.LookupByIndex(i)
+		for i := 0; i < int(l); i++ {
+			v, err := n.LookupByIndex(int64(i))
 			if err != nil {
 				return err
 			}
 			next := *d
-			next.Path.AppendSegment(ipld.PathSegmentOfInt(i))
+			next.Path.AppendSegment(ipld.PathSegmentOfInt(int64(i)))
 			if err := next.MarshalRecursive(v, sink); err != nil {
 				return err
 			}
@@ -115,7 +115,7 @@ func (d *DagMarshaler) MarshalRecursive(n ipld.Node, sink shared.TokenSink) erro
 		tk.Type = tok.TArrClose
 		_, err := sink.Step(&tk)
 		return err
-	case ipld.ReprKind_Bool:
+	case ipld.Kind_Bool:
 		v, err := n.AsBool()
 		if err != nil {
 			return err
@@ -124,16 +124,16 @@ func (d *DagMarshaler) MarshalRecursive(n ipld.Node, sink shared.TokenSink) erro
 		tk.Bool = v
 		_, err = sink.Step(&tk)
 		return err
-	case ipld.ReprKind_Int:
+	case ipld.Kind_Int:
 		v, err := n.AsInt()
 		if err != nil {
 			return err
 		}
 		tk.Type = tok.TInt
-		tk.Int = int64(v)
+		tk.Int = v
 		_, err = sink.Step(&tk)
 		return err
-	case ipld.ReprKind_Float:
+	case ipld.Kind_Float:
 		v, err := n.AsFloat()
 		if err != nil {
 			return err
@@ -142,7 +142,7 @@ func (d *DagMarshaler) MarshalRecursive(n ipld.Node, sink shared.TokenSink) erro
 		tk.Float64 = v
 		_, err = sink.Step(&tk)
 		return err
-	case ipld.ReprKind_String:
+	case ipld.Kind_String:
 		v, err := n.AsString()
 		if err != nil {
 			return err
@@ -165,7 +165,7 @@ func (d *DagMarshaler) MarshalRecursive(n ipld.Node, sink shared.TokenSink) erro
 		tk.Type = tok.TString
 		_, err = sink.Step(&tk)
 		return err
-	case ipld.ReprKind_Bytes:
+	case ipld.Kind_Bytes:
 		tk.Type = tok.TString
 		v, err := n.AsBytes()
 		if err != nil {
@@ -219,7 +219,7 @@ func (d *DagMarshaler) MarshalRecursive(n ipld.Node, sink shared.TokenSink) erro
 		}
 		_, err = sink.Step(&tk)
 		return err
-	case ipld.ReprKind_Link:
+	case ipld.Kind_Link:
 		v, err := n.AsLink()
 		if err != nil {
 			return err
