@@ -12,6 +12,7 @@ import (
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/lib/blockstore"
+	"github.com/ipfs/go-cid"
 	logging "github.com/ipfs/go-log/v2"
 )
 
@@ -22,6 +23,7 @@ type TrackingChainstore interface {
 	blockstore.Viewer
 	io.Closer
 	CurrentDbTipSetKey(context.Context) (*types.TipSetKey, abi.ChainEpoch, error)
+	GetCurrentTipset(ctx context.Context) []cid.Cid
 	StoreTipSetVist(ctx context.Context, ts *types.TipSet, isHeaChange bool) error
 }
 
