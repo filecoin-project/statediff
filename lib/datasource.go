@@ -19,6 +19,7 @@ import (
 	"github.com/filecoin-project/lotus/api/client"
 	"github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/filecoin-project/statediff"
+	"github.com/filecoin-project/statediff/lib/tstracker"
 	"github.com/ipfs/go-cid"
 	"github.com/ipld/go-car"
 	"github.com/mitchellh/go-homedir"
@@ -58,6 +59,11 @@ var NoCacheFlag = cli.BoolFlag{
 	Usage: "disable datastore cache layer",
 	Value: false,
 }
+var NewSqlFlag = cli.StringFlag{
+	Name:  "annotatedSql",
+	Usage: "Postgress connection for archivial lotus data source",
+	Value: "",
+}
 
 func tryGetAPIFromHomeDir() ([]string, error) {
 	p, err := homedir.Expand("~/.lotus")
@@ -82,6 +88,13 @@ func GetAPI(c *cli.Context) (api.FullNode, error) {
 	var err error
 	if c.IsSet(CarFlag.Name) {
 		r, b, err := GetCar(c)
+		if err != nil {
+			return nil, err
+		}
+		return NewOpener(c, r, b)
+	}
+	if c.IsSet(NewSqlFlag.Name) {
+		r, b, err := GetNewSql(c)
 		if err != nil {
 			return nil, err
 		}
@@ -164,6 +177,15 @@ func GetSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, err
 	return srf, odb, nil
 }
 
+func GetNewSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
+	scs, err := tstracker.NewTrackingPgChainstore(c.Context, c.String(NewSqlFlag.Name))
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return scs.GetCurrentTipset, scs, nil
+}
+
 func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
 	file, err := os.Open(c.String(VectorFlag.Name))
 	if err != nil {
@@ -203,6 +225,10 @@ func GetBlockstore(c *cli.Context) (api.FullNode, statediff.StateRootFunc, block
 	}
 	if c.IsSet(VectorFlag.Name) {
 		srf, store, err := GetVector(c)
+		return nil, srf, store, err
+	}
+	if c.IsSet(NewSqlFlag.Name) {
+		srf, store, err := GetNewSql(c)
 		return nil, srf, store, err
 	}
 	if c.IsSet(SqlFlag.Name) {
