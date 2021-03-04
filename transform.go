@@ -214,6 +214,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	MarketActorV2State:                types.Type.MarketV2State__Repr,
 	MarketActorV3State:                types.Type.MarketV3State__Repr,
 	MultisigActorState:                types.Type.MultisigV0State__Repr,
+	MultisigActorV3State:              types.Type.MultisigV3State__Repr,
 	StorageMinerActorState:            types.Type.MinerV0State__Repr,
 	StorageMinerActorInfo:             types.Type.MinerV0Info__Repr,
 	StorageMinerActorVestingFunds:     types.Type.MinerV0VestingFunds__Repr,
