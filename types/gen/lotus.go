@@ -76,6 +76,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{}))
 	ts.Accumulate(schema.SpawnMap("Map__LotusActors", "RawAddress", "LotusActors", false))
+	ts.Accumulate(schema.SpawnMap("Mapv3__LotusActors", "RawAddress", "LotusActors", false))
 	ts.Accumulate(schema.SpawnLinkReference("Link__LotusActors", "Map__LotusActors"))
 
 	ts.Accumulate(schema.SpawnLinkReference("Link__LotusMsgMeta", "LotusMsgMeta"))

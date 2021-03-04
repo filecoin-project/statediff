@@ -345,6 +345,8 @@ type typeSlab struct {
 	Map__V3DataCap__Repr _Map__V3DataCap__ReprPrototype
 	Map__V3SectorPreCommitOnChainInfo       _Map__V3SectorPreCommitOnChainInfo__Prototype
 	Map__V3SectorPreCommitOnChainInfo__Repr _Map__V3SectorPreCommitOnChainInfo__ReprPrototype
+	Mapv3__LotusActors       _Mapv3__LotusActors__Prototype
+	Mapv3__LotusActors__Repr _Mapv3__LotusActors__ReprPrototype
 	MarketClientDealProposal       _MarketClientDealProposal__Prototype
 	MarketClientDealProposal__Repr _MarketClientDealProposal__ReprPrototype
 	MarketV0DealProposal       _MarketV0DealProposal__Prototype
@@ -1774,6 +1776,17 @@ type _Map__V3SectorPreCommitOnChainInfo struct {
 type _Map__V3SectorPreCommitOnChainInfo__entry struct {
 	k _String
 	v _MinerV0SectorPreCommitOnChainInfo__Maybe
+}
+
+// Mapv3__LotusActors matches the IPLD Schema type "Mapv3__LotusActors".  It has map kind.
+type Mapv3__LotusActors = *_Mapv3__LotusActors
+type _Mapv3__LotusActors struct {
+	m map[_RawAddress]*_LotusActors
+	t []_Mapv3__LotusActors__entry
+}
+type _Mapv3__LotusActors__entry struct {
+	k _RawAddress
+	v _LotusActors
 }
 
 // MarketClientDealProposal matches the IPLD Schema type "MarketClientDealProposal".  It has Struct type-kind, and may be interrogated like map kind.

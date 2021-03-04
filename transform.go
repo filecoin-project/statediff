@@ -293,7 +293,8 @@ var complexLoaders = map[ipld.NodePrototype]Loader{
 	types.Type.LotusStateRoot__Repr:                    maybeLoadUnversionedStateRoot,
 	LotusPrototypes[LotusTypeStateroot]:                loadHamt,
 	LotusPrototypes[InitActorAddresses]:                loadHamt,
-	types.Type.Map__LotusActors__Repr:                  loadMap,
+	types.Type.Map__LotusActors__Repr:                  maybeLoadV3Actors,
+	types.Type.Mapv3__LotusActors__Repr:                loadV3Map,
 	types.Type.List__LinkLotusMessage__Repr:            loadList,
 	types.Type.Map__ActorID__Repr:                      loadMap,
 	types.Type.Map__V3ActorID__Repr:                    loadV3Map,
@@ -560,6 +561,15 @@ func maybeLoadUnversionedStateRoot(ctx context.Context, c cid.Cid, store blockst
 			return err
 		}
 		return list.Finish()
+	}
+	return as.AssignNode(tmpAs.Build())
+}
+
+// Try directly loading a 'v3 hamt' as actors map. if that fails fall back to v2
+func maybeLoadV3Actors(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipld.NodeAssembler) error {
+	tmpAs := as.Prototype().NewBuilder()
+	if err := loadV3Map(ctx, c, store, tmpAs); err != nil {
+		return loadMap(ctx, c, store, as)
 	}
 	return as.AssignNode(tmpAs.Build())
 }
