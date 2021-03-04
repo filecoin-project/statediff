@@ -9,7 +9,7 @@ require (
 	github.com/evanw/esbuild v0.8.54
 	github.com/filecoin-project/go-address v0.0.5
 	github.com/filecoin-project/go-bitfield v0.2.4
-	github.com/filecoin-project/go-bs-postgres-chainnotated v0.0.0-20210303122434-164e32c1604d // indirect
+	github.com/filecoin-project/go-bs-postgres-chainnotated v0.0.0-20210303122434-164e32c1604d
 	github.com/filecoin-project/go-fil-markets v1.1.9
 	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
 	github.com/filecoin-project/go-hamt-ipld/v3 v3.0.1
