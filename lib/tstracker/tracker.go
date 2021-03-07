@@ -17,13 +17,13 @@ import (
 )
 
 func (tcs *tcs) CurrentDbTipSetKey(ctx context.Context) (*types.TipSetKey, abi.ChainEpoch, error) {
-
-	tsk, epoch, err := tcs.CurrentDbTipSetKey(ctx)
+	dat, err := tcs.GetFilTipSetHead(ctx)
 	if err != nil {
 		return nil, -1, err
 	}
 
-	return tsk, epoch, nil
+	tsk := types.NewTipSetKey(dat.TipSetCids...)
+	return &tsk, dat.Epoch, nil
 }
 
 func (tcs *tcs) GetCurrentTipset(ctx context.Context) []cid.Cid {
