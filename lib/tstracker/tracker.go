@@ -18,17 +18,12 @@ import (
 
 func (tcs *tcs) CurrentDbTipSetKey(ctx context.Context) (*types.TipSetKey, abi.ChainEpoch, error) {
 
-	tskBytes, epoch, err := tcs.CurrentFilTipSetKeyBytes(ctx)
+	tsk, epoch, err := tcs.CurrentDbTipSetKey(ctx)
 	if err != nil {
 		return nil, -1, err
 	}
 
-	tsk, err := types.TipSetKeyFromBytes(tskBytes)
-	if err != nil {
-		return nil, -1, err
-	}
-
-	return &tsk, epoch, nil
+	return tsk, epoch, nil
 }
 
 func (tcs *tcs) GetCurrentTipset(ctx context.Context) []cid.Cid {
@@ -137,8 +132,8 @@ func destructureTipset(ts *types.TipSet) (*pgchainbs.DestructuredFilTipSetData, 
 
 	tsd := &pgchainbs.DestructuredFilTipSetData{
 		Epoch:                    headers[0].Height,
-		ParentWeight:             headers[0].ParentWeight.String(),
-		ParentBaseFee:            headers[0].ParentBaseFee.String(),
+		ParentWeight:             headers[0].ParentWeight,
+		ParentBaseFee:            headers[0].ParentBaseFee,
 		ParentStaterootCid:       headers[0].ParentStateRoot,
 		ParentMessageReceiptsCid: headers[0].ParentMessageReceipts,
 		ParentTipSetCids:         headers[0].Parents,
