@@ -9,7 +9,7 @@ require (
 	github.com/evanw/esbuild v0.8.54
 	github.com/filecoin-project/go-address v0.0.5
 	github.com/filecoin-project/go-bitfield v0.2.4
-	github.com/filecoin-project/go-bs-postgres-chainnotated v0.0.0-20210307232340-b78f61249f8d
+	github.com/filecoin-project/go-bs-postgres-chainnotated v0.0.0-20210307234130-1f812c679c70
 	github.com/filecoin-project/go-fil-markets v1.1.9
 	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0
 	github.com/filecoin-project/go-hamt-ipld/v3 v3.0.1
@@ -43,7 +43,7 @@ require (
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/valyala/gozstd v1.9.0 // indirect
-	github.com/whyrusleeping/cbor-gen v0.0.0-20210219115102-f37d292932f2
+	github.com/whyrusleeping/cbor-gen v0.0.0-20210303213153-67a261a1d291
 	github.com/willscott/carbs v0.0.4
 	github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
