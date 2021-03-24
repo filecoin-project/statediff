@@ -17,7 +17,7 @@ import (
 
 	"github.com/filecoin-project/lotus/api"
 	"github.com/filecoin-project/lotus/api/client"
-	"github.com/filecoin-project/lotus/lib/blockstore"
+	"github.com/filecoin-project/lotus/blockstore"
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/lib/tstracker"
 	"github.com/ipfs/go-cid"
@@ -59,6 +59,7 @@ var NoCacheFlag = cli.BoolFlag{
 	Usage: "disable datastore cache layer",
 	Value: false,
 }
+
 var NewSqlFlag = cli.StringFlag{
 	Name:  "annotatedSql",
 	Usage: "Postgress connection for archivial lotus data source",
@@ -156,9 +157,9 @@ func GetCar(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, err
 		return nil, nil, err
 	}
 
-	odb := blockstore.Blockstore(db)
+	odb := &statediff.LotusBS{db}
 	if !c.Bool(NoCacheFlag.Name) {
-		odb = NewCachingStore(db)
+		odb = &statediff.LotusBS{NewCachingStore(db)}
 	}
 	return func(_ context.Context) []cid.Cid { r, _ := db.Roots(); return r }, odb, nil
 }
@@ -169,9 +170,9 @@ func GetSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, err
 		return nil, nil, err
 	}
 
-	odb := blockstore.Blockstore(db)
+	odb := &statediff.LotusBS{db}
 	if !c.Bool(NoCacheFlag.Name) {
-		odb = NewCachingStore(db)
+		odb = &statediff.LotusBS{NewCachingStore(db)}
 	}
 
 	return srf, odb, nil
@@ -183,7 +184,7 @@ func GetNewSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, 
 		return nil, nil, err
 	}
 
-	return scs.GetCurrentTipset, scs, nil
+	return scs.GetCurrentTipset, &statediff.LotusBS{scs}, nil
 }
 
 func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
@@ -208,7 +209,7 @@ func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, 
 	}
 	defer gr.Close()
 
-	store := blockstore.NewTemporary()
+	store := &statediff.LotusBS{blockstore.NewMemory()}
 	_, err = car.LoadCar(store, gr)
 	if err != nil {
 		return nil, nil, err

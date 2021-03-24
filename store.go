@@ -8,10 +8,11 @@ import (
 	"strconv"
 
 	"github.com/filecoin-project/lotus/api"
-	"github.com/filecoin-project/lotus/lib/blockstore"
+	"github.com/filecoin-project/lotus/blockstore"
 	lru "github.com/hashicorp/golang-lru"
 	blocks "github.com/ipfs/go-block-format"
 	"github.com/ipfs/go-cid"
+	ibs "github.com/ipfs/go-ipfs-blockstore"
 )
 
 type proxyingBlockstore struct {
@@ -100,5 +101,17 @@ func StoreFor(ctx context.Context, client api.FullNode) blockstore.Blockstore {
 		api:   client,
 		cache: cache,
 	}
-	return bs
+	return &LotusBS{bs}
+}
+
+type LotusBS struct {
+	ibs.Blockstore
+}
+
+func (*LotusBS) DeleteMany([]cid.Cid) error {
+	return errors.New("not supported")
+}
+
+func (*LotusBS) View(cid.Cid, func([]byte) error) error {
+	return errors.New("not supported")
 }

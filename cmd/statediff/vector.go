@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"os"
 
-	bs "github.com/filecoin-project/lotus/lib/blockstore"
+	bs "github.com/filecoin-project/lotus/blockstore"
 	"github.com/ipfs/go-cid"
 	blockstore "github.com/ipfs/go-ipfs-blockstore"
 	"github.com/ipld/go-car"
@@ -58,7 +58,7 @@ func runVectorCmd(c *cli.Context) error {
 	}
 	defer gr.Close()
 
-	store := bs.NewTemporary()
+	store := bs.NewMemory()
 	_, err = car.LoadCar(store, gr)
 	if err != nil {
 		return err
@@ -79,16 +79,16 @@ func runVectorCmd(c *cli.Context) error {
 }
 
 func PrintDiff(ctx context.Context, pre, post cid.Cid, store blockstore.Blockstore) (string, error) {
-	l, err := statediff.Transform(ctx, pre, store, "stateRoot")
+	l, err := statediff.Transform(ctx, pre, &statediff.LotusBS{store}, "stateRoot")
 	if err != nil {
-		l, err = statediff.Transform(ctx, pre, store, "versionedStateRoot")
+		l, err = statediff.Transform(ctx, pre, &statediff.LotusBS{store}, "versionedStateRoot")
 		if err != nil {
 			return "", fmt.Errorf("Could not load left root: %s", err)
 		}
 	}
-	r, err := statediff.Transform(ctx, post, store, "stateRoot")
+	r, err := statediff.Transform(ctx, post, &statediff.LotusBS{store}, "stateRoot")
 	if err != nil {
-		r, err = statediff.Transform(ctx, post, store, "versionedStateRoot")
+		r, err = statediff.Transform(ctx, post, &statediff.LotusBS{store}, "versionedStateRoot")
 		if err != nil {
 			return "", fmt.Errorf("Could not load right root: %s", err)
 		}
@@ -97,7 +97,7 @@ func PrintDiff(ctx context.Context, pre, post cid.Cid, store blockstore.Blocksto
 	s := fmt.Sprintf("--- %s\n+++ %s\n@@ -1,1 +1,1 @@\n", pre, post)
 	s += fmt.Sprintf("%v\n", statediff.Diff(
 		ctx,
-		store,
+		&statediff.LotusBS{store},
 		l,
 		r))
 	return s, nil
