@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	bs "github.com/filecoin-project/lotus/lib/blockstore"
+	bs "github.com/filecoin-project/lotus/blockstore"
 	"github.com/ipfs/go-cid"
 	"github.com/ipld/go-car"
 	"github.com/urfave/cli/v2"
@@ -36,7 +36,7 @@ func runCarCmd(c *cli.Context) error {
 		return err
 	}
 
-	store := bs.NewTemporary()
+	store := bs.NewMemory()
 	_, err = car.LoadCar(store, file)
 	if err != nil {
 		return err

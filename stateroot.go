@@ -14,7 +14,7 @@ import (
 // The cid can be the block of a tipset, the stateroot itself, or the
 // versioned stateroot
 func GetStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
-	blk, err := Transform(ctx, c, store, "tipset")
+	blk, err := Transform(ctx, c, &LotusBS{store}, "tipset")
 	if err == nil {
 		srLink, err := blk.LookupByString("ParentStateRoot")
 		if err != nil {
@@ -34,11 +34,11 @@ func GetStateRoot(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (
 }
 
 func getStateRootMaybeVersioned(ctx context.Context, c cid.Cid, store blockstore.Blockstore) (ipld.Node, error) {
-	sr, err := Transform(ctx, c, store, "stateRoot")
+	sr, err := Transform(ctx, c, &LotusBS{store}, "stateRoot")
 	if err == nil {
 		return sr, nil
 	}
-	vsr, err2 := Transform(ctx, c, store, "versionedStateRoot")
+	vsr, err2 := Transform(ctx, c, &LotusBS{store}, "versionedStateRoot")
 	if err2 != nil {
 		return nil, fmt.Errorf("cid was not a stateroot: %v / %v", err, err2)
 	}

@@ -9,8 +9,8 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 
+	"github.com/filecoin-project/lotus/blockstore"
 	"github.com/filecoin-project/lotus/chain/types"
-	"github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/filecoin-project/statediff"
 	blocks "github.com/ipfs/go-block-format"
 	"github.com/ipfs/go-cid"
@@ -59,7 +59,6 @@ type SqlBlockstore struct {
 }
 
 func NewSqlBlockStore(connstr string) (blockstore.Blockstore, statediff.StateRootFunc, error) {
-
 	sbs := &SqlBlockstore{
 		db: DB(connstr),
 	}
@@ -80,7 +79,7 @@ func NewSqlBlockStore(connstr string) (blockstore.Blockstore, statediff.StateRoo
 func keyFromCid(c cid.Cid) (k string) {
 	// CB: we can not store complete CIDs as keys - code expects being able
 	// to match on multihash alone, likely both over raw *and* CBOR :( :( :(
-	//return c.Encode(multibase.MustNewEncoder(multibase.Base64))
+	// return c.Encode(multibase.MustNewEncoder(multibase.Base64))
 
 	k, _ = multibase.Encode(multibase.Base64, c.Hash())
 	return
@@ -98,7 +97,6 @@ func (sbs *SqlBlockstore) Has(c cid.Cid) (has bool, err error) {
 }
 
 func (sbs *SqlBlockstore) AllKeysChan(ctx context.Context) (<-chan cid.Cid, error) {
-
 	retChan := make(chan cid.Cid, 1<<20)
 
 	q, err := sbs.db.Query(
@@ -146,7 +144,6 @@ func (sbs *SqlBlockstore) AllKeysChan(ctx context.Context) (<-chan cid.Cid, erro
 }
 
 func (sbs *SqlBlockstore) Get(c cid.Cid) (blocks.Block, error) {
-
 	var data []byte
 	err := sbs.db.QueryRow(
 		context.Background(),
@@ -169,7 +166,6 @@ func (sbs *SqlBlockstore) Get(c cid.Cid) (blocks.Block, error) {
 }
 
 func (sbs *SqlBlockstore) GetSize(c cid.Cid) (size int, err error) {
-
 	err = sbs.db.QueryRow(
 		context.Background(),
 		"SELECT LENGTH(content) FROM blocks WHERE multiHash = $1",
@@ -186,7 +182,6 @@ func (sbs *SqlBlockstore) GetSize(c cid.Cid) (size int, err error) {
 
 // Put puts a given block to the underlying datastore
 func (sbs *SqlBlockstore) Put(b blocks.Block) (err error) {
-
 	_, err = sbs.db.Exec(
 		context.Background(),
 		"INSERT INTO blocks( multiHash, initialCodecID, content ) VALUES( $1, $2, $3 ) ON CONFLICT (multiHash) DO NOTHING",
@@ -212,7 +207,6 @@ func (sbs *SqlBlockstore) PutMany(blks []blocks.Block) error {
 }
 
 func (sbs *SqlBlockstore) getMasterTsKey(ctx context.Context, lookback int) (*types.TipSetKey, error) {
-
 	var headCids string
 	if err := sbs.db.QueryRow(
 		ctx,

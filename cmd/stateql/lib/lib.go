@@ -61,7 +61,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						if err != nil {
 							return nil, err
 						}
-						return statediff.Transform(p.Context, idCid, s, string(statediff.LotusTypeTipset))
+						return statediff.Transform(p.Context, idCid, &statediff.LotusBS{s}, string(statediff.LotusTypeTipset))
 					},
 				},
 				"Height": &graphql.Field{
@@ -82,7 +82,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						}
 						if at == -1 {
 							ch := source.Head(p.Context)
-							return statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
+							return statediff.Transform(p.Context, ch, &statediff.LotusBS{s}, string(statediff.LotusTypeTipset))
 						}
 						ch, err := source.CidAtHeight(p.Context, int64(at))
 						if err != nil {
@@ -91,7 +91,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						if ch == cid.Undef {
 							return nil, nil
 						}
-						return statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
+						return statediff.Transform(p.Context, ch, &statediff.LotusBS{s}, string(statediff.LotusTypeTipset))
 					},
 				},
 				"Message": &graphql.Field{
@@ -111,7 +111,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 						if err != nil {
 							return nil, err
 						}
-						return statediff.Transform(p.Context, idCid, s, string(statediff.LotusTypeMessage))
+						return statediff.Transform(p.Context, idCid, &statediff.LotusBS{s}, string(statediff.LotusTypeMessage))
 					},
 				},
 				"Heights": &graphql.Field{
@@ -141,7 +141,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 							if ch == cid.Undef {
 								continue
 							}
-							n, err := statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
+							n, err := statediff.Transform(p.Context, ch, &statediff.LotusBS{s}, string(statediff.LotusTypeTipset))
 							if err != nil {
 								return nil, err
 							}
@@ -201,7 +201,7 @@ func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
 							if ch == cid.Undef {
 								continue
 							}
-							n, err := statediff.Transform(p.Context, ch, s, string(statediff.LotusTypeTipset))
+							n, err := statediff.Transform(p.Context, ch, &statediff.LotusBS{s}, string(statediff.LotusTypeTipset))
 							if err != nil {
 								return nil, err
 							}

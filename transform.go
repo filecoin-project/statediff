@@ -24,7 +24,7 @@ import (
 
 	"github.com/filecoin-project/statediff/types"
 
-	"github.com/filecoin-project/lotus/lib/blockstore"
+	"github.com/filecoin-project/lotus/blockstore"
 
 	adt "github.com/filecoin-project/specs-actors/actors/util/adt"
 	adtv2 "github.com/filecoin-project/specs-actors/v2/actors/util/adt"
@@ -422,9 +422,11 @@ func LinkDest(n ipld.Node) ipld.NodePrototype {
 	return nil
 }
 
-var simplifyingRe = regexp.MustCompile(`\[\d+\]\.`)
-var simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
-var finalRe = regexp.MustCompile(`\[\d+\]`)
+var (
+	simplifyingRe  = regexp.MustCompile(`\[\d+\]\.`)
+	simplifyingRe2 = regexp.MustCompile(`\.\d+\.`)
+	finalRe        = regexp.MustCompile(`\[\d+\]`)
+)
 
 // ResolveType maps incoming type strings to enum known types
 func ResolveType(as string) LotusType {

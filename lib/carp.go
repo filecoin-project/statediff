@@ -15,12 +15,12 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"github.com/filecoin-project/lotus/api"
+	"github.com/filecoin-project/lotus/blockstore"
 	"github.com/filecoin-project/lotus/chain/stmgr"
 	"github.com/filecoin-project/lotus/chain/store"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/chain/vm"
 	"github.com/filecoin-project/lotus/extern/sector-storage/ffiwrapper"
-	"github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/filecoin-project/lotus/lib/ulimit"
 	marketevents "github.com/filecoin-project/lotus/markets/loggers"
 	"github.com/filecoin-project/lotus/node/impl"
@@ -87,7 +87,7 @@ func (ra *CarAPI) ComputeGasOutputs(gasUsed, gasLimit int64, baseFee, feeCap, ga
 }
 
 func (ra *CarAPI) Store() adt.Store {
-	bs := ra.FullNodeAPI.ChainAPI.Chain.Blockstore()
+	bs := ra.FullNodeAPI.ChainAPI.Chain.ChainBlockstore()
 	cachedStore, _ := blockstore.CachedBlockstore(ra.Context, bs, blockstore.CacheOpts{
 		HasBloomFilterSize:   0,
 		HasBloomFilterHashes: 0,

@@ -7,8 +7,8 @@ import (
 
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/api"
+	"github.com/filecoin-project/lotus/blockstore"
 	abitypes "github.com/filecoin-project/lotus/chain/types"
-	"github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/filecoin-project/statediff"
 	"github.com/filecoin-project/statediff/types"
 	"github.com/ipfs/go-cid"

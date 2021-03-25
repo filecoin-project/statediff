@@ -174,7 +174,7 @@ func (s *state) nodeLoader(n ipld.Node) interface{} {
 			return fmt.Sprintf("Unresolved CID %T: %s", n, l.String())
 		}
 		builder := proto.NewBuilder()
-		err := Load(s.ctx, c, s.store, builder)
+		err := Load(s.ctx, c, &LotusBS{s.store}, builder)
 		if err != nil {
 			return fmt.Sprintf("load of %s failed: %v", c, err)
 		}

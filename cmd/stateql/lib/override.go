@@ -81,7 +81,7 @@ func AddFields() {
 					return 0, err
 				}
 				mcl := mcid.(cidlink.Link)
-				if err = statediff.Load(p.Context, mcl.Cid, store, b); err != nil {
+				if err = statediff.Load(p.Context, mcl.Cid, &statediff.LotusBS{store}, b); err != nil {
 					return 0, err
 				}
 				msg := b.Build()
@@ -328,7 +328,6 @@ func LotusActors__Head__resolve(p graphql.ResolveParams) (interface{}, error) {
 		return loader(p.Context, cl, builder)
 	}
 	return nil, fmt.Errorf("Invalid link")
-
 }
 
 // For hamts we use the hamt node rather than the expected builder.

@@ -11,8 +11,8 @@ import (
 	pgchainbs "github.com/filecoin-project/go-bs-postgres-chainnotated"
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/chain/types"
-	"github.com/filecoin-project/lotus/lib/blockstore"
 	"github.com/ipfs/go-cid"
+	"github.com/ipfs/go-ipfs-blockstore"
 	logging "github.com/ipfs/go-log/v2"
 )
 
@@ -34,7 +34,6 @@ type tcs struct {
 }
 
 func NewTrackingPgChainstoreFromEnv(ctx context.Context, readOnly bool) (TrackingChainstore, error) {
-
 	pgbsCfg := pgchainbs.PgBlockstoreConfig{
 		StoreIsWritable:         !readOnly,
 		AutoUpdateSchema:        !readOnly,
