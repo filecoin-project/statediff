@@ -4,9 +4,7 @@ go 1.14
 
 require (
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c // indirect
-	github.com/dgraph-io/ristretto v0.0.3-0.20200630154024-f66de99634de // indirect
-	github.com/dustin/go-humanize v1.0.0 // indirect
-	github.com/evanw/esbuild v0.8.54
+	github.com/evanw/esbuild v0.9.7
 	github.com/filecoin-project/go-address v0.0.5
 	github.com/filecoin-project/go-bitfield v0.2.4
 	github.com/filecoin-project/go-bs-postgres-chainnotated v0.0.0-20210303122434-164e32c1604d
@@ -39,10 +37,8 @@ require (
 	github.com/multiformats/go-multiaddr-net v0.2.0
 	github.com/multiformats/go-multibase v0.0.3
 	github.com/multiformats/go-multihash v0.0.14
-	github.com/multiformats/go-varint v0.0.6 // indirect
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
 	github.com/urfave/cli/v2 v2.3.0
-	github.com/valyala/gozstd v1.9.0 // indirect
 	github.com/whyrusleeping/cbor-gen v0.0.0-20210219115102-f37d292932f2
 	github.com/willscott/carbs v0.0.4
 	github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345
