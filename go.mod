@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c // indirect
-	github.com/evanw/esbuild v0.11.1
+	github.com/evanw/esbuild v0.11.5
 	github.com/filecoin-project/go-address v0.0.5
 	github.com/filecoin-project/go-bitfield v0.2.4
 	github.com/filecoin-project/go-bs-postgres-chainnotated v0.0.0-20210303122434-164e32c1604d
