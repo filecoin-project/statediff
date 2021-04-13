@@ -161,7 +161,7 @@ func (t *tcs) CidAtHeight(ctx context.Context, h int64) (cid.Cid, error) {
 		return cid.Undef, err
 	}
 
-	tsd, err = t.FindFilTipSet(ctx, tsd.TipSetCids, abi.ChainEpoch(h))
+	tsd, err = t.FindFilTipSet(ctx, tsd.TipSetCids, tsd.Epoch-abi.ChainEpoch(h))
 	if err != nil {
 		return cid.Undef, err
 	}
