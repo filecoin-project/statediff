@@ -8,6 +8,7 @@ import (
 
 	gqlib "github.com/filecoin-project/statediff/cmd/stateql/lib"
 	"github.com/filecoin-project/statediff/lib"
+	"github.com/filecoin-project/statediff/lib/debug"
 
 	"github.com/gorilla/handlers"
 
@@ -26,6 +27,11 @@ var crtFlag = cli.StringFlag{
 	Value: "",
 }
 
+var pprofFlag = cli.StringFlag{
+	Name:  "pprof",
+	Usage: "include a pprof handler at a given mount point",
+}
+
 var graphCmd = &cli.Command{
 	Name:        "serve",
 	Description: "Serve GraphQL endpoint",
@@ -39,6 +45,7 @@ var graphCmd = &cli.Command{
 		&lib.NoCacheFlag,
 		&bindFlag,
 		&crtFlag,
+		&pprofFlag,
 	},
 }
 
@@ -48,6 +55,9 @@ func runGraphCmd(c *cli.Context) error {
 		return err
 	}
 	mux := gqlib.GetGraphQL(c, ds)
+	if c.IsSet(pprofFlag.Name) {
+		mux.Handle(fmt.Sprintf("/%s/", c.String(pprofFlag.Name)), debug.WithProfile())
+	}
 
 	lis, err := net.Listen("tcp", c.String(bindFlag.Name))
 	if err != nil {
