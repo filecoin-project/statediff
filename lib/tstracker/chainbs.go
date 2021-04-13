@@ -2,6 +2,7 @@ package tstracker
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -12,7 +13,7 @@ import (
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/ipfs/go-cid"
-	"github.com/ipfs/go-ipfs-blockstore"
+	blockstore "github.com/ipfs/go-ipfs-blockstore"
 	logging "github.com/ipfs/go-log/v2"
 )
 
@@ -22,6 +23,8 @@ type TrackingChainstore interface {
 	blockstore.Blockstore
 	blockstore.Viewer
 	io.Closer
+	DeleteMany([]cid.Cid) error
+	View(cid.Cid, func([]byte) error) error
 	CurrentDbTipSetKey(context.Context) (*types.TipSetKey, abi.ChainEpoch, error)
 	GetCurrentTipset(ctx context.Context) []cid.Cid
 	StoreTipSetVist(ctx context.Context, ts *types.TipSet, isHeaChange bool) error
@@ -128,4 +131,48 @@ func NewTrackingPgChainstore(ctx context.Context, conn string) (TrackingChainsto
 	}
 
 	return &tcs{PgBlockstore: pgbs}, nil
+}
+
+func (*tcs) DeleteMany([]cid.Cid) error {
+	return errors.New("not supported")
+}
+
+func (*tcs) View(cid.Cid, func([]byte) error) error {
+	return errors.New("not supported")
+}
+
+func (t *tcs) Store() blockstore.Blockstore {
+	return t
+}
+func (t *tcs) Head(ctx context.Context) cid.Cid {
+	tsk, _, err := t.CurrentDbTipSetKey(ctx)
+	if err != nil {
+		return cid.Undef
+	}
+	cids := tsk.Cids()
+	if len(cids) > 0 {
+		return cids[0]
+	}
+	return cid.Undef
+}
+func (t *tcs) CidAtHeight(ctx context.Context, h int64) (cid.Cid, error) {
+	tsd, err := t.GetFilTipSetHead(ctx)
+	if err != nil {
+		return cid.Undef, err
+	}
+
+	tsd, err = t.FindFilTipSet(ctx, tsd.TipSetCids, abi.ChainEpoch(h))
+	if err != nil {
+		return cid.Undef, err
+	}
+
+	cids := tsd.TipSetCids
+	if len(cids) > 0 {
+		return cids[0], nil
+	}
+	return cid.Undef, nil
+}
+
+func (t *tcs) Reload() error {
+	return nil
 }

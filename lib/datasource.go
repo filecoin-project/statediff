@@ -184,7 +184,7 @@ func GetNewSql(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, 
 		return nil, nil, err
 	}
 
-	return scs.GetCurrentTipset, &statediff.LotusBS{scs}, nil
+	return scs.GetCurrentTipset, scs, nil
 }
 
 func GetVector(c *cli.Context) (statediff.StateRootFunc, blockstore.Blockstore, error) {
