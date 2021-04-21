@@ -70,7 +70,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnStruct("LotusActors",
 		[]schema.StructField{
 			schema.SpawnStructField("Code", "Link", false, false),
-			schema.SpawnStructField("Head", "Link__LotusActorV3Head", false, false),
+			schema.SpawnStructField("Head", "Link__LotusActorV4Head", false, false),
 			schema.SpawnStructField("Nonce", "Int", false, false),
 			schema.SpawnStructField("Balance", "BigInt", false, false),
 		},
