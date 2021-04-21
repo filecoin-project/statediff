@@ -139,8 +139,12 @@ func (*tcs) DeleteMany([]cid.Cid) error {
 	return errors.New("not supported")
 }
 
-func (*tcs) View(cid.Cid, func([]byte) error) error {
-	return errors.New("not supported")
+func (x *tcs) View(c cid.Cid, f func([]byte) error) error {
+	b, err := x.Get(c)
+	if err != nil {
+		return err
+	}
+	return f(b.RawData())
 }
 
 func (t *tcs) Store() blockstore.Blockstore {
