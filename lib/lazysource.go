@@ -10,19 +10,12 @@ import (
 	"github.com/filecoin-project/lotus/blockstore"
 	abitypes "github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/statediff"
+	iface "github.com/filecoin-project/statediff/lib/interface"
 	"github.com/filecoin-project/statediff/types"
 	"github.com/ipfs/go-cid"
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
 	"github.com/urfave/cli/v2"
 )
-
-// Datasource is the interface for loading data to share with stateexplorer when needed.
-type Datasource interface {
-	Store() blockstore.Blockstore
-	Head(ctx context.Context) cid.Cid
-	CidAtHeight(ctx context.Context, h int64) (cid.Cid, error)
-	Reload() error
-}
 
 type lazyDs struct {
 	ctx *cli.Context
@@ -150,7 +143,7 @@ func (l *lazyDs) CidAtHeight(ctx context.Context, h int64) (cid.Cid, error) {
 	return cid.Undef, nil
 }
 
-func Lazy(c *cli.Context) (Datasource, error) {
+func Lazy(c *cli.Context) (iface.Datasource, error) {
 	if lazyInst != nil {
 		return lazyInst, nil
 	}
@@ -160,7 +153,7 @@ func Lazy(c *cli.Context) (Datasource, error) {
 		return nil, err
 	}
 
-	if dsc, ok := store.(Datasource); ok {
+	if dsc, ok := store.(iface.Datasource); ok {
 		return dsc, nil
 	}
 

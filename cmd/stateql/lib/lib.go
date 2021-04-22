@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/filecoin-project/statediff"
-	sdlib "github.com/filecoin-project/statediff/lib"
+	iface "github.com/filecoin-project/statediff/lib/interface"
 	"github.com/graphql-go/graphql"
 	"github.com/ipfs/go-cid"
 	blockstore "github.com/ipfs/go-ipfs-blockstore"
@@ -37,7 +37,7 @@ type postData struct {
 	Variables map[string]interface{} `json:"variables"`
 }
 
-func GetGraphQL(c *cli.Context, source sdlib.Datasource) *http.ServeMux {
+func GetGraphQL(c *cli.Context, source iface.Datasource) *http.ServeMux {
 	AddFields()
 
 	schema, err := graphql.NewSchema(graphql.SchemaConfig{

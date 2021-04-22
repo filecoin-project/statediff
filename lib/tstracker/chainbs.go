@@ -11,9 +11,10 @@ import (
 
 	pgchainbs "github.com/filecoin-project/go-bs-postgres-chainnotated"
 	"github.com/filecoin-project/go-state-types/abi"
+	"github.com/filecoin-project/lotus/blockstore"
 	"github.com/filecoin-project/lotus/chain/types"
+	iface "github.com/filecoin-project/statediff/lib/interface"
 	"github.com/ipfs/go-cid"
-	blockstore "github.com/ipfs/go-ipfs-blockstore"
 	logging "github.com/ipfs/go-log/v2"
 )
 
@@ -22,6 +23,7 @@ var log = logging.Logger("tipset-tracker")
 type TrackingChainstore interface {
 	blockstore.Blockstore
 	blockstore.Viewer
+	iface.Datasource
 	io.Closer
 	DeleteMany([]cid.Cid) error
 	View(cid.Cid, func([]byte) error) error
@@ -137,8 +139,12 @@ func (*tcs) DeleteMany([]cid.Cid) error {
 	return errors.New("not supported")
 }
 
-func (*tcs) View(cid.Cid, func([]byte) error) error {
-	return errors.New("not supported")
+func (x *tcs) View(c cid.Cid, f func([]byte) error) error {
+	b, err := x.Get(c)
+	if err != nil {
+		return err
+	}
+	return f(b.RawData())
 }
 
 func (t *tcs) Store() blockstore.Blockstore {
