@@ -112,6 +112,10 @@ func (*LotusBS) DeleteMany([]cid.Cid) error {
 	return errors.New("not supported")
 }
 
-func (*LotusBS) View(cid.Cid, func([]byte) error) error {
-	return errors.New("not supported")
+func (l *LotusBS) View(c cid.Cid, f func([]byte) error) error {
+	b, err := l.Get(c)
+	if err != nil {
+		return err
+	}
+	return f(b.RawData())
 }

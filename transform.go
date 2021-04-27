@@ -599,7 +599,7 @@ func loadV3Map(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as i
 	cborStore := cbor.NewCborStore(store)
 	node, err := hamtv3.LoadNode(ctx, cborStore, c, hamtv3.UseTreeBitWidth(5))
 	if err != nil {
-		return fmt.Errorf("hamt load node errored: %v", err)
+		return fmt.Errorf("hamtV3 load node errored: %v", err)
 	}
 	mapper, err := as.BeginMap(0)
 	if err != nil {
