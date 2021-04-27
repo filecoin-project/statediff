@@ -77,6 +77,8 @@ type typeSlab struct {
 	Link__LotusActorV2Head__Repr _Link__LotusActorV2Head__ReprPrototype
 	Link__LotusActorV3Head       _Link__LotusActorV3Head__Prototype
 	Link__LotusActorV3Head__Repr _Link__LotusActorV3Head__ReprPrototype
+	Link__LotusActorV4Head       _Link__LotusActorV4Head__Prototype
+	Link__LotusActorV4Head__Repr _Link__LotusActorV4Head__ReprPrototype
 	Link__LotusActors       _Link__LotusActors__Prototype
 	Link__LotusActors__Repr _Link__LotusActors__ReprPrototype
 	Link__LotusMessage       _Link__LotusMessage__Prototype
@@ -155,6 +157,8 @@ type typeSlab struct {
 	Link__MinerV3SectorPreCommits__Repr _Link__MinerV3SectorPreCommits__ReprPrototype
 	Link__MinerV3State       _Link__MinerV3State__Prototype
 	Link__MinerV3State__Repr _Link__MinerV3State__ReprPrototype
+	Link__MinerV4State       _Link__MinerV4State__Prototype
+	Link__MinerV4State__Repr _Link__MinerV4State__ReprPrototype
 	Link__MultimapDealID       _Link__MultimapDealID__Prototype
 	Link__MultimapDealID__Repr _Link__MultimapDealID__ReprPrototype
 	Link__MultisigV0State       _Link__MultisigV0State__Prototype
@@ -247,6 +251,8 @@ type typeSlab struct {
 	LotusActorV2Head__Repr _LotusActorV2Head__ReprPrototype
 	LotusActorV3Head       _LotusActorV3Head__Prototype
 	LotusActorV3Head__Repr _LotusActorV3Head__ReprPrototype
+	LotusActorV4Head       _LotusActorV4Head__Prototype
+	LotusActorV4Head__Repr _LotusActorV4Head__ReprPrototype
 	LotusActors       _LotusActors__Prototype
 	LotusActors__Repr _LotusActors__ReprPrototype
 	LotusBeaconEntry       _LotusBeaconEntry__Prototype
@@ -501,6 +507,8 @@ type typeSlab struct {
 	MinerV3Partition__Repr _MinerV3Partition__ReprPrototype
 	MinerV3State       _MinerV3State__Prototype
 	MinerV3State__Repr _MinerV3State__ReprPrototype
+	MinerV4State       _MinerV4State__Prototype
+	MinerV4State__Repr _MinerV4State__ReprPrototype
 	ModVerifyParams       _ModVerifyParams__Prototype
 	ModVerifyParams__Repr _ModVerifyParams__ReprPrototype
 	Multiaddr       _Multiaddr__Prototype
@@ -718,6 +726,10 @@ type _Link__LotusActorV2Head struct{ x ipld.Link }
 type Link__LotusActorV3Head = *_Link__LotusActorV3Head
 type _Link__LotusActorV3Head struct{ x ipld.Link }
 
+// Link__LotusActorV4Head matches the IPLD Schema type "Link__LotusActorV4Head".  It has link kind.
+type Link__LotusActorV4Head = *_Link__LotusActorV4Head
+type _Link__LotusActorV4Head struct{ x ipld.Link }
+
 // Link__LotusActors matches the IPLD Schema type "Link__LotusActors".  It has link kind.
 type Link__LotusActors = *_Link__LotusActors
 type _Link__LotusActors struct{ x ipld.Link }
@@ -873,6 +885,10 @@ type _Link__MinerV3SectorPreCommits struct{ x ipld.Link }
 // Link__MinerV3State matches the IPLD Schema type "Link__MinerV3State".  It has link kind.
 type Link__MinerV3State = *_Link__MinerV3State
 type _Link__MinerV3State struct{ x ipld.Link }
+
+// Link__MinerV4State matches the IPLD Schema type "Link__MinerV4State".  It has link kind.
+type Link__MinerV4State = *_Link__MinerV4State
+type _Link__MinerV4State struct{ x ipld.Link }
 
 // Link__MultimapDealID matches the IPLD Schema type "Link__MultimapDealID".  It has link kind.
 type Link__MultimapDealID = *_Link__MultimapDealID
@@ -1178,11 +1194,64 @@ func (_PowerV0State) _LotusActorV3Head__member() {}
 func (_RewardV0State) _LotusActorV3Head__member() {}
 func (_VerifregV0State) _LotusActorV3Head__member() {}
 
+// LotusActorV4Head matches the IPLD Schema type "LotusActorV4Head".  It has Union type-kind, and may be interrogated like map kind.
+type LotusActorV4Head = *_LotusActorV4Head
+type _LotusActorV4Head struct {
+	tag uint
+	x1 _MinerV4State
+	x2 _MarketV3State
+	x3 _MinerV3State
+	x4 _PowerV3State
+	x5 _InitV3State
+	x6 _VerifregV3State
+	x7 _PaychV3State
+	x8 _MultisigV3State
+	x9 _MarketV2State
+	x10 _MinerV2State
+	x11 _PowerV2State
+	x12 _RewardV2State
+	x13 _AccountV0State
+	x14 _CronV0State
+	x15 _InitV0State
+	x16 _MarketV0State
+	x17 _MinerV0State
+	x18 _MultisigV0State
+	x19 _PaychV0State
+	x20 _PowerV0State
+	x21 _RewardV0State
+	x22 _VerifregV0State
+}
+type _LotusActorV4Head__iface interface {
+	_LotusActorV4Head__member()
+}
+func (_MinerV4State) _LotusActorV4Head__member() {}
+func (_MarketV3State) _LotusActorV4Head__member() {}
+func (_MinerV3State) _LotusActorV4Head__member() {}
+func (_PowerV3State) _LotusActorV4Head__member() {}
+func (_InitV3State) _LotusActorV4Head__member() {}
+func (_VerifregV3State) _LotusActorV4Head__member() {}
+func (_PaychV3State) _LotusActorV4Head__member() {}
+func (_MultisigV3State) _LotusActorV4Head__member() {}
+func (_MarketV2State) _LotusActorV4Head__member() {}
+func (_MinerV2State) _LotusActorV4Head__member() {}
+func (_PowerV2State) _LotusActorV4Head__member() {}
+func (_RewardV2State) _LotusActorV4Head__member() {}
+func (_AccountV0State) _LotusActorV4Head__member() {}
+func (_CronV0State) _LotusActorV4Head__member() {}
+func (_InitV0State) _LotusActorV4Head__member() {}
+func (_MarketV0State) _LotusActorV4Head__member() {}
+func (_MinerV0State) _LotusActorV4Head__member() {}
+func (_MultisigV0State) _LotusActorV4Head__member() {}
+func (_PaychV0State) _LotusActorV4Head__member() {}
+func (_PowerV0State) _LotusActorV4Head__member() {}
+func (_RewardV0State) _LotusActorV4Head__member() {}
+func (_VerifregV0State) _LotusActorV4Head__member() {}
+
 // LotusActors matches the IPLD Schema type "LotusActors".  It has Struct type-kind, and may be interrogated like map kind.
 type LotusActors = *_LotusActors
 type _LotusActors struct {
 	Code _Link
-	Head _Link__LotusActorV3Head
+	Head _Link__LotusActorV4Head
 	Nonce _Int
 	Balance _BigInt
 }
@@ -2495,6 +2564,26 @@ type _MinerV3State struct {
 	CurrentDeadline _Int
 	Deadlines _Link__MinerV3Deadlines
 	EarlyTerminations _BitField
+}
+
+// MinerV4State matches the IPLD Schema type "MinerV4State".  It has Struct type-kind, and may be interrogated like map kind.
+type MinerV4State = *_MinerV4State
+type _MinerV4State struct {
+	Info _Link__MinerV2Info
+	PreCommitDeposits _BigInt
+	LockedFunds _BigInt
+	VestingFunds _Link__MinerV0VestingFunds
+	FeeDebt _BigInt
+	InitialPledge _BigInt
+	PreCommittedSectors _Link__MinerV3SectorPreCommits
+	PreCommittedSectorsExpiry _Link
+	AllocatedSectors _Link__BitField
+	Sectors _Link__MinerV3SectorInfo
+	ProvingPeriodStart _ChainEpoch
+	CurrentDeadline _Int
+	Deadlines _Link__MinerV3Deadlines
+	EarlyTerminations _BitField
+	DeadlineCronActive _Bool
 }
 
 // ModVerifyParams matches the IPLD Schema type "ModVerifyParams".  It has Struct type-kind, and may be interrogated like map kind.
