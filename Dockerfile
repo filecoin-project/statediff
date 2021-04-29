@@ -14,7 +14,7 @@ COPY . .
 COPY --from=js /usr/src/app ./npm/app
 # Fetch dependencies.
 RUN go get -d -v ./... && go get github.com/go-bindata/go-bindata/go-bindata
-RUN BUILD_DIR=$(pwd); GOZSTD_VER=$(cat go.mod | fgrep github.com/valyala/gozstd | awk '{print $2}'); go get -d github.com/valyala/gozstd@${GOZSTD_VER}; cd ${GOPATH}/pkg/mod/github.com/valyala/gozstd@${GOZSTD_VER}; if [[ ! -f _rebuilt ]]; then chmod -R +w .; make -j8 clean; make -j8 libzstd.a; touch _rebuilt; fi; cd ${BUILD_DIR}
+RUN BUILD_DIR=$(pwd); GOZSTD_VER=$(cat go.sum | fgrep github.com/valyala/gozstd | awk '{print $2}' | head -n 1); go get -d github.com/valyala/gozstd@${GOZSTD_VER}; cd ${GOPATH}/pkg/mod/github.com/valyala/gozstd@${GOZSTD_VER}; if [[ ! -f _rebuilt ]]; then chmod -R +w .; make -j8 clean; make -j8 libzstd.a; touch _rebuilt; fi; cd ${BUILD_DIR}
 RUN go generate ./...
 RUN go build -o stateexplorer ./cmd/stateexplorer
 
