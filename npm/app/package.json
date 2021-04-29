@@ -19,5 +19,9 @@
   "dependencies": {
     "buffer": "^6.0.3",
     "cids": "^1.1.6"
+  },
+  "browser": {
+    "fs": false,
+    "util": false
   }
 }

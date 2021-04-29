@@ -99,6 +99,7 @@ const (
 	StorageMinerActorV3DeadlinePartitions      LotusType = "storageMinerActorV3.Deadlines.Due.Partitions"
 	StorageMinerActorV3DeadlinePartitionExpiry LotusType = "storageMinerActorV3.Deadlines.Due.Partitions.ExpirationsEpochs"
 	StorageMinerActorV3DeadlinePartitionEarly  LotusType = "storageMinerActorV3.Deadlines.Due.Partitions.EarlyTerminated"
+	StorageMinerActorV4State                   LotusType = "storageMinerActorV4"
 	StoragePowerActorState                     LotusType = "storagePowerActor"
 	StoragePowerActorV2State                   LotusType = "storagePowerActorV2"
 	StoragePowerActorV3State                   LotusType = "storagePowerActorV3"
@@ -194,6 +195,18 @@ var LotusActorCodes = map[string]LotusType{
 	cidOf("fil/3/verifiedregistry"): VerifiedRegistryActorV3State,
 	cidOf("fil/3/account"):          AccountActorState,
 	cidOf("fil/3/multisig"):         MultisigActorV3State,
+	// v4
+	cidOf("fil/4/system"):           LotusType("systemActor"),
+	cidOf("fil/4/init"):             InitActorV3State,
+	cidOf("fil/4/cron"):             CronActorState,
+	cidOf("fil/4/storagepower"):     StoragePowerActorV3State,
+	cidOf("fil/4/storageminer"):     StorageMinerActorV4State,
+	cidOf("fil/4/storagemarket"):    MarketActorV3State,
+	cidOf("fil/4/paymentchannel"):   PaymentChannelActorV3State,
+	cidOf("fil/4/reward"):           RewardActorV2State,
+	cidOf("fil/4/verifiedregistry"): VerifiedRegistryActorV3State,
+	cidOf("fil/4/account"):          AccountActorState,
+	cidOf("fil/4/multisig"):         MultisigActorV3State,
 }
 
 var lotusMessageMap = basicnode.Prototype__Map{}
@@ -228,6 +241,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	StorageMinerActorV3State:          types.Type.MinerV3State__Repr,
 	StorageMinerActorV3Deadlines:      types.Type.MinerV3Deadlines__Repr,
 	StorageMinerActorV3Deadline:       types.Type.MinerV3Deadline__Repr,
+	StorageMinerActorV4State:          types.Type.MinerV4State__Repr,
 	StoragePowerActorState:            types.Type.PowerV0State__Repr,
 	StoragePowerActorV2State:          types.Type.PowerV2State__Repr,
 	StoragePowerActorV3State:          types.Type.PowerV3State__Repr,
@@ -396,6 +410,7 @@ var typedLinks = map[ipld.NodePrototype]ipld.NodePrototype{
 	types.Type.Link__MinerV0State:            types.Type.MinerV0State__Repr,
 	types.Type.Link__MinerV2State:            types.Type.MinerV2State__Repr,
 	types.Type.Link__MinerV3State:            types.Type.MinerV3State__Repr,
+	types.Type.Link__MinerV4State:            types.Type.MinerV4State__Repr,
 	types.Type.Link__MultisigV0State:         types.Type.MultisigV0State__Repr,
 	types.Type.Link__MultisigV3State:         types.Type.MultisigV3State__Repr,
 	types.Type.Link__PaychV0State:            types.Type.PaychV0State__Repr,
