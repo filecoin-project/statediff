@@ -112,6 +112,7 @@ var messageParamTable = map[LotusType]methodtable{
 	StorageMinerActorState:       minerTable,
 	StorageMinerActorV2State:     minerTable,
 	StorageMinerActorV3State:     minerTable,
+	StorageMinerActorV4State:     minerTable,
 	MultisigActorState:           multisigTable,
 	MultisigActorV3State:         multisigTable,
 	PaymentChannelActorState:     paychTable,
@@ -123,7 +124,7 @@ var messageParamTable = map[LotusType]methodtable{
 	RewardActorV2State:           rewardTable,
 	VerifiedRegistryActorState:   verifregTable,
 	VerifiedRegistryActorV3State: verifregTable,
-	LotusTypeUnknown:             methodtable{},
+	LotusTypeUnknown:             {},
 }
 
 func ParamFor(destType LotusType, msg ipld.Node) (ipld.Node, string, error) {
