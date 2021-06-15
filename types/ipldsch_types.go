@@ -405,6 +405,8 @@ type typeSlab struct {
 	MessageParamsMinerDeclareFaultsRecovered__Repr _MessageParamsMinerDeclareFaultsRecovered__ReprPrototype
 	MessageParamsMinerDeferredCron       _MessageParamsMinerDeferredCron__Prototype
 	MessageParamsMinerDeferredCron__Repr _MessageParamsMinerDeferredCron__ReprPrototype
+	MessageParamsMinerDisputeWindowedPoSt       _MessageParamsMinerDisputeWindowedPoSt__Prototype
+	MessageParamsMinerDisputeWindowedPoSt__Repr _MessageParamsMinerDisputeWindowedPoSt__ReprPrototype
 	MessageParamsMinerExtendSectorExpiration       _MessageParamsMinerExtendSectorExpiration__Prototype
 	MessageParamsMinerExtendSectorExpiration__Repr _MessageParamsMinerExtendSectorExpiration__ReprPrototype
 	MessageParamsMinerProveCommitSector       _MessageParamsMinerProveCommitSector__Prototype
@@ -2074,6 +2076,13 @@ type _MessageParamsMinerDeclareFaultsRecovered struct {
 type MessageParamsMinerDeferredCron = *_MessageParamsMinerDeferredCron
 type _MessageParamsMinerDeferredCron struct {
 	EventType _Int
+}
+
+// MessageParamsMinerDisputeWindowedPoSt matches the IPLD Schema type "MessageParamsMinerDisputeWindowedPoSt".  It has Struct type-kind, and may be interrogated like map kind.
+type MessageParamsMinerDisputeWindowedPoSt = *_MessageParamsMinerDisputeWindowedPoSt
+type _MessageParamsMinerDisputeWindowedPoSt struct {
+	Deadline _Int
+	PoStIndex _Int
 }
 
 // MessageParamsMinerExtendSectorExpiration matches the IPLD Schema type "MessageParamsMinerExtendSectorExpiration".  It has Struct type-kind, and may be interrogated like map kind.

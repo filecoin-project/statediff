@@ -54,6 +54,7 @@ var minerTable = methodtable{
 	21: methodMeta{"ConfirmUpdateWorkerKey", types.Type.Any__Repr},
 	22: methodMeta{"RepayDebt", types.Type.Any__Repr},
 	23: methodMeta{"ChangeOwnerAddress", types.Type.Address__Repr},
+	24: methodMeta{"DisputeWindowedPoSt", types.Type.MessageParamsMinerDisputeWindowedPoSt__Repr},
 }
 
 var multisigTable = methodtable{

@@ -111,8 +111,8 @@ func accumulateMiner(ts schema.TypeSystem) {
 
 	ts.Accumulate(schema.SpawnStruct("ApplyRewardParams",
 		[]schema.StructField{
-			schema.SpawnStructField("Reward", "BigInt", false, false),  //TokenAmount
-			schema.SpawnStructField("Penalty", "BigInt", false, false), //TokenAmount
+			schema.SpawnStructField("Reward", "BigInt", false, false),  // TokenAmount
+			schema.SpawnStructField("Penalty", "BigInt", false, false), // TokenAmount
 		}, schema.StructRepresentation_Tuple{}))
 
 	ts.Accumulate(schema.SpawnStruct("MessageParamsMinerReportFault",
@@ -124,11 +124,17 @@ func accumulateMiner(ts schema.TypeSystem) {
 
 	ts.Accumulate(schema.SpawnStruct("MessageParamsMinerWithdrawBalance",
 		[]schema.StructField{
-			schema.SpawnStructField("AmountRequested", "BigInt", false, false), //TokenAmount
+			schema.SpawnStructField("AmountRequested", "BigInt", false, false), // TokenAmount
 		}, schema.StructRepresentation_Tuple{}))
 
 	ts.Accumulate(schema.SpawnStruct("MessageParamsMinerDeferredCron",
 		[]schema.StructField{
 			schema.SpawnStructField("EventType", "Int", false, false),
+		}, schema.StructRepresentation_Tuple{}))
+
+	ts.Accumulate(schema.SpawnStruct("MessageParamsMinerDisputeWindowedPoSt",
+		[]schema.StructField{
+			schema.SpawnStructField("Deadline", "Int", false, false),
+			schema.SpawnStructField("PoStIndex", "Int", false, false),
 		}, schema.StructRepresentation_Tuple{}))
 }
