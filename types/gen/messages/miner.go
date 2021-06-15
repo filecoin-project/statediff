@@ -137,4 +137,17 @@ func accumulateMiner(ts schema.TypeSystem) {
 			schema.SpawnStructField("Deadline", "Int", false, false),
 			schema.SpawnStructField("PoStIndex", "Int", false, false),
 		}, schema.StructRepresentation_Tuple{}))
+
+	ts.Accumulate(schema.SpawnList("List__MinerV0SectorPreCommitInfo", "MinerV0SectorPreCommitInfo", false))
+
+	ts.Accumulate(schema.SpawnStruct("MessageParamsMinerPreCommitSectorBatch",
+		[]schema.StructField{
+			schema.SpawnStructField("Sectors", "List__MinerV0SectorPreCommitInfo", false, false),
+		}, schema.StructRepresentation_Tuple{}))
+
+	ts.Accumulate(schema.SpawnStruct("MessageParamsMinerProveCommitAggregate",
+		[]schema.StructField{
+			schema.SpawnStructField("SectorNumbers", "BitField", false, false),
+			schema.SpawnStructField("AggregateProof", "Bytes", false, false),
+		}, schema.StructRepresentation_Tuple{}))
 }

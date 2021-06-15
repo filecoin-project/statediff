@@ -53,6 +53,7 @@ const (
 	MarketActorState                           LotusType = "storageMarketActor"
 	MarketActorV2State                         LotusType = "storageMarketActorV2"
 	MarketActorV3State                         LotusType = "storageMarketActorV3"
+	MarketActorV5State                         LotusType = "storageMarketActorV5"
 	MarketActorProposals                       LotusType = "storageMarketActor.Proposals"
 	MarketActorV2Proposals                     LotusType = "storageMarketActorV2.Proposals"
 	MarketActorV3Proposals                     LotusType = "storageMarketActorV3.Proposals"
@@ -100,6 +101,7 @@ const (
 	StorageMinerActorV3DeadlinePartitionExpiry LotusType = "storageMinerActorV3.Deadlines.Due.Partitions.ExpirationsEpochs"
 	StorageMinerActorV3DeadlinePartitionEarly  LotusType = "storageMinerActorV3.Deadlines.Due.Partitions.EarlyTerminated"
 	StorageMinerActorV4State                   LotusType = "storageMinerActorV4"
+	StorageMinerActorV5State                   LotusType = "storageMinerActorV5"
 	StoragePowerActorState                     LotusType = "storagePowerActor"
 	StoragePowerActorV2State                   LotusType = "storagePowerActorV2"
 	StoragePowerActorV3State                   LotusType = "storagePowerActorV3"
@@ -207,6 +209,18 @@ var LotusActorCodes = map[string]LotusType{
 	cidOf("fil/4/verifiedregistry"): VerifiedRegistryActorV3State,
 	cidOf("fil/4/account"):          AccountActorState,
 	cidOf("fil/4/multisig"):         MultisigActorV3State,
+	// v5
+	cidOf("fil/5/system"):           LotusType("systemActor"),
+	cidOf("fil/5/init"):             InitActorV3State,
+	cidOf("fil/5/cron"):             CronActorState,
+	cidOf("fil/5/storagepower"):     StoragePowerActorV3State,
+	cidOf("fil/5/storageminer"):     StorageMinerActorV5State,
+	cidOf("fil/5/storagemarket"):    MarketActorV3State,
+	cidOf("fil/5/paymentchannel"):   PaymentChannelActorV3State,
+	cidOf("fil/5/reward"):           RewardActorV2State,
+	cidOf("fil/5/verifiedregistry"): VerifiedRegistryActorV3State,
+	cidOf("fil/5/account"):          AccountActorState,
+	cidOf("fil/5/multisig"):         MultisigActorV3State,
 }
 
 var lotusMessageMap = basicnode.Prototype__Map{}
@@ -242,6 +256,7 @@ var LotusPrototypes = map[LotusType]ipld.NodePrototype{
 	StorageMinerActorV3Deadlines:      types.Type.MinerV3Deadlines__Repr,
 	StorageMinerActorV3Deadline:       types.Type.MinerV3Deadline__Repr,
 	StorageMinerActorV4State:          types.Type.MinerV4State__Repr,
+	StorageMinerActorV5State:          types.Type.MinerV5State__Repr,
 	StoragePowerActorState:            types.Type.PowerV0State__Repr,
 	StoragePowerActorV2State:          types.Type.PowerV2State__Repr,
 	StoragePowerActorV3State:          types.Type.PowerV3State__Repr,
