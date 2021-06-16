@@ -18,7 +18,7 @@
   "homepage": "https://github.com/filecoin-project/statediff#readme",
   "dependencies": {
     "buffer": "^6.0.3",
-    "cids": "^1.1.6"
+    "cids": "^1.1.7"
   },
   "browser": {
     "fs": false,
