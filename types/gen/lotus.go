@@ -22,7 +22,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 			schema.SpawnStructField("Timestamp", "Int", false, false),
 			schema.SpawnStructField("BlockSig", "Signature", false, true),
 			schema.SpawnStructField("ForkSignaling", "Int", false, false),
-			schema.SpawnStructField("ParentBaseFee", "BigInt", false, false), //TokenAmount
+			schema.SpawnStructField("ParentBaseFee", "BigInt", false, false), // TokenAmount
 		},
 		schema.StructRepresentation_Tuple{},
 	))
@@ -70,7 +70,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 	ts.Accumulate(schema.SpawnStruct("LotusActors",
 		[]schema.StructField{
 			schema.SpawnStructField("Code", "Link", false, false),
-			schema.SpawnStructField("Head", "Link__LotusActorV4Head", false, false),
+			schema.SpawnStructField("Head", "Link__LotusActorV5Head", false, false),
 			schema.SpawnStructField("Nonce", "Int", false, false),
 			schema.SpawnStructField("Balance", "BigInt", false, false),
 		},
@@ -87,7 +87,7 @@ func accumulateLotus(ts schema.TypeSystem) {
 		},
 		schema.StructRepresentation_Tuple{}))
 	ts.Accumulate(schema.SpawnLinkReference("Link__ListLotusMessage", "List__LinkLotusMessage"))
-	ts.Accumulate(schema.SpawnList("List__LinkLotusMessage", "Link__LotusMessage", false)) //Encoded as AMT
+	ts.Accumulate(schema.SpawnList("List__LinkLotusMessage", "Link__LotusMessage", false)) // Encoded as AMT
 	ts.Accumulate(schema.SpawnLinkReference("Link__LotusMessage", "LotusMessage"))
 	ts.Accumulate(schema.SpawnStruct("LotusMessage",
 		[]schema.StructField{

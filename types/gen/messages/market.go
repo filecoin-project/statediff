@@ -49,4 +49,15 @@ func accumulateMarket(ts schema.TypeSystem) {
 			schema.SpawnStructField("SectorType", "RegisteredSealProof", false, false),
 		}, schema.StructRepresentation_Tuple{}))
 
+	ts.Accumulate(schema.SpawnStruct("SectorDataSpec",
+		[]schema.StructField{
+			schema.SpawnStructField("DealIDs", "List__DealID", false, false),
+			schema.SpawnStructField("SectorType", "RegisteredSealProof", false, false),
+		}, schema.StructRepresentation_Tuple{}))
+	ts.Accumulate(schema.SpawnList("List__SectorDataSpec", "SectorDataSpec", false))
+
+	ts.Accumulate(schema.SpawnStruct("MessageParamsMarketV5ComputeCommitment",
+		[]schema.StructField{
+			schema.SpawnStructField("Inputs", "List__SectorDataSpec", false, false),
+		}, schema.StructRepresentation_Tuple{}))
 }

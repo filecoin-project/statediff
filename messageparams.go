@@ -30,6 +30,17 @@ var marketTable = methodtable{
 	9: methodMeta{"CronTick", types.Type.Any__Repr},
 }
 
+var marketV5Table = methodtable{
+	2: methodMeta{"AddBalance", types.Type.Address__Repr},
+	3: methodMeta{"WithdrawBalance", types.Type.MessageParamsMarketWithdrawBalance__Repr},
+	4: methodMeta{"PublishStorageDeals", types.Type.MessageParamsMarketPublishDeals__Repr},
+	5: methodMeta{"VerifyDealsForActivation", types.Type.MessageParamsMarketVerifyDeals__Repr},
+	6: methodMeta{"ActivateDeals", types.Type.MessageParamsMarketActivateDeals__Repr},
+	7: methodMeta{"OnMinerSectorsTerminate", types.Type.MessageParamsMarketTerminateDeals__Repr},
+	8: methodMeta{"ComputeDataCommitment", types.Type.MessageParamsMarketV5ComputeCommitment__Repr},
+	9: methodMeta{"CronTick", types.Type.Any__Repr},
+}
+
 var minerTable = methodtable{
 	1:  methodMeta{"Constructor", types.Type.MessageParamsMinerConstructor__Repr},
 	2:  methodMeta{"ControlAddresses", types.Type.Any__Repr},
@@ -55,6 +66,8 @@ var minerTable = methodtable{
 	22: methodMeta{"RepayDebt", types.Type.Any__Repr},
 	23: methodMeta{"ChangeOwnerAddress", types.Type.Address__Repr},
 	24: methodMeta{"DisputeWindowedPoSt", types.Type.MessageParamsMinerDisputeWindowedPoSt__Repr},
+	25: methodMeta{"PreCommitSectorBatch", types.Type.MessageParamsMinerPreCommitSectorBatch__Repr},
+	26: methodMeta{"ProveCommitAggregate", types.Type.MessageParamsMinerProveCommitAggregate__Repr},
 }
 
 var multisigTable = methodtable{
@@ -110,10 +123,12 @@ var messageParamTable = map[LotusType]methodtable{
 	MarketActorState:             marketTable,
 	MarketActorV2State:           marketTable,
 	MarketActorV3State:           marketTable,
+	MarketActorV5State:           marketV5Table,
 	StorageMinerActorState:       minerTable,
 	StorageMinerActorV2State:     minerTable,
 	StorageMinerActorV3State:     minerTable,
 	StorageMinerActorV4State:     minerTable,
+	StorageMinerActorV5State:     minerTable,
 	MultisigActorState:           multisigTable,
 	MultisigActorV3State:         multisigTable,
 	PaymentChannelActorState:     paychTable,
