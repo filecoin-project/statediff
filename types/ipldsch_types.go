@@ -115,6 +115,8 @@ type typeSlab struct {
 	Link__MarketV3RawDealProposal__Repr _Link__MarketV3RawDealProposal__ReprPrototype
 	Link__MarketV3State       _Link__MarketV3State__Prototype
 	Link__MarketV3State__Repr _Link__MarketV3State__ReprPrototype
+	Link__MarketV5State       _Link__MarketV5State__Prototype
+	Link__MarketV5State__Repr _Link__MarketV5State__ReprPrototype
 	Link__MinerV0Deadline       _Link__MinerV0Deadline__Prototype
 	Link__MinerV0Deadline__Repr _Link__MinerV0Deadline__ReprPrototype
 	Link__MinerV0Deadlines       _Link__MinerV0Deadlines__Prototype
@@ -825,6 +827,10 @@ type _Link__MarketV3RawDealProposal struct{ x ipld.Link }
 // Link__MarketV3State matches the IPLD Schema type "Link__MarketV3State".  It has link kind.
 type Link__MarketV3State = *_Link__MarketV3State
 type _Link__MarketV3State struct{ x ipld.Link }
+
+// Link__MarketV5State matches the IPLD Schema type "Link__MarketV5State".  It has link kind.
+type Link__MarketV5State = *_Link__MarketV5State
+type _Link__MarketV5State struct{ x ipld.Link }
 
 // Link__MinerV0Deadline matches the IPLD Schema type "Link__MinerV0Deadline".  It has link kind.
 type Link__MinerV0Deadline = *_Link__MinerV0Deadline

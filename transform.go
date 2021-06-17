@@ -215,7 +215,7 @@ var LotusActorCodes = map[string]LotusType{
 	cidOf("fil/5/cron"):             CronActorState,
 	cidOf("fil/5/storagepower"):     StoragePowerActorV3State,
 	cidOf("fil/5/storageminer"):     StorageMinerActorV5State,
-	cidOf("fil/5/storagemarket"):    MarketActorV3State,
+	cidOf("fil/5/storagemarket"):    MarketActorV5State,
 	cidOf("fil/5/paymentchannel"):   PaymentChannelActorV3State,
 	cidOf("fil/5/reward"):           RewardActorV2State,
 	cidOf("fil/5/verifiedregistry"): VerifiedRegistryActorV3State,
