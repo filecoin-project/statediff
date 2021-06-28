@@ -16,7 +16,7 @@ require (
 	github.com/filecoin-project/lotus v1.6.0
 	github.com/filecoin-project/specs-actors v0.9.13
 	github.com/filecoin-project/specs-actors/v2 v2.3.5-0.20210114162132-5b58b773f4fb
-	github.com/filecoin-project/specs-actors/v3 v3.1.0
+	github.com/filecoin-project/specs-actors/v3 v3.1.1
 	github.com/gorilla/handlers v1.5.1
 	github.com/graphql-go/graphql v0.7.9
 	github.com/hashicorp/golang-lru v0.5.4
@@ -33,7 +33,7 @@ require (
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/libp2p/go-libp2p-peer v0.2.0
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/multiformats/go-multiaddr v0.3.1
+	github.com/multiformats/go-multiaddr v0.3.3
 	github.com/multiformats/go-multiaddr-net v0.2.0
 	github.com/multiformats/go-multibase v0.0.3
 	github.com/multiformats/go-multihash v0.0.15
