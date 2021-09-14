@@ -28,7 +28,7 @@ require (
 	github.com/ipfs/go-log/v2 v2.1.3
 	github.com/ipld/go-car v0.1.1-0.20201119040415-11b6074b6d4d
 	github.com/ipld/go-ipld-graphql v0.0.0-20210225034639-cece726cd342
-	github.com/ipld/go-ipld-prime v0.7.0
+	github.com/ipld/go-ipld-prime v0.12.2
 	github.com/ipld/go-ipld-prime-proto v0.1.1 // indirect
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/libp2p/go-libp2p-peer v0.2.0
@@ -37,7 +37,7 @@ require (
 	github.com/multiformats/go-multiaddr-net v0.2.0
 	github.com/multiformats/go-multibase v0.0.3
 	github.com/multiformats/go-multihash v0.0.15
-	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
+	github.com/polydawn/refmt v0.0.0-20201211092308-30ac6d18308e
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/whyrusleeping/cbor-gen v0.0.0-20210303213153-67a261a1d291
 	github.com/willscott/carbs v0.0.4
