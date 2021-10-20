@@ -24,7 +24,7 @@ func (n *_Map__ActorID) LookupMaybe(k RawAddress) MaybeActorID {
 	}
 	return &_ActorID__Maybe{
 		m: schema.Maybe_Value,
-		v: v,
+		v: *v,
 	}
 }
 

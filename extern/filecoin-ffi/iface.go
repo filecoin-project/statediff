@@ -6,6 +6,7 @@ import (
 
 	abi "github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/specs-actors/actors/runtime/proof"
+	proof6 "github.com/filecoin-project/specs-actors/v6/actors/runtime/proof"
 	"github.com/ipfs/go-cid"
 )
 
@@ -105,4 +106,12 @@ func GenerateSingleVanillaProof(
 	challange []uint64,
 ) ([]byte, error) {
 	return nil, nil
+}
+
+func AggregateSealProofs(aggregateInfo proof6.AggregateSealVerifyProofAndInfos, proofs [][]byte) ([]byte, error) {
+	return nil, nil
+}
+
+func VerifyAggregateSeals(aggregate proof6.AggregateSealVerifyProofAndInfos) (bool, error) {
+	return true, nil
 }

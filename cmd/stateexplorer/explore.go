@@ -98,7 +98,7 @@ func runExploreCmd(c *cli.Context) error {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		err = fcjson.Encoder(transformed, w)
+		err = fcjson.Encode(transformed, w)
 		if err != nil {
 			w.Write([]byte(fmt.Sprintf("error: %s", err)))
 		}

@@ -24,7 +24,7 @@ import (
 	"github.com/ipld/go-car"
 	"github.com/mitchellh/go-homedir"
 	"github.com/multiformats/go-multiaddr"
-	manet "github.com/multiformats/go-multiaddr-net"
+	manet "github.com/multiformats/go-multiaddr/net"
 	"github.com/urfave/cli/v2"
 	"github.com/willscott/carbs"
 )
@@ -134,7 +134,7 @@ func GetAPI(c *cli.Context) (api.FullNode, error) {
 		headers.Add("Authorization", "Bearer "+token)
 	}
 
-	node, _, err := client.NewFullNodeRPC(c.Context, addr, headers)
+	node, _, err := client.NewFullNodeRPCV1(c.Context, addr, headers)
 	if err != nil {
 		return nil, fmt.Errorf("could not connect to api: %w", err)
 	}
