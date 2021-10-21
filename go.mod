@@ -38,7 +38,6 @@ require (
 	github.com/multiformats/go-multihash v0.0.15
 	github.com/polydawn/refmt v0.0.0-20201211092308-30ac6d18308e
 	github.com/urfave/cli/v2 v2.3.0
-	github.com/valyala/gozstd v1.14.1 // indirect
 	github.com/whyrusleeping/cbor-gen v0.0.0-20210713220151-be142a5ae1a8
 	github.com/willscott/carbs v0.0.4
 	github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345
