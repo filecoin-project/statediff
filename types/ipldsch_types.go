@@ -82,6 +82,8 @@ type typeSlab struct {
 	Link__LotusActorV4Head__Repr                   _Link__LotusActorV4Head__ReprPrototype
 	Link__LotusActorV5Head                         _Link__LotusActorV5Head__Prototype
 	Link__LotusActorV5Head__Repr                   _Link__LotusActorV5Head__ReprPrototype
+	Link__LotusActorV6Head                         _Link__LotusActorV6Head__Prototype
+	Link__LotusActorV6Head__Repr                   _Link__LotusActorV6Head__ReprPrototype
 	Link__LotusActors                              _Link__LotusActors__Prototype
 	Link__LotusActors__Repr                        _Link__LotusActors__ReprPrototype
 	Link__LotusMessage                             _Link__LotusMessage__Prototype
@@ -266,6 +268,8 @@ type typeSlab struct {
 	LotusActorV4Head__Repr                         _LotusActorV4Head__ReprPrototype
 	LotusActorV5Head                               _LotusActorV5Head__Prototype
 	LotusActorV5Head__Repr                         _LotusActorV5Head__ReprPrototype
+	LotusActorV6Head                               _LotusActorV6Head__Prototype
+	LotusActorV6Head__Repr                         _LotusActorV6Head__ReprPrototype
 	LotusActors                                    _LotusActors__Prototype
 	LotusActors__Repr                              _LotusActors__ReprPrototype
 	LotusBeaconEntry                               _LotusBeaconEntry__Prototype
@@ -762,6 +766,10 @@ type _Link__LotusActorV4Head struct{ x datamodel.Link }
 // Link__LotusActorV5Head matches the IPLD Schema type "Link__LotusActorV5Head".  It has link kind.
 type Link__LotusActorV5Head = *_Link__LotusActorV5Head
 type _Link__LotusActorV5Head struct{ x datamodel.Link }
+
+// Link__LotusActorV6Head matches the IPLD Schema type "Link__LotusActorV6Head".  It has link kind.
+type Link__LotusActorV6Head = *_Link__LotusActorV6Head
+type _Link__LotusActorV6Head struct{ x datamodel.Link }
 
 // Link__LotusActors matches the IPLD Schema type "Link__LotusActors".  It has link kind.
 type Link__LotusActors = *_Link__LotusActors
@@ -1364,6 +1372,65 @@ func (_PaychV0State) _LotusActorV5Head__member()    {}
 func (_PowerV0State) _LotusActorV5Head__member()    {}
 func (_RewardV0State) _LotusActorV5Head__member()   {}
 func (_VerifregV0State) _LotusActorV5Head__member() {}
+
+// LotusActorV6Head matches the IPLD Schema type "LotusActorV6Head".
+// LotusActorV6Head has union typekind, which means its data model behaviors are that of a map kind.
+type LotusActorV6Head = *_LotusActorV6Head
+type _LotusActorV6Head struct {
+	tag uint
+	x1  _MinerV5State
+	x2  _MarketV5State
+	x3  _MinerV4State
+	x4  _MarketV3State
+	x5  _MinerV3State
+	x6  _PowerV3State
+	x7  _InitV3State
+	x8  _VerifregV3State
+	x9  _PaychV3State
+	x10 _MultisigV3State
+	x11 _MarketV2State
+	x12 _MinerV2State
+	x13 _PowerV2State
+	x14 _RewardV2State
+	x15 _AccountV0State
+	x16 _CronV0State
+	x17 _InitV0State
+	x18 _MarketV0State
+	x19 _MinerV0State
+	x20 _MultisigV0State
+	x21 _PaychV0State
+	x22 _PowerV0State
+	x23 _RewardV0State
+	x24 _VerifregV0State
+}
+type _LotusActorV6Head__iface interface {
+	_LotusActorV6Head__member()
+}
+
+func (_MinerV5State) _LotusActorV6Head__member()    {}
+func (_MarketV5State) _LotusActorV6Head__member()   {}
+func (_MinerV4State) _LotusActorV6Head__member()    {}
+func (_MarketV3State) _LotusActorV6Head__member()   {}
+func (_MinerV3State) _LotusActorV6Head__member()    {}
+func (_PowerV3State) _LotusActorV6Head__member()    {}
+func (_InitV3State) _LotusActorV6Head__member()     {}
+func (_VerifregV3State) _LotusActorV6Head__member() {}
+func (_PaychV3State) _LotusActorV6Head__member()    {}
+func (_MultisigV3State) _LotusActorV6Head__member() {}
+func (_MarketV2State) _LotusActorV6Head__member()   {}
+func (_MinerV2State) _LotusActorV6Head__member()    {}
+func (_PowerV2State) _LotusActorV6Head__member()    {}
+func (_RewardV2State) _LotusActorV6Head__member()   {}
+func (_AccountV0State) _LotusActorV6Head__member()  {}
+func (_CronV0State) _LotusActorV6Head__member()     {}
+func (_InitV0State) _LotusActorV6Head__member()     {}
+func (_MarketV0State) _LotusActorV6Head__member()   {}
+func (_MinerV0State) _LotusActorV6Head__member()    {}
+func (_MultisigV0State) _LotusActorV6Head__member() {}
+func (_PaychV0State) _LotusActorV6Head__member()    {}
+func (_PowerV0State) _LotusActorV6Head__member()    {}
+func (_RewardV0State) _LotusActorV6Head__member()   {}
+func (_VerifregV0State) _LotusActorV6Head__member() {}
 
 // LotusActors matches the IPLD Schema type "LotusActors".  It has struct type-kind, and may be interrogated like map kind.
 type LotusActors = *_LotusActors

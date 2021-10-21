@@ -3708,6 +3708,283 @@ var LotusActorV5Head__type = graphql.NewUnion(graphql.UnionConfig{
 
 
 
+var LotusActorV6Head__type = graphql.NewUnion(graphql.UnionConfig{
+    Name: "LotusActorV6Head",
+    Types: []*graphql.Object{
+        
+        MinerV5State__type,
+        
+        
+        MarketV5State__type,
+        
+        
+        MinerV4State__type,
+        
+        
+        MarketV3State__type,
+        
+        
+        MinerV3State__type,
+        
+        
+        PowerV3State__type,
+        
+        
+        InitV3State__type,
+        
+        
+        VerifregV3State__type,
+        
+        
+        PaychV3State__type,
+        
+        
+        MultisigV3State__type,
+        
+        
+        MarketV2State__type,
+        
+        
+        MinerV2State__type,
+        
+        
+        PowerV2State__type,
+        
+        
+        RewardV2State__type,
+        
+        
+        AccountV0State__type,
+        
+        
+        CronV0State__type,
+        
+        
+        InitV0State__type,
+        
+        
+        MarketV0State__type,
+        
+        
+        MinerV0State__type,
+        
+        
+        MultisigV0State__type,
+        
+        
+        PaychV0State__type,
+        
+        
+        PowerV0State__type,
+        
+        
+        RewardV0State__type,
+        
+        
+        VerifregV0State__type,
+        
+    },
+    ResolveType: func(p graphql.ResolveTypeParams) *graphql.Object {
+        if node, ok := p.Value.(ipld.Node); ok {
+            switch node.Prototype() {
+            
+            case types.Type.MinerV5State:
+                fallthrough
+            case types.Type.MinerV5State__Repr:
+                return MinerV5State__type
+            
+            
+            case types.Type.MarketV5State:
+                fallthrough
+            case types.Type.MarketV5State__Repr:
+                return MarketV5State__type
+            
+            
+            case types.Type.MinerV4State:
+                fallthrough
+            case types.Type.MinerV4State__Repr:
+                return MinerV4State__type
+            
+            
+            case types.Type.MarketV3State:
+                fallthrough
+            case types.Type.MarketV3State__Repr:
+                return MarketV3State__type
+            
+            
+            case types.Type.MinerV3State:
+                fallthrough
+            case types.Type.MinerV3State__Repr:
+                return MinerV3State__type
+            
+            
+            case types.Type.PowerV3State:
+                fallthrough
+            case types.Type.PowerV3State__Repr:
+                return PowerV3State__type
+            
+            
+            case types.Type.InitV3State:
+                fallthrough
+            case types.Type.InitV3State__Repr:
+                return InitV3State__type
+            
+            
+            case types.Type.VerifregV3State:
+                fallthrough
+            case types.Type.VerifregV3State__Repr:
+                return VerifregV3State__type
+            
+            
+            case types.Type.PaychV3State:
+                fallthrough
+            case types.Type.PaychV3State__Repr:
+                return PaychV3State__type
+            
+            
+            case types.Type.MultisigV3State:
+                fallthrough
+            case types.Type.MultisigV3State__Repr:
+                return MultisigV3State__type
+            
+            
+            case types.Type.MarketV2State:
+                fallthrough
+            case types.Type.MarketV2State__Repr:
+                return MarketV2State__type
+            
+            
+            case types.Type.MinerV2State:
+                fallthrough
+            case types.Type.MinerV2State__Repr:
+                return MinerV2State__type
+            
+            
+            case types.Type.PowerV2State:
+                fallthrough
+            case types.Type.PowerV2State__Repr:
+                return PowerV2State__type
+            
+            
+            case types.Type.RewardV2State:
+                fallthrough
+            case types.Type.RewardV2State__Repr:
+                return RewardV2State__type
+            
+            
+            case types.Type.AccountV0State:
+                fallthrough
+            case types.Type.AccountV0State__Repr:
+                return AccountV0State__type
+            
+            
+            case types.Type.CronV0State:
+                fallthrough
+            case types.Type.CronV0State__Repr:
+                return CronV0State__type
+            
+            
+            case types.Type.InitV0State:
+                fallthrough
+            case types.Type.InitV0State__Repr:
+                return InitV0State__type
+            
+            
+            case types.Type.MarketV0State:
+                fallthrough
+            case types.Type.MarketV0State__Repr:
+                return MarketV0State__type
+            
+            
+            case types.Type.MinerV0State:
+                fallthrough
+            case types.Type.MinerV0State__Repr:
+                return MinerV0State__type
+            
+            
+            case types.Type.MultisigV0State:
+                fallthrough
+            case types.Type.MultisigV0State__Repr:
+                return MultisigV0State__type
+            
+            
+            case types.Type.PaychV0State:
+                fallthrough
+            case types.Type.PaychV0State__Repr:
+                return PaychV0State__type
+            
+            
+            case types.Type.PowerV0State:
+                fallthrough
+            case types.Type.PowerV0State__Repr:
+                return PowerV0State__type
+            
+            
+            case types.Type.RewardV0State:
+                fallthrough
+            case types.Type.RewardV0State__Repr:
+                return RewardV0State__type
+            
+            
+            case types.Type.VerifregV0State:
+                fallthrough
+            case types.Type.VerifregV0State__Repr:
+                return VerifregV0State__type
+            
+            }				
+        }
+        fmt.Printf("Actual type %T: %v not in union\n", p.Value, p.Value)
+        return nil
+    },
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 func LotusActors__Code__resolve(p graphql.ResolveParams) (interface{}, error) {
     ts, ok := p.Source.(types.LotusActors)
     if !ok {
@@ -17762,6 +18039,31 @@ var VerifregV3State__type = graphql.NewObject(graphql.ObjectConfig{
 })
 
 func init() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
