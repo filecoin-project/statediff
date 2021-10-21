@@ -482,7 +482,7 @@ func Load(ctx context.Context, c cid.Cid, store blockstore.Blockstore, into ipld
 	}
 	data := block.RawData()
 
-	if err := dagcbor.Decoder(into, bytes.NewBuffer(data)); err != nil {
+	if err := dagcbor.Decode(into, bytes.NewBuffer(data)); err != nil {
 		return err
 	}
 	return nil
@@ -579,7 +579,7 @@ func maybeLoadUnversionedStateRoot(ctx context.Context, c cid.Cid, store blockst
 	data := block.RawData()
 
 	tmpAs := as.Prototype().NewBuilder()
-	if err := dagcbor.Decoder(tmpAs, bytes.NewBuffer(data)); err != nil {
+	if err := dagcbor.Decode(tmpAs, bytes.NewBuffer(data)); err != nil {
 		list, err := as.BeginList(3)
 		if err != nil {
 			return err
@@ -628,7 +628,7 @@ func loadV3Map(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as i
 		}
 
 		value := mapper.ValuePrototype(k).NewBuilder()
-		if err := dagcbor.Decoder(value, bytes.NewBuffer(val.Raw)); err != nil {
+		if err := dagcbor.Decode(value, bytes.NewBuffer(val.Raw)); err != nil {
 			return err
 		}
 		return v.AssignNode(value.Build())
@@ -672,7 +672,7 @@ func loadMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as ipl
 		}
 
 		value := mapper.ValuePrototype(k).NewBuilder()
-		if err := dagcbor.Decoder(value, bytes.NewBuffer(asDef.Raw)); err != nil {
+		if err := dagcbor.Decode(value, bytes.NewBuffer(asDef.Raw)); err != nil {
 			return err
 		}
 		return v.AssignNode(value.Build())
@@ -717,7 +717,7 @@ func loadList(ctx context.Context, c cid.Cid, store blockstore.Blockstore, assem
 	value := cbg.Deferred{}
 	if err := list.ForEach(&value, func(k int64) error {
 		vb := lister.AssembleValue()
-		return dagcbor.Decoder(vb, bytes.NewBuffer(value.Raw))
+		return dagcbor.Decode(vb, bytes.NewBuffer(value.Raw))
 	}); err != nil {
 		return err
 	}
@@ -743,7 +743,7 @@ func loadListAsMap(ctx context.Context, c cid.Cid, store blockstore.Blockstore, 
 			return err
 		}
 
-		return dagcbor.Decoder(v, bytes.NewBuffer(value.Raw))
+		return dagcbor.Decode(v, bytes.NewBuffer(value.Raw))
 	}); err != nil {
 		return err
 	}
@@ -770,7 +770,7 @@ func loadV3ListAsMap(bitwidth int) func(ctx context.Context, c cid.Cid, store bl
 				return err
 			}
 
-			return dagcbor.Decoder(v, bytes.NewBuffer(value.Raw))
+			return dagcbor.Decode(v, bytes.NewBuffer(value.Raw))
 		}); err != nil {
 			return err
 		}
@@ -799,7 +799,7 @@ func loadMessage(ctx context.Context, c cid.Cid, store blockstore.Blockstore, as
 	data := block.RawData()
 
 	mproto := types.Type.LotusMessage__Repr.NewBuilder()
-	if err := dagcbor.Decoder(mproto, bytes.NewBuffer(data)); err != nil {
+	if err := dagcbor.Decode(mproto, bytes.NewBuffer(data)); err != nil {
 		return err
 	}
 	msgNode := mproto.Build()
@@ -893,7 +893,7 @@ func transformMinerActorPreCommittedSectors(ctx context.Context, c cid.Cid, stor
 		}
 
 		actor := types.Type.MinerV0SectorPreCommitOnChainInfo__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
+		if err := dagcbor.Decode(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
 			return err
 		}
 		return v.AssignNode(actor.Build())
@@ -924,7 +924,7 @@ func transformMinerActorV3PreCommittedSectors(ctx context.Context, c cid.Cid, st
 		}
 
 		actor := types.Type.MinerV0SectorPreCommitOnChainInfo__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(val.Raw)); err != nil {
+		if err := dagcbor.Decode(actor, bytes.NewBuffer(val.Raw)); err != nil {
 			return err
 		}
 		return v.AssignNode(actor.Build())
@@ -967,7 +967,7 @@ func transformPowerActorEventQueue(ctx context.Context, c cid.Cid, store blockst
 			}
 
 			actor := types.Type.PowerV0CronEvent__Repr.NewBuilder()
-			if err := dagcbor.Decoder(actor, bytes.NewBuffer(eval.Raw)); err != nil {
+			if err := dagcbor.Decode(actor, bytes.NewBuffer(eval.Raw)); err != nil {
 				return fmt.Errorf("decoding of event leaf failed: %w", err)
 			}
 			if err := subv.AssignNode(actor.Build()); err != nil {
@@ -1020,7 +1020,7 @@ func transformPowerActorV3EventQueue(ctx context.Context, c cid.Cid, store block
 			}
 
 			actor := types.Type.PowerV0CronEvent__Repr.NewBuilder()
-			if err := dagcbor.Decoder(actor, bytes.NewBuffer(eval.Raw)); err != nil {
+			if err := dagcbor.Decode(actor, bytes.NewBuffer(eval.Raw)); err != nil {
 				return fmt.Errorf("decoding of event leaf failed: %w", err)
 			}
 			if err := subv.AssignNode(actor.Build()); err != nil {
@@ -1116,7 +1116,7 @@ func transformMarketV2Proposals(ctx context.Context, c cid.Cid, store blockstore
 		}
 
 		actor := types.Type.MarketV2DealProposal__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+		if err := dagcbor.Decode(actor, bytes.NewBuffer(value.Raw)); err != nil {
 			return fmt.Errorf("unmarshal of individual proposal failed: %w", err)
 		}
 		return v.AssignNode(actor.Build())
@@ -1312,7 +1312,7 @@ func transformMultisigPending(ctx context.Context, c cid.Cid, store blockstore.B
 		}
 
 		actor := types.Type.MultisigV0Transaction__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
+		if err := dagcbor.Decode(actor, bytes.NewBuffer(asDef.Raw)); err != nil {
 			return err
 		}
 		return v.AssignNode(actor.Build())
@@ -1343,7 +1343,7 @@ func transformMultisigPendingV3(ctx context.Context, c cid.Cid, store blockstore
 		}
 
 		actor := types.Type.MultisigV0Transaction__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(val.Raw)); err != nil {
+		if err := dagcbor.Decode(actor, bytes.NewBuffer(val.Raw)); err != nil {
 			return err
 		}
 		return v.AssignNode(actor.Build())
@@ -1373,7 +1373,7 @@ func transformPaymentChannelLaneStates(ctx context.Context, c cid.Cid, store blo
 		}
 
 		actor := types.Type.PaychV0LaneState__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+		if err := dagcbor.Decode(actor, bytes.NewBuffer(value.Raw)); err != nil {
 			return err
 		}
 		return v.AssignNode(actor.Build())
@@ -1403,7 +1403,7 @@ func transformPaymentChannelV3LaneStates(ctx context.Context, c cid.Cid, store b
 		}
 
 		actor := types.Type.PaychV0LaneState__Repr.NewBuilder()
-		if err := dagcbor.Decoder(actor, bytes.NewBuffer(value.Raw)); err != nil {
+		if err := dagcbor.Decode(actor, bytes.NewBuffer(value.Raw)); err != nil {
 			return err
 		}
 		return v.AssignNode(actor.Build())

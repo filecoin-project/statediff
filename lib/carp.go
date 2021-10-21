@@ -7,27 +7,30 @@ import (
 
 	"github.com/filecoin-project/go-address"
 	"github.com/filecoin-project/go-fil-markets/storagemarket"
-	"github.com/filecoin-project/go-multistore"
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/filecoin-project/lotus/journal"
 	"github.com/filecoin-project/statediff"
-	peer "github.com/libp2p/go-libp2p-peer"
+	peer "github.com/libp2p/go-libp2p-core/peer"
 	"github.com/urfave/cli/v2"
 
 	"github.com/filecoin-project/lotus/api"
 	"github.com/filecoin-project/lotus/blockstore"
+	"github.com/filecoin-project/lotus/chain/consensus/filcns"
 	"github.com/filecoin-project/lotus/chain/stmgr"
 	"github.com/filecoin-project/lotus/chain/store"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/chain/vm"
 	"github.com/filecoin-project/lotus/extern/sector-storage/ffiwrapper"
+	"github.com/filecoin-project/lotus/journal/fsjournal"
 	"github.com/filecoin-project/lotus/lib/ulimit"
 	marketevents "github.com/filecoin-project/lotus/markets/loggers"
 	"github.com/filecoin-project/lotus/node/impl"
 	"github.com/filecoin-project/lotus/node/impl/full"
 	"github.com/filecoin-project/lotus/node/repo"
+	"github.com/filecoin-project/lotus/node/repo/imports"
 	"github.com/filecoin-project/specs-actors/actors/runtime/proof"
 	"github.com/filecoin-project/specs-actors/actors/util/adt"
+	proof6 "github.com/filecoin-project/specs-actors/v6/actors/runtime/proof"
 	"github.com/ipfs/go-cid"
 	cbor "github.com/ipfs/go-ipld-cbor"
 )
@@ -51,7 +54,11 @@ func NewOpener(c *cli.Context, roots statediff.StateRootFunc, db blockstore.Bloc
 		return nil, err
 	}
 
-	cs := store.NewChainStore(db, db, mds, vm.Syscalls(&fakeVerifier{}), journal.NilJournal())
+	j, err := fsjournal.OpenFSJournal(lr, journal.EnvDisabledEvents())
+	if err != nil {
+		return nil, err
+	}
+	cs := store.NewChainStore(db, db, mds, filcns.Weight, j)
 
 	headKey := roots(c.Context)
 
@@ -63,7 +70,10 @@ func NewOpener(c *cli.Context, roots statediff.StateRootFunc, db blockstore.Bloc
 		return nil, fmt.Errorf("failed to set our own chainhead: %w", err)
 	}
 
-	sm := stmgr.NewStateManager(cs)
+	sm, err := stmgr.NewStateManager(cs, filcns.NewTipSetExecutor(), vm.Syscalls(ffiwrapper.ProofVerifier), filcns.DefaultUpgradeSchedule(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	rapi.FullNodeAPI.ChainAPI.Chain = cs
 	rapi.FullNodeAPI.ChainAPI.ChainModuleAPI = &full.ChainModule{Chain: cs}
@@ -88,12 +98,8 @@ func (ra *CarAPI) ComputeGasOutputs(gasUsed, gasLimit int64, baseFee, feeCap, ga
 
 func (ra *CarAPI) Store() adt.Store {
 	bs := ra.FullNodeAPI.ChainAPI.Chain.ChainBlockstore()
-	cachedStore, _ := blockstore.CachedBlockstore(ra.Context, bs, blockstore.CacheOpts{
-		HasBloomFilterSize:   0,
-		HasBloomFilterHashes: 0,
-		HasARCCacheSize:      ra.cacheSize,
-	})
-	cs := cbor.NewCborStore(cachedStore)
+	adapted := blockstore.Adapt(bs)
+	cs := cbor.NewCborStore(adapted)
 	adtStore := adt.WrapStore(ra.Context, cs)
 	return adtStore
 }
@@ -130,7 +136,7 @@ func (ra *CarAPI) ClientImport(ctx context.Context, ref api.FileRef) (*api.Impor
 	return nil, fmt.Errorf("unsupported")
 }
 
-func (ra *CarAPI) ClientRemoveImport(ctx context.Context, importID multistore.StoreID) error {
+func (ra *CarAPI) ClientRemoveImport(ctx context.Context, importID imports.ID) error {
 	return fmt.Errorf("unsupported")
 }
 
@@ -184,6 +190,10 @@ type fakeVerifier struct{}
 var _ ffiwrapper.Verifier = (*fakeVerifier)(nil)
 
 func (m fakeVerifier) VerifySeal(svi proof.SealVerifyInfo) (bool, error) {
+	return true, nil
+}
+
+func (m fakeVerifier) VerifyAggregateSeals(aggregate proof6.AggregateSealVerifyProofAndInfos) (bool, error) {
 	return true, nil
 }
 

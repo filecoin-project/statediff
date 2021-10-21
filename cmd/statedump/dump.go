@@ -127,7 +127,7 @@ func runDumpCmd(c *cli.Context) error {
 		}
 
 		ob := bytes.NewBuffer(nil)
-		if err := p.Encoder(actor, ob); err != nil {
+		if err := p.Encode(actor, ob); err != nil {
 			fmt.Fprintf(os.Stderr, "%v\n", err)
 			return err
 		}

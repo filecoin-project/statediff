@@ -34,7 +34,7 @@ func objToStateTree(ctx context.Context, api api.FullNode, obj string, after boo
 		return cid.Undef, err
 	}
 
-	if msg, err := api.StateSearchMsg(ctx, objCid); err == nil {
+	if msg, err := api.StateSearchMsg(ctx, baseKey, objCid, 0, false); err == nil {
 		ts, err := api.ChainGetTipSet(ctx, msg.TipSet)
 		if err != nil {
 			return cid.Undef, err
