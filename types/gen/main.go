@@ -10,6 +10,7 @@ import (
 	v3 "github.com/filecoin-project/statediff/types/gen/v3"
 	v4 "github.com/filecoin-project/statediff/types/gen/v4"
 	v5 "github.com/filecoin-project/statediff/types/gen/v5"
+	v6 "github.com/filecoin-project/statediff/types/gen/v6"
 
 	gengraphql "github.com/ipld/go-ipld-graphql/gen"
 	ipld "github.com/ipld/go-ipld-prime"
@@ -82,6 +83,7 @@ func main() {
 	v3.Accumulate(ts)
 	v4.Accumulate(ts)
 	v5.Accumulate(ts)
+	v6.Accumulate(ts)
 	messages.Accumulate(ts)
 
 	if errs := ts.ValidateGraph(); errs != nil {
