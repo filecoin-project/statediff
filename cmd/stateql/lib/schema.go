@@ -675,7 +675,32 @@ func InitV3State__AddressMap__resolve(p graphql.ResolveParams) (interface{}, err
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.InitV3State")
     }
     
-    return ts.FieldAddressMap(), nil
+    targetCid := ts.FieldAddressMap().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3ActorID__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func InitV3State__NextID__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -1305,7 +1330,38 @@ var List__LinkLotusMessage__type = graphql.NewObject(graphql.ObjectConfig{
                     return nil, fmt.Errorf("unknown key type: %T", arg)
                 }
                 
-                return out, err
+                if err != nil {
+                    return nil, err
+                }
+                targetCid, err := out.AsLink()
+                if err != nil {
+                    return nil, err
+                }
+                
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusMessage__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
                 
             },
         },
@@ -1323,6 +1379,32 @@ var List__LinkLotusMessage__type = graphql.NewObject(graphql.ObjectConfig{
                     if err != nil {
                         return nil, err
                     }
+                    
+                    targetCid, err := node.AsLink()
+                    if err != nil {
+                        return nil, err
+                    }
+                    
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusMessage__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
                     
                     children = append(children, node)
                 }
@@ -1352,6 +1434,32 @@ var List__LinkLotusMessage__type = graphql.NewObject(graphql.ObjectConfig{
                     if err != nil {
                         return nil, err
                     }
+                    
+                    targetCid, err := node.AsLink()
+                    if err != nil {
+                        return nil, err
+                    }
+                    
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusMessage__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
                     
                     children = append(children, node)
                 }
@@ -1956,7 +2064,38 @@ var List__MinerV0DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
                     return nil, fmt.Errorf("unknown key type: %T", arg)
                 }
                 
-                return out, err
+                if err != nil {
+                    return nil, err
+                }
+                targetCid, err := out.AsLink()
+                if err != nil {
+                    return nil, err
+                }
+                
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0Deadline__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
                 
             },
         },
@@ -1974,6 +2113,32 @@ var List__MinerV0DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
                     if err != nil {
                         return nil, err
                     }
+                    
+                    targetCid, err := node.AsLink()
+                    if err != nil {
+                        return nil, err
+                    }
+                    
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0Deadline__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
                     
                     children = append(children, node)
                 }
@@ -2003,6 +2168,32 @@ var List__MinerV0DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
                     if err != nil {
                         return nil, err
                     }
+                    
+                    targetCid, err := node.AsLink()
+                    if err != nil {
+                        return nil, err
+                    }
+                    
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0Deadline__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
                     
                     children = append(children, node)
                 }
@@ -2235,7 +2426,38 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
                     return nil, fmt.Errorf("unknown key type: %T", arg)
                 }
                 
-                return out, err
+                if err != nil {
+                    return nil, err
+                }
+                targetCid, err := out.AsLink()
+                if err != nil {
+                    return nil, err
+                }
+                
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Deadline__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
                 
             },
         },
@@ -2253,6 +2475,32 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
                     if err != nil {
                         return nil, err
                     }
+                    
+                    targetCid, err := node.AsLink()
+                    if err != nil {
+                        return nil, err
+                    }
+                    
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Deadline__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
                     
                     children = append(children, node)
                 }
@@ -2282,6 +2530,32 @@ var List__MinerV2DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
                     if err != nil {
                         return nil, err
                     }
+                    
+                    targetCid, err := node.AsLink()
+                    if err != nil {
+                        return nil, err
+                    }
+                    
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Deadline__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
                     
                     children = append(children, node)
                 }
@@ -2328,7 +2602,38 @@ var List__MinerV3DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
                     return nil, fmt.Errorf("unknown key type: %T", arg)
                 }
                 
-                return out, err
+                if err != nil {
+                    return nil, err
+                }
+                targetCid, err := out.AsLink()
+                if err != nil {
+                    return nil, err
+                }
+                
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV3Deadline__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
                 
             },
         },
@@ -2346,6 +2651,32 @@ var List__MinerV3DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
                     if err != nil {
                         return nil, err
                     }
+                    
+                    targetCid, err := node.AsLink()
+                    if err != nil {
+                        return nil, err
+                    }
+                    
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV3Deadline__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
                     
                     children = append(children, node)
                 }
@@ -2375,6 +2706,32 @@ var List__MinerV3DeadlineLink__type = graphql.NewObject(graphql.ObjectConfig{
                     if err != nil {
                         return nil, err
                     }
+                    
+                    targetCid, err := node.AsLink()
+                    if err != nil {
+                        return nil, err
+                    }
+                    
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV3Deadline__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
                     
                     children = append(children, node)
                 }
@@ -4023,7 +4380,7 @@ var LotusActors__type = graphql.NewObject(graphql.ObjectConfig{
         },
         "Head": &graphql.Field{
             
-            Type: graphql.NewNonNull(LotusActorV5Head__type),
+            Type: graphql.NewNonNull(LotusActorV6Head__type),
             
             Resolve: LotusActors__Head__resolve,
         },
@@ -4168,7 +4525,32 @@ func LotusBlockHeader__ParentStateRoot__resolve(p graphql.ResolveParams) (interf
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.LotusBlockHeader")
     }
     
-    return ts.FieldParentStateRoot(), nil
+    targetCid := ts.FieldParentStateRoot().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusStateRoot__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func LotusBlockHeader__ParentMessageReceipts__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -4186,7 +4568,32 @@ func LotusBlockHeader__Messages__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.LotusBlockHeader")
     }
     
-    return ts.FieldMessages(), nil
+    targetCid := ts.FieldMessages().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.LotusMsgMeta__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func LotusBlockHeader__BLSAggregate__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -5031,7 +5438,32 @@ func LotusMsgMeta__BlsMessages__resolve(p graphql.ResolveParams) (interface{}, e
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.LotusMsgMeta")
     }
     
-    return ts.FieldBlsMessages(), nil
+    targetCid := ts.FieldBlsMessages().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.List__LinkLotusMessage__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func LotusMsgMeta__SecpkMessages__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -5110,7 +5542,32 @@ func LotusStateRoot__Actors__resolve(p graphql.ResolveParams) (interface{}, erro
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.LotusStateRoot")
     }
     
-    return ts.FieldActors(), nil
+    targetCid := ts.FieldActors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__LotusActors__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func LotusStateRoot__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9426,7 +9883,32 @@ func MarketV0State__Proposals__resolve(p graphql.ResolveParams) (interface{}, er
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV0State")
     }
     
-    return ts.FieldProposals(), nil
+    targetCid := ts.FieldProposals().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV0RawDealProposal__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV0State__States__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9435,7 +9917,32 @@ func MarketV0State__States__resolve(p graphql.ResolveParams) (interface{}, error
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV0State")
     }
     
-    return ts.FieldStates(), nil
+    targetCid := ts.FieldStates().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV0DealState__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV0State__PendingProposals__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9444,7 +9951,32 @@ func MarketV0State__PendingProposals__resolve(p graphql.ResolveParams) (interfac
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV0State")
     }
     
-    return ts.FieldPendingProposals(), nil
+    targetCid := ts.FieldPendingProposals().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV0DealProposal__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV0State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9453,7 +9985,32 @@ func MarketV0State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV0State")
     }
     
-    return ts.FieldEscrowTable(), nil
+    targetCid := ts.FieldEscrowTable().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__BalanceTable__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV0State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9462,7 +10019,32 @@ func MarketV0State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV0State")
     }
     
-    return ts.FieldLockedTable(), nil
+    targetCid := ts.FieldLockedTable().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__BalanceTable__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV0State__NextID__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9480,7 +10062,32 @@ func MarketV0State__DealOpsByEpoch__resolve(p graphql.ResolveParams) (interface{
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV0State")
     }
     
-    return ts.FieldDealOpsByEpoch(), nil
+    targetCid := ts.FieldDealOpsByEpoch().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__List__DealID__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV0State__LastCron__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9766,7 +10373,32 @@ func MarketV2State__Proposals__resolve(p graphql.ResolveParams) (interface{}, er
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV2State")
     }
     
-    return ts.FieldProposals(), nil
+    targetCid := ts.FieldProposals().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV2RawDealProposal__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV2State__States__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9775,7 +10407,32 @@ func MarketV2State__States__resolve(p graphql.ResolveParams) (interface{}, error
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV2State")
     }
     
-    return ts.FieldStates(), nil
+    targetCid := ts.FieldStates().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV0DealState__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV2State__PendingProposals__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9784,7 +10441,32 @@ func MarketV2State__PendingProposals__resolve(p graphql.ResolveParams) (interfac
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV2State")
     }
     
-    return ts.FieldPendingProposals(), nil
+    targetCid := ts.FieldPendingProposals().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV2DealProposal__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV2State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9793,7 +10475,32 @@ func MarketV2State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV2State")
     }
     
-    return ts.FieldEscrowTable(), nil
+    targetCid := ts.FieldEscrowTable().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__BalanceTable__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV2State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9802,7 +10509,32 @@ func MarketV2State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV2State")
     }
     
-    return ts.FieldLockedTable(), nil
+    targetCid := ts.FieldLockedTable().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__BalanceTable__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV2State__NextID__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9820,7 +10552,32 @@ func MarketV2State__DealOpsByEpoch__resolve(p graphql.ResolveParams) (interface{
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV2State")
     }
     
-    return ts.FieldDealOpsByEpoch(), nil
+    targetCid := ts.FieldDealOpsByEpoch().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__List__DealID__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV2State__LastCron__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9936,7 +10693,32 @@ func MarketV3State__Proposals__resolve(p graphql.ResolveParams) (interface{}, er
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV3State")
     }
     
-    return ts.FieldProposals(), nil
+    targetCid := ts.FieldProposals().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV3RawDealProposal__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV3State__States__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9945,7 +10727,32 @@ func MarketV3State__States__resolve(p graphql.ResolveParams) (interface{}, error
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV3State")
     }
     
-    return ts.FieldStates(), nil
+    targetCid := ts.FieldStates().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV3DealState__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV3State__PendingProposals__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9954,7 +10761,32 @@ func MarketV3State__PendingProposals__resolve(p graphql.ResolveParams) (interfac
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV3State")
     }
     
-    return ts.FieldPendingProposals(), nil
+    targetCid := ts.FieldPendingProposals().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV3DealProposal__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV3State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9963,7 +10795,32 @@ func MarketV3State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV3State")
     }
     
-    return ts.FieldEscrowTable(), nil
+    targetCid := ts.FieldEscrowTable().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3BalanceTable__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV3State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9972,7 +10829,32 @@ func MarketV3State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV3State")
     }
     
-    return ts.FieldLockedTable(), nil
+    targetCid := ts.FieldLockedTable().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3BalanceTable__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV3State__NextID__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -9990,7 +10872,32 @@ func MarketV3State__DealOpsByEpoch__resolve(p graphql.ResolveParams) (interface{
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV3State")
     }
     
-    return ts.FieldDealOpsByEpoch(), nil
+    targetCid := ts.FieldDealOpsByEpoch().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MapV3__List__DealID__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV3State__LastCron__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -10106,7 +11013,32 @@ func MarketV5State__Proposals__resolve(p graphql.ResolveParams) (interface{}, er
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV5State")
     }
     
-    return ts.FieldProposals(), nil
+    targetCid := ts.FieldProposals().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV3RawDealProposal__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV5State__States__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -10115,7 +11047,32 @@ func MarketV5State__States__resolve(p graphql.ResolveParams) (interface{}, error
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV5State")
     }
     
-    return ts.FieldStates(), nil
+    targetCid := ts.FieldStates().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV3DealState__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV5State__PendingProposals__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -10124,7 +11081,32 @@ func MarketV5State__PendingProposals__resolve(p graphql.ResolveParams) (interfac
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV5State")
     }
     
-    return ts.FieldPendingProposals(), nil
+    targetCid := ts.FieldPendingProposals().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MarketV3DealProposal__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV5State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -10133,7 +11115,32 @@ func MarketV5State__EscrowTable__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV5State")
     }
     
-    return ts.FieldEscrowTable(), nil
+    targetCid := ts.FieldEscrowTable().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3BalanceTable__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV5State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -10142,7 +11149,32 @@ func MarketV5State__LockedTable__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV5State")
     }
     
-    return ts.FieldLockedTable(), nil
+    targetCid := ts.FieldLockedTable().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3BalanceTable__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV5State__NextID__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -10160,7 +11192,32 @@ func MarketV5State__DealOpsByEpoch__resolve(p graphql.ResolveParams) (interface{
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MarketV5State")
     }
     
-    return ts.FieldDealOpsByEpoch(), nil
+    targetCid := ts.FieldDealOpsByEpoch().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MapV3__List__DealID__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MarketV5State__LastCron__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -12120,7 +13177,32 @@ func MinerV0Deadline__Partitions__resolve(p graphql.ResolveParams) (interface{},
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV0Deadline")
     }
     
-    return ts.FieldPartitions(), nil
+    targetCid := ts.FieldPartitions().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV0Partition__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV0Deadline__ExpirationEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -12527,7 +13609,32 @@ func MinerV0Partition__ExpirationsEpochs__resolve(p graphql.ResolveParams) (inte
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV0Partition")
     }
     
-    return ts.FieldExpirationsEpochs(), nil
+    targetCid := ts.FieldExpirationsEpochs().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV0ExpirationSet__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV0Partition__EarlyTerminated__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -13078,7 +14185,32 @@ func MinerV0State__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV0State")
     }
     
-    return ts.FieldInfo(), nil
+    targetCid := ts.FieldInfo().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0Info__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV0State__PreCommitDeposits__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -13105,7 +14237,32 @@ func MinerV0State__VestingFunds__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV0State")
     }
     
-    return ts.FieldVestingFunds(), nil
+    targetCid := ts.FieldVestingFunds().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0VestingFunds__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV0State__InitialPledgeRequirement__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -13123,7 +14280,32 @@ func MinerV0State__PreCommittedSectors__resolve(p graphql.ResolveParams) (interf
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV0State")
     }
     
-    return ts.FieldPreCommittedSectors(), nil
+    targetCid := ts.FieldPreCommittedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__SectorPreCommitOnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV0State__PreCommittedSectorsExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -13141,7 +14323,32 @@ func MinerV0State__AllocatedSectors__resolve(p graphql.ResolveParams) (interface
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV0State")
     }
     
-    return ts.FieldAllocatedSectors(), nil
+    targetCid := ts.FieldAllocatedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.BitField__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV0State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -13150,7 +14357,32 @@ func MinerV0State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV0State")
     }
     
-    return ts.FieldSectors(), nil
+    targetCid := ts.FieldSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__SectorOnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV0State__ProvingPeriodStart__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -13177,7 +14409,32 @@ func MinerV0State__Deadlines__resolve(p graphql.ResolveParams) (interface{}, err
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV0State")
     }
     
-    return ts.FieldDeadlines(), nil
+    targetCid := ts.FieldDeadlines().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0Deadlines__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV0State__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -13368,7 +14625,32 @@ func MinerV2Deadline__Partitions__resolve(p graphql.ResolveParams) (interface{},
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV2Deadline")
     }
     
-    return ts.FieldPartitions(), nil
+    targetCid := ts.FieldPartitions().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV2Partition__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV2Deadline__ExpirationEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -13741,7 +15023,32 @@ func MinerV2Partition__ExpirationsEpochs__resolve(p graphql.ResolveParams) (inte
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV2Partition")
     }
     
-    return ts.FieldExpirationsEpochs(), nil
+    targetCid := ts.FieldExpirationsEpochs().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV0ExpirationSet__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV2Partition__EarlyTerminated__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14066,7 +15373,32 @@ func MinerV2State__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV2State")
     }
     
-    return ts.FieldInfo(), nil
+    targetCid := ts.FieldInfo().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Info__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV2State__PreCommitDeposits__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14093,7 +15425,32 @@ func MinerV2State__VestingFunds__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV2State")
     }
     
-    return ts.FieldVestingFunds(), nil
+    targetCid := ts.FieldVestingFunds().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0VestingFunds__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV2State__FeeDebt__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14120,7 +15477,32 @@ func MinerV2State__PreCommittedSectors__resolve(p graphql.ResolveParams) (interf
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV2State")
     }
     
-    return ts.FieldPreCommittedSectors(), nil
+    targetCid := ts.FieldPreCommittedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__SectorPreCommitOnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV2State__PreCommittedSectorsExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14138,7 +15520,32 @@ func MinerV2State__AllocatedSectors__resolve(p graphql.ResolveParams) (interface
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV2State")
     }
     
-    return ts.FieldAllocatedSectors(), nil
+    targetCid := ts.FieldAllocatedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.BitField__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV2State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14147,7 +15554,32 @@ func MinerV2State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV2State")
     }
     
-    return ts.FieldSectors(), nil
+    targetCid := ts.FieldSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__SectorV2OnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV2State__ProvingPeriodStart__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14174,7 +15606,32 @@ func MinerV2State__Deadlines__resolve(p graphql.ResolveParams) (interface{}, err
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV2State")
     }
     
-    return ts.FieldDeadlines(), nil
+    targetCid := ts.FieldDeadlines().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Deadlines__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV2State__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14281,7 +15738,32 @@ func MinerV3Deadline__Partitions__resolve(p graphql.ResolveParams) (interface{},
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV3Deadline")
     }
     
-    return ts.FieldPartitions(), nil
+    targetCid := ts.FieldPartitions().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV3Partition__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV3Deadline__ExpirationEpochs__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14456,7 +15938,32 @@ func MinerV3Partition__ExpirationsEpochs__resolve(p graphql.ResolveParams) (inte
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV3Partition")
     }
     
-    return ts.FieldExpirationsEpochs(), nil
+    targetCid := ts.FieldExpirationsEpochs().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MinerV3ExpirationSet__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV3Partition__EarlyTerminated__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14581,7 +16088,32 @@ func MinerV3State__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV3State")
     }
     
-    return ts.FieldInfo(), nil
+    targetCid := ts.FieldInfo().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Info__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV3State__PreCommitDeposits__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14608,7 +16140,32 @@ func MinerV3State__VestingFunds__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV3State")
     }
     
-    return ts.FieldVestingFunds(), nil
+    targetCid := ts.FieldVestingFunds().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0VestingFunds__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV3State__FeeDebt__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14635,7 +16192,32 @@ func MinerV3State__PreCommittedSectors__resolve(p graphql.ResolveParams) (interf
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV3State")
     }
     
-    return ts.FieldPreCommittedSectors(), nil
+    targetCid := ts.FieldPreCommittedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3SectorPreCommitOnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV3State__PreCommittedSectorsExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14653,7 +16235,32 @@ func MinerV3State__AllocatedSectors__resolve(p graphql.ResolveParams) (interface
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV3State")
     }
     
-    return ts.FieldAllocatedSectors(), nil
+    targetCid := ts.FieldAllocatedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.BitField__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV3State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14662,7 +16269,32 @@ func MinerV3State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV3State")
     }
     
-    return ts.FieldSectors(), nil
+    targetCid := ts.FieldSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__SectorV3OnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV3State__ProvingPeriodStart__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14689,7 +16321,32 @@ func MinerV3State__Deadlines__resolve(p graphql.ResolveParams) (interface{}, err
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV3State")
     }
     
-    return ts.FieldDeadlines(), nil
+    targetCid := ts.FieldDeadlines().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV3Deadlines__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV3State__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14796,7 +16453,32 @@ func MinerV4State__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV4State")
     }
     
-    return ts.FieldInfo(), nil
+    targetCid := ts.FieldInfo().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Info__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV4State__PreCommitDeposits__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14823,7 +16505,32 @@ func MinerV4State__VestingFunds__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV4State")
     }
     
-    return ts.FieldVestingFunds(), nil
+    targetCid := ts.FieldVestingFunds().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0VestingFunds__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV4State__FeeDebt__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14850,7 +16557,32 @@ func MinerV4State__PreCommittedSectors__resolve(p graphql.ResolveParams) (interf
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV4State")
     }
     
-    return ts.FieldPreCommittedSectors(), nil
+    targetCid := ts.FieldPreCommittedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3SectorPreCommitOnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV4State__PreCommittedSectorsExpiry__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14868,7 +16600,32 @@ func MinerV4State__AllocatedSectors__resolve(p graphql.ResolveParams) (interface
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV4State")
     }
     
-    return ts.FieldAllocatedSectors(), nil
+    targetCid := ts.FieldAllocatedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.BitField__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV4State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14877,7 +16634,32 @@ func MinerV4State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV4State")
     }
     
-    return ts.FieldSectors(), nil
+    targetCid := ts.FieldSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__SectorV3OnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV4State__ProvingPeriodStart__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -14904,7 +16686,32 @@ func MinerV4State__Deadlines__resolve(p graphql.ResolveParams) (interface{}, err
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV4State")
     }
     
-    return ts.FieldDeadlines(), nil
+    targetCid := ts.FieldDeadlines().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV3Deadlines__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV4State__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -15026,7 +16833,32 @@ func MinerV5State__Info__resolve(p graphql.ResolveParams) (interface{}, error) {
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV5State")
     }
     
-    return ts.FieldInfo(), nil
+    targetCid := ts.FieldInfo().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV2Info__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV5State__PreCommitDeposits__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -15053,7 +16885,32 @@ func MinerV5State__VestingFunds__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV5State")
     }
     
-    return ts.FieldVestingFunds(), nil
+    targetCid := ts.FieldVestingFunds().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV0VestingFunds__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV5State__FeeDebt__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -15080,7 +16937,32 @@ func MinerV5State__PreCommittedSectors__resolve(p graphql.ResolveParams) (interf
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV5State")
     }
     
-    return ts.FieldPreCommittedSectors(), nil
+    targetCid := ts.FieldPreCommittedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3SectorPreCommitOnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV5State__PreCommittedSectorsCleanUp__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -15098,7 +16980,32 @@ func MinerV5State__AllocatedSectors__resolve(p graphql.ResolveParams) (interface
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV5State")
     }
     
-    return ts.FieldAllocatedSectors(), nil
+    targetCid := ts.FieldAllocatedSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.BitField__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV5State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -15107,7 +17014,32 @@ func MinerV5State__Sectors__resolve(p graphql.ResolveParams) (interface{}, error
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV5State")
     }
     
-    return ts.FieldSectors(), nil
+    targetCid := ts.FieldSectors().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__SectorV3OnChainInfo__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV5State__ProvingPeriodStart__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -15134,7 +17066,32 @@ func MinerV5State__Deadlines__resolve(p graphql.ResolveParams) (interface{}, err
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MinerV5State")
     }
     
-    return ts.FieldDeadlines(), nil
+    targetCid := ts.FieldDeadlines().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.MinerV3Deadlines__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func MinerV5State__EarlyTerminations__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -15588,7 +17545,32 @@ func MultisigV0State__PendingTxns__resolve(p graphql.ResolveParams) (interface{}
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MultisigV0State")
     }
     
-    return ts.FieldPendingTxns(), nil
+    targetCid := ts.FieldPendingTxns().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MultisigV0Transaction__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 var MultisigV0State__type = graphql.NewObject(graphql.ObjectConfig{
@@ -15778,7 +17760,32 @@ func MultisigV3State__PendingTxns__resolve(p graphql.ResolveParams) (interface{}
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.MultisigV3State")
     }
     
-    return ts.FieldPendingTxns(), nil
+    targetCid := ts.FieldPendingTxns().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__MultisigV3Transaction__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 var MultisigV3State__type = graphql.NewObject(graphql.ObjectConfig{
@@ -15957,7 +17964,32 @@ func PaychV0State__LaneStates__resolve(p graphql.ResolveParams) (interface{}, er
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.PaychV0State")
     }
     
-    return ts.FieldLaneStates(), nil
+    targetCid := ts.FieldLaneStates().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__PaychV0LaneState__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 var PaychV0State__type = graphql.NewObject(graphql.ObjectConfig{
@@ -16052,7 +18084,32 @@ func PaychV3State__LaneStates__resolve(p graphql.ResolveParams) (interface{}, er
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.PaychV3State")
     }
     
-    return ts.FieldLaneStates(), nil
+    targetCid := ts.FieldLaneStates().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__PaychV3LaneState__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 var PaychV3State__type = graphql.NewObject(graphql.ObjectConfig{
@@ -16356,7 +18413,32 @@ func PowerV0State__CronEventQueue__resolve(p graphql.ResolveParams) (interface{}
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.PowerV0State")
     }
     
-    return ts.FieldCronEventQueue(), nil
+    targetCid := ts.FieldCronEventQueue().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Multimap__PowerV0CronEvent__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func PowerV0State__FirstCronEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -16383,7 +18465,32 @@ func PowerV0State__Claims__resolve(p graphql.ResolveParams) (interface{}, error)
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.PowerV0State")
     }
     
-    return ts.FieldClaims(), nil
+    targetCid := ts.FieldClaims().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__PowerV0Claim__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func PowerV0State__ProofValidationBatch__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -16665,7 +18772,32 @@ func PowerV2State__CronEventQueue__resolve(p graphql.ResolveParams) (interface{}
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.PowerV2State")
     }
     
-    return ts.FieldCronEventQueue(), nil
+    targetCid := ts.FieldCronEventQueue().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Multimap__PowerV0CronEvent__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func PowerV2State__FirstCronEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -16683,7 +18815,32 @@ func PowerV2State__Claims__resolve(p graphql.ResolveParams) (interface{}, error)
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.PowerV2State")
     }
     
-    return ts.FieldClaims(), nil
+    targetCid := ts.FieldClaims().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__PowerV2Claim__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func PowerV2State__ProofValidationBatch__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -16909,7 +19066,32 @@ func PowerV3State__CronEventQueue__resolve(p graphql.ResolveParams) (interface{}
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.PowerV3State")
     }
     
-    return ts.FieldCronEventQueue(), nil
+    targetCid := ts.FieldCronEventQueue().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Multimap__PowerV3CronEvent__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func PowerV3State__FirstCronEpoch__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -16927,7 +19109,32 @@ func PowerV3State__Claims__resolve(p graphql.ResolveParams) (interface{}, error)
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.PowerV3State")
     }
     
-    return ts.FieldClaims(), nil
+    targetCid := ts.FieldClaims().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__PowerV3Claim__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func PowerV3State__ProofValidationBatch__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -17952,7 +20159,32 @@ func VerifregV0State__Verifiers__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.VerifregV0State")
     }
     
-    return ts.FieldVerifiers(), nil
+    targetCid := ts.FieldVerifiers().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__DataCap__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func VerifregV0State__VerifiedClients__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -17961,7 +20193,32 @@ func VerifregV0State__VerifiedClients__resolve(p graphql.ResolveParams) (interfa
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.VerifregV0State")
     }
     
-    return ts.FieldVerifiedClients(), nil
+    targetCid := ts.FieldVerifiedClients().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__DataCap__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 var VerifregV0State__type = graphql.NewObject(graphql.ObjectConfig{
@@ -18002,7 +20259,32 @@ func VerifregV3State__Verifiers__resolve(p graphql.ResolveParams) (interface{}, 
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.VerifregV3State")
     }
     
-    return ts.FieldVerifiers(), nil
+    targetCid := ts.FieldVerifiers().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3DataCap__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 func VerifregV3State__VerifiedClients__resolve(p graphql.ResolveParams) (interface{}, error) {
@@ -18011,7 +20293,32 @@ func VerifregV3State__VerifiedClients__resolve(p graphql.ResolveParams) (interfa
         return nil, fmt.Errorf(errUnexpectedType, p.Source, "types.VerifregV3State")
     }
     
-    return ts.FieldVerifiedClients(), nil
+    targetCid := ts.FieldVerifiedClients().Link()
+    
+			var node ipld.Node
+			
+	if cl, ok := targetCid.(cidlink.Link); ok {
+		v := p.Context.Value(nodeLoaderCtxKey)
+		if v == nil {
+			return cl.Cid, nil
+		}
+		loader, ok := v.(func(context.Context, cidlink.Link, ipld.NodeBuilder) (ipld.Node, error))
+		if !ok {
+			return nil, errInvalidLoader
+		}
+
+		builder := types.Type.Map__V3DataCap__Repr.NewBuilder()
+		n, err := loader(p.Context, cl, builder);
+		if err != nil {
+			return nil, err
+		}
+		node = n
+	} else {
+		return nil, errInvalidLink
+	}
+	
+			return node, nil
+			
     
 }
 var VerifregV3State__type = graphql.NewObject(graphql.ObjectConfig{
@@ -18045,6 +20352,51 @@ func init() {
 
 
 
+union__Any__Map.AddFieldConfig("", &graphql.Field{
+	Type: Map__type,
+	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+		ts, ok := p.Source.(types.Map)
+		if !ok {
+			return nil, errNotNode
+		}
+		mi := ts.MapIterator()
+		items := make(map[string]interface{})
+		for !mi.Done() {
+			k, v, err := mi.Next()
+			if err != nil {
+				return nil, err
+			}
+			// TODO: key type may not be string.
+			ks, err := k.AsString()
+			if err != nil {
+				return nil, err
+			}
+			items[ks] = v
+		}
+		return items, nil
+	},
+})
+
+
+union__Any__List.AddFieldConfig("", &graphql.Field{
+	Type: List__type,
+	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+		ts, ok := p.Source.(types.List)
+		if !ok {
+			return nil, errNotNode
+		}
+		li := ts.ListIterator()
+		items := make([]ipld.Node, 0)
+		for !li.Done() {
+			_, v, err := li.Next()
+			if err != nil {
+				return nil, err
+			}
+			items = append(items, v)
+		}
+		return items, nil
+	},
+})
 
 
 

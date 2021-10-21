@@ -809,8 +809,8 @@ github.com/ipld/go-car/v2 v2.0.3-0.20210811121346-c514a30114d7/go.mod h1:I2ACeeg
 github.com/ipld/go-codec-dagpb v1.2.0/go.mod h1:6nBN7X7h8EOsEejZGqC7tej5drsdBAXbMHyBT+Fne5s=
 github.com/ipld/go-codec-dagpb v1.3.0 h1:czTcaoAuNNyIYWs6Qe01DJ+sEX7B+1Z0LcXjSatMGe8=
 github.com/ipld/go-codec-dagpb v1.3.0/go.mod h1:ga4JTU3abYApDC3pZ00BC2RSvC3qfBb9MSJkMLSwnhA=
-github.com/ipld/go-ipld-graphql v0.0.0-20211020200223-fa5b189a25c0 h1:ol0tPcX6Xlwip8Ewi6En4fvIejCYWH3lSIyGB8a0bNQ=
-github.com/ipld/go-ipld-graphql v0.0.0-20211020200223-fa5b189a25c0/go.mod h1:jS4EWaXGwq9jp11rXMAH8XBdGJqsw0ax2YOGupwPzNs=
+github.com/ipld/go-ipld-graphql v0.0.0-20211021213353-9727002b9c62 h1:xXMdXV/jjR2dCDyxS/pVV3+qQNSnjcIDMom+iqj16Pg=
+github.com/ipld/go-ipld-graphql v0.0.0-20211021213353-9727002b9c62/go.mod h1:jS4EWaXGwq9jp11rXMAH8XBdGJqsw0ax2YOGupwPzNs=
 github.com/ipld/go-ipld-prime v0.0.2-0.20191108012745-28a82f04c785/go.mod h1:bDDSvVz7vaK12FNvMeRYnpRFkSUPNQOiCYQezMD/P3w=
 github.com/ipld/go-ipld-prime v0.0.2-0.20200428162820-8b59dc292b8e/go.mod h1:uVIwe/u0H4VdKv3kaN1ck7uCb6yD9cFLS9/ELyXbsw8=
 github.com/ipld/go-ipld-prime v0.5.1-0.20200828233916-988837377a7f/go.mod h1:0xEgdD6MKbZ1vF0GC+YcR/C4SQCAlRuOjIJ2i0HxqzM=
@@ -1769,8 +1769,9 @@ github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6Kllzaw
 github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
 github.com/valyala/fasttemplate v1.0.1 h1:tY9CJiPnMXf1ERmG2EyK7gNUd+c6RKGD0IfU8WdUSz8=
 github.com/valyala/fasttemplate v1.0.1/go.mod h1:UQGH1tvbgY+Nz5t2n7tXsz52dQxojPUpymEIMZ47gx8=
-github.com/valyala/gozstd v1.9.0 h1:Mse1yBM5ZQpigO4KW1bVK8p8VSRYttRF+pV0QsMWZ1Y=
 github.com/valyala/gozstd v1.9.0/go.mod h1:y5Ew47GLlP37EkTB+B4s7r6A5rdaeB7ftbl9zoYiIPQ=
+github.com/valyala/gozstd v1.14.1 h1:xkPAeHe8U/w/ocS6PywjkH406lKdratZuxhb1UTgO/s=
+github.com/valyala/gozstd v1.14.1/go.mod h1:y5Ew47GLlP37EkTB+B4s7r6A5rdaeB7ftbl9zoYiIPQ=
 github.com/viant/assertly v0.4.8/go.mod h1:aGifi++jvCrUaklKEKT0BU95igDNaqkvz+49uaYMPRU=
 github.com/viant/toolbox v0.24.0/go.mod h1:OxMCG57V0PXuIP2HNQrtJf2CjqdmbrOx5EkMILuUhzM=
 github.com/wangjia184/sortedset v0.0.0-20160527075905-f5d03557ba30/go.mod h1:YkocrP2K2tcw938x9gCOmT5G5eCD6jsTz0SZuyAqwIE=

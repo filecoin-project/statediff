@@ -1436,7 +1436,7 @@ func (_VerifregV0State) _LotusActorV6Head__member() {}
 type LotusActors = *_LotusActors
 type _LotusActors struct {
 	Code    _Link
-	Head    _Link__LotusActorV5Head
+	Head    _Link__LotusActorV6Head
 	Nonce   _Int
 	Balance _BigInt
 }

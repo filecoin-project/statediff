@@ -221,6 +221,18 @@ var LotusActorCodes = map[string]LotusType{
 	cidOf("fil/5/verifiedregistry"): VerifiedRegistryActorV3State,
 	cidOf("fil/5/account"):          AccountActorState,
 	cidOf("fil/5/multisig"):         MultisigActorV3State,
+	// v6
+	cidOf("fil/6/system"):           LotusType("systemActor"),
+	cidOf("fil/6/init"):             InitActorV3State,
+	cidOf("fil/6/cron"):             CronActorState,
+	cidOf("fil/6/storagepower"):     StoragePowerActorV3State,
+	cidOf("fil/6/storageminer"):     StorageMinerActorV5State,
+	cidOf("fil/6/storagemarket"):    MarketActorV5State,
+	cidOf("fil/6/paymentchannel"):   PaymentChannelActorV3State,
+	cidOf("fil/6/reward"):           RewardActorV2State,
+	cidOf("fil/6/verifiedregistry"): VerifiedRegistryActorV3State,
+	cidOf("fil/6/account"):          AccountActorState,
+	cidOf("fil/6/multisig"):         MultisigActorV3State,
 }
 
 var lotusMessageMap = basicnode.Prototype__Map{}

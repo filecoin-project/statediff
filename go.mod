@@ -27,7 +27,7 @@ require (
 	github.com/ipfs/go-ipld-cbor v0.0.5
 	github.com/ipfs/go-log/v2 v2.3.0
 	github.com/ipld/go-car v0.3.2-0.20211001225732-32d0d9933823
-	github.com/ipld/go-ipld-graphql v0.0.0-20211020200223-fa5b189a25c0
+	github.com/ipld/go-ipld-graphql v0.0.0-20211021213353-9727002b9c62
 	github.com/ipld/go-ipld-prime v0.12.4-0.20211019203807-9ddc75a0c4ae
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/lib/pq v1.7.0 // indirect
@@ -38,6 +38,7 @@ require (
 	github.com/multiformats/go-multihash v0.0.15
 	github.com/polydawn/refmt v0.0.0-20201211092308-30ac6d18308e
 	github.com/urfave/cli/v2 v2.3.0
+	github.com/valyala/gozstd v1.14.1 // indirect
 	github.com/whyrusleeping/cbor-gen v0.0.0-20210713220151-be142a5ae1a8
 	github.com/willscott/carbs v0.0.4
 	github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345

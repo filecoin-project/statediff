@@ -109,26 +109,31 @@ func GetAPI(c *cli.Context) (api.FullNode, error) {
 		return NewOpener(c, r, b)
 	}
 	api := c.String(ApiFlag.Name)
-	sp := strings.SplitN(api, ":", 2)
-	if len(sp) != 2 {
-		sp, err = tryGetAPIFromHomeDir()
-		if err != nil {
-			return nil, fmt.Errorf("invalid api value, missing token or address: %s", api)
+	var addr, token string
+	if strings.HasPrefix(api, "wss:") || strings.HasPrefix(api, "ws:") || strings.HasPrefix(api, "http:") || strings.HasPrefix(api, "https:") {
+		addr = api
+	} else {
+		sp := strings.SplitN(api, ":", 2)
+		if len(sp) != 2 {
+			sp, err = tryGetAPIFromHomeDir()
+			if err != nil {
+				return nil, fmt.Errorf("invalid api value, missing token or address: %s", api)
+			}
 		}
-	}
 
-	token := sp[0]
-	ma, err := multiaddr.NewMultiaddr(sp[1])
-	if err != nil {
-		return nil, fmt.Errorf("could not parse provided multiaddr: %w", err)
-	}
+		token = sp[0]
+		ma, err := multiaddr.NewMultiaddr(sp[1])
+		if err != nil {
+			return nil, fmt.Errorf("could not parse provided multiaddr: %w", err)
+		}
 
-	_, dialAddr, err := manet.DialArgs(ma)
-	if err != nil {
-		return nil, fmt.Errorf("invalid api multiAddr: %w", err)
-	}
+		_, dialAddr, err := manet.DialArgs(ma)
+		if err != nil {
+			return nil, fmt.Errorf("invalid api multiAddr: %w", err)
+		}
 
-	addr := "ws://" + dialAddr + "/rpc/v0"
+		addr = "ws://" + dialAddr + "/rpc/v0"
+	}
 	headers := http.Header{}
 	if len(token) != 0 {
 		headers.Add("Authorization", "Bearer "+token)
