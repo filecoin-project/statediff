@@ -31,7 +31,7 @@ require (
 	github.com/ipld/go-ipld-prime v0.12.4-0.20211019203807-9ddc75a0c4ae
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/lib/pq v1.7.0 // indirect
-	github.com/libp2p/go-libp2p-core v0.9.0
+	github.com/libp2p/go-libp2p-core v0.13.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/multiformats/go-multiaddr v0.4.0
 	github.com/multiformats/go-multibase v0.0.3
