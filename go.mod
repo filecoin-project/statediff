@@ -20,28 +20,28 @@ require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/graphql-go/graphql v0.7.9
 	github.com/hashicorp/golang-lru v0.5.4
-	github.com/ipfs/go-block-format v0.0.3
-	github.com/ipfs/go-cid v0.1.0
-	github.com/ipfs/go-datastore v0.4.6
-	github.com/ipfs/go-ipfs-blockstore v1.0.4
-	github.com/ipfs/go-ipld-cbor v0.0.5
-	github.com/ipfs/go-log/v2 v2.3.0
-	github.com/ipld/go-car v0.3.2-0.20211001225732-32d0d9933823
+	github.com/ipfs/go-block-format v0.1.2
+	github.com/ipfs/go-cid v0.4.1
+	github.com/ipfs/go-datastore v0.6.0
+	github.com/ipfs/go-ipfs-blockstore v1.2.0
+	github.com/ipfs/go-ipld-cbor v0.0.6
+	github.com/ipfs/go-log/v2 v2.5.1
+	github.com/ipld/go-car v0.6.1
 	github.com/ipld/go-ipld-graphql v0.0.0-20211021213353-9727002b9c62
-	github.com/ipld/go-ipld-prime v0.12.4-0.20211019203807-9ddc75a0c4ae
+	github.com/ipld/go-ipld-prime v0.20.0
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/lib/pq v1.7.0 // indirect
-	github.com/libp2p/go-libp2p-core v0.9.0
+	github.com/libp2p/go-libp2p-core v0.19.0
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/multiformats/go-multiaddr v0.4.0
-	github.com/multiformats/go-multibase v0.0.3
-	github.com/multiformats/go-multihash v0.0.15
-	github.com/polydawn/refmt v0.0.0-20201211092308-30ac6d18308e
+	github.com/multiformats/go-multiaddr v0.7.0
+	github.com/multiformats/go-multibase v0.1.1
+	github.com/multiformats/go-multihash v0.2.3
+	github.com/polydawn/refmt v0.89.0
 	github.com/urfave/cli/v2 v2.3.0
-	github.com/whyrusleeping/cbor-gen v0.0.0-20210713220151-be142a5ae1a8
+	github.com/whyrusleeping/cbor-gen v0.0.0-20230126041949-52956bd4c9aa
 	github.com/willscott/carbs v0.0.4
 	github.com/willscott/go-cmp v0.5.2-0.20200812183318-8affb9542345
-	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
+	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
 )
 
 replace github.com/whyrusleeping/ledger-filecoin-go => github.com/filecoin-project/statediff/extern/fil-ledger v0.0.0-20201112214200-3592b9922dcc
