@@ -15,7 +15,6 @@ jobs:
         with:
           images: |
             filecoin/stateexplorer
-          tag-sha: true
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
